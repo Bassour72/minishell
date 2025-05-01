@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 09:57:18 by massrayb          #+#    #+#             */
-/*   Updated: 2025/05/01 10:55:10 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/05/01 14:39:35 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,8 @@ int main(void)
 
 		add_history(input);
 
-		//parsing the input and generate the tree
 		tree = parser(tree, input);
-		free_tree(tree);
+		//  free_tree(tree); //note this is for freeing the tree
 		//take the tree and execute here
 		
 		
