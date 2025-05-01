@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 09:57:18 by massrayb          #+#    #+#             */
-/*   Updated: 2025/04/29 15:24:45 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/05/01 10:55:10 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,22 @@ int	empty(char *str)
 	return (!*str);
 }
 
+void f()
+{
+	system("leaks -q minishell");
+}
+
 int main(void)
 {
-	t_tree *tree = NULL;
-	char *input;
+	// atexit(f);
+	t_tree	*tree = NULL;
+	char	*input;
 	input = NULL;
 	while (1)
 	{
 		//get the input from the terminal
 		input = readline("minishell$ ");
+		// printf("address : %p\n", input);
 		if (!input)
 			break ;
 		if (empty(input))
@@ -44,6 +51,7 @@ int main(void)
 
 		//parsing the input and generate the tree
 		tree = parser(tree, input);
+		free_tree(tree);
 		//take the tree and execute here
 		
 		

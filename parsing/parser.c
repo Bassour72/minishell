@@ -6,13 +6,13 @@
 /*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:03:00 by massrayb          #+#    #+#             */
-/*   Updated: 2025/04/28 13:54:34 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/05/01 14:10:57 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
 
-//debug functions 
+//LABLE functions 
 
 int is_red(t_token *token)
 {
@@ -92,11 +92,18 @@ void print_tree(t_tree *root, int i)
 	for(int j = 0; j < i; j++)
 		printf("\t");
 	printf("%s", typetostring[root->type]);
+	printf(" CMD : ");
 	if (root->data)
-		printf(" %s", root->data[0]);
+	{
+		for(int i = 0; root->data[i]; i++)
+			printf("[%s] ", root->data[i]);
+		printf("");
+	}
+	else
+		printf(" NULL");
+	printf(" |redirections : ");
 	if (root->redirections)
 	{
-		printf(" : ");
 		t_red *r = root->redirections;
 		while (r)
 		{
@@ -104,72 +111,25 @@ void print_tree(t_tree *root, int i)
 			r = r->next;
 		}
 	}
+	else
+		printf(" NULL");
 	printf("\n");
 	print_tree(root->right, i + 1);
 	print_tree(root->left, i + 1);
 }
-//----------------------------------------------------------------------
+//-------------------------------------------------------------------------
 //[helper functions] ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-int get_flat_tree_size(t_tree *tree)
-{
-	int size = 0;
-	while ((tree + ++size)->data);
-	return (size);
-}
-
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-static int is_divisible(t_token *list)
-{
-	int i;
 
-	i = -1;
-	while ((list + ++i)->data)
-	{
-		if (list->type != WORD)
-			return (1);
-	}
-	return (0);
-}
-
-
-void stage_one(t_tree *tree, int len)
-{
-	int i;
-
-	i = -1;
-	
-	(void)len;
-	while ((tree + ++i)->data)
-	{
-		//if the the input start or ends with pipe like this "cat | " a heap-over-flow error will apear
-		if ((tree + i)->type == PIPE && (tree + i - 1)->type == WORD && (tree + i + 1)->type == WORD) 
-		{
-			(tree + i)->left = tree + i - 1; //setup the left side of a pipe to it's left cmd
-			(tree + i)->right = tree + i + 1; //setup the right side of a pipe to it's right cmd
-		}
-	}
-
-	// i = -1;
-	// while ((tree + ++i)->data)
-	// {
-	// 	//if the the input start or ends with pipe like this "cat > " a heap-over-flow error will apear
-	// 	if ((tree + i)->type == REDIRECTION && (tree + i - 1)->type == CMD && (tree + i + 1)->type == CMD) 
-	// 	{
-	// 		(tree + i)->left = tree + i - 1; //setup the left side of a pipe to it's left cmd
-	// 		(tree + i)->right = tree + i + 1; //setup the right side of a pipe to it's right cmd
-	// 	}
-	// }
-	
-}
 
 t_tree *new_tree_node(t_type type)
 {
 	t_tree *tree_node;
-	// if (type == BLOCK)
-	// 	printf("#1\n");
 
 	tree_node = malloc(sizeof(t_tree));//todo protect
+	if (!tree_node)
+		return (NULL);
 	tree_node->data = NULL;//todo naming
 	tree_node->file_name = NULL;//check usage 
 	tree_node->redirections = NULL;
@@ -179,8 +139,47 @@ t_tree *new_tree_node(t_type type)
 	return (tree_node);
 }
 
-//flat_tree_list as a list
-//tree_node as a data 
+
+void free_tree_node(t_tree *node)
+{
+	int		i;
+	t_red	*red;
+	t_red	*tmp;
+
+	if (node->data)
+	{
+		i = -1;
+		while (node->data[++i])
+			free(node->data[i]);
+		free(node->data);
+	}
+	if (node->redirections)
+	{
+		red = node->redirections;
+		while (red)
+		{
+			tmp = red;
+			red = red->next;
+			free(tmp->data);
+			free(tmp);
+		}
+	}
+	free(node);
+}
+
+void free_flat_tree_list(t_flat_tree *flat_list)
+{
+	t_flat_tree	*tmp;
+
+	while (flat_list)
+	{
+		tmp = flat_list;
+		flat_list = flat_list->next;
+		free_tree_node(tmp->tree_node);
+		free(tmp);
+	}
+}
+
 t_flat_tree *append_new_flat_tree_node(t_flat_tree *flat_tree_list, t_tree *tree_node)
 {
 	t_flat_tree	*new_flat_tree_list;
@@ -189,7 +188,12 @@ t_flat_tree *append_new_flat_tree_node(t_flat_tree *flat_tree_list, t_tree *tree
 	//note create new flat tree
 	if (!flat_tree_list)
 	{
-		new_flat_tree_list = malloc(sizeof(t_flat_tree));//todo protect
+		new_flat_tree_list = malloc(sizeof(t_flat_tree));
+		if (!new_flat_tree_list)
+		{
+			free_tree_node(tree_node);//note if malloc failed free the given tree_node
+			return (NULL);
+		}
 		new_flat_tree_list->tree_node = tree_node;
 		new_flat_tree_list->next = NULL;
 		new_flat_tree_list->prev = NULL;
@@ -200,7 +204,13 @@ t_flat_tree *append_new_flat_tree_node(t_flat_tree *flat_tree_list, t_tree *tree
 	tmp = flat_tree_list;
 	while (tmp->next)
 		tmp = tmp->next;
-	tmp->next = malloc(sizeof(t_flat_tree));//todo protect
+	tmp->next = malloc(sizeof(t_flat_tree));
+	if (!tmp->next)
+	{
+		free_tree_node(tree_node);//note if malloc failed free the given tree_node and the pre allocated flat_tree_list
+		free_flat_tree_list(flat_tree_list);
+		return (NULL);
+	}
 	tmp->next->tree_node = tree_node;
 	tmp->next->next = NULL;
 	tmp->next->prev = tmp;
@@ -208,7 +218,42 @@ t_flat_tree *append_new_flat_tree_node(t_flat_tree *flat_tree_list, t_tree *tree
 	return (flat_tree_list);
 }
 
-void	parenths_redirections(t_tree *tree_node, t_token *token)
+
+int new_red(t_tree  *tree_node, t_type type, char *data)
+{
+	t_red	*new_red;
+	t_red	*last_red;
+
+	new_red = malloc(sizeof(t_red));
+	if (!new_red)
+	{
+		free_tree_node(tree_node);
+		return (0);
+	}
+	
+	new_red->data = ft_strdup(data);
+	if (!new_red->data)
+	{
+		free(new_red);
+		free_tree_node(tree_node);
+		return (0);
+	}
+	// free(data); //todo do i need to free data after strdup
+	new_red->type = type;
+	new_red->next = NULL;
+	
+	if (!tree_node->redirections)
+		tree_node->redirections = new_red;
+	else
+	{
+		last_red = tree_node->redirections;
+		while (last_red->next)
+			last_red = last_red->next;
+		last_red->next = new_red;	
+	}
+	return (1);
+}
+int	parenths_redirections(t_tree *tree_node, t_token *token)
 {
 	//lable this function looks for reds if '(' appeared o sf
 	t_red	*tmp_red;
@@ -240,26 +285,26 @@ void	parenths_redirections(t_tree *tree_node, t_token *token)
 		{
 			(token + i)->is_listed = 1;
 
-			t_red *new_red = malloc(sizeof(t_red));
-			new_red->type = token[i].type;
-			new_red->data = ft_strdup(token[i + 1].data); //warning if the next token is not a filename type undefined behaviour will apear
-			new_red->next = NULL;
-			if (tree_node->redirections == NULL)
-			{
-				tree_node->redirections = new_red;
-			}
-			else
-			{
-				tmp_red = tree_node->redirections;
-				while(tmp_red->next)
-					tmp_red = tmp_red->next;
-				tmp_red->next = new_red;
-			}
-				// printf("$%d red\n", i);
+			if (!new_red(tree_node, (token + i)->type, token[i + 1].data))
+				return (0);
 		}
 		else //note if the token after the ) is not a red break the loop
 			break;
-		i+=2;
+		i += 2;
+	}
+	return (1);
+}
+
+void	free_flat_tree(t_flat_tree *flat_tree)
+{
+	t_flat_tree *tmp;
+
+	while (flat_tree)
+	{
+		tmp = flat_tree;
+		flat_tree = flat_tree->next;
+		free_tree_node(tmp->tree_node);
+		free(tmp);
 	}
 }
 
@@ -267,7 +312,8 @@ t_flat_tree *create_flat_tree(t_token *token)
 {
 	t_flat_tree *flat_tree_list = NULL; //note linked list
 	t_flat_tree *tmp; //note traverse the linked list
-	t_red	*tmp_red;
+	// t_red	*tmp_red;
+	// t_red	*new_red;
 	t_tree *tree_node;  //note: tmp var 
 	int i;
 	int j; //note () reds index
@@ -280,6 +326,9 @@ t_flat_tree *create_flat_tree(t_token *token)
 		{
 			// printf("p/o %d \n", i);
 			tree_node = new_tree_node(token[i].type);
+			if (!tree_node)
+				return (free_flat_tree(flat_tree_list), NULL);//note on fail the clearance will be handled inside new_tree_node
+
 			// flat_tree_list = append_new_flat_tree_node(flat_tree_list, tree_node);
 			// printf("$%d pipe / op\n", i);
 			i++;	
@@ -289,6 +338,9 @@ t_flat_tree *create_flat_tree(t_token *token)
 		{
 			// printf("empety block %d \n", i);
 			tree_node = new_tree_node(BLOCK);//note init the tree node
+			if (!tree_node)
+				return (free_flat_tree(flat_tree_list), NULL);//note on fail the clearance will be handled inside new_tree_node
+			
 			tree_node->empty = -1;
 				// printf("%d )))))))))))\n", i);
 			i++;
@@ -306,7 +358,7 @@ t_flat_tree *create_flat_tree(t_token *token)
 			// printf("new_block\n");
 			while (token[i].data && token[i].type != PIPE && token[i].type != OP_AND && token[i].type != OP_OR && token[i].type != PAREN_CLOSE)//warning maybe this is wrong
 			{
-				//LABLE save redirection before the cmd or the ()
+				//LABLE save redirection before the cmd 
 				if ((token[i].type == RED_INPUT ||
 					token[i].type == HER_DOC ||
 					token[i].type == RED_APPEND ||
@@ -314,29 +366,16 @@ t_flat_tree *create_flat_tree(t_token *token)
 					token[i].is_listed == 0)
 				{
 					token[i].is_listed = 1;
-
-					t_red *new_red = malloc(sizeof(t_red));
-					new_red->type = token[i].type;
-					new_red->data = ft_strdup(token[i + 1].data); //warning if the next token is not a filename type undefined behaviour will apear
-					new_red->next = NULL;
-					if (tree_node->redirections == NULL)
-					{
-						tree_node->redirections = new_red;
-					}
-					else
-					{
-						tmp_red = tree_node->redirections;
-						while(tmp_red->next)
-							tmp_red = tmp_red->next;
-						tmp_red->next = new_red;
-					}
-						// printf("$%d red\n", i);
+					if (!new_red(tree_node, token[i].type, token[i + 1].data))
+						return (free_flat_tree(flat_tree_list), NULL);
 				}
 				
 				//LABLE save a word or append it to the list of commands
 				else if (token[i].type == WORD)
 				{
 					tree_node->data = append_command(tree_node->data, token[i].data);
+					if (!tree_node->data)
+						return (free_flat_tree(flat_tree_list), NULL);
 					
 					// printf("$%d cmd %s\n",i,  token[i].data);
 				}
@@ -347,7 +386,8 @@ t_flat_tree *create_flat_tree(t_token *token)
 					//note if came across  '(' and after some commands break the while to make a new node
 					tree_node->empty = 1;
 					// printf("$%d ()\n", i);
-					parenths_redirections(tree_node,  &token[i]);
+					if (!parenths_redirections(tree_node,  &token[i]))
+						return (free_flat_tree(flat_tree_list), NULL);
 					i++; //note bcs next line is break u dummass
 					break ;
 				}
@@ -369,54 +409,6 @@ t_flat_tree *flat_tree_last(t_flat_tree *flat_tree)
 	return (flat_tree);
 }
 
-/*
-t_tree *init_tree(t_flat_tree *ft)
-{
-	t_flat_tree *flat;
-	t_flat_tree *right;
-	t_flat_tree *left;
-	
-	flat = flat_tree_last(ft);
-	while (flat->prev)
-	{
-		if (flat->tree_node->type == OP_AND || flat->tree_node->type == OP_OR)
-		{
-			right = flat->next;
-			left = flat->prev;
-			flat->next->prev = NULL;
-			flat->prev->next = NULL;
-			flat->next = NULL;
-			flat->prev = NULL;
-			flat->tree_node->right = init_tree(right);
-			flat->tree_node->left = init_tree(left);
-			return (flat->tree_node);
-		}
-		flat = flat->prev;
-	}
-
-	flat = flat_tree_last(ft);
-	while (flat->prev)
-	{
-		if (flat->tree_node->type == PIPE)
-		{
-			right = flat->next;
-			left = flat->prev;
-			flat->next->prev = NULL;
-			flat->prev->next = NULL;
-			flat->next = NULL;
-			flat->prev = NULL;
-			flat->tree_node->right = init_tree(right);
-			flat->tree_node->left = init_tree(left);
-			return (flat->tree_node);
-		}
-		flat = flat->prev;
-	}
-
-	// ft->tree_node->
-
-	return (ft->tree_node);
-}
-*/
 
 t_tree *init_tree(t_flat_tree *ft)
 {
@@ -493,58 +485,49 @@ t_tree *init_tree(t_flat_tree *ft)
 		flat->tree_node->right = init_tree(right);
 		return (flat->tree_node);
 	}
-
-	
 	return (ft->tree_node);
 	return NULL;
+}
+
+void free_tree(t_tree *root)
+{
+	if (root->right)
+		free_tree(root->right);
+	if (root->left)
+		free_tree(root->left);
+	free_tree_node(root);
 }
 
 t_tree *parser(t_tree *tree, char *input)
 {
 	t_token *tokenized_input;
+	t_flat_tree *flat_tree;
 
 	tokenized_input = tokenizer(input);
-	print_tokenized_inputs(tokenized_input);
-
-	t_flat_tree *flat_tree = create_flat_tree(tokenized_input);
-
-	t_flat_tree *t = flat_tree;
-	int i = 0;
-	while (t)
+	if (!tokenized_input)
 	{
-		// if (t->tree_node->type == BLOCK && t->tree_node->empty == 0)
-		// {
-		// 	printf("%p\n", t->tree_node->data[0]);
-		// }
-		// printf("%d ---------\n",i);
-		if (t->tree_node->type == BLOCK)
-		{
-			// printf("###########\n");
-			if (t->tree_node->empty == 0 && t->tree_node->data)
-			{
-				printf("B %s | ", t->tree_node->data[0]);
-			}
-			else if (t->tree_node->empty == -1)
-				printf(") ");
-			else if (t->tree_node->empty == 1)
-				printf("(  ");
-			t_red * r = t->tree_node->redirections; 
-			while (r)
-			{
-				printf("-%s ", r->data);
-				r = r->next;
-			}
-			printf("\n");
-		}
-		i++;
-		t = t->next;
+		printf("tokenizer returns NULL\n");
+		return (NULL);
 	}
-		printf("flat tree len : %d\n", i);
 
-	//todo get done with OPs
+	// print_tokenized_inputs(tokenized_input);
+
+	flat_tree = create_flat_tree(tokenized_input);
+	if (!flat_tree)
+		return (free_tokens_list(tokenized_input), NULL);
+
+	free_tokens_list(tokenized_input);
 
 	t_tree *root = init_tree(flat_tree);
-	// printf("done %s\n", typetostring[root->type]);
+	// // printf("done %s\n", typetostring[root->type]);
+
+	t_flat_tree *t;
+	while (flat_tree)
+	{
+		t = flat_tree;
+		flat_tree = flat_tree->next;
+		free(t);
+	}
 	print_tree(root, 0);
-	return (NULL);
+	return (root);
 }

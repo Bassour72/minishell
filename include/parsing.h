@@ -6,6 +6,8 @@
 //includes ----------------------------------------------------------
 # include "../_libft/libft.h"
 # include <stdio.h>
+# include <string.h>
+#include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 //-------------------------------------------------------------------
@@ -99,9 +101,11 @@ t_node *split(char *str);
 
 //parser.c
 t_tree	*parser(t_tree *tree, char *input);
+void free_tree(t_tree *root);
 
 //tokenizer.c
 t_token	*tokenizer(char *input);
+void free_tokens_list(t_token *tokens);
 
 //tree
 t_flat_tree	*create_flat_tree(t_token *tokens);
