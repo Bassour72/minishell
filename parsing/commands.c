@@ -6,19 +6,29 @@
 /*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:07:53 by massrayb          #+#    #+#             */
-/*   Updated: 2025/04/23 13:22:21 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:29:43 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
+
+void free_cmd_list(char **old_list)
+{
+	int i;
+
+	i = -1;
+	while (old_list[++i])
+		free(old_list[i]);
+	free(old_list);
+}
 
 char **append_command(char **old_list, char *new_cmd)
 {
 	int	size;
 	int	i;
 	int	j;
-
 	char **new_list;
+
 	if (!new_cmd) //todo maybe i dont need this
 		return (printf("Error: check append command |temp|\n"), NULL);
 	//LABLE : build new cmd list from 0
@@ -28,6 +38,8 @@ char **append_command(char **old_list, char *new_cmd)
 		if (!new_list)
 			return (NULL);
 		*new_list = ft_strdup(new_cmd);
+		if (*new_list == NULL)
+			return (free(new_list), NULL);
 		*(new_list + 1) = NULL;
 		return (new_list);
 	}
@@ -38,11 +50,24 @@ char **append_command(char **old_list, char *new_cmd)
 		
 	new_list = malloc(sizeof(char *) * (size + 1));
 	if (!new_list)
-		return (NULL);
+		return (free_cmd_list(old_list), NULL); //note free old list
+		
 	i = -1;
-	while (old_list[++i])
+	while (old_list[++i]) 
+	{
 		new_list[i] = ft_strdup(old_list[i]);
+		if (!new_list[i]) //note free old + new list 
+		{	
+			free_cmd_list(old_list);
+			return (free_cmd_list(new_list), NULL);
+		}
+	}
+
+	free_cmd_list(old_list);//note don't need old_list anymore
+
 	new_list[i] = ft_strdup(new_cmd);
+	if (new_list[i] == NULL)
+		return (free_cmd_list(new_list), NULL);
 	new_list[i + 1] = NULL;
-	return new_list;
+	return (new_list);
 }

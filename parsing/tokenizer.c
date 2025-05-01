@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:08:10 by massrayb          #+#    #+#             */
-/*   Updated: 2025/04/29 14:50:53 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/05/01 14:34:56 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,51 +23,61 @@ int	create_token(t_token *token, char *data, int type)
 {
 	token->data = ft_strdup(data);
 	if (!token->data)
-		return (0); //strdup failed 
+		return (0);
 	token->type = type;
 	token->is_listed = 0;
 	// printf("%s\n", typetostring[token->type]);
-	return (1); //success
+	return (1);
 }
 
-void free_tokens_list(t_token *tokens, int len) //TODO :finish later
+void free_tokens_list(t_token *tokens) 
 {
 	int i;
+	t_token	*list;
 
+	list = tokens;
 	i = -1;
-	while (++i < len)
+	while (list[++i].data)
 	{
-		free((tokens + i)->data);
-		
+		free((list + i)->data);
+	}
+	free(list);
+	// *tokens = NULL;
+}
+void free_splitted_input(t_node *splitted_inpt)
+{
+	t_node *tmp;
+
+	while (splitted_inpt)
+	{
+		tmp = splitted_inpt;
+		splitted_inpt = splitted_inpt->next;
+		free(tmp->data);
+		free(tmp);
 	}
 }
 
-t_token	*tokenizer(char *input)
+int count_splitted_input_nodes(t_node *splitted_input)
 {
-	// char	**splitted_input; // need to be freeied
-	t_token	*tokenized_input;
-	int		i;
-	
-	t_node *splitted_input = split(input);
-	// splitted_input = ft_split2(input); // just for testing
-	
-	//alocate space for the tokenized inputs
-	i = 0; 
-	t_node *t = splitted_input;
-	while (t)
+	int count;
+
+	count = 0;
+	while (splitted_input)
 	{
-		i++;
-		t = t->next;
+		count++;
+		splitted_input = splitted_input->next;
 	}
-		// while (*(splitted_input + i) != NULL)//here im using i to calculate the tokens count
-		// i++;
-	tokenized_input = malloc(sizeof(t_token) * (i + 1));
-	if (!tokenized_input)
-		return (NULL);
+	return (count);
+}
+
+void convert_inputs_to_tokens(t_token *tokenized_input, t_node *splitted_input)
+{
+	int i = 0;
+	
 	i = 0;
 	while (splitted_input)
 	{
-		printf("splitted_inpt = %s\n",splitted_input->data);
+		// printf("splitted_inpt = %s\n",splitted_input->data);
 		if (ft_strncmp(splitted_input->data, "&&", 2) == 0)
 			create_token(tokenized_input + i, splitted_input->data, OP_AND);
 
@@ -101,10 +111,10 @@ t_token	*tokenizer(char *input)
 		else if (ft_strncmp(splitted_input->data, ")", 1) == 0)
 			create_token(tokenized_input + i, splitted_input->data, PAREN_CLOSE);
 			
-		else if (ft_strncmp(splitted_input->data, "\"", 1) == 0)
-			create_token(tokenized_input + i, splitted_input->data, QUOTE_DOUBLE);
-		else if (ft_strncmp(splitted_input->data, "\'", 1) == 0)
-			create_token(tokenized_input + i, splitted_input->data, QUOTE_SINGLE);
+		// else if (ft_strncmp(splitted_input->data, "\"", 1) == 0)
+		// 	create_token(tokenized_input + i, splitted_input->data, QUOTE_DOUBLE);
+		// else if (ft_strncmp(splitted_input->data, "\'", 1) == 0)
+		// 	create_token(tokenized_input + i, splitted_input->data, QUOTE_SINGLE);
 			
 		else if (ft_strncmp(splitted_input->data, "*", 1) == 0)
 			create_token(tokenized_input + i, splitted_input->data, WILD_CARD);
@@ -114,59 +124,43 @@ t_token	*tokenizer(char *input)
 			i++;
 		splitted_input = splitted_input->next;
 	}
-	printf("i = %d\n", i);
-	
 	(tokenized_input + i)->data = NULL;
-	
-	// printf("done splitting %d tokens\n", i);
-	return (tokenized_input);
 }
 
-	//convert each input from splited_input into a token
-	// i = -1;
-	// while (splitted_input[++i])
+t_token	*tokenizer(char *input)
+{
+	// char	**splitted_input; // need to be freeied
+	t_token	*tokenized_input;
+	int		i;
+	
+	t_node *splitted_input = split(input);//todo check for all cases
+	free(input); //todo find a better place for this
+
+	// t_node *s = splitted_input;
+	// while (s)
 	// {
-	// 	if (ft_strncmp(*(splitted_input + i), "&&", 2) == 0)
-	// 		create_token(tokenized_input + i, *(splitted_input + i), OP_AND);
-
-	// 	else if (ft_strncmp(*(splitted_input + i), "||", 2) == 0)
-	// 		create_token(tokenized_input + i, *(splitted_input + i), OP_OR);
-			
-	// 	else if (ft_strncmp(*(splitted_input + i), "|", 1) == 0)
-	// 		create_token(tokenized_input + i, *(splitted_input + i), PIPE);	//need to free memory
-
-	// 	else if (ft_strncmp(*(splitted_input + i), ">>", 2) == 0)
-	// 		create_token(tokenized_input + i, *(splitted_input + i), RED_APPEND);
-
-	// 	else if (ft_strncmp(*(splitted_input + i), "<<", 2) == 0)
-	// 		create_token(tokenized_input + i, *(splitted_input + i), HER_DOC);
-		
-	// 	else if (ft_strncmp(*(splitted_input + i), "<", 1) == 0)
-	// 		create_token(tokenized_input + i, *(splitted_input + i), RED_INPUT);
-		
-	// 	else if (ft_strncmp(*(splitted_input + i), ">", 1) == 0)
-	// 		create_token(tokenized_input + i, *(splitted_input + i), RED_TRUNK);
-
-	// 	//if the input before this one is a redir so this one will be a filename
-	// 	else if (i != 0 && (tokenized_input[i - 1].type == RED_APPEND || 
-	// 						tokenized_input[i - 1].type == RED_TRUNK || 
-	// 						tokenized_input[i - 1].type == RED_INPUT || 
-	// 						tokenized_input[i - 1].type == HER_DOC))
-	// 		create_token(tokenized_input + i, *(splitted_input + i), T_FILE_NAME);
-			
-	// 	else if (ft_strncmp(*(splitted_input + i), "(", 1) == 0)
-	// 		create_token(tokenized_input + i, *(splitted_input + i), PAREN_OPEN);
-	// 	else if (ft_strncmp(*(splitted_input + i), ")", 1) == 0)
-	// 		create_token(tokenized_input + i, *(splitted_input + i), PAREN_CLOSE);
-			
-	// 	else if (ft_strncmp(*(splitted_input + i), "\"", 1) == 0)
-	// 		create_token(tokenized_input + i, *(splitted_input + i), QUOTE_DOUBLE);
-	// 	else if (ft_strncmp(*(splitted_input + i), "\'", 1) == 0)
-	// 		create_token(tokenized_input + i, *(splitted_input + i), QUOTE_SINGLE);
-			
-	// 	else if (ft_strncmp(*(splitted_input + i), "*", 1) == 0)
-	// 		create_token(tokenized_input + i, *(splitted_input + i), WILD_CARD);
-			
-	// 	else
-	// 		create_token(tokenized_input + i, *(splitted_input + i), WORD);
+	// 	printf("<%s>\n", s->data);
+	// 	s = s->next;
 	// }
+
+	if (!splitted_input)
+		return (NULL);
+	
+	//alocate space for the tokenized inputs
+	tokenized_input = malloc(sizeof(t_token) * (count_splitted_input_nodes(splitted_input) + 1));
+	if (!tokenized_input)
+	{
+		printf("error: %s\n", strerror(errno));//todo this is tmp
+		free_splitted_input(splitted_input);
+		return (NULL);
+	}
+
+	convert_inputs_to_tokens(tokenized_input, splitted_input);
+	
+	// printf("%p\n",splitted_input->data);
+	// printf("done splitting %d tokens\n", i);
+	// printf("%p\n", tokenized_input[0].data);
+	free_splitted_input(splitted_input);
+	// free_tokens_list(&tokenized_input);
+	return (tokenized_input);
+}
