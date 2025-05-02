@@ -48,9 +48,9 @@ typedef struct s_node
 
 typedef struct s_red
 {
-	t_type	type;
-	char		*data; //note file name or herdoc
-	struct s_red *next;
+	t_type			type;
+	char			*data; //note file name or herdoc
+	struct s_red	*next;
 }	t_red;
 
 typedef struct s_token

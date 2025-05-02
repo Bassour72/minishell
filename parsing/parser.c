@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:03:00 by massrayb          #+#    #+#             */
-/*   Updated: 2025/05/01 14:10:57 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:39:42 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ void print_tree(t_tree *root, int i)
 		return ;
 	for(int j = 0; j < i; j++)
 		printf("\t");
-	printf("%s", typetostring[root->type]);
-	printf(" CMD : ");
+	// printf("%s", typetostring[root->type]);
+	printf(" CMD=>");
 	if (root->data)
 	{
 		for(int i = 0; root->data[i]; i++)
@@ -101,13 +101,13 @@ void print_tree(t_tree *root, int i)
 	}
 	else
 		printf(" NULL");
-	printf(" |redirections : ");
+	printf(" | redirections=> ");
 	if (root->redirections)
 	{
 		t_red *r = root->redirections;
 		while (r)
 		{
-			printf("-%s ", r->data);
+			printf("[%s] ", r->data);
 			r = r->next;
 		}
 	}
@@ -117,11 +117,6 @@ void print_tree(t_tree *root, int i)
 	print_tree(root->right, i + 1);
 	print_tree(root->left, i + 1);
 }
-//-------------------------------------------------------------------------
-//[helper functions] ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 t_tree *new_tree_node(t_type type)
 {
@@ -312,8 +307,6 @@ t_flat_tree *create_flat_tree(t_token *token)
 {
 	t_flat_tree *flat_tree_list = NULL; //note linked list
 	t_flat_tree *tmp; //note traverse the linked list
-	// t_red	*tmp_red;
-	// t_red	*new_red;
 	t_tree *tree_node;  //note: tmp var 
 	int i;
 	int j; //note () reds index
@@ -327,7 +320,7 @@ t_flat_tree *create_flat_tree(t_token *token)
 			// printf("p/o %d \n", i);
 			tree_node = new_tree_node(token[i].type);
 			if (!tree_node)
-				return (free_flat_tree(flat_tree_list), NULL);//note on fail the clearance will be handled inside new_tree_node
+				return (free_flat_tree(flat_tree_list), NULL);//note on fail the clearance will be handled inside new_tree_node							
 
 			// flat_tree_list = append_new_flat_tree_node(flat_tree_list, tree_node);
 			// printf("$%d pipe / op\n", i);
@@ -336,13 +329,12 @@ t_flat_tree *create_flat_tree(t_token *token)
 	//lable EMPETY BLOCK 
 		else if (token[i].type == PAREN_CLOSE)
 		{
-			// printf("empety block %d \n", i);
+			printf("empety block %d \n", i);
 			tree_node = new_tree_node(BLOCK);//note init the tree node
 			if (!tree_node)
 				return (free_flat_tree(flat_tree_list), NULL);//note on fail the clearance will be handled inside new_tree_node
 			
 			tree_node->empty = -1;
-				// printf("%d )))))))))))\n", i);
 			i++;
 		}
 	//lable FULL BLOCK 
@@ -470,15 +462,10 @@ t_tree *init_tree(t_flat_tree *ft)
 		// flat->prev = NULL; // maybe this is unessessiry
 		while (flat->prev)
 		{
-			// if (flat->tree_node->empty == -1)
-			// 	p++;
-			// else if (flat->tree_node->empty == 1)
-			// 	p--;
 			flat = flat->prev;
 			// printf("he\n");
 		}
-		// printf("%p\n", flat->prev);
-		// printf("%s with %d\n", typetostring[flat->tree_node->type], flat->tree_node->empty);
+
 		flat->next->prev = NULL;
 		// flat->prev = NULL; // maybe this is unessessiry
 		right = flat->next;
@@ -503,7 +490,7 @@ t_tree *parser(t_tree *tree, char *input)
 	t_token *tokenized_input;
 	t_flat_tree *flat_tree;
 
-	tokenized_input = tokenizer(input);
+	tokenized_input = tokenizer( input);
 	if (!tokenized_input)
 	{
 		printf("tokenizer returns NULL\n");
@@ -518,16 +505,19 @@ t_tree *parser(t_tree *tree, char *input)
 
 	free_tokens_list(tokenized_input);
 
+	// return NULL;
 	t_tree *root = init_tree(flat_tree);
 	// // printf("done %s\n", typetostring[root->type]);
-
+	// free_tree(root);
 	t_flat_tree *t;
 	while (flat_tree)
 	{
 		t = flat_tree;
 		flat_tree = flat_tree->next;
+		// free_tree_node(t->tree_node);
 		free(t);
 	}
+
 	print_tree(root, 0);
 	return (root);
 }

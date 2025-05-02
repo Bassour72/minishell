@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:40:59 by massrayb          #+#    #+#             */
-/*   Updated: 2025/05/01 14:33:41 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:47:05 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ static int	m_quotes(t_node **list, char *str, char **data, int *i)
 			_i++;
 		}
 		_i -= len - 1;
-		// printf("%d\n", _i);
+	
 		_data = malloc(len + 1);
 
 		if (!_data) //todo !!!!

@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:08:10 by massrayb          #+#    #+#             */
-/*   Updated: 2025/05/01 14:34:56 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:37:00 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,12 @@ void free_tokens_list(t_token *tokens)
 
 	list = tokens;
 	i = -1;
-	while (list[++i].data)
+	while ((list + ++i)->data)
 	{
+		// printf("%p\n", list + i);
 		free((list + i)->data);
 	}
-	free(list);
+	free(tokens);
 	// *tokens = NULL;
 }
 void free_splitted_input(t_node *splitted_inpt)
@@ -145,7 +146,7 @@ t_token	*tokenizer(char *input)
 
 	if (!splitted_input)
 		return (NULL);
-	
+
 	//alocate space for the tokenized inputs
 	tokenized_input = malloc(sizeof(t_token) * (count_splitted_input_nodes(splitted_input) + 1));
 	if (!tokenized_input)
@@ -157,10 +158,8 @@ t_token	*tokenizer(char *input)
 
 	convert_inputs_to_tokens(tokenized_input, splitted_input);
 	
-	// printf("%p\n",splitted_input->data);
-	// printf("done splitting %d tokens\n", i);
-	// printf("%p\n", tokenized_input[0].data);
 	free_splitted_input(splitted_input);
-	// free_tokens_list(&tokenized_input);
+
+
 	return (tokenized_input);
 }
