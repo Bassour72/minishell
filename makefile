@@ -8,9 +8,9 @@ OBJ = $(SRC:.c=.o)
 
 _libft = _libft/libft.a
 
-all: $(NAME)
+all: libft $(NAME)
 
-$(NAME): $(OBJ) libft
+$(NAME): $(OBJ) 
 	cc $(CFLAGS) $(OBJ) $(_libft)  -lreadline -o $@
 
 libft:
