@@ -23,7 +23,7 @@ libft:
 %.o: %.c minishell.c include/parsing.h
 	cc $(CFLAGS) -c $< -o $@
 
-clean:
+clean:   
 	make clean -C ./_libft
 	rm -f $(OBJ)
 
