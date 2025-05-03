@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 09:57:18 by massrayb          #+#    #+#             */
-/*   Updated: 2025/05/02 15:34:01 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/05/02 19:44:30 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/parsing.h"
+#include "include/execution.h"
 
 int	empty(char *str)
 {
@@ -46,12 +46,12 @@ int main(void)
 			free(input);
 			continue ;
 		}
-
+	
 		add_history(input);
 
 		tree = parser(tree, input);
-		
-		//  free_tree(tree); //note this is for freeing the tree
+		execution(tree);
+		free_tree(tree); //note this is for freeing the tree
 		//take the tree and execute here
 		
 		

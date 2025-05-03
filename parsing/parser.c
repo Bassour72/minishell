@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:03:00 by massrayb          #+#    #+#             */
-/*   Updated: 2025/05/02 15:39:42 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/05/02 19:41:22 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -518,6 +518,6 @@ t_tree *parser(t_tree *tree, char *input)
 		free(t);
 	}
 
-	print_tree(root, 0);
+	//print_tree(root, 0);
 	return (root);
 }
