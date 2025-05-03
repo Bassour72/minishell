@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 09:57:18 by massrayb          #+#    #+#             */
-/*   Updated: 2025/05/02 15:34:01 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:22:03 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void f()
 
 int main(void)
 {
-	atexit(f);
+	// atexit(f);
 	t_tree	*tree = NULL;
 	char	*input;
 	input = NULL;
@@ -50,12 +50,10 @@ int main(void)
 		add_history(input);
 
 		tree = parser(tree, input);
-		
+		// if (tree->data)
+			// printf("here echo command built-in [%s]\n",tree->data[0]);
 		//  free_tree(tree); //note this is for freeing the tree
 		//take the tree and execute here
-		
-		
-
 
 		
 		//-----------------------------
