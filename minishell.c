@@ -39,14 +39,9 @@ int main(void)
 		add_history(input);
 
 		tree = parser(tree, input);
-<<<<<<< HEAD
-		execution(tree);
-		free_tree(tree); //note this is for freeing the tree
-=======
 		// if (tree->data)
 			// printf("here echo command built-in [%s]\n",tree->data[0]);
 		//  free_tree(tree); //note this is for freeing the tree
->>>>>>> origin/main
 		//take the tree and execute here
 
 		

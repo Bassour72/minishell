@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   split.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 13:40:59 by massrayb          #+#    #+#             */
-/*   Updated: 2025/05/03 11:39:00 by massrayb         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../include/parsing.h"
 
@@ -408,7 +397,7 @@ t_node *split(char *str)
 			if (!m_quotes(&list, str, &data, &i))
 				return (cleaner(list), NULL);
 		// printf("data: %s\n", data);// printf("prismo %c\n", *(str + i));
-			if (data && !is_special(str + i) && (str[i] == ' ' || !str[i]) && !append_node(&list, &data))
+			if (data && (is_special(str + i) || str[i] == ' ' || !str[i] || str[i]=='\'' || str[i]=='\"') && !append_node(&list, &data))
 				return (cleaner(list), NULL);
 		}
 		else if (is_special(str + i))
@@ -426,7 +415,7 @@ t_node *split(char *str)
 		{
 			if (!m_normal(&list, str, &data, &i))
 				return (cleaner(list), NULL);
-			if (data && str[i] != '\"' && str[i] != '\'' && !append_node(&list, &data))
+			if (data && (is_special(str + i) || str[i] != ' ') && !append_node(&list, &data))
 				return (cleaner(list), NULL);
 		}
 		skip_spaces(str, &i);
