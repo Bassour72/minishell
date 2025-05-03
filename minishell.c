@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 09:57:18 by massrayb          #+#    #+#             */
-/*   Updated: 2025/05/02 19:44:30 by ybassour         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "include/execution.h"
 
@@ -30,7 +19,7 @@ void f()
 
 int main(void)
 {
-	atexit(f);
+	// atexit(f);
 	t_tree	*tree = NULL;
 	char	*input;
 	input = NULL;
@@ -50,12 +39,15 @@ int main(void)
 		add_history(input);
 
 		tree = parser(tree, input);
+<<<<<<< HEAD
 		execution(tree);
 		free_tree(tree); //note this is for freeing the tree
+=======
+		// if (tree->data)
+			// printf("here echo command built-in [%s]\n",tree->data[0]);
+		//  free_tree(tree); //note this is for freeing the tree
+>>>>>>> origin/main
 		//take the tree and execute here
-		
-		
-
 
 		
 		//-----------------------------

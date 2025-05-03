@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 11:03:00 by massrayb          #+#    #+#             */
-/*   Updated: 2025/05/02 19:41:22 by ybassour         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../include/parsing.h"
 
@@ -91,28 +80,33 @@ void print_tree(t_tree *root, int i)
 		return ;
 	for(int j = 0; j < i; j++)
 		printf("\t");
-	// printf("%s", typetostring[root->type]);
-	printf(" CMD=>");
-	if (root->data)
-	{
-		for(int i = 0; root->data[i]; i++)
-			printf("[%s] ", root->data[i]);
-		printf("");
-	}
-	else
-		printf(" NULL");
-	printf(" | redirections=> ");
-	if (root->redirections)
-	{
-		t_red *r = root->redirections;
-		while (r)
+	printf("%s", typetostring[root->type]);
+	if (root->type == BLOCK)
+	{		
+		printf(" CMD=>");
+		if (root->data)
 		{
-			printf("[%s] ", r->data);
-			r = r->next;
+			for(int i = 0; root->data[i]; i++)
+				printf("[%s] ", root->data[i]);
+			printf("");
 		}
+		else
+			printf(" NULL");
+
+		
+		printf(" | RED=> ");
+		if (root->redirections)
+		{
+			t_red *r = root->redirections;
+			while (r)
+			{
+				printf("[%s] ", r->data);
+				r = r->next;
+			}
+		}
+		else
+			printf(" NULL");
 	}
-	else
-		printf(" NULL");
 	printf("\n");
 	print_tree(root->right, i + 1);
 	print_tree(root->left, i + 1);
