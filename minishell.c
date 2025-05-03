@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 09:57:18 by massrayb          #+#    #+#             */
-/*   Updated: 2025/05/02 18:14:30 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:22:03 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int main(void)
 		add_history(input);
 
 		tree = parser(tree, input);
-		if (tree->data)
-			printf("here echo command built-in [%s]\n",tree->data[0]);
+		// if (tree->data)
+			// printf("here echo command built-in [%s]\n",tree->data[0]);
 		//  free_tree(tree); //note this is for freeing the tree
 		//take the tree and execute here
 
