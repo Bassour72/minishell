@@ -512,6 +512,6 @@ t_tree *parser(t_tree *tree, char *input)
 		free(t);
 	}
 
-	//print_tree(root, 0);
+	print_tree(root, 0);
 	return (root);
 }
