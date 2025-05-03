@@ -38,8 +38,7 @@ static void print_tokenized_inputs(t_token *tokenized_input)
 		else if ((tokenized_input + i)->type == RED_INPUT)
 			printf("->>IN_REDR :");
 		else if ((tokenized_input + i)->type == RED_APPEND)
-			printf("->>APND_REDR :");
-		else if ((tokenized_input + i)->type == RED_TRUNK)
+			printf("->>APND_REDR :");		else if ((tokenized_input + i)->type == RED_TRUNK)
 			printf("->>TRNK_REDR :");
 		else if ((tokenized_input + i)->type == HER_DOC)
 			printf("->>HER_DOC :");
