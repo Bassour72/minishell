@@ -29,7 +29,6 @@ static int append_node(t_node **list, char **data)
 	}
 	else
 	{
-		// printf("append node\n");
 		t_node *tmp = *list;
 		while (tmp->next)
 			tmp = tmp->next;
