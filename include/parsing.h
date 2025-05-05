@@ -39,6 +39,13 @@ typedef enum e_type
 // 
 //-------------------------------------------------------------------
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}			t_env;
+
 typedef struct s_node
 {
 	char *data;
@@ -78,6 +85,8 @@ typedef struct s_flat_tree
 	struct s_flat_tree *next;
 }				t_flat_tree;
 
+
+
 // typedef enum e_node_type
 // {
 // 	GROUP, CMD, PIPE, OPERATOR
@@ -95,11 +104,12 @@ typedef struct s_flat_tree
 // }	t_node;
 
 //split.c
-t_node *split(char *str);
+t_node	*split(char *str);
+int		is_special(char *c);
 
 
 //parser.c
-t_tree	*parser(t_tree *tree, char *input);
+t_tree	*parser(t_tree *tree, char *input, t_env *env);
 void free_tree(t_tree *root);
 
 //tokenizer.c
@@ -116,5 +126,14 @@ char **append_command(char **old_list, char *new_cmd);
 
 //redirection
 void append_redirection(t_red *redirections_list, char *data, t_type type);
+
+//expantion.c
+void expand_variables(t_tree *root);
+
+//env
+void	free_env_list(t_env *list);
+void	print_env(t_env *env); //note to debug only
+int		env_generate(t_env **env_list, char **env);
+char	*env_get_value(t_env *list, char *key);
 
 #endif

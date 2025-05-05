@@ -395,7 +395,7 @@ t_flat_tree *flat_tree_last(t_flat_tree *flat_tree)
 }
 
 
-t_tree *init_tree(t_flat_tree *ft)
+t_tree *init_tree(t_flat_tree *ft, t_env *env)
 {
 	t_flat_tree *flat;
 	t_flat_tree *right;
@@ -417,8 +417,8 @@ t_tree *init_tree(t_flat_tree *ft)
 			flat->prev->next = NULL;
 			flat->next = NULL;
 			flat->prev = NULL;
-			flat->tree_node->right = init_tree(right);
-			flat->tree_node->left = init_tree(left);
+			flat->tree_node->right = init_tree(right, env);
+			flat->tree_node->left = init_tree(left, env);
 			return (flat->tree_node);
 		}
 		flat = flat->prev;
@@ -441,8 +441,8 @@ t_tree *init_tree(t_flat_tree *ft)
 			flat->prev->next = NULL;
 			flat->next = NULL;
 			flat->prev = NULL;
-			flat->tree_node->right = init_tree(right);
-			flat->tree_node->left = init_tree(left);
+			flat->tree_node->right = init_tree(right, env);
+			flat->tree_node->left = init_tree(left, env);
 			return (flat->tree_node);
 		}
 		flat = flat->prev;
@@ -462,7 +462,7 @@ t_tree *init_tree(t_flat_tree *ft)
 		flat->next->prev = NULL;
 		// flat->prev = NULL; // maybe this is unessessiry
 		right = flat->next;
-		flat->tree_node->right = init_tree(right);
+		flat->tree_node->right = init_tree(right, env);
 		return (flat->tree_node);
 	}
 	return (ft->tree_node);
@@ -478,7 +478,8 @@ void free_tree(t_tree *root)
 	free_tree_node(root);
 }
 
-t_tree *parser(t_tree *tree, char *input)
+
+t_tree *parser(t_tree *tree, char *input, t_env *env)
 {
 	t_token *tokenized_input;
 	t_flat_tree *flat_tree;
@@ -499,7 +500,8 @@ t_tree *parser(t_tree *tree, char *input)
 	free_tokens_list(tokenized_input);
 
 	// return NULL;
-	t_tree *root = init_tree(flat_tree);
+	t_tree *root = init_tree(flat_tree, env);
+
 	// // printf("done %s\n", typetostring[root->type]);
 	// free_tree(root);
 	t_flat_tree *t;
@@ -512,5 +514,7 @@ t_tree *parser(t_tree *tree, char *input)
 	}
 
 	print_tree(root, 0);
+
+	
 	return (root);
 }

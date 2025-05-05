@@ -1,7 +1,7 @@
 
 #include "../include/parsing.h"
 
-static int is_special(char *c)
+int is_special(char *c)
 {
 	return (*c == '(' || *c == ')' || *c == '<' || *c == '>' || *c == '|' || *c == '&');
 }
@@ -396,7 +396,7 @@ t_node *split(char *str)
 			if (!m_quotes(&list, str, &data, &i))
 				return (cleaner(list), NULL);
 		// printf("data: %s\n", data);// printf("prismo %c\n", *(str + i));
-			if (data && !append_node(&list, &data))
+			if (data && (str[i] == ' ' || is_special(str + i) || !str[i]) && !append_node(&list, &data))
 				return (cleaner(list), NULL);
 		}
 		else if (is_special(str + i))
@@ -414,7 +414,7 @@ t_node *split(char *str)
 		{
 			if (!m_normal(&list, str, &data, &i))
 				return (cleaner(list), NULL);
-			if (data && !append_node(&list, &data))
+			if (data && (is_special(str + i) || str[i] == ' ' || !str[i]) && !append_node(&list, &data))
 				return (cleaner(list), NULL);
 		}
 		skip_spaces(str, &i);

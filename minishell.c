@@ -17,11 +17,14 @@ void f()
 	system("leaks -q minishell");
 }
 
-int main(void)
+int main(int ac, char **av, char **env)
 {
-	// atexit(f);
+	t_env *env_list = NULL;
 	t_tree	*tree = NULL;
 	char	*input;
+
+	if (!env_generate(&env_list, env))
+		return (1);
 	input = NULL;
 	while (1)
 	{
@@ -38,7 +41,7 @@ int main(void)
 	
 		add_history(input);
 
-		tree = parser(tree, input);
+		tree = parser(tree, input, env_list);
 		// if (tree->data)
 			// printf("here echo command built-in [%s]\n",tree->data[0]);
 		//  free_tree(tree); //note this is for freeing the tree
