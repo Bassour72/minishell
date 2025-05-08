@@ -147,70 +147,7 @@ static int	m_redirections(t_node **list, char *str, int *i)
 	}
 	return (state);
 }
-/*
-static int	m_quotes(t_node **list, char *str, char **data, int *i)
-{
-	int		state;
-	char	*_data;
-	char	qoute_type;
-	int		_i;
-	int		len;
-	int		j;
 
-	j = 0;
-	len = 0;
-	_i = *i;
-	qoute_type = *(str + _i);
-	state = 1;	
-
-	if (!*data)
-	{
-		len = 2;
-		_i++;
-		while (*(str + _i) && *(str + _i) != qoute_type)
-		{
-			len++;
-			_i++;
-		}
-		_i -= len - 1;
-	
-		_data = malloc(len + 1);
-
-		if (!_data) //todo !!!!
-			return (0);
-		ft_strlcpy(_data, str + _i, len + 1);
-		// printf("_data_size = %d | str + i = %s _data = %s\n", len, str + _i, _data);
-
-		*data = _data;
-		(*i) = _i + len;
-		// state = append_node(list, data);
-	}
-	else
-	{
-		len  = ft_strlen(*data);
-		_i++;
-		j = 2;
-		while (*(str + _i) && *(str + _i) != qoute_type)
-		{
-			j++;
-			_i++;
-		}
-		_i -= j - 1;
-		_data = malloc(len + j + 1);
-		if (!_data)
-			return (0);
-		int r = -1;
-	
-		ft_strlcpy(_data, *data, len + 1);
-		ft_strlcpy(_data + len, str + _i, j + 1);
-		
-		free(*data);
-		*data = _data;
-		(*i) = _i + j;
-	}
-	return (state);
-}
-*/
 static int	m_quotes(t_node **list, char *str, char **data, int *i)
 {
 	int		state;
@@ -387,6 +324,8 @@ t_node *split(char *str)
 	int		i;
 
 	i = 0;
+	if (!str)
+		return (NULL);
 	while (*(str + i) != '\0')
 	{
 		skip_spaces(str, &i);

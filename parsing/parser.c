@@ -513,8 +513,12 @@ t_tree *parser(t_tree *tree, char *input, t_env *env)
 		free(t);
 	}
 
-	print_tree(root, 0);
 
+	// expand(env, root);
+	// expand_variables(root, env);
+	// print_tree(root, 0);
+
+	// return NULL;
 	
 	return (root);
 }

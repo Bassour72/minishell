@@ -27,7 +27,7 @@ static int	env_extract_key(char *env, char **key)
 	char *end; 
 	int len;
 
-	end = strchr(env, '=');
+	end = ft_strchr(env, '=');
 	len  = end - env;
 	*key = malloc(len + 1);
 	if (!key)
@@ -41,10 +41,10 @@ static int env_extract_value(char *env, char **value)
 	char *start; 
 	int len;
 
-	start = strchr(env, '=') + 1;
+	start = ft_strchr(env, '=') + 1;
 	if (*start == '\0')
 		return (*value = NULL, 1);
-	*value = strdup(start);
+	*value = ft_strdup(start);
 	if (!*value)
 		return (0);
 	return (1);
@@ -101,9 +101,11 @@ int	env_generate(t_env **env_list, char **env)
 
 char *env_get_value(t_env *list, char *key)
 {
+	if (!key || !list)
+		return (NULL);
 	while (list)
 	{
-		if (strnstr(key, list->key, strlen(list->key)))
+		if (ft_strlen(key) == ft_strlen(list->key) && ft_strnstr(list->key, key, ft_strlen(key)))
 			return (list->value);
 		list = list->next;
 	}
