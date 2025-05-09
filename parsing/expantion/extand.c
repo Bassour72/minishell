@@ -1,31 +1,21 @@
 #include "../../include/parsing.h"
-//lable helper functions
-// int append_node(t_node **list, char *data)
-// {
-// 	t_node *new_node;
-// 	t_node *tmp;
 
-// 	new_node = malloc(sizeof(t_node));
-// 	if (!new_node)
-// 		return (0);
-// 	new_node->data = strdup(data);
-// 	if (!new_node->data) // if data is null the cause a false result
-// 		return (free(new_node), 0);
-// 	new_node->next = NULL;
+char *extract_target_key(char *str)
+{
+	char *key;
+	int len;
 
-// 	if (!*list)
-// 		*list = new_node;
-// 	else
-// 	{
-// 		tmp = *list;
-// 		while (tmp->next)
-// 			tmp = tmp->next;
-// 		tmp->next = new_node;
-// 	}
-// 	return (1);
-// }
-
-//lable convert to linked list
+	if (*str == '$')
+		len = 1;
+	else
+	{
+		len = 0;
+		while (str[len] && str[len] != ' ' && str[len] != '\"' && str[len] != '\'' && str[len] != '$' && !is_special(str + len))
+			len++;
+	}
+	key = ft_substr(str, 0, len);
+	return (key);
+}
 
 void skip_single_quote_area(char *str, int *i)
 {
@@ -120,41 +110,7 @@ char *do_expantion(t_env *env, char *str)
 	// free(str);
 	return new_str;
 }
-/*
-char *do_expantion(t_env *env, char *str)
-{
-	int i;
-	char *new_str;
-	char *tmp_str;
-	char *key;
-	char *value;
-	char *normal_str;
-	int		sub_len;
-	int		quote;
 
-
-	quote = 0;
-	new_str = NULL;
-	sub_len = 0;
-	i = 0;
-	while (str[i])
-	{
-		update_quote(str[i], &quote);
-		if (!quote)
-		{
-			if (str[i] == '$')
-			{
-				key = extract_target_key(str + i);
-				value = env_get_value(env, key);
-				//lable append the value to the str
-			}
-		}
-	}
-	// printf("\033[32mfin: [%s]\033[0m\n", new_str);
-	free(str);
-	return new_str;
-}
-*/
 char *join_arr(char **arr)
 {
 	int i;
@@ -191,50 +147,52 @@ void free_2d_arr(char **arr)
 	free(arr);
 }
 
+
 char *trim_quotes(char *str)
 {
-	int	i;
-	char type = '\0';
-	char *result;
-	char *tmp;
+		int i;
+		char type = '\0';
+		char *result = NULL;
+		char *sub_str;
+		char *tmp_result;
+		int start;
 
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'' || str[i] == '\"')
+		i = 0;
+		while (str[i])
 		{
-			type = str[i];
-			i++;
-			break;
+			if (str[i] && (str[i] == '\'' || str[i] == '\"'))
+			{
+				type = str[i];
+				i++;
+				start = i;
+				while (str[i] && str[i] != type)
+					i++;
+				sub_str = ft_substr(str, start, i - start);
+				if (!sub_str)
+					return (free(result), NULL);
+				tmp_result = result;
+				result = ft_strjoin(result, sub_str);
+				(free(tmp_result), free(sub_str));
+				if (!result)
+					return (free(sub_str), NULL);
+				i++;
+			}
+			else
+			{
+				type = '\0';
+				start = i;
+				while (str[i] && str[i] != '\'' && str[i] != '\"')
+					i++;
+				sub_str = ft_substr(str, start, i - start);
+				if (!sub_str)
+					return (free(result), NULL);
+				tmp_result = result;
+				result = ft_strjoin(result, sub_str);
+				(free(tmp_result), free(sub_str));
+				if (!result)
+					return (free(tmp_result), NULL);
+			}
 		}
-		i++;
-	}
-	if (!type)
-		return str;
-	result = ft_substr(str, 0, i - 1);
-
-	int j = i;
-	if (str[j] == type)
-		;
-	else
-	{
-		while (str[j] != type)
-			j++;
-		
-		char *inside_quotes = ft_substr(str + i, 0, j - i);
-		tmp = result;
-		result = ft_strjoin(result, inside_quotes);
-		free(tmp);
-
-	}
-
-	// printf("j after q: %d [%c]\n", j, str[j]);
-	tmp = result;
-	result = ft_strjoin(result, str + j + 1);
-	free(tmp);
-	free(str);
-	// printf("[%s]\n", result);
-
 	return result;
 }
 char **linked_list_to_double_array(t_node *list)
