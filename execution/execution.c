@@ -2,7 +2,8 @@
 
 void execution(t_tree *root)
 {
-	//builtin_echo(root);
+	builtin_echo(root);
+
 	if (root == NULL)
 		return ;
 	execution(root->left);
