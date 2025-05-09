@@ -127,10 +127,6 @@ char **append_command(char **old_list, char *new_cmd);
 //redirection
 void append_redirection(t_red *redirections_list, char *data, t_type type);
 
-//expantion.c
-void expand_variables(t_tree *root, t_env *env);
-char *extract_target_key(char *str);
-
 //env
 void	free_env_list(t_env *list);
 void	print_env(t_env *env); //note to debug only
@@ -138,6 +134,11 @@ int		env_generate(t_env **env_list, char **env);
 char	*env_get_value(t_env *list, char *key);
 
 //extend
+char *extract_target_key(char *str);
 int  expand(t_env *env, t_tree *root);
+
+//syntax_validate
+int validate_sytax(t_token *token);
+int validate_quotes(char *str);
 
 #endif

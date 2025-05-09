@@ -100,12 +100,8 @@ void convert_inputs_to_tokens(t_token *tokenized_input, t_node *splitted_input)
 			create_token(tokenized_input + i, splitted_input->data, PAREN_OPEN);
 		else if (ft_strncmp(splitted_input->data, ")", 1) == 0)
 			create_token(tokenized_input + i, splitted_input->data, PAREN_CLOSE);
-			
-		// else if (ft_strncmp(splitted_input->data, "\"", 1) == 0)
-		// 	create_token(tokenized_input + i, splitted_input->data, QUOTE_DOUBLE);
-		// else if (ft_strncmp(splitted_input->data, "\'", 1) == 0)
-		// 	create_token(tokenized_input + i, splitted_input->data, QUOTE_SINGLE);
-			
+
+
 		else if (ft_strncmp(splitted_input->data, "*", 1) == 0)
 			create_token(tokenized_input + i, splitted_input->data, WILD_CARD);
 			

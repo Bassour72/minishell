@@ -193,7 +193,7 @@ char *trim_quotes(char *str)
 					return (free(tmp_result), NULL);
 			}
 		}
-	return result;
+	return (result);
 }
 char **linked_list_to_double_array(t_node *list)
 {
@@ -276,6 +276,5 @@ int expand(t_env *env, t_tree *root)
 {
 	expand_commands(env, &root->data);
 	expand_file_names(env, root->redirections);
-	// expand_file_names(env, file_name);
 	return 1;
 }
