@@ -2,7 +2,7 @@
 
 #include <string.h>
 //todo remove this 
-int	is_buit_in_function(char *command)
+int	is_builtin(char *command)
 {
 	if (strcmp((command), "echo") == 0 || strcmp((command), "ECHO") == 0)
 		return (0);
@@ -20,17 +20,39 @@ int	is_buit_in_function(char *command)
 		return (0);
 	return (1);
 }
-
-void execution(t_tree *root)
+int execute_command(t_tree *root, char **env)
 {
-	// builtin_echo(root);
+    // if (is_builtin(root->data[0]) == 0)
+    //     return execute_builtin(root->data[0]);
+	t_env *env1 = NULL ;
+	env_generate(&env1, env);
 
+    pid_t pid = fork();
+    if (pid == 0)
+    {
+        // In child process
+		expand(env1, root);
+        execve("/bin/ls", root->data, env);
+        perror("execve");
+        exit(1);
+    }
+    else if (pid > 0)
+    {
+        // In parent process
+        waitpid(pid, NULL, 0);
+    }
+    return 0;
+}
+
+void execution(t_tree *root, char **env)
+{
 	if (root == NULL)
 		return ;
+	execute_command(root, env);
 	// execution(root->left);
-	// printf("%s\n", *root->data);
-	// execution(root->right);
-	// if (is_buit_in_function(root->data[0]))
+	// if (root->data && is_buit_in_function(root->data[0]))
 	// 	printf("is not built-in fucntion just command \n");
+	// // printf("%s\n", *root->data);
+	// execution(root->right);
 
 }
