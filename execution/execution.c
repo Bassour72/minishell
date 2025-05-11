@@ -2,6 +2,7 @@
 
 #include <string.h>
 //todo remove this 
+//fixme 
 int	is_builtin(char *command)
 {
 	if (strcmp((command), "echo") == 0 || strcmp((command), "ECHO") == 0)
