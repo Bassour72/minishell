@@ -519,9 +519,9 @@ t_tree *parser(t_tree *tree, char *input, t_env *env)
 	}
 
 
-	// expand(env, root);
+	expand(env, root);
 	// expand_variables(root, env);
-	// print_tree(root, 0);
+	print_tree(root, 0);
 
 	// return NULL;
 	

@@ -1,47 +1,5 @@
 #include "../../include/parsing.h"
 
-char *extract_target_key(char *str)
-{
-	char *key;
-	int len;
-
-	if (*str == '$')
-		len = 1;
-	else
-	{
-		len = 0;
-		while (str[len] && str[len] != ' ' && str[len] != '\"' && str[len] != '\'' && str[len] != '$' && !is_special(str + len))
-			len++;
-	}
-	key = ft_substr(str, 0, len);
-	return (key);
-}
-
-void skip_single_quote_area(char *str, int *i)
-{
-	// printf("skipping single quotes from %d", *i);
-	if (str[*i] && str[(*i)] == '\'')
-	{
-		(*i)++;
-		while (str[*i] && str[(*i)++] != '\'')
-			(*i)++;
-		
-	}
-	// printf(" to %d\n", *i);
-}
-
-void update_quote(char str_i, int *quote)
-{
-	if (str_i == '\"' && *quote == 0)
-		*quote = 2;
-	else if (str_i == '\"' && *quote == 2)
-		*quote = 0;
-	else if (str_i == '\'' && *quote == 0)
-		*quote = 1;
-	else if (str_i == '\'' && *quote == 1)
-		*quote = 0;
-}
-
 char *do_expantion(t_env *env, char *str)
 {
 	int i;
@@ -111,41 +69,6 @@ char *do_expantion(t_env *env, char *str)
 	return new_str;
 }
 
-char *join_arr(char **arr)
-{
-	int i;
-	char *joined_arr = NULL;
-	char *tmp;
-
-	i = -1;
-	while (arr[++i])
-	{
-		tmp = joined_arr;
-		joined_arr = ft_strjoin(joined_arr, arr[i]);
-		if (!joined_arr)
-			return (free(tmp), NULL);
-		free(tmp);
-
-		tmp = joined_arr;
-		joined_arr = ft_strjoin(joined_arr, " ");
-		if (!joined_arr)
-			return (free(tmp), NULL);
-		// joined_arr = tmp;
-		free(tmp);
-	}
-	return (joined_arr);
-}
-
-
-void free_2d_arr(char **arr)
-{
-	int	i;
-
-	i = -1;
-	while (arr[++i])
-		free(arr[i]);
-	free(arr);
-}
 
 
 char *trim_quotes(char *str)
@@ -195,6 +118,7 @@ char *trim_quotes(char *str)
 		}
 	return (result);
 }
+
 char **linked_list_to_double_array(t_node *list)
 {
 	char **commands_array;
@@ -217,7 +141,6 @@ char **linked_list_to_double_array(t_node *list)
 	while (tmp)
 	{
 		commands_array[i] = trim_quotes(tmp->data);
-		// printf(">%s\n", commands_array[i]);
 		i++;
 		tmp = tmp->next;
 	}
@@ -237,8 +160,8 @@ int  expand_commands(t_env *env, char ***arr)
 	while ((*arr)[++i])
 		(*arr)[i] = do_expantion(env, (*arr)[i]);
 
-	char *joined_arr = join_arr(*arr);
-	list = split(joined_arr);
+	char *joined_arr = join_arr_elements(*arr);
+	list = split2(joined_arr);
 	if (!list)
 		return (free(joined_arr), 0);
 	tmp = *arr;
@@ -248,33 +171,15 @@ int  expand_commands(t_env *env, char ***arr)
 	return (1);
 }
 
-void expand_file_names(t_env *env, t_red *redirections)
-{
-	t_red *red;
-	char *tmp;
-	t_node *list = NULL;
-	char **res;
-
-	red = redirections;
-	while (red)
-	{
-		if (red->type != HER_DOC)
-		{
-			tmp = do_expantion(env, red->data);
-			tmp = trim_quotes(tmp);
-			list = split(tmp);
-			if (list->next != NULL)
-				red->data = NULL;
-			else
-				red->data = list->data; 
-		}
-		red = red->next;
-	}
-}
 
 int expand(t_env *env, t_tree *root)
 {
-	expand_commands(env, &root->data);
-	expand_file_names(env, root->redirections);
-	return 1;
+	int state;
+
+	state = 1;
+	if (root->data)
+		state = expand_commands(env, &root->data);
+	if (state && root->redirections)
+		state = expand_redirections(env, root->redirections);
+	return (state);
 }

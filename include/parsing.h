@@ -105,6 +105,7 @@ typedef struct s_flat_tree
 
 //split.c
 t_node	*split(char *str);
+t_node	*split2(char *str);
 int		is_special(char *c);
 
 
@@ -133,9 +134,20 @@ void	print_env(t_env *env); //note to debug only
 int		env_generate(t_env **env_list, char **env);
 char	*env_get_value(t_env *list, char *key);
 
-//extend
+//lable expend
+char *join_arr_elements(char **arr);
+void update_quote(char str_i, int *quote);
+void skip_single_quote_area(char *str, int *i);
+void free_2d_arr(char **arr);
 char *extract_target_key(char *str);
 int  expand(t_env *env, t_tree *root);
+	//redirections
+int expand_redirections(t_env *env, t_red *red);
+	//do_expand
+char *do_expantion(t_env *env, char *str);
+	//trim_quotes
+char *trim_quotes(char *str);
+
 
 //syntax_validate
 int validate_sytax(t_token *token);
