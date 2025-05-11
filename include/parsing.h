@@ -112,6 +112,7 @@ int		is_special(char *c);
 //parser.c
 t_tree	*parser(t_tree *tree, char *input);
 void free_tree(t_tree *root);
+void print_tree(t_tree *root, int i);
 
 //tokenizer.c
 t_token	*tokenizer(char *input);
@@ -147,6 +148,8 @@ int expand_redirections(t_env *env, t_red *red);
 char *do_expantion(t_env *env, char *str);
 	//trim_quotes
 char *trim_quotes(char *str);
+	//do_expantion
+char *do_expantion(t_env *env, char *str);
 
 
 //syntax_validate

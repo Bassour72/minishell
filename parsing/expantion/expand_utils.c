@@ -51,7 +51,7 @@ void update_quote(char str_i, int *quote)
 		*quote = 0;
 }
 
-char *join_arr_elements(char **arr)
+char	*join_arr_elements(char **arr)
 {
 	int i;
 	char *joined_arr = NULL;

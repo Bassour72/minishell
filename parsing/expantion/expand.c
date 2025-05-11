@@ -1,73 +1,73 @@
 #include "../../include/parsing.h"
 
-char *do_expantion(t_env *env, char *str)
-{
-	int i;
-	char *new_str;
-	char *tmp_str;
-	char *key;
-	char *value;
-	char *normal_str;
-	int		sub_len;
-	int		quote;
+// char *do_expantion(t_env *env, char *str)
+// {
+// 	int i;
+// 	char *new_str;
+// 	char *tmp_str;
+// 	char *key;
+// 	char *value;
+// 	char *normal_str;
+// 	int		sub_len;
+// 	int		quote;
 
 
-	quote = 0;
-	new_str = NULL;
-	sub_len = 0;
-	i = 0;
-	while (str[i])
-	{
-		// update_quote(str[i], &quote);
-		// skip_single_quote_area(str, &i);
-		while (str[i] && str[i] != '$')
-		{
-			update_quote(str[i], &quote);
-			while (str[i] && quote == 1)
-			{
-				i++;
-				sub_len++;
-				update_quote(str[i], &quote);
-			}
-			i++;
-			sub_len++;
-		}
-		// printf("sub_len: %d | i: %d\n", sub_len, i);
-		if (sub_len != 0)
-		{
-			normal_str = ft_substr(str, i - sub_len, sub_len);
-			// printf("normal_str: [%s]\n", normal_str);
-			if (!normal_str)
-				return (free(new_str), NULL);
-			tmp_str = new_str;
-			new_str = ft_strjoin(new_str, normal_str);
-			if (!new_str)
-				return (free(tmp_str), free(normal_str), NULL);
-			free(normal_str);
-			free(tmp_str);
-			sub_len = 0;
-		}
-		if (quote != 1 && str[i] && str[i] == '$')
-		{
-			key = extract_target_key(str + i + 1);
-			// printf("key: [%s]\n", key);
-			value = env_get_value(env, key);
-			// printf("value: %s\n", value);
-			if (value)
-			{
-				tmp_str = new_str;
-				new_str = ft_strjoin(new_str, value);
-				if (!new_str)
-					return (free(tmp_str), NULL);
-				free(tmp_str);
-			}
-			i += ft_strlen(key) + 1;
-		}
-	}
-	// printf("\033[32mfin: [%s]\033[0m\n", new_str);
-	// free(str);
-	return new_str;
-}
+// 	quote = 0;
+// 	new_str = NULL;
+// 	sub_len = 0;
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		// update_quote(str[i], &quote);
+// 		// skip_single_quote_area(str, &i);
+// 		while (str[i] && str[i] != '$')
+// 		{
+// 			update_quote(str[i], &quote);
+// 			while (str[i] && quote == 1)
+// 			{
+// 				i++;
+// 				sub_len++;
+// 				update_quote(str[i], &quote);
+// 			}
+// 			i++;
+// 			sub_len++;
+// 		}
+// 		// printf("sub_len: %d | i: %d\n", sub_len, i);
+// 		if (sub_len != 0)
+// 		{
+// 			normal_str = ft_substr(str, i - sub_len, sub_len);
+// 			// printf("normal_str: [%s]\n", normal_str);
+// 			if (!normal_str)
+// 				return (free(new_str), NULL);
+// 			tmp_str = new_str;
+// 			new_str = ft_strjoin(new_str, normal_str);
+// 			if (!new_str)
+// 				return (free(tmp_str), free(normal_str), NULL);
+// 			free(normal_str);
+// 			free(tmp_str);
+// 			sub_len = 0;
+// 		}
+// 		if (quote != 1 && str[i] && str[i] == '$')
+// 		{
+// 			key = extract_target_key(str + i + 1);
+// 			// printf("key: [%s]\n", key);
+// 			value = env_get_value(env, key);
+// 			// printf("value: %s\n", value);
+// 			if (value)
+// 			{
+// 				tmp_str = new_str;
+// 				new_str = ft_strjoin(new_str, value);
+// 				if (!new_str)
+// 					return (free(tmp_str), NULL);
+// 				free(tmp_str);
+// 			}
+// 			i += ft_strlen(key) + 1;
+// 		}
+// 	}
+// 	// printf("\033[32mfin: [%s]\033[0m\n", new_str);
+// 	// free(str);
+// 	return new_str;
+// }
 
 
 
