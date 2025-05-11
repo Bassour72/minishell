@@ -484,15 +484,20 @@ t_tree *parser(t_tree *tree, char *input, t_env *env)
 	t_token *tokenized_input;
 	t_flat_tree *flat_tree;
 
+	if (!validate_quotes(input))
+		return (NULL);
 	tokenized_input = tokenizer( input);
 	if (!tokenized_input)
 	{
 		printf("tokenizer returns NULL\n");
 		return (NULL);
 	}
+	if (!validate_sytax(tokenized_input))
+		return (free_tokens_list(tokenized_input), NULL);
 
 	// print_tokenized_inputs(tokenized_input);
 
+	// return NULL;
 	flat_tree = create_flat_tree(tokenized_input);
 	if (!flat_tree)
 		return (free_tokens_list(tokenized_input), NULL);
@@ -514,9 +519,9 @@ t_tree *parser(t_tree *tree, char *input, t_env *env)
 	}
 
 
-	expand(env, root);
+	// expand(env, root);
 	// expand_variables(root, env);
-	print_tree(root, 0);
+	// print_tree(root, 0);
 
 	// return NULL;
 	

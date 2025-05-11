@@ -4,6 +4,7 @@ NAME = minishell
 
 SRC =	minishell.c parsing/parser.c parsing/tokenizer.c parsing/tree.c parsing/commands.c parsing/split.c \
 		parsing/expantion/extand.c \
+		parsing/validate_syntax/validate_syntax.c\
 		env/env.c\
 		execution/execution.c execution/built-in/builtin_echo.c \
 		execution/built-in/builtin_cd.c execution/built-in/builtin_env.c \
