@@ -19,12 +19,9 @@ void f()
 
 int main(int ac, char **av, char **env)
 {
-	t_env *env_list = NULL;
 	t_tree	*tree = NULL;
 	char	*input;
 
-	if (!env_generate(&env_list, env))
-		return (1);
 	input = NULL;
 	while (1)
 	{
@@ -41,7 +38,8 @@ int main(int ac, char **av, char **env)
 	
 		add_history(input);
 
-		tree = parser(tree, input, env_list);
+		tree = parser(tree, input);
+		execution(tree, env);
 		// if (tree->data)
 			// printf("here echo command built-in [%s]\n",tree->data[0]);
 		//  free_tree(tree); //note this is for freeing the tree

@@ -9,6 +9,7 @@ void print_env(t_env *env) //note to debug
 		env = env->next;
 	}
 }
+
 void free_env_list(t_env *list)
 {
 	t_env *tmp;

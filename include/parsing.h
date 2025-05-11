@@ -110,7 +110,7 @@ int		is_special(char *c);
 
 
 //parser.c
-t_tree	*parser(t_tree *tree, char *input, t_env *env);
+t_tree	*parser(t_tree *tree, char *input);
 void free_tree(t_tree *root);
 
 //tokenizer.c
