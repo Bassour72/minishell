@@ -64,13 +64,13 @@ char	*join_arr_elements(char **arr)
 		joined_arr = ft_strjoin(joined_arr, arr[i]);
 		free(tmp);
 		if (!joined_arr)
-			return (NULL);
+			return (perror("minishell: error: "), NULL);
 
 		tmp = joined_arr;
 		joined_arr = ft_strjoin(joined_arr, " ");
 		free(tmp);
 		if (!joined_arr)
-			return (NULL);
+			return (perror("minishell: error: "), NULL);
 	}
 	return (joined_arr);
 }

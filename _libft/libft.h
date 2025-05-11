@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 17:11:34 by massrayb          #+#    #+#             */
-/*   Updated: 2025/03/18 04:47:11 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/05/11 15:08:06 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 void	free_failed_list(char **list, int len);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

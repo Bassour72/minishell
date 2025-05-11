@@ -38,6 +38,7 @@ SRC = 	ft_atoi.c\
 		ft_toupper.c\
 		ft_split2.c\
 		ft_free_2d_arr.c\
+		ft_strcmp.c
 
 		
 OBJ = $(SRC:.c=.o)

@@ -150,6 +150,8 @@ char *do_expantion(t_env *env, char *str);
 char *trim_quotes(char *str);
 	//do_expantion
 char *do_expantion(t_env *env, char *str);
+	//trim_quotes
+char *trim_quotes(char *str);
 
 
 //syntax_validate
