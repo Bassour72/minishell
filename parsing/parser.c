@@ -487,6 +487,8 @@ t_tree *parser(t_tree *tree, char *input)
 	if (!validate_quotes(input))
 		return (NULL);
 	tokenized_input = tokenizer( input);
+	// print_tokenized_inputs(tokenized_input);
+	// return NULL;
 	if (!tokenized_input)
 	{
 		printf("tokenizer returns NULL\n");
@@ -521,7 +523,7 @@ t_tree *parser(t_tree *tree, char *input)
 
 	// expand(env, root);
 	// expand_variables(root, env);
-	print_tree(root, 0);
+	// print_tree(root, 0);
 
 	// return NULL;
 	

@@ -114,6 +114,9 @@ t_tree	*parser(t_tree *tree, char *input);
 void free_tree(t_tree *root);
 void print_tree(t_tree *root, int i);
 
+//utils
+int get_list_size(t_node *list);
+
 //tokenizer.c
 t_token	*tokenizer(char *input);
 void free_tokens_list(t_token *tokens);

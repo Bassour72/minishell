@@ -10,31 +10,6 @@ static int _is_red(t_type type)
 	return (type == RED_APPEND || type == RED_INPUT || type == RED_TRUNK || type == HER_DOC);
 }
 
-int validate_parenths(t_token *token, int i)
-{
-	int p;
-
-	p = 0;
-	if (token[i + 1].data && token[i + 1].type == PAREN_CLOSE)
-		return (printf("syntax error near unixpected token `)\'\n"), 0);
-	if (i != 0)
-		if (!is_op(token[i - 1].type))
-			return (printf("syntax error: befor (\n"), 0);
-	while (token[i].data)
-	{
-		if (token[i].type == PAREN_OPEN)
-			p++;
-		else if (token[i].type == PAREN_CLOSE)
-			p--;
-		i++;
-	}
-	if (p > 0)
-		return (printf("syntax error near unexpected token `(\'\n"), 0);
-	else if (p < 0)
-		return (printf("syntax error near unexpected token `)\'\n"), 0);
-	return (1);
-}
-
 int validate_operator(t_token *token, int i)
 {
 	if (i == 0 || is_op(token[i].type))
@@ -68,11 +43,73 @@ int validate_quotes(char *str)
 	return (1);
 }
 
+int validate_close_parenths(t_token *token)
+{
+	int i;
+	int p;
+	int j;
+
+	i = -1;
+	while (token[++i].data)
+		;
+	while (--i >= 0)
+	{
+		if (token[i].type == PAREN_CLOSE)
+		{
+			p = 0;
+			j = i - 1;
+			while (token[++j].data)
+			{
+				if (token[i].type == PAREN_OPEN)
+					p++;
+				else if (token[i].type == PAREN_CLOSE)
+					p--;
+				if (p == 0)
+					break;
+			}
+			if (p != 0)
+				return (printf("syntax error near unexpected token `)\'\n"), 0);
+		}
+	}
+	return (1);
+}
+
+int validate_open_parenths(t_token *token)
+{
+	int p;
+	int	i;
+	int j;
+
+	i = -1;
+	while (token[++i].data)
+	{
+		if (token[i].type == PAREN_OPEN)
+		{
+			p = 0;
+			j = i - 1;
+			while (token[++j].data)
+			{
+				if (token[i].type == PAREN_OPEN)
+					p++;
+				else if (token[i].type == PAREN_CLOSE)
+					p--;
+				if (p == 0)
+					break;
+			}
+			if (p)
+				return (printf("syntax error near unexpected token `(\'\n"), 0);
+		}
+	}
+	return (1);
+}
 
 int validate_sytax(t_token *token)
 {
 	int i;
 	i = -1;
+
+	if (!validate_open_parenths(token) && !validate_close_parenths(token))
+		return (0);
 	while (token[++i].data)
 	{
 		if (is_op(token[i].type) && ((token[i + 1].data && is_op(token[i + 1].type)) || !token[i + 1].data ))
@@ -97,9 +134,6 @@ int validate_sytax(t_token *token)
 					return (printf("syntax error near unexpected token `<\'\n"), 0);
 
 			}
-		if (token[i].type == PAREN_OPEN)
-			if (!validate_parenths(token, i))
-				return (0);
 	}
 	return 1;
 }

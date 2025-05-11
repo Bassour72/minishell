@@ -10,19 +10,7 @@ void print_env(t_env *env) //note to debug
 	}
 }
 
-void free_env_list(t_env *list)
-{
-	t_env *tmp;
 
-	while (list)
-	{
-		tmp = list;
-		list = list->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
-	}
-}
 static int	env_extract_key(char *env, char **key)
 {
 	char *end; 
@@ -100,16 +88,4 @@ int	env_generate(t_env **env_list, char **env)
 	return (1);
 }
 
-char *env_get_value(t_env *list, char *key)
-{
-	if (!key || !list)
-		return (NULL);
-	while (list)
-	{
-		if (ft_strlen(key) == ft_strlen(list->key) && ft_strnstr(list->key, key, ft_strlen(key)))
-			return (list->value);
-		list = list->next;
-	}
-	return (NULL);
-}
 

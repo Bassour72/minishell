@@ -49,6 +49,9 @@ int expand_the_variable(char *str, int *i, char **new_str, t_env *env)
 	value = env_get_value(env, key);
 	if (value)
 	{
+		//todo protect
+		value = ft_strjoin(value, "\"");
+		value = ft_strjoin("\"", value);
 		tmp_str = *new_str;
 		*new_str = ft_strjoin(*new_str, value);
 		if (!*new_str)

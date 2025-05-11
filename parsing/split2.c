@@ -181,7 +181,7 @@ static int	m_quotes(t_node **list, char *str, char **data, int *i)
 		// printf("_data_size = %d | str + i = %s _data = %s\n", len, str + _i, _data);
 
 		*data = _data;
-		printf(">>%s<<\n", _data);
+		// printf(">>%s<<\n", _data);
 		(*i) = _i + len;
 		// printf("end data: %s\n", *data);
 		// printf("{%i}\n\n\n", *i);
@@ -210,7 +210,7 @@ static int	m_quotes(t_node **list, char *str, char **data, int *i)
 		
 		free(*data);
 		*data = _data;
-		printf(">>%s<<\n", _data);
+		// printf(">>%s<<\n", _data);
 
 		(*i) = _i + j;
 		// printf("end data: %s\n", *data);
