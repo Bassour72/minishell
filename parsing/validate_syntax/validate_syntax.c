@@ -57,16 +57,18 @@ int validate_close_parenths(t_token *token)
 		if (token[i].type == PAREN_CLOSE)
 		{
 			p = 0;
-			j = i - 1;
-			while (token[++j].data)
+			j = i + 1;
+			while (token[--j].data)
 			{
-				if (token[i].type == PAREN_OPEN)
+				printf("j>%d   p>%d\n", j, p);
+				if (token[j].type == PAREN_OPEN)
 					p++;
-				else if (token[i].type == PAREN_CLOSE)
+				else if (token[j].type == PAREN_CLOSE)
 					p--;
 				if (p == 0)
 					break;
 			}
+			printf(">>>close :%d\n", p);
 			if (p != 0)
 				return (printf("syntax error near unexpected token `)\'\n"), 0);
 		}
@@ -83,20 +85,22 @@ int validate_open_parenths(t_token *token)
 	i = -1;
 	while (token[++i].data)
 	{
+
 		if (token[i].type == PAREN_OPEN)
 		{
 			p = 0;
-			j = i - 1;
+			j = i;
 			while (token[++j].data)
 			{
-				if (token[i].type == PAREN_OPEN)
+				if (token[j].type == PAREN_OPEN)
 					p++;
-				else if (token[i].type == PAREN_CLOSE)
+				else if (token[j].type == PAREN_CLOSE)
 					p--;
 				if (p == 0)
 					break;
 			}
-			if (p)
+			// printf(">>>open :%d\n", p);
+			if (p != 0)
 				return (printf("syntax error near unexpected token `(\'\n"), 0);
 		}
 	}
@@ -108,7 +112,7 @@ int validate_sytax(t_token *token)
 	int i;
 	i = -1;
 
-	if (!validate_open_parenths(token) && !validate_close_parenths(token))
+	if (!validate_open_parenths(token) || !validate_close_parenths(token))
 		return (0);
 	while (token[++i].data)
 	{

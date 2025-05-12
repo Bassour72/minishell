@@ -33,11 +33,9 @@ typedef enum e_type
 	QUOTE_DOUBLE,
 }			t_type;
 
-// #define RED_OUT_TRUNK 5
-// #define RED_OUT_APPND 6
-// #define HERDOC 7
-// 
 //-------------------------------------------------------------------
+
+extern const char *typetostring[];
 
 typedef struct s_env
 {
@@ -68,12 +66,10 @@ typedef struct s_token
 
 typedef struct s_tree
 {
-	int				empty; 	// 0:cmd | 1:(  | -1:)
+	int				empty;
 	char 			**data;
-	char			*file_name; //may also contain her-doc EOF | PS:contact prismo
 	t_type			type;
 	t_red			*redirections;
-	// struct s_tree	*parent;
 	struct s_tree	*left;
 	struct s_tree	*right;
 }				t_tree;
@@ -113,6 +109,32 @@ int		is_special(char *c);
 t_tree	*parser(t_tree *tree, char *input);
 void free_tree(t_tree *root);
 void print_tree(t_tree *root, int i);
+
+//lable parsing
+	//tree
+t_tree *new_tree_node(t_type type);
+t_tree *init_tree(t_flat_tree *ft);
+	// dbugging
+void print_tokenized_inputs(t_token *tokenized_input);
+void print_tree(t_tree *root, int i);
+void print_flat_tree(t_tree *list);
+	//clear_parsing
+void free_tree_node(t_tree *node);
+void free_flat_tree_list(t_flat_tree *flat_list);
+void	free_flat_tree(t_flat_tree *flat_tree);
+void free_tree(t_tree *root);
+	//redirection
+int	parenths_redirections(t_tree *tree_node, t_token *token);
+int new_red(t_tree  *tree_node, t_type type, char *data);
+int is_red(t_token *token);
+	//flat_tree
+t_flat_tree *flat_tree_last(t_flat_tree *flat_tree);
+t_flat_tree *append_new_flat_tree_node(t_flat_tree *flat_tree_list, t_tree *tree_node);
+t_flat_tree *create_flat_tree(t_token *token);
+
+
+
+
 
 //utils
 int get_list_size(t_node *list);

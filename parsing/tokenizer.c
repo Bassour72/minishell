@@ -1,12 +1,12 @@
 
 #include "../include/parsing.h"
 
-static char *typetostring[] = {
-	[OP_OR] = "OR",
-	[OP_AND] = "AND",
-	[PIPE] = "PIPE",
-	[BLOCK] = "BLOCK"
-};
+// static char *typetostring[] = {
+// 	[OP_OR] = "OR",
+// 	[OP_AND] = "AND",
+// 	[PIPE] = "PIPE",
+// 	[BLOCK] = "BLOCK"
+// };
 
 int	create_token(t_token *token, char *data, int type)
 {

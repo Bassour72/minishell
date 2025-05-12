@@ -31,7 +31,7 @@ int main(int ac, char **av, char **env)
 {
 	t_tree	*tree = NULL;
 	char	*input;
-
+	printf("there is no syntax error for ()!!!!!\n");
 	input = NULL;
 	while (1)
 	{
@@ -50,20 +50,20 @@ int main(int ac, char **av, char **env)
 
 		tree = parser(tree, input);
 		if (!tree)
-			// continue;
-		//lable parsing tests========
-		// t_env *env_l = NULL;
-		// env_generate(&env_l, env);
-		// expand_all(env_l, tree);
-		// print_tree(tree, 0);
+			continue;
+		// lable parsing tests========
+		t_env *env_l = NULL;
+		env_generate(&env_l, env);
+		expand_all(env_l, tree);
+		print_tree(tree, 0);
 
 
 		//lable =^=^=^=^=^=^=^=^=^=^=
 
-		execution(tree, env);
-		if (tree->data)
-			printf("here echo command built-in [%s]\n",tree->data[0]);
-		 free_tree(tree); //note this is for freeing the tree
+		// execution(tree, env);
+		// if (tree->data)
+		// 	printf("here echo command built-in [%s]\n",tree->data[0]);
+		//  free_tree(tree); //note this is for freeing the tree
 		// take the tree and execute here
 
 		
