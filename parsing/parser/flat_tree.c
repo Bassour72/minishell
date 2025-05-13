@@ -74,7 +74,7 @@ t_flat_tree *create_flat_tree(t_token *token)
 	//lable EMPETY BLOCK 
 		else if (token[i].type == PAREN_CLOSE)
 		{
-			printf("empety block %d \n", i);
+			// printf("empety block %d \n", i);
 			tree_node = new_tree_node(BLOCK);//note init the tree node
 			if (!tree_node)
 				return (free_flat_tree(flat_tree_list), NULL);//note on fail the clearance will be handled inside new_tree_node

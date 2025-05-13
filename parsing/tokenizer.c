@@ -89,22 +89,22 @@ void convert_inputs_to_tokens(t_token *tokenized_input, t_node *splitted_input)
 		else if (ft_strncmp(splitted_input->data, ">", 1) == 0)
 			create_token(tokenized_input + i, splitted_input->data, RED_TRUNK);
 
-		//if the input before this one is a redir so this one will be a filename
-		else if (i != 0 && (tokenized_input[i - 1].type == RED_APPEND || 
-							tokenized_input[i - 1].type == RED_TRUNK || 
-							tokenized_input[i - 1].type == RED_INPUT || 
-							tokenized_input[i - 1].type == HER_DOC))
-			create_token(tokenized_input + i, splitted_input->data, T_FILE_NAME);
-			
 		else if (ft_strncmp(splitted_input->data, "(", 1) == 0)
 			create_token(tokenized_input + i, splitted_input->data, PAREN_OPEN);
 		else if (ft_strncmp(splitted_input->data, ")", 1) == 0)
 			create_token(tokenized_input + i, splitted_input->data, PAREN_CLOSE);
+		//if the input before this one is a redir so this one will be a filename
+			
 
 
 		else if (ft_strncmp(splitted_input->data, "*", 1) == 0)
 			create_token(tokenized_input + i, splitted_input->data, WILD_CARD);
 			
+		else if (i != 0 && (tokenized_input[i - 1].type == RED_APPEND || 
+							tokenized_input[i - 1].type == RED_TRUNK || 
+							tokenized_input[i - 1].type == RED_INPUT || 
+							tokenized_input[i - 1].type == HER_DOC))
+			create_token(tokenized_input + i, splitted_input->data, T_FILE_NAME);
 		else
 			create_token(tokenized_input + i, splitted_input->data, WORD);
 			i++;

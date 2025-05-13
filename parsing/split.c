@@ -113,7 +113,7 @@ static int	m_redirections(t_node **list, char *str, int *i)
 
 	state = 1;
 	data = NULL;
-	if (*(str + *i + 1) == '<')
+	if (*(str + *i) == '<' && *(str + *i + 1) == '<')
 	{
 		data = malloc(3);
 		data[0] = data[1] = '<';
@@ -129,7 +129,7 @@ static int	m_redirections(t_node **list, char *str, int *i)
 		state = append_node(list, &data);
 		(*i) += 1;
 	}
-	else if (*(str + *i + 1) == '>')
+	else if (*(str + *i) == '>' && *(str + *i + 1) == '>')
 	{
 		data = malloc(3);
 		data[0] = data[1] = '>';
