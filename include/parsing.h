@@ -182,5 +182,7 @@ char *trim_quotes(char *str);
 //syntax_validate
 int validate_sytax(t_token *token);
 int validate_quotes(char *str);
+int validate_open_parenths(t_token *token);
+int validate_close_parenths(t_token *token);
 
 #endif

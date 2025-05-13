@@ -1,6 +1,6 @@
 #include "../../include/parsing.h"
 
-int is_op(t_type type)
+static int is_op(t_type type)
 {
 	return (type == OP_AND || type == OP_OR || type == PIPE);
 }
@@ -10,101 +10,26 @@ static int _is_red(t_type type)
 	return (type == RED_APPEND || type == RED_INPUT || type == RED_TRUNK || type == HER_DOC);
 }
 
-int validate_operator(t_token *token, int i)
+static void put_operator_syntax_error_msg(t_type type)
 {
-	if (i == 0 || is_op(token[i].type))
-		return (printf("syntax error near unexpected token `|\'\n"), 0);
-	if (token[i + 1].data || is_op(token[i + 1].type))
-		return (printf("syntax error near unexpected token `|\'\n"), 0);
-	return (1);
+	if (type == PIPE)
+		printf("syntax error near unexpected token `|\'\n");
+	else if (type == OP_AND)
+		printf("syntax error near unexpected token `&&\'\n");
+	else if (type == OP_OR)
+		printf("syntax error near unexpected token `||\'\n");
 }
 
-int validate_quotes(char *str)
+static void put_redirections_syntax_error_msg(t_type type)
 {
-	int i;
-	char quote_type;
-
-	quote_type = '\0';
-	i = -1;
-	while (str[++i])
-	{
-		if(quote_type == '\0' && (str[i] == '\'' || str[i] == '\"'))
-			quote_type = str[i];
-		else if (quote_type == str[i])
-			quote_type = '\0';
-	}
-	if (quote_type != '\0')
-	{
-		if (quote_type == '\"')
-			return (printf("syntax error near unexpected token `\"\n"), 0);
-		else if (quote_type == '\'')
-			return (printf("syntax error near unexpected token `\'\n"), 0);
-	}
-	return (1);
-}
-
-int validate_close_parenths(t_token *token)
-{
-	int i;
-	int p;
-	int j;
-
-	i = -1;
-	while (token[++i].data)
-		;
-	while (--i >= 0)
-	{
-		if (token[i].type == PAREN_CLOSE)
-		{
-			p = 0;
-			j = i + 1;
-			while (token[--j].data)
-			{
-				printf("j>%d   p>%d\n", j, p);
-				if (token[j].type == PAREN_OPEN)
-					p++;
-				else if (token[j].type == PAREN_CLOSE)
-					p--;
-				if (p == 0)
-					break;
-			}
-			printf(">>>close :%d\n", p);
-			if (p != 0)
-				return (printf("syntax error near unexpected token `)\'\n"), 0);
-		}
-	}
-	return (1);
-}
-
-int validate_open_parenths(t_token *token)
-{
-	int p;
-	int	i;
-	int j;
-
-	i = -1;
-	while (token[++i].data)
-	{
-
-		if (token[i].type == PAREN_OPEN)
-		{
-			p = 0;
-			j = i;
-			while (token[++j].data)
-			{
-				if (token[j].type == PAREN_OPEN)
-					p++;
-				else if (token[j].type == PAREN_CLOSE)
-					p--;
-				if (p == 0)
-					break;
-			}
-			// printf(">>>open :%d\n", p);
-			if (p != 0)
-				return (printf("syntax error near unexpected token `(\'\n"), 0);
-		}
-	}
-	return (1);
+	if (type == RED_APPEND)
+		printf("syntax error near unexpected token `>>\'\n");
+	else if (type == RED_TRUNK)
+		printf("syntax error near unexpected token `>\'\n");
+	else if (type == HER_DOC)
+		printf("syntax error near unexpected token `<<\'\n");
+	else if (type == RED_INPUT)
+		printf("syntax error near unexpected token `<\'\n");
 }
 
 int validate_sytax(t_token *token)
@@ -117,27 +42,14 @@ int validate_sytax(t_token *token)
 	while (token[++i].data)
 	{
 		if (is_op(token[i].type) && ((token[i + 1].data && is_op(token[i + 1].type)) || !token[i + 1].data ))
+			return (put_operator_syntax_error_msg(token[i].type), 0);
+		else if (_is_red(token[i].type) && (!token[i + 1].data || token[i + 1].type != T_FILE_NAME))
+			return (put_redirections_syntax_error_msg(token[i].type), 0);
+		else if (token[i].type == WORD)
 		{
-			if (token[i].type == PIPE)
-				return (printf("syntax error near unexpected token `|\'\n"), 0);
-			else if (token[i].type == OP_AND)
-				return (printf("syntax error near unexpected token `&&\'\n"), 0);
-			else if (token[i].type == OP_OR)
-				return (printf("syntax error near unexpected token `||\'\n"), 0);
+			if (i > 0 && !is_op(token[i - 1].type) && token[i - 1].type != PAREN_OPEN)
+				return (printf("bash: syntax error near unexpected token `%s'\n", token[i].data), 0);
 		}
-		if (_is_red(token[i].type))
-			if (token[i + 1].type != T_FILE_NAME)
-			{
-				if (token[i].type == RED_APPEND)
-					return (printf("syntax error near unexpected token `>>\'\n"), 0);
-				else if (token[i].type == RED_TRUNK)
-					return (printf("syntax error near unexpected token `>\'\n"), 0);
-				else if (token[i].type == HER_DOC)
-					return (printf("syntax error near unexpected token `<<\'\n"), 0);
-				else if (token[i].type == RED_INPUT)
-					return (printf("syntax error near unexpected token `<\'\n"), 0);
-
-			}
 	}
 	return 1;
 }
