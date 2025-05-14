@@ -47,7 +47,7 @@ int  expand_commands(t_env *env, char ***arr)
 		(*arr)[i] = do_expantion(env, (*arr)[i]);
 
 	char *joined_arr = join_arr_elements(*arr);
-	list = split2(joined_arr);
+	list = split(joined_arr);
 	if (!list)
 		return (free(joined_arr), 0);
 	tmp = *arr;

@@ -20,7 +20,7 @@ char *extract_target_key(char *str)
 	else
 	{
 		len = 0;
-		while (str[len] && str[len] != ' ' && str[len] != '\"' && str[len] != '\'' && str[len] != '$' && !is_special(str + len))
+		while (str[len] && str[len] != '=' && str[len] != ' ' && str[len] != '\"' && str[len] != '\'' && str[len] != '$' && !is_special(str + len))
 			len++;
 	}
 	key = ft_substr(str, 0, len);

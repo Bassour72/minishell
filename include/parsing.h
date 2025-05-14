@@ -101,8 +101,15 @@ typedef struct s_flat_tree
 
 //split.c
 t_node	*split(char *str);
-t_node	*split2(char *str);
 int		is_special(char *c);
+int append_node(t_node **list, char **data);
+int	m_operators(t_node **list, char *str, int *i);
+int m_parenth(t_node **list, char *str, int *i);
+int	m_redirections(t_node **list, char *str, int *i);
+int	m_quotes( char *str, char **data, int *i);
+int m_normal(char *str, char **data, int *i);
+
+
 
 
 //parser.c
@@ -120,7 +127,7 @@ void print_tree(t_tree *root, int i);
 void print_flat_tree(t_tree *list);
 	//clear_parsing
 void free_tree_node(t_tree *node);
-void free_flat_tree_list(t_flat_tree *flat_list);
+void free_flat_tree_list(t_flat_tree *flat_list);//todo doblicateed
 void	free_flat_tree(t_flat_tree *flat_tree);
 void free_tree(t_tree *root);
 	//redirection

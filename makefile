@@ -4,8 +4,9 @@ NAME = minishell
 
 SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tree.c \
 		parsing/parser/clear_parsing.c parsing/parser/debug.c parsing/parser/flat_tree.c parsing/parser/redirections.c \
-		parsing/commands.c parsing/split.c  parsing/split2.c\
-		parsing/expantion/expand.c parsing/expantion/expand_utils.c parsing/expantion/expand_redirections.c parsing/expantion/do_expantion.c parsing/expantion/trim_quotes.c\
+		parsing/commands.c\
+		parsing/split/split.c parsing/split/manage_normal.c parsing/split/manage_operators.c parsing/split/manage_parenth.c parsing/split/manage_quotes.c parsing/split/manage_redirections.c parsing/split/append_node.c\
+ 		parsing/expantion/expand.c parsing/expantion/expand_utils.c parsing/expantion/expand_redirections.c parsing/expantion/do_expantion.c parsing/expantion/trim_quotes.c\
 		parsing/utils/get_list_size.c\
 		parsing/validate_syntax/validate_syntax.c parsing/validate_syntax/validate_quotes.c parsing/validate_syntax/validate_parenthecies.c\
 		env/env.c env/env_utils.c\

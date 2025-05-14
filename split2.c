@@ -1,10 +1,7 @@
 
 #include "../include/parsing.h"
 
-int is_special(char *c)
-{
-	return (*c == '(' || *c == ')' || *c == '<' || *c == '>' || *c == '|' || *c == '&');
-}
+
 
 static int append_node(t_node **list, char **data)
 {
@@ -113,7 +110,7 @@ static int	m_redirections(t_node **list, char *str, int *i)
 
 	state = 1;
 	data = NULL;
-	if (*(str + *i) == '<' && *(str + *i + 1) == '<')
+	if (*(str + *i + 1) == '<')
 	{
 		data = malloc(3);
 		data[0] = data[1] = '<';
@@ -129,7 +126,7 @@ static int	m_redirections(t_node **list, char *str, int *i)
 		state = append_node(list, &data);
 		(*i) += 1;
 	}
-	else if (*(str + *i) == '>' && *(str + *i + 1) == '>')
+	else if (*(str + *i + 1) == '>')
 	{
 		data = malloc(3);
 		data[0] = data[1] = '>';
@@ -148,7 +145,7 @@ static int	m_redirections(t_node **list, char *str, int *i)
 	return (state);
 }
 
-static int	m_quotes(t_node **list, char *str, char **data, int *i)
+static int	m_quotes(char *str, char **data, int *i)
 {
 	int		state;
 	char	*_data;
@@ -177,12 +174,14 @@ static int	m_quotes(t_node **list, char *str, char **data, int *i)
 		_i -= len - 1;
 		_data = malloc(len + 1);
 
+
 		if (!_data) //todo !!!!
 			return (0);
 		ft_strlcpy(_data, str + _i, len + 1);
 		// printf("_data_size = %d | str + i = %s _data = %s\n", len, str + _i, _data);
 
 		*data = _data;
+		// printf(">>%s<<\n", _data);
 		(*i) = _i + len;
 		// printf("end data: %s\n", *data);
 		// printf("{%i}\n\n\n", *i);
@@ -211,6 +210,7 @@ static int	m_quotes(t_node **list, char *str, char **data, int *i)
 		
 		free(*data);
 		*data = _data;
+		// printf(">>%s<<\n", _data);
 
 		(*i) = _i + j;
 		// printf("end data: %s\n", *data);
@@ -219,7 +219,7 @@ static int	m_quotes(t_node **list, char *str, char **data, int *i)
 	return (state);
 }
 
-static int m_normal(t_node **list,char *str, char **data, int *i)
+static int m_normal(char *str, char **data, int *i)
 {
 	int		state;
 	char	*_data;
@@ -317,7 +317,7 @@ static void skip_spaces(char *str, int *i)
 		(*i)++;
 }
 
-t_node *split(char *str)
+t_node *split2(char *str)
 {
 	t_node	*list = NULL;
 	char 	*data = NULL;
@@ -332,7 +332,7 @@ t_node *split(char *str)
 		
 		if (*(str + i) == '\"' || *(str + i) == '\'')
 		{
-			if (!m_quotes(&list, str, &data, &i))
+			if (!m_quotes(str, &data, &i))
 				return (cleaner(list), NULL);
 		// printf("data: %s\n", data);// printf("prismo %c\n", *(str + i));
 			if (data && (str[i] == ' ' || is_special(str + i) || !str[i]) && !append_node(&list, &data))
@@ -351,7 +351,7 @@ t_node *split(char *str)
 		}
 		else
 		{
-			if (!m_normal(&list, str, &data, &i))
+			if (!m_normal(str, &data, &i))
 				return (cleaner(list), NULL);
 			if (data && (is_special(str + i) || str[i] == ' ' || !str[i]) && !append_node(&list, &data))
 				return (cleaner(list), NULL);
