@@ -7,24 +7,32 @@
 
 int execute_builtin(t_tree *root)
 {
+	
 	if (strcmp((root->data[0]), "echo") == 0 || strcmp((root->data[0]), "ECHO") == 0)
 	{
 		builtin_echo(root);
 		return (0);
 	}
-	if (strcmp((root->data[0]), "cd") == 0 || strcmp((root->data[0]), "CD") == 0)
+	else if (strcmp((root->data[0]), "cd") == 0 || strcmp((root->data[0]), "CD") == 0)
+	{
+		cd_change_current_directory(root);
 		return (0);
-	if (strcmp((root->data[0]), "env") == 0 || strcmp((root->data[0]), "env") == 0)
+	}
+	else if (strcmp((root->data[0]), "pwd") == 0 || strcmp((root->data[0]), "pwd") == 0)
+	{
+		pwd_print_working_directory(root);
 		return (0);
-	if (strcmp((root->data[0]), "exit") == 0 || strcmp((root->data[0]), "exit") == 0)
+	}
+	else if (strcmp((root->data[0]), "env") == 0 || strcmp((root->data[0]), "env") == 0)
 		return (0);
-	if (strcmp((root->data[0]), "export") == 0 || strcmp((root->data[0]), "export") == 0)
+	else if (strcmp((root->data[0]), "exit") == 0 || strcmp((root->data[0]), "exit") == 0)
 		return (0);
-	if (strcmp((root->data[0]), "pwd") == 0 || strcmp((root->data[0]), "pwd") == 0)
+	else if (strcmp((root->data[0]), "export") == 0 || strcmp((root->data[0]), "export") == 0)
 		return (0);
-	if (strcmp((root->data[0]), "unset") == 0 || strcmp((root->data[0]), "unset") == 0)
+	else if (strcmp((root->data[0]), "unset") == 0 || strcmp((root->data[0]), "unset") == 0)
 		return (0);
-	return (1);
+	else
+		return (1);
 }
 int	is_builtin(char *command)
 {
@@ -77,17 +85,18 @@ int execution(t_tree *root, char **env)
 {
     if (root == NULL)
         return 1;
-    
+    int pipe[2];
     if (root->type == PIPE)
     {
         printf("Processing pipe\n");
+		// here open pipe before traversal the left and the right ?? 
         execution(root->left, env);
         execution(root->right, env);
     }
     else
     {
 		printf("Processing command\n");
-       // execute_command(root, env);
+        execute_command(root, env);
     }
 
     return 1;

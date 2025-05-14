@@ -59,7 +59,7 @@ int main(int ac, char **av, char **env)
 
 		//lable =^=^=^=^=^=^=^=^=^=^=
 
-		// execution(tree, env);
+		 execution(tree, env);
 		// if (tree->data)
 		// 	printf("here echo command built-in [%s]\n",tree->data[0]);
 		 free_tree(tree); //note this is for freeing the tree
