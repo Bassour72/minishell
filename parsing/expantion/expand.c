@@ -41,6 +41,7 @@ int  expand_commands(t_env *env, char ***arr)
 	int	j;
 	t_node *list = NULL;
 	char **tmp;
+	char *old_str;
 
 	i = -1;
 	while ((*arr)[++i])
@@ -48,10 +49,26 @@ int  expand_commands(t_env *env, char ***arr)
 
 	char *joined_arr = join_arr_elements(*arr);
 	list = split(joined_arr);
+
+	free(joined_arr);
+	// printf("joined_arr [%s]\n", joined_arr);
 	if (!list)
-		return (free(joined_arr), 0);
+		return (0);
 	tmp = *arr;
-	*arr = linked_list_to_double_array(list);	
+	*arr = linked_list_to_double_array(list);
+	
+
+	for (int i = 0; tmp[i]; i++)
+		free(tmp[i]);
+	free(tmp);
+	t_node *tmp_list;
+	while (list)
+	{
+		tmp_list = list;
+		list = list->next;
+		free(tmp_list);
+	}
+
 	if (!*arr)
 		return (0);
 	return (1);

@@ -18,7 +18,7 @@ static int inside_quotes(char *str, int *i, char **result, char *type)
 	*result = ft_strjoin(*result, sub_str);
 	(free(tmp_result), free(sub_str));
 	if (!*result)
-		return (perror("minishell: error: "), free(sub_str), 0);
+		return (perror("minishell: error: "), 0);
 	(*i)++;
 	return (1);
 }
@@ -35,12 +35,12 @@ static int outside_quotes(char *str, int *i, char **result, char *type)
 		(*i)++;
 	sub_str = ft_substr(str, start, (*i) - start);
 	if (!sub_str)
-		return (perror("minishell: error: "), free(*result), 0);
+		return (perror("minishell: error: "), 0);
 	tmp_result = *result;
 	*result = ft_strjoin(*result, sub_str);
 	(free(tmp_result), free(sub_str));
 	if (!*result)
-		return (perror("minishell: error: "), free(tmp_result), 0);
+		return (perror("minishell: error: "), 0);
 	return (1);
 }
 
@@ -56,12 +56,12 @@ char *trim_quotes(char *str)
 			if (str[i] && (str[i] == '\'' || str[i] == '\"'))
 			{
 				if (!inside_quotes(str, &i, &result, &type))
-					return (NULL);
+					return (free(result), NULL);
 			}
 			else
 			{
 				if (!outside_quotes(str, &i, &result, &type))
-					return (NULL);
+					return (free(result), NULL);
 			}
 		}
 	return (result);
