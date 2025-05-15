@@ -1,23 +1,48 @@
 #include "../../include/execution.h"
-//TODO remove this 
-#include <string.h>
 
-
-char *builtin_echo(t_tree *root)
+int has_no_newline_option(t_tree *root, int *value)
 {
-	int	i;
-	if (root == NULL)
-		return (NULL);
+	int i;
+	int j;
+
 	i = 1;
-	if (root->data && strcmp(root->data[0], "echo")== 0)
+	while (root->data[i] != 0)
 	{
-		
-		while (root->data[i] != NULL)
-		{
-			printf("[%s]", root->data[i]);
+		if (root->data[i][0] != '-')
+			break;
+		j = 1;
+		while (root->data[i][j] == 'n')
+			j++;
+		if (root->data[i][j] == '\0' && j > 1)
 			i++;
-		}
-		
+		else
+			break;
 	}
-	return (NULL);
+	*value = i;
+	return (i > 1);
 }
+
+int	builtin_echo(t_tree *root)
+{
+	int i;
+	int has_newline;
+
+	i = 1;
+	has_newline = 1;
+	if (root == NULL || root->data == NULL || root->data[0] == NULL)
+		return (1);
+	if (has_no_newline_option(root, &i))
+		has_newline = 0;
+	while (root->data[i] != NULL)
+	{
+		write(1, root->data[i], ft_strlen(root->data[i]));
+		if (root->data[i + 1] != NULL)
+			write(1, " ", 1);
+		i++;
+	}
+	if (has_newline)
+		write(1, "\n", 1);
+	return (0);
+}
+
+
