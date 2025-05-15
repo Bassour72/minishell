@@ -18,14 +18,14 @@ typedef enum e_type
 {
 	T_FILE_NAME,			//file.txt
 	WORD,				// cat, ls,...
-	PIPE, 				// |
+	PIPE, //				// |
 	RED_INPUT,  	// <
 	RED_APPEND, // >
 	RED_TRUNK,	// >>
 	HER_DOC,  			// <<
-	BLOCK, 
-	OP_AND,
-	OP_OR,
+	BLOCK,//
+	OP_AND,//
+	OP_OR,//
 	PAREN_OPEN,
 	PAREN_CLOSE,
 	WILD_CARD,
@@ -79,6 +79,7 @@ typedef struct s_flat_tree
 	t_tree *tree_node;
 	struct s_flat_tree *prev;
 	struct s_flat_tree *next;
+	struct s_flat_tree *backup_next;
 }				t_flat_tree;
 
 

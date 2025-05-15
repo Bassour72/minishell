@@ -72,8 +72,8 @@ void print_tree(t_tree *root, int i)
 			printf(" NULL");
 	}
 	printf("\n");
-	print_tree(root->right, i + 1);
 	print_tree(root->left, i + 1);
+	print_tree(root->right, i + 1);
 }
 
 void print_flat_tree(t_tree *list)

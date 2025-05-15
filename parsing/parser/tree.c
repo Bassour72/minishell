@@ -7,6 +7,7 @@ t_tree *new_tree_node(t_type type)
 	tree_node = malloc(sizeof(t_tree));//todo protect
 	if (!tree_node)
 		return (NULL);
+	// printf("new_tree_node : %p\n", tree_node);
 	tree_node->data = NULL;//todo naming
 	tree_node->redirections = NULL;
 	tree_node->type = type;
@@ -31,7 +32,7 @@ t_tree *init_tree(t_flat_tree *ft)
 			p++;
 		else if (flat->tree_node->empty == 1)
 			p--;
-		if (p == 0 && (flat->tree_node->type == OP_OR || flat->tree_node->type == OP_AND))
+		else if (p == 0 && (flat->tree_node->type == OP_OR || flat->tree_node->type == OP_AND))
 		{
 			right = flat->next;
 			left = flat->prev;
@@ -55,7 +56,7 @@ t_tree *init_tree(t_flat_tree *ft)
 		else if (flat->tree_node->empty == 1)
 			p--;
 			
-		if (p == 0 && flat->tree_node->type == PIPE)
+		else if (p == 0 && flat->tree_node->type == PIPE)
 		{
 			right = flat->next;
 			left = flat->prev;
@@ -71,9 +72,9 @@ t_tree *init_tree(t_flat_tree *ft)
 	}
 
 	flat = flat_tree_last(ft);
-	if (flat->tree_node->empty == -1)
+	if (flat->tree_node->empty == -1)//  )
 	{
-		flat->prev->next = NULL;
+		flat->prev->next = NULL;//  ) = NULL
 		// flat->prev = NULL; // maybe this is unessessiry
 		while (flat->prev)
 		{
@@ -83,10 +84,9 @@ t_tree *init_tree(t_flat_tree *ft)
 
 		flat->next->prev = NULL;
 		// flat->prev = NULL; // maybe this is unessessiry
-		right = flat->next;
-		flat->tree_node->right = init_tree(right);
+		left = flat->next;
+		flat->tree_node->left = init_tree(left);
 		return (flat->tree_node);
 	}
 	return (ft->tree_node);
-	return NULL;
 }

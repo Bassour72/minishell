@@ -47,7 +47,7 @@ int validate_sytax(t_token *token)
 			return (put_redirections_syntax_error_msg(token[i].type), 0);
 		else if (token[i].type == WORD)
 		{
-			if (i > 0 && (token[i - 1].type == T_FILE_NAME || token[i - 1].type == PAREN_CLOSE ))
+			if (i > 0 && (token[i - 1].type == PAREN_CLOSE))
 				return (printf("bash: syntax error near unexpected token `%s'\n", token[i].data), 0);
 		}
 	}

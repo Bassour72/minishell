@@ -28,12 +28,44 @@ static void skip_spaces(char *str, int *i)
 		(*i)++;
 }
 
+int quotes(char *str, char **data, t_node **list, int *i)
+{
+	if (!m_quotes(str, data, i))
+		return (cleaner(*list), 0);
+	if (*data && (str[*i] == ' ' || is_special(str + *i) || !str[*i]) && !append_node(list, data))
+		return (cleaner(*list), 0);
+	return (1);
+}
+int specials(char *str, char **data, t_node **list, int *i)
+{
+	if (*data && !append_node(list, data))
+		return (cleaner(*list), 0);
+	if (!m_operators(list, str, i))
+		return (cleaner(*list), 0);
+	if (!m_parenth(list, str, i))
+		return (cleaner(*list), 0);
+	if (!m_redirections(list, str, i))
+		return (cleaner(*list), 0);
+	return (1);
+}
+
+int normal(char *str, char **data, t_node **list, int *i)
+{
+	if (!m_normal(str, data, i))
+		return (cleaner(*list), 0);
+	if (*data && (is_special(str + *i) || str[*i] == ' ' || !str[*i]) && !append_node(list, data))
+		return (cleaner(*list), 0);
+	return (1);
+}
+
 t_node *split(char *str)
 {
-	t_node	*list = NULL;
-	char 	*data = NULL;
+	t_node	*list;
+	char 	*data;
 	int		i;
 
+	list = NULL;
+	data = NULL;
 	i = 0;
 	if (!str)
 		return (NULL);
@@ -42,30 +74,11 @@ t_node *split(char *str)
 		skip_spaces(str, &i);
 		
 		if (*(str + i) == '\"' || *(str + i) == '\'')
-		{
-			if (!m_quotes(str, &data, &i))
-				return (cleaner(list), NULL);
-			if (data && (str[i] == ' ' || is_special(str + i) || !str[i]) && !append_node(&list, &data))
-				return (cleaner(list), NULL);
-		}
+			quotes(str, &data, &list, &i);
 		else if (is_special(str + i))
-		{
-			if (data && !append_node(&list, &data))
-				return (cleaner(list), NULL);
-			if (!m_operators(&list, str, &i))
-				return (cleaner(list), NULL);
-			if (!m_parenth(&list, str, &i))
-				return (cleaner(list), NULL);
-			if (!m_redirections(&list, str, &i))
-				return (cleaner(list), NULL);
-		}
+			specials(str, &data, &list, &i);
 		else
-		{
-			if (!m_normal(str, &data, &i))
-				return (cleaner(list), NULL);
-			if (data && (is_special(str + i) || str[i] == ' ' || !str[i]) && !append_node(&list, &data))
-				return (cleaner(list), NULL);
-		}
+			normal(str, &data, &list, &i);
 		skip_spaces(str, &i);
 	}
 	return list;
