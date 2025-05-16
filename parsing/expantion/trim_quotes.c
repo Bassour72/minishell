@@ -64,5 +64,6 @@ char *trim_quotes(char *str)
 					return (free(result), NULL);
 			}
 		}
+		// printf("%p", str);
 	return (result);
 }

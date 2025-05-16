@@ -62,6 +62,7 @@ int expand_the_variable(char *str, int *i, char **new_str, t_env *env)
 		*new_str = ft_strjoin(*new_str, value);
 		free(tmp_str);
 		free(value);
+		// printf("[%s]-> %p\n",tmp_str,  value);
 		if (!*new_str)
 			return (perror("minishell: error: "), 0);
 	}
@@ -89,6 +90,7 @@ char *do_expantion(t_env *env, char *str)
 			if (!expand_the_variable(str, &i, &new_str, env))
 				return (free(str), NULL);
 		}
+		// printf("new_str%p\n", new_str);
 	}
 	// printf("\033[32mfin: [%s]\033[0m\n", new_str);
 	free(str);
