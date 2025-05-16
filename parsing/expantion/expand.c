@@ -66,6 +66,7 @@ int  expand_commands(t_env *env, char ***arr)
 	{
 		tmp_list = list;
 		list = list->next;
+		free(tmp_list->data);
 		free(tmp_list);
 	}
 

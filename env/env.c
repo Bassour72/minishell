@@ -21,7 +21,7 @@ static int	env_extract_key(char *env, char **key)
 	*key = malloc(len + 1);
 	if (!key)
 		return (0);
-	strlcpy(*key, env, len + 1);
+	ft_strlcpy(*key, env, len + 1);
 	return (1);
 }
 

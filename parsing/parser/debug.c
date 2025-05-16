@@ -52,7 +52,6 @@ void print_tree(t_tree *root, int i)
 		{
 			for(int i = 0; root->data[i]; i++)
 				printf("[%s] ", root->data[i]);
-			printf("");
 		}
 		else
 			printf(" NULL");
