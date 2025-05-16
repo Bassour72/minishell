@@ -7,18 +7,25 @@ t_tree *parser(t_tree *tree, char *input)
 	t_flat_tree *flat_tree;
 
 	if (!validate_quotes(input))
-		return (NULL);
+		return (free(input), NULL);
+
 	tokenized_input = tokenizer( input);
 
 	// print_tokenized_inputs(tokenized_input);
 	// return NULL;
+	// free(input);
 	if (!tokenized_input)
 	{
 		printf("tokenizer returns NULL\n");
 		return (NULL);
 	}
 	if (!validate_sytax(tokenized_input))
+	{
+
 		return (free_tokens_list(tokenized_input), NULL);
+	}
+
+	printf("validate syntax OK\n");
 
 	// print_tokenized_inputs(tokenized_input);
 

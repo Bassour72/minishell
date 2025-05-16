@@ -41,14 +41,23 @@ int validate_sytax(t_token *token)
 		return (0);
 	while (token[++i].data)
 	{
-		if (is_op(token[i].type) && ((token[i + 1].data && is_op(token[i + 1].type)) || !token[i + 1].data ))
-			return (put_operator_syntax_error_msg(token[i].type), 0);
-		else if (_is_red(token[i].type) && (!token[i + 1].data || token[i + 1].type != T_FILE_NAME))
+		if (_is_red(token[i].type) && (!token[i + 1].data || token[i + 1].type != T_FILE_NAME))
 			return (put_redirections_syntax_error_msg(token[i].type), 0);
 		else if (token[i].type == WORD)
 		{
 			if (i > 0 && (token[i - 1].type == PAREN_CLOSE))
 				return (printf("bash: syntax error near unexpected token `%s'\n", token[i].data), 0);
+		}
+		else if (is_op(token[i].type))
+		{
+			if (i == 0)
+				return (put_operator_syntax_error_msg(token[i].type), 0);
+
+			if (token[i - 1].type != WORD && token[i - 1].type != T_FILE_NAME && token[i - 1].type != PAREN_CLOSE)
+				return (put_operator_syntax_error_msg(token[i].type), 0);
+
+			if (!token[i + 1].data || (token[i - 1].type != WORD && !_is_red(token[i + 1].type) && token[i - 1].type != PAREN_OPEN))
+				return (put_operator_syntax_error_msg(token[i].type), 0);
 		}
 	}
 	return 1;
