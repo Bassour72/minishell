@@ -43,7 +43,7 @@ int expand_the_variable(char *str, int *i, char **new_str, t_env *env)
 	char *value;
 	char *tmp_str;
 
-	printf("expand var\n");
+	// printf("expand var\n");
 	key = extract_target_key(str + (*i) + 1);
 	if (!key)
 		return (perror("minishell: error: "), free(*new_str), 0);
