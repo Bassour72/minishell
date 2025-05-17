@@ -54,7 +54,7 @@ int main(int ac, char **av, char **env)
 		t_env *env_l = NULL;
 		env_generate(&env_l, env);
 		expand_all(env_l, tree);
-		print_tree(tree, 0);
+		//print_tree(tree, 0);
 
 
 		//lable =^=^=^=^=^=^=^=^=^=^=

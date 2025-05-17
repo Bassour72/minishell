@@ -1,0 +1,24 @@
+ Switch to Main Branch:
+
+bash
+Copy
+Edit
+git checkout main
+🔄 Pull the Latest Changes:
+
+bash
+Copy
+Edit
+git pull origin main
+📝 Merge the Execution Changes (if needed):
+
+bash
+Copy
+Edit
+git merge execution
+🚀 Push the Final Merge:
+
+bash
+Copy
+Edit
+git push origin main
