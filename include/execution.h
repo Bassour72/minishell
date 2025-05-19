@@ -2,14 +2,21 @@
 # define EXECUTION_H
 #include "parsing.h"
 #include <sys/wait.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+
 
 typedef struct s_pipe
 {
-    int pipe[2];
-    char *test;
+    int fds[2];         // fds[0] for reading, fds[1] for writing
     struct s_pipe *next;
+    struct s_pipe *prev;
 } t_pipe;
+// int exec_pipe(t_tree *root, char **env, int input_fd);
 int		execution(t_tree *root, char **env);
+void execute_command(t_tree *root, char **env);
 char    *get_binary_file_path(t_tree *root, char **env);
 int		builtin_echo(t_tree *root);
 int	cd_change_current_directory(t_tree *root);

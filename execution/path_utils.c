@@ -55,12 +55,14 @@ char *get_binary_file_path(t_tree *root, char **env)
 {
     char *binary_path;
 
-    // if (root == NULL || root->data == NULL || root->data[0] == NULL)
-    //     return (NULL);
+     if (!root || !root->data || !root->data[0])
+    {
+        fprintf(stderr, "Error: Empty command node\n");
+        return NULL;
+    }
 
     binary_path = extract_path_variable(env);
     if (binary_path == NULL)
         return (NULL);
-
     return (join_binary_path_with_command(root->data[0], binary_path));
 }

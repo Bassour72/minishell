@@ -1,22 +1,71 @@
 #include "../include/execution.h"
 
-#include <string.h>
-#include <stdlib.h>
+
+
 //todo remove this 
 //fixme 
 
-int	read_her_doc(t_tree *root)
+void write_here_doc(int fd, char *limiter_nl)
 {
-	
-}
-int	set_up_input(t_tree *root)
-{
-	if (!root)
-		return (1);
-	if (root->type == HER_DOC)
-	{
+    char *line;
 
-	}
+    while (1)
+    {
+        line = readline("heredoc> ");
+        if (!line || ft_strcmp(line, limiter_nl) == 0)
+        {
+            free(line);
+            break;
+        }
+        write(fd, line, ft_strlen(line));
+        write(fd, "\n", 1);  // Ensure each line is properly terminated
+        free(line);
+    }
+}
+
+int setup_here_doc(t_tree *root)
+{
+    char tmp_file[] = "/tmp/heredocXXXXXX";
+    int in_fd = mkstemp(tmp_file);
+    int out_fd;
+
+    if (in_fd < 0)
+    {
+        perror("Error creating temporary file");
+        exit(EXIT_FAILURE);
+    }
+
+    write_here_doc(in_fd, root->redirections->data);
+    close(in_fd);
+
+    // Reopen for reading and unlink immediately to clean up
+    out_fd = open(tmp_file, O_RDONLY);
+    if (out_fd < 0)
+    {
+        perror("Error reopening temporary file");
+        exit(EXIT_FAILURE);
+    }
+    unlink(tmp_file);
+
+    // Set as the current process's stdin
+    if (dup2(out_fd, STDIN_FILENO) < 0)
+    {
+        perror("Error duplicating file descriptor");
+        close(out_fd);
+        exit(EXIT_FAILURE);
+    }
+    close(out_fd);
+    return 0;
+}
+
+int set_up_input(t_tree *root)
+{
+    if (!root || !root->redirections)
+        return 0;
+    
+    if (root->redirections->type == HER_DOC)
+        return setup_here_doc(root);
+    return 0;
 }
 
 int execute_builtin(t_tree *root)
@@ -66,114 +115,190 @@ int	is_builtin(char *command)
 		return (0);
 	return (1);
 }
-int execute_command(t_tree *root, char **env, t_pipe *list_pipe)
-{
-	t_env *env1 = NULL ;
-	char *binary_path;
-    // if (is_builtin(root->data[0]) == 0)
-    //     return execute_builtin(root);
-	//env_generate(&env1, env);
 
-    pid_t pid = fork();
-    if (pid == 0)
-    {
-		printf("=============================%d\n", pid);
-		binary_path = get_binary_file_path(root, env);
-        // In child process
-		expand(env1, root);
-		close(list_pipe->pipe[0]);
-		dup2(1, list_pipe->pipe[1]);
-        execve(binary_path, root->data, env);
-		free_tree(root);
-		free(binary_path);
-        perror("execve");
-        exit(1);
-    }
-    else if (pid > 0)
-    {
-        // In parent process
-        waitpid(pid, NULL, 0);
-    }
-    return 0;
-}
-
-t_pipe	*create_pipe(int number)
+void print_treeeee(t_tree *node, int level)
 {
-	t_pipe *node_pipe;
-	node_pipe = (t_pipe*)malloc(sizeof(t_pipe));
-	if (!node_pipe)
-		return (NULL);
-	if (pipe(node_pipe->pipe) != 0)
-	{
-		free(node_pipe);
-		return (NULL);
-	}
-	node_pipe->test = ft_itoa(number);
-	node_pipe->next = NULL;
-	return (node_pipe);
-}
-
-void	list_pipe_addback(t_pipe **list_pipe, t_pipe *node_pipe)
-{
-	if (!node_pipe)
-		return ;
-	if (!(*list_pipe))
-	{
-		*list_pipe = node_pipe;
-	}
+    if (!node)
+        return;
+    for (int i = 0; i < level; i++)
+        printf("  ");
+	if (node->data && node->data[0])
+    	printf("Node: %s, Type: %d\n", node->data[0], node->type);
 	else
-	{
-		t_pipe * temp;
-		temp = *list_pipe;
-		while (temp->next != NULL)
-		{
-			temp = temp->next;
-		}
-		temp->next = node_pipe;
-	}
+		printf("Node: %s, Type: %d\n", "pipe", node->type);
+    print_tree(node->left, level + 1);
+    print_tree(node->right, level + 1);
 }
 
-int	exec_pipe(t_tree *root, char **env, int i)
+int exec_pipe(t_tree *root, char **env, int input_fd)
 {
-	if (root == NULL)
-		return (1);
+    int pipefd[2];
+    pid_t pid;
+    int status;
 
-	t_pipe *list_pipe = NULL;
-	exec_pipe(root->left, env, i);
+    if (!root)
+        return 1; // Null tree
 
-	//printf("[exec pipe ] Processing pipe and  multips commands left\n");
-	list_pipe_addback(&list_pipe, create_pipe(i++));
-	if (root->data && root->data[0])
-	{
-		printf("[%s][%s]\n", root->data[0], list_pipe->test);
-		execute_command(root, env, list_pipe);
-		list_pipe = list_pipe->next;
-		
-	}
-	exec_pipe(root->right, env, i);
-	//printf("[exec pipe ] Processing pipe and  multips commands right\n");
+    if (root->type == PIPE)
+    {
+        if (pipe(pipefd) == -1)
+        {
+            perror("pipe");
+            return 1;
+        }
+
+        // Fork left child
+        pid = fork();
+        if (pid < 0)
+        {
+            perror("fork");
+            return 1;
+        }
+        else if (pid == 0)
+        {
+            // Left child executes left subtree
+            if (input_fd != STDIN_FILENO)
+            {
+                dup2(input_fd, STDIN_FILENO);
+                close(input_fd);
+            }
+            dup2(pipefd[1], STDOUT_FILENO);
+            close(pipefd[0]);
+            close(pipefd[1]);
+
+            exec_pipe(root->left, env, STDIN_FILENO);
+            exit(1);
+        }
+
+        // Fork right child
+        pid = fork();
+        if (pid < 0)
+        {
+            perror("fork");
+            return 1;
+        }
+        else if (pid == 0)
+        {
+            // Right child executes right subtree
+            close(pipefd[1]);
+            if (input_fd != STDIN_FILENO)
+                close(input_fd);
+            dup2(pipefd[0], STDIN_FILENO);
+            close(pipefd[0]);
+
+            exec_pipe(root->right, env, STDIN_FILENO);
+            exit(1);
+        }
+
+        // Parent closes fds and input_fd if needed
+        close(pipefd[0]);
+        close(pipefd[1]);
+        if (input_fd != STDIN_FILENO)
+            close(input_fd);
+
+        // Wait for both children
+        while (wait(&status) > 0);
+        free_tree(root);
+
+        return WIFEXITED(status) ? WEXITSTATUS(status) : 1;
+    }
+    else
+    {
+        // Leaf node: single command execution
+        if (input_fd != STDIN_FILENO)
+        {
+            dup2(input_fd, STDIN_FILENO);
+            close(input_fd);
+        }
+
+        execute_command(root, env);  // Your execve or wrapper here
+        exit(1); // Should never reach here if exec succeeds
+    }
+}
+
+
+
+void execute_command(t_tree *root, char **env)
+{
+	char *binary_path;
+
+    if (!root || !root->data || !root->data[0])
+    {
+		//todo for debugging
+        fprintf(stderr, "Error: Empty command node\n");
+		// here should free all resources you use in the minishell
+        exit(EXIT_FAILURE);
+    }
+    if (is_builtin(root->data[0]) == 0)
+    {
+        execute_builtin(root);
+		fprintf(stderr, "Error: Command not found: %s\n", root->data[0]);
+		// here not exit beacuse you to return the status of the execution fo funtions
+        exit(EXIT_SUCCESS); // Exit to avoid continuing after the builtin
+    }
+    binary_path = get_binary_file_path(root, env);
+	
+    if (!binary_path)
+    {
+			//todo for debugging
+        fprintf(stderr, "Error: Command not found: %s\n", root->data[0]);
+		// free all resources and close all pipes and fds
+        exit(EXIT_FAILURE);
+    }
+    execve(binary_path, root->data, env);
+    perror("execve");
+	// free all resources and close all use pipe and fds
+    free(binary_path);
+    exit(EXIT_FAILURE);
 }
 
 int execution(t_tree *root, char **env)
 {
-    if (root == NULL)
+    int status = 0;
+	t_pipe *pipe_list  = NULL;
+    if (!root)
         return 1;
     if (root->type == PIPE)
     {
-        printf("[execution fucntion] Processing pipe and  multips commands\n");
-		exec_pipe(root, env, 1);
+        printf("[execution function] Processing pipe and multiple commands\n");
+		//print_treeeee(root, 0);
+        return exec_pipe(root, env, STDIN_FILENO);
     }
-
-	else if (is_builtin(root->data[0]) == 0)
-	{
-		printf("Processing built-in-command and no pipe not binary command just fucntion\n");
-        return execute_builtin(root);
-	}
-    else
+    if (is_builtin(root->data[0]) == 0)
     {
-		printf("Processing command single command\n");
-        //execute_command(root, env);
+        printf("Processing built-in-command and no pipe, not binary command, just function\n");
+        execute_builtin(root);
+        return 0;
     }
 
-    return 1;
+    // Set up heredoc if present
+    // if (root->redirections && root->redirections->type == HER_DOC)
+    // {
+    //     if (set_up_input(root) != 0)
+    //     {
+    //         fprintf(stderr, "Error: Failed to set up heredoc\n");
+    //         return 1;
+    //     }
+    // }
+
+    int pid = fork();
+    if (pid < 0)
+    {
+        perror("fork");
+        return 1;
+    }
+    else if (pid == 0)
+    {
+        execute_command(root, env);
+        exit(1);
+    }
+    while (wait(&status) > 0);
+    if (WIFEXITED(status))
+        return WEXITSTATUS(status);
+
+    else
+        return 1;
 }
+
+
+

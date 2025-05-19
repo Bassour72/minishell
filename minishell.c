@@ -52,8 +52,8 @@ int main(int ac, char **av, char **env)
 			continue;
 		// lable parsing tests========
 		t_env *env_l = NULL;
-		env_generate(&env_l, env);
-		expand_all(env_l, tree);
+		// env_generate(&env_l, env);
+		// expand_all(env_l, tree);
 		//print_tree(tree, 0);
 
 
@@ -62,7 +62,7 @@ int main(int ac, char **av, char **env)
 		 execution(tree, env);
 		// if (tree->data)
 		// 	printf("here echo command built-in [%s]\n",tree->data[0]);
-		 free_tree(tree); //note this is for freeing the tree
+		// free_tree(tree); //note this is for freeing the tree
 		// take the tree and execute here
 
 		

@@ -70,6 +70,7 @@ typedef struct s_tree
 	char 			**data;
 	t_type			type;
 	t_red			*redirections;
+	int pipe_out; //for execution 
 	struct s_tree	*left;
 	struct s_tree	*right;
 }				t_tree;
