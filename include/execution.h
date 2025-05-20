@@ -22,5 +22,9 @@ int		builtin_echo(t_tree *root);
 int	cd_change_current_directory(t_tree *root);
 
 int pwd_print_working_directory(t_tree *root);
+int is_builtin(char *command);
+int execute_builtin(t_tree *root, char **env);
+int	env_environment(t_tree *root, char **env);
+char *get_binary_file_path(t_tree *root, char **env);
 
 #endif

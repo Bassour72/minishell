@@ -1,4 +1,4 @@
-CFLAGS =  -fsanitize=address -g3 #-Wall -Wextra -Werror
+CFLAGS =  #-fsanitize=address -g3 #-Wall -Wextra -Werror
 
 NAME = minishell
 
@@ -14,7 +14,8 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		execution/built-in/builtin_cd.c execution/built-in/builtin_env.c \
 		execution/built-in/builtin_exit.c  execution/built-in/builtin_export.c \
 		execution/built-in/builtin_pwd.c execution/built-in/builtin_unset.c \
-		execution/path_utils.c
+		execution/path_utils.c 
+		# debug / memory_debugging.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -39,3 +40,6 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+debug: fclean all #todo 
+	valgrind --leak-check=full --track-fds=yes ./minishell 
