@@ -2,12 +2,21 @@
 
 int pwd_print_working_directory(t_tree *root)
 {
-	char	*pathname ;
+    char *pathname;
+    int fd = STDOUT_FILENO; 
 
-	pathname = getcwd(0, 100);
-	if (!pathname)
-		return 1;
-	printf("%s\n",pathname);
-	free(pathname);
-	return 0;
+    // if (root && root->out_fd != -1)
+    //     fd = root->out_fd;
+
+    pathname = getcwd(NULL, 0);
+    if (!pathname)
+    {
+        perror("pwd: getcwd");
+        return 1;
+    }
+
+    write(fd, pathname, ft_strlen(pathname));
+	write(fd, "\n", 1);
+    free(pathname);
+    return 0;
 }
