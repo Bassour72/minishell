@@ -1,7 +1,7 @@
 #include "../../include/execution.h"
 #include <stdbool.h>
 
-int	is_valid_identifier(const char *identifier)
+static int	is_valid_identifier(const char *identifier)
 {
 	int	i;
 
@@ -58,7 +58,6 @@ char *get_env_value(const char *identifier)
 		return (NULL);
 	return ft_strdup(ft_strtrim(identifier + i + 1, "\""));
 }
-
 
 void swap_node(t_env *a, t_env *b)
 {
@@ -151,35 +150,63 @@ void print_env_export_sort(t_env *env_list)
 	free_env_list(sorted_list);
 }
 
+t_env *is_exist_env(t_env *env_list, const char *new_key)
+{
+	t_env *tmp = env_list;
+
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->key, new_key) == 0)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+
 void	add_env(t_tree *root, t_env **env_list)
 {
-	t_env	*new_node;
-	t_env	*ptr;
+	t_env *existing;
+	t_env *new_node;
+	t_env *ptr;
+	char *new_key;
+	char *new_value;
 
 	if (!root || !root->data[1])
 		return ;
 	if (is_valid_identifier(root->data[1]) == 1)
 	{
-		printf(" export: `%s': not a valid identifier\n", root->data[1]);
+		printf("export: `%s': not a valid identifier\n", root->data[1]);
+		return ;
+	}
+	new_key = get_env_key(root->data[1]);
+	new_value = get_env_value(root->data[1]);
+	existing = is_exist_env(*env_list, new_key);
+	if (existing)
+	{
+		if (new_value)
+		{
+			free(existing->value);
+			existing->value = new_value;
+		}
+		free(new_key);
 		return ;
 	}
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
 		return ;
-	new_node->key = get_env_key(root->data[1]);
-	printf("key[%s]\n", new_node->key);
-	new_node->value = get_env_value(root->data[1]);
-	printf("value[%s]\n", new_node->value);
+	new_node->key = new_key;
+	new_node->value = new_value;
 	new_node->next = NULL;
 	if (!*env_list)
-	{
 		*env_list = new_node;
-		return ;
+	else
+	{
+		ptr = *env_list;
+		while (ptr->next)
+			ptr = ptr->next;
+		ptr->next = new_node;
 	}
-	ptr = *env_list;
-	while (ptr->next)
-		ptr = ptr->next;
-	ptr->next = new_node;
 }
 
 int export_command_builtin(t_tree *root, t_env **env_list)
