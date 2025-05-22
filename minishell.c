@@ -36,10 +36,12 @@ void expand_all(t_env *env, t_tree *root)
 int main(int ac, char **av, char **env)
 {
 	t_tree	*tree = NULL;
+	t_env *env_list = NULL;	
 	char	*input;
 	input = NULL;
 	// signal(SIGINT, handle_exit);
     // signal(SIGTERM, handle_exit);
+	env_generate(&env_list, env);
 	while (1)
 	{
 		//get the input from the terminal
@@ -67,7 +69,7 @@ int main(int ac, char **av, char **env)
 
 		//lable =^=^=^=^=^=^=^=^=^=^=
 
-		execution(tree, env);
+		execution(tree, env, &env_list);
 		// if (tree->data)
 		// 	printf("here echo command built-in [%s]\n",tree->data[0]);
 		 //free_tree(tree); //note this is for freeing the tree

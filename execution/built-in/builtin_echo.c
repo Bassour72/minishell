@@ -1,48 +1,45 @@
 #include "../../include/execution.h"
 
-int has_no_newline_option(t_tree *root, int *value)
+int has_no_newline_option(t_tree *root, int *start_index)
 {
-	int i;
-	int j;
+    int arg_idx = 1;
+    int char_idx;
 
-	i = 1;
-	while (root->data[i] != 0)
-	{
-		if (root->data[i][0] != '-')
-			break;
-		j = 1;
-		while (root->data[i][j] == 'n')
-			j++;
-		if (root->data[i][j] == '\0' && j > 1)
-			i++;
-		else
-			break;
-	}
-	*value = i;
-	return (i > 1);
+    if (!root || !root->data)
+        return (0);
+    while (root->data[arg_idx])
+    {
+        if (root->data[arg_idx][0] != '-')
+            break;
+        char_idx = 1;
+        while (root->data[arg_idx][char_idx] == 'n')
+            char_idx++;
+        if (root->data[arg_idx][char_idx] == '\0' && char_idx > 1)
+            arg_idx++;
+        else
+            break;
+    }
+    *start_index = arg_idx;
+    return (arg_idx > 1);
 }
 
-int	builtin_echo(t_tree *root)
+int builtin_echo(t_tree *root)
 {
-	int i;
-	int has_newline;
+    int arg_idx;
+    int suppress_newline = 0;
 
-	i = 1;
-	has_newline = 1;
-	if (root == NULL || root->data == NULL || root->data[0] == NULL)
-		return (1);
-	if (has_no_newline_option(root, &i))
-		has_newline = 0;
-	while (root->data[i] != NULL)
-	{
-		write(1, root->data[i], ft_strlen(root->data[i]));
-		if (root->data[i + 1] != NULL)
-			write(1, " ", 1);
-		i++;
-	}
-	if (has_newline)
-		write(1, "\n", 1);
-	return (0);
+    if (!root || !root->data || !root->data[0])
+        return (1);
+    if (has_no_newline_option(root, &arg_idx))
+        suppress_newline = 1;
+    while (root->data[arg_idx])
+    {
+        write(STDOUT_FILENO, root->data[arg_idx], ft_strlen(root->data[arg_idx]));
+        if (root->data[arg_idx + 1])
+            write(1, " ", 1);
+        arg_idx++;
+    }
+    if (!suppress_newline)
+        write(1, "\n", 1);
+    return (0);
 }
-
-

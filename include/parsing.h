@@ -71,6 +71,8 @@ typedef struct s_tree
 	t_type			type;
 	t_red			*redirections;
 	int pipe_out; //for execution 
+	int out_fd;
+	int is_forked;
 	struct s_tree	*left;
 	struct s_tree	*right;
 }				t_tree;

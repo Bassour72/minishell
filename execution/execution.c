@@ -70,7 +70,7 @@ int set_up_input(t_tree *root)
 	return 0;
 }
 
-int execute_builtin(t_tree *root, char **env)
+int execute_builtin(t_tree *root, char **env, t_env **env_list)
 {
 	
 	if (strcmp((root->data[0]), "echo") == 0 || strcmp((root->data[0]), "ECHO") == 0)
@@ -80,7 +80,7 @@ int execute_builtin(t_tree *root, char **env)
 	}
 	else if (strcmp((root->data[0]), "cd") == 0 || strcmp((root->data[0]), "CD") == 0)
 	{
-		cd_change_current_directory(root);
+		cd_change_working_directory(root);
 		return (0);
 	}
 	else if (strcmp((root->data[0]), "pwd") == 0 || strcmp((root->data[0]), "pwd") == 0)
@@ -94,9 +94,15 @@ int execute_builtin(t_tree *root, char **env)
 		return (0);
 	}
 	else if (strcmp((root->data[0]), "exit") == 0 || strcmp((root->data[0]), "exit") == 0)
+    {
+        exit_exe(root);
 		return (0);
+    }
 	else if (strcmp((root->data[0]), "export") == 0 || strcmp((root->data[0]), "export") == 0)
+    {
+        export_command_builtin(root, env_list);
 		return (0);
+    }
 	else if (strcmp((root->data[0]), "unset") == 0 || strcmp((root->data[0]), "unset") == 0)
 		return (0);
 	else
@@ -152,211 +158,167 @@ void cleanup(int *pipefd, int input_fd, t_tree *root)
 		free_tree_exe(root);
 }
 
-int exec_pipe(t_tree *root, char **env, int input_fd) 
+int exec_pipe(t_tree *root, char **env, int input_fd, t_env **env_list)
 {
-    int pipefd[2] = {-1, -1};
+    int pipefd[2];
     pid_t pid_left, pid_right;
     int status = 0;
-    
-    if (!root)
+
+    if (!root || root->type != PIPE)
         return 1;
-    
-    if (root->type == PIPE) 
+
+    // Create pipe
+    if (pipe(pipefd) == -1)
     {
-        // Create pipe
-        if (pipe(pipefd) == -1)
+        perror("pipe");
+        return 1;
+    }
+
+    // Fork left child (command before the pipe)
+    pid_left = fork();
+    if (pid_left < 0)
+    {
+        perror("fork");
+        close(pipefd[0]);
+        close(pipefd[1]);
+        return 1;
+    }
+    else if (pid_left == 0)
+    {
+        // Left child: Set input and output
+        if (input_fd != STDIN_FILENO)
         {
-            perror("pipe");
-           // free_tree_exe(root);
-            return 1;
+            dup2(input_fd, STDIN_FILENO);
+            close(input_fd);
         }
-        
-        // Fork left child (command before the pipe)
-        pid_left = fork();
-        if (pid_left < 0) 
-        {
-            perror("fork");
-            close(pipefd[0]);
-            close(pipefd[1]);
-            //free_tree_exe(root);
-            return 1;
-        } 
-        else if (pid_left == 0) 
-        {
-            // Child process for left command
-            if (input_fd != STDIN_FILENO)
-            {
-                dup2(input_fd, STDIN_FILENO);
-                close(input_fd);
-            }
-            
-            // Redirect stdout to pipe write end
-            dup2(pipefd[1], STDOUT_FILENO);
-            close(pipefd[0]);  // Close unused pipe read end
-            close(pipefd[1]);  // Close after dup2
-            
-            // Execute left subtree
-            if (root->left->type == PIPE)
-                exec_pipe(root->left, env, STDIN_FILENO);
-            else
-                execute_command(root->left, env);
-                
-            exit(EXIT_FAILURE);  // Should not reach here
-        }
-        
-        // Fork right child (command after the pipe)
-        pid_right = fork();
-        if (pid_right < 0)
-        {
-            perror("fork");
-            close(pipefd[0]);
-            close(pipefd[1]);
-            if (input_fd != STDIN_FILENO)
-                close(input_fd);
-           // free_tree_exe(root);
-            return 1;
-        } 
-        else if (pid_right == 0) 
-        {
-            // Child process for right command
-            close(pipefd[1]);  // Close unused pipe write end
-            
-            if (input_fd != STDIN_FILENO)
-                close(input_fd);
-                
-            // Redirect stdin to pipe read end
-            dup2(pipefd[0], STDIN_FILENO);
-            close(pipefd[0]);  // Close after dup2
-            
-            // Execute right subtree
-            if (root->right->type == PIPE)
-                exec_pipe(root->right, env, STDIN_FILENO);
-            else
-                execute_command(root->right, env);
-                
-            exit(EXIT_FAILURE);  // Should not reach here
-        }
-        
-        // Parent process cleanup
+        dup2(pipefd[1], STDOUT_FILENO); // Output to pipe write end
+        close(pipefd[0]); // Close unused read end
+        close(pipefd[1]); // Close after dup2
+
+        // Execute left subtree
+        if (root->left->type == PIPE)
+            exec_pipe(root->left, env, STDIN_FILENO, env_list);
+        else
+            execute_command(root->left, env, env_list);
+        exit(EXIT_FAILURE); // Should not reach here
+    }
+
+    // Fork right child (command after the pipe)
+    pid_right = fork();
+    if (pid_right < 0)
+    {
+        perror("fork");
         close(pipefd[0]);
         close(pipefd[1]);
         if (input_fd != STDIN_FILENO)
             close(input_fd);
-            
-        // Wait for all child processes to complete
-        waitpid(pid_left, &status, 0);
-        waitpid(pid_right, &status, 0);
-        
-        // Clean up and return
-        //free_tree_exe(root);
-        if (WIFEXITED(status))
-            return WEXITSTATUS(status);
-        else
-            return 1;
+        return 1;
     }
-    // else 
-    // {
-    //     // Direct command execution (no pipe)
-    //     if (input_fd != STDIN_FILENO)
-    //     {
-    //         dup2(input_fd, STDIN_FILENO);
-    //         close(input_fd);
-    //     }
-        
-    //     execute_command(root, env);
-    //     //free_tree_exe(root);
-    //     exit(EXIT_FAILURE);  // Should not reach here
-    // }
-    
+    else if (pid_right == 0)
+    {
+        // Right child: Set input
+        close(pipefd[1]); // Close unused write end
+        dup2(pipefd[0], STDIN_FILENO); // Input from pipe read end
+        close(pipefd[0]); // Close after dup2
+        if (input_fd != STDIN_FILENO)
+            close(input_fd);
+
+        // Execute right subtree
+        if (root->right->type == PIPE)
+            exec_pipe(root->right, env, STDIN_FILENO, env_list);
+        else
+            execute_command(root->right, env, env_list);
+        exit(EXIT_FAILURE); // Should not reach here
+    }
+
+    // Parent: Clean up and wait
+    close(pipefd[0]);
+    close(pipefd[1]);
+    if (input_fd != STDIN_FILENO)
+        close(input_fd);
+
+    waitpid(pid_left, &status, 0);
+    waitpid(pid_right, &status, 0);
+
+    if (WIFEXITED(status))
+        return WEXITSTATUS(status);
     return 1;
 }
 
 
-void execute_command(t_tree *root, char **env) 
+void execute_command(t_tree *root, char **env, t_env **env_list)
 {
-	if (!root || !root->data || !root->data[0]) 
-	{
-		fprintf(stderr, "Error: Empty command node\n");
-		exit(EXIT_FAILURE);
-	}
+    char *binary_path;
 
-	if (is_builtin(root->data[0]) == 0) 
-	{
-		execute_builtin(root, env);
-		exit(EXIT_SUCCESS);
-	}
+    if (!root || !root->data || !root->data[0])
+    {
+        fprintf(stderr, "Error: Empty command node\n");
+        free_tree_exe(root);
+        exit(EXIT_FAILURE);
+    }
 
-	char *binary_path = get_binary_file_path(root, env);
-	if (!binary_path)
-	{
-		fprintf(stderr, "Error: Command not found: %s\n", root->data[0]);
-		free_tree_exe(root);
-		exit(EXIT_FAILURE);
-	}
-	execve(binary_path, root->data, env);
-	perror("execve");
-	free(binary_path);
-	free_tree_exe(root);
-	exit(EXIT_FAILURE);
+    // Execute built-in command
+    if (is_builtin(root->data[0]) == 0)
+    {
+        execute_builtin(root, env, env_list);
+        free_tree_exe(root);
+        exit(EXIT_SUCCESS);
+    }
+
+    // Execute external command
+    binary_path = get_binary_file_path(root, env);
+    if (!binary_path)
+    {
+        fprintf(stderr, "Error: Command not found: %s\n", root->data[0]);
+        free_tree_exe(root);
+        exit(EXIT_FAILURE);
+    }
+
+    execve(binary_path, root->data, env);
+    perror("execve");
+    free(binary_path);
+    free_tree_exe(root);
+    exit(EXIT_FAILURE);
 }
-
-int execution(t_tree *root, char **env)
+int execution(t_tree *root, char **env, t_env **env_list)
 {
     int status = 0;
     pid_t pid;
-    
+
+    root->is_forked = 0;
     if (!root)
-        return 1;
+        return (1);
     if (root->type == PIPE)
     {
-        printf("[execution function] Processing pipe and multiple commands\n");
-        
-        // Create a copy of the tree for execution
-        t_tree *exec_tree = root;
-        
-        // Execute the pipe tree
-        status = exec_pipe(exec_tree, env, STDIN_FILENO);
-        
-        // Free the original tree when done
-       // free_tree_exe(root);
-        
-        return status;
+        root->is_forked = 1;
+        status = exec_pipe(root, env, STDIN_FILENO, env_list);
+        free_tree_exe(root);
+        return (status);
     }
-    
     if (is_builtin(root->data[0]) == 0)
     {
-        printf("Processing built-in-command and no pipe, not binary command, just function\n");
-        execute_builtin(root, env);
+        execute_builtin(root, env, env_list);
         free_tree_exe(root);
-        return 0;
+        return (0);
     }
-    
-    // Handle regular command (no pipe)
+
     pid = fork();
     if (pid < 0)
     {
         perror("fork");
         free_tree_exe(root);
-        return 1;
+        return (1);
     }
     else if (pid == 0)
     {
-        // Child process executes the command
-        execute_command(root, env);
-        // This shouldn't be reached, but just in case
+        execute_command(root, env, env_list);
         exit(EXIT_FAILURE);
     }
-    
-    // Parent waits for child to complete
     waitpid(pid, &status, 0);
-    
-    // Free the command tree in the parent process
-   // free_tree_exe(root);
-    
+    free_tree_exe(root);
     if (WIFEXITED(status))
         return WEXITSTATUS(status);
-    else
-        return 1;
+    return (1);
 }
 
 
