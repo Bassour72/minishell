@@ -28,5 +28,6 @@ int	env_environment(t_tree *root, char **env);
 char *get_binary_file_path(t_tree *root, char **env);
 int	exit_exe(t_tree *root);
 int	export_command_builtin(t_tree *root, t_env **env_list);
+int	builtin_unset_environment(t_tree *root, t_env **env_list, char **env);
 
 #endif

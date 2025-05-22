@@ -104,7 +104,10 @@ int execute_builtin(t_tree *root, char **env, t_env **env_list)
 		return (0);
     }
 	else if (strcmp((root->data[0]), "unset") == 0 || strcmp((root->data[0]), "unset") == 0)
+    {
+        builtin_unset_environment(root, env_list, env);
 		return (0);
+    }
 	else
 		return (1);
 }

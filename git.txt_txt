@@ -1,0 +1,14 @@
+git checkout execution
+git add .
+git commit -m "Implement export logic and env parsing in execution"
+git push origin execution
+
+git checkout main
+git pull origin main
+
+git merge execution
+
+git push origin main
+git checkout main
+git pull origin main
+git merge main
