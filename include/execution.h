@@ -16,7 +16,7 @@ typedef struct s_pipe
 } t_pipe;
 // int exec_pipe(t_tree *root, char **env, int input_fd);
 int		execution(t_tree *root, char **env, t_env **env_list);
-void execute_command(t_tree *root, char **env, t_env **env_list);
+void    execute_command(t_tree *root, char **env, t_env **env_list);
 char    *get_binary_file_path(t_tree *root, char **env);
 int		builtin_echo(t_tree *root);
 int	cd_change_working_directory(t_tree *root);
@@ -29,5 +29,12 @@ char *get_binary_file_path(t_tree *root, char **env);
 int	exit_exe(t_tree *root);
 int	export_command_builtin(t_tree *root, t_env **env_list);
 int	builtin_unset_environment(t_tree *root, t_env **env_list, char **env);
+void execute_command(t_tree *root, char **env, t_env **env_list);
+void free_tree_exe(t_tree *root);
+int exec_pipe(t_tree *root, char **env, int input_fd, t_env **env_list);
+void write_here_doc(int fd, char *limiter_nl);
+int execution(t_tree *root, char **env, t_env **env_list);
+
+void free_tree_exe(t_tree *root);
 
 #endif
