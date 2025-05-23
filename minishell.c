@@ -29,6 +29,8 @@ void expand_all(t_env *env, t_tree *root)
 
 int main(int ac, char **av, char **env)
 {
+	// if (!isatty(STDIN_FILENO))
+	// 	return (0);
 	atexit(f);
 	t_tree	*tree = NULL;
 	char	*input;
@@ -52,11 +54,11 @@ int main(int ac, char **av, char **env)
 		if (!tree)
 			continue;
 		// lable parsing tests========
-		t_env *env_l = NULL;
-		env_generate(&env_l, env);
-		expand_all(env_l, tree);
-		print_tree(tree, 0);
-		free_env_list(env_l);
+		// t_env *env_l = NULL;
+		// env_generate(&env_l, env);
+		// expand_all(env_l, tree);
+		// print_tree(tree, 0);
+		// free_env_list(env_l);
 
 
 		//lable =^=^=^=^=^=^=^=^=^=^=

@@ -8,10 +8,10 @@ static int creat_the_list_from_zero(t_node **list, char **data)
 	if (!*list)
 		return (0);
 	(*list)->data = ft_strdup(*data);
+	free(*data);
 	if (!(*list)->data)
 		return (0);
 	(*list)->next = NULL;
-	free(*data);
 	*data = NULL;
 	return (1);
 }
@@ -27,11 +27,11 @@ static int append_new_node_to_existen_list(t_node **list, char **data)
 	if (!node)
 		return (0);
 	node->data = ft_strdup(*data);
+	free(*data);
 	if (!node->data)
-		return (0);
+		return (free(node), 0);
 	node->next = NULL;
 	tmp->next = node;
-	free(*data);
 	*data = NULL;
 	return (1);
 }

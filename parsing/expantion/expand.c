@@ -35,6 +35,8 @@ char **linked_list_to_double_array(t_node *list)
 	return (commands_array);
 }
 
+
+
 int  expand_commands(t_env *env, char ***arr)
 {
 	int i;
@@ -43,17 +45,38 @@ int  expand_commands(t_env *env, char ***arr)
 	char **tmp;
 	char *old_str;
 
-	i = -1;
-	while ((*arr)[++i])
-		(*arr)[i] = do_expantion(env, (*arr)[i]);
+	// i = -1;
+	// while ((*arr)[++i])
+	// {
+	// 	printf("\033[32mbefor: [%s]\033[0m\n",(*arr)[i]);
+	// 	(*arr)[i] = do_expantion(env, (*arr)[i]);
+	// 	printf("\033[32mafter: [%s]\033[0m\n",(*arr)[i]);
+	// }
+
+	if (!arr_to_list(arr, &list))
+		return (0);
+
+	if (!do_exp(&list, env))
+		return (0); //todo free
 
 	char *joined_arr = join_arr_elements(*arr);
 	list = split(joined_arr);
-
 	free(joined_arr);
 	// printf("joined_arr [%s]\n", joined_arr);
 	if (!list)
 		return (0);
+
+	joined_arr = NULL;
+	t_node *l = list;
+	while (l)
+	{
+		printf(">%s\n", l->data);
+		joined_arr = ft_strjoin(joined_arr, l->data);
+		l = l->next;
+	}
+
+	// *arr = ft_split2(joined_arr);
+
 	tmp = *arr;
 	*arr = linked_list_to_double_array(list);
 	

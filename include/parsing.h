@@ -187,6 +187,10 @@ char *do_expantion(t_env *env, char *str);
 char *trim_quotes(char *str);
 
 
+
+int arr_to_list(char **arr, t_node **list);
+int do_exp(t_node **list, t_env *env);
+
 //syntax_validate
 int validate_sytax(t_token *token);
 int validate_quotes(char *str);
