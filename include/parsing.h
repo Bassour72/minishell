@@ -10,6 +10,9 @@
 #include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+#include "env.h"
+#include "expand.h"
 //-------------------------------------------------------------------
 
 //node types --------------------------------------------------------
@@ -37,18 +40,18 @@ typedef enum e_type
 
 extern const char *typetostring[];
 
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}			t_env;
+// typedef struct s_env
+// {
+// 	char			*key;
+// 	char			*value;
+// 	struct s_env	*next;
+// }			t_env;
 
-typedef struct s_node
-{
-	char *data;
-	struct s_node *next;
-}	t_node;
+// typedef struct s_node
+// {
+// 	char *data;
+// 	struct s_node *next;
+// }	t_node;
 
 typedef struct s_red
 {
@@ -166,10 +169,10 @@ char **append_command(char **old_list, char *new_cmd);
 void append_redirection(t_red *redirections_list, char *data, t_type type);
 
 //env
-void	free_env_list(t_env *list);
-void	print_env(t_env *env); //note to debug only
-int		env_generate(t_env **env_list, char **env);
-char	*env_get_value(t_env *list, char *key);
+// void	free_env_list(t_env *list);
+// void	print_env(t_env *env); //note to debug only
+// int		env_generate(t_env **env_list, char **env);
+// char	*env_get_value(t_env *list, char *key);
 
 //lable expend
 char *join_arr_elements(char **arr);
@@ -177,17 +180,17 @@ void update_quote(char str_i, int *quote);
 void skip_single_quote_area(char *str, int *i);
 void free_2d_arr(char **arr);
 char *extract_target_key(char *str);
-int  expand(t_env *env, t_tree *root);
-	//redirections
-int expand_redirections(t_env *env, t_red *red);
-	//do_expand
-char *do_expantion(t_env *env, char *str);
-	//trim_quotes
-char *trim_quotes(char *str);
-	//do_expantion
-char *do_expantion(t_env *env, char *str);
-	//trim_quotes
-char *trim_quotes(char *str);
+// int  expand(t_env *env, t_tree *root);
+// 	//redirections
+// int expand_redirections(t_env *env, t_red *red);
+// 	//do_expand
+// char *do_expantion(t_env *env, char *str);
+// 	//trim_quotes
+// char *trim_quotes(char *str);
+// 	//do_expantion
+// char *do_expantion(t_env *env, char *str);
+// 	//trim_quotes
+// char *trim_quotes(char *str);
 
 
 

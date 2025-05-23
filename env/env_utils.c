@@ -1,4 +1,4 @@
-#include "../include/parsing.h"
+#include "../include/env.h"
 
 char *env_get_value(t_env *list, char *key)
 {
