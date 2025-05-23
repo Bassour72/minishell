@@ -27,14 +27,24 @@ void expand_all(t_env *env, t_tree *root)
 		expand_all(env, root->right);
 }
 
+//todo for debug
+// void handle_exit(int sig) 
+// {
+//     print_memory_leaks();
+//     exit(0);
+// }
 int main(int ac, char **av, char **env)
 {
 	// if (!isatty(STDIN_FILENO))
 	// 	return (0);
 	atexit(f);
 	t_tree	*tree = NULL;
+	t_env *env_list = NULL;	
 	char	*input;
 	input = NULL;
+	// signal(SIGINT, handle_exit);
+    // signal(SIGTERM, handle_exit);
+	env_generate(&env_list, env);
 	while (1)
 	{
 		//get the input from the terminal
@@ -66,7 +76,7 @@ int main(int ac, char **av, char **env)
 		//  execution(tree, env);
 		// if (tree->data)
 		// 	printf("here echo command built-in [%s]\n",tree->data[0]);
-		 free_tree(tree); //note this is for freeing the tree
+		 //free_tree(tree); //note this is for freeing the tree
 		// take the tree and execute here
 
 		
