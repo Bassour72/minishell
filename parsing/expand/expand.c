@@ -41,7 +41,7 @@ t_expand_node *split_tokens_into_nodes(t_expand_token *tokens)
 	t_expand_node *main_list = NULL;
 	t_expand_node *sub_list;
 
-	print_expand_tokens(tokens);
+	// print_expand_tokens(tokens);
 	int joinable = 0;
 	while (tokens)
 	{
@@ -52,7 +52,7 @@ t_expand_node *split_tokens_into_nodes(t_expand_token *tokens)
 				return (free_expand_list_nodes(main_list), NULL);
 			main_list = join_two_lists(main_list, sub_list);
 		}
-		else if (tokens->data && tokens->data[0])
+		else if (tokens->data)
 		{
 			main_list = append_str_to_list(main_list, tokens->data, tokens->join);
 			if (!main_list)
@@ -63,7 +63,18 @@ t_expand_node *split_tokens_into_nodes(t_expand_token *tokens)
 	return (main_list);
 }
 
+void free_expand_list_nodes(t_expand_node *list)
+{
+	t_expand_node *tmp;
 
+	while (list)
+	{
+		tmp = list;
+		list = list->next;
+		free(tmp->data);
+		free(tmp);
+	}
+}
 
 static void free_double_array(char **arr) //add to utils
 {
@@ -90,7 +101,10 @@ char **expand(char **old_args, t_env *env)
 		return (NULL);
 	if (tokenize(joined_arr, &tokens, env) == R_FAIL)
 		return (NULL);
+	// print_expand_tokens(tokens);
 	nodes_list = split_tokens_into_nodes(tokens);
+	// for(t_expand_node *tmp = nodes_list; tmp; tmp = tmp->next)
+	// 	printf(">>{%s}\n", 
 	free_expand_tokens_list(tokens);
 	free(joined_arr);
 	if (!nodes_list)
