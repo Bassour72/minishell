@@ -25,9 +25,17 @@ typedef enum e_type
 	//FIX ME 
 	//TODO RED_OUTPUT
 	HER_DOC,  			// <<
+<<<<<<< HEAD
 	BLOCK,//
 	OP_AND,//
 	OP_OR,//
+=======
+	//FIX ME 
+	//TODO RED_OUTPUT
+	BLOCK, 
+	OP_AND,
+	OP_OR,
+>>>>>>> execution
 	PAREN_OPEN,
 	PAREN_CLOSE,
 	WILD_CARD,
