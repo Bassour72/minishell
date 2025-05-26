@@ -37,4 +37,12 @@ int execution(t_tree *root, char **env, t_env **env_list);
 
 void free_tree_exe(t_tree *root);
 
+void write_here_doc(int fd, char *limiter_nl);
+int handle_heredocs(t_tree *root);
+int setup_here_doc(t_tree *root);
+int setup_input_for_read(t_tree *root);
+int setup_input_for_append(t_tree *root);
+int setup_input_for_trunk(t_tree *root);
+int setup_redirections(t_tree *root);
+
 #endif
