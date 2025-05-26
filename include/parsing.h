@@ -23,6 +23,8 @@ typedef enum e_type
 	RED_APPEND, // >
 	RED_TRUNK,	// >>
 	HER_DOC,  			// <<
+	//FIX ME 
+	//TODO RED_OUTPUT
 	BLOCK, 
 	OP_AND,
 	OP_OR,
@@ -53,6 +55,8 @@ typedef struct s_node
 typedef struct s_red
 {
 	t_type			type;
+	char *target;
+	char *heredoc_path;
 	char			*data; //note file name or herdoc 
 	struct s_red	*next;
 }	t_red;
