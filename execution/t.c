@@ -230,7 +230,7 @@ int setup_here_doc(t_tree *root)
 	return 0;
 }
 
-int set_up_input(t_tree *root)
+int setup_redirections(t_tree *root)
 {
 	if (!root || !root->redirections)
 		return 0;

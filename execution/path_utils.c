@@ -12,6 +12,16 @@ static char *extract_path_variable(char **env)
     return (NULL);
 }
 
+int has_point(char *command)
+{
+    if (access(command, X_OK) == 0)
+    {
+        return (0);
+    }
+    else
+        return (1);
+}
+
 static char *join_binary_path_with_command(char *command, char *binary_path)
 {
     char **binaries_path;
@@ -19,6 +29,8 @@ static char *join_binary_path_with_command(char *command, char *binary_path)
 	char *temp;
     int i = 0;
 
+    if (!has_point(command))
+        return (ft_strdup(command));
     binaries_path = ft_split(binary_path, ':');
     if (binaries_path == NULL)
         return (NULL);
@@ -61,6 +73,7 @@ char *get_binary_file_path(t_tree *root, char **env)
         return NULL;
     }
 
+   
     binary_path = extract_path_variable(env);
     if (binary_path == NULL)
         return (NULL);

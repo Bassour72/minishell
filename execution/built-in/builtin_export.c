@@ -18,7 +18,7 @@ static int	is_valid_identifier(const char *identifier)
 	}
 	return (0);
 }
-char *get_env_key(const char *identifier)
+static char *get_env_key(const char *identifier)
 {
 	char *new_key;
 	int len = 0;
@@ -44,7 +44,7 @@ char *get_env_key(const char *identifier)
 	return new_key;
 }
 
-char *get_env_value(const char *identifier)
+static char *get_env_value(const char *identifier)
 {
 	int i = 0;
 
@@ -59,7 +59,7 @@ char *get_env_value(const char *identifier)
 	return ft_strdup(ft_strtrim(identifier + i + 1, "\""));
 }
 
-void swap_node(t_env *a, t_env *b)
+static void swap_node(t_env *a, t_env *b)
 {
 	if (!a || !b)
 		return;
@@ -71,7 +71,7 @@ void swap_node(t_env *a, t_env *b)
 	b->value = temp_value;
 }
 
-void list_env_add_back(t_env **env_list, t_env *new_node_env)
+static void list_env_add_back(t_env **env_list, t_env *new_node_env)
 {
 	t_env *copy;
 
@@ -88,7 +88,7 @@ void list_env_add_back(t_env **env_list, t_env *new_node_env)
 	}
 }
 
-t_env *copy_env_list(t_env *env_list)
+static t_env *copy_env_list(t_env *env_list)
 {
 	t_env *copy = NULL;
 	t_env *new_node;
@@ -107,7 +107,7 @@ t_env *copy_env_list(t_env *env_list)
 	return copy;
 }
 
-t_env *sort_env_list(t_env *env_list)
+static t_env *sort_env_list(t_env *env_list)
 {
 	bool swapped;
 	t_env *ptr;
@@ -131,7 +131,7 @@ t_env *sort_env_list(t_env *env_list)
 	return env_list;
 }
 
-void print_env_export_sort(t_env *env_list)
+static void print_env_export_sort(t_env *env_list)
 {
 	t_env *sorted_list;
 	t_env *tmp;
@@ -150,7 +150,7 @@ void print_env_export_sort(t_env *env_list)
 	free_env_list(sorted_list);
 }
 
-t_env *is_exist_env(t_env *env_list, const char *new_key)
+static t_env *is_exist_env(t_env *env_list, const char *new_key)
 {
 	t_env *tmp = env_list;
 
@@ -164,7 +164,7 @@ t_env *is_exist_env(t_env *env_list, const char *new_key)
 }
 
 
-void	add_env(t_tree *root, t_env **env_list)
+static void	add_env(t_tree *root, t_env **env_list)
 {
 	t_env *existing;
 	t_env *new_node;
