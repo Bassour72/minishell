@@ -15,12 +15,8 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		execution/built-in/builtin_cd.c execution/built-in/builtin_env.c \
 		execution/built-in/builtin_exit.c  execution/built-in/builtin_export.c \
 		execution/built-in/builtin_pwd.c execution/built-in/builtin_unset.c \
-<<<<<<< HEAD
 		execution/path_utils.c \
-		execution/input_utils.c 
-=======
 		execution/redir_utils.c
->>>>>>> execution
 		# debug / memory_debugging.c
 
 OBJ = $(SRC:.c=.o)

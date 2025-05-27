@@ -28,11 +28,6 @@ typedef enum e_type
 	BLOCK,//
 	OP_AND,//
 	OP_OR,//
-	//FIX ME 
-	//TODO RED_OUTPUT
-	BLOCK, 
-	OP_AND,
-	OP_OR,
 	PAREN_OPEN,
 	PAREN_CLOSE,
 	WILD_CARD,
@@ -62,6 +57,8 @@ typedef struct s_red
 	t_type			type;
 	char *target;
 	char *heredoc_path;
+	int	in_fd;
+	int out_fd;
 	char			*data; //note file name or herdoc 
 	struct s_red	*next;
 }	t_red;

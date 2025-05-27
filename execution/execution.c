@@ -51,7 +51,11 @@ int execute_builtin(t_tree *root, char **env, t_env **env_list)
 
 void execute_external_command(t_tree *root, char **env) 
 {
+	sleep(2);
+	printf("inside the execute external command \n ");
 	char *binary_path = get_binary_file_path(root, env);
+	sleep(2);
+	printf("check if the get_binary_file_path return success value*************[%s] \n ", binary_path);
 	if (!binary_path) 
 	{
 		fprintf(stderr, "Error: Command not found: %s\n", root->data[0]);
@@ -59,6 +63,8 @@ void execute_external_command(t_tree *root, char **env)
 		exit(EXIT_FAILURE);
 	}
 	execve(binary_path, root->data, env);
+	sleep(2);
+	printf("here check if execve return error\n ");
 	perror("execve");
 	free(binary_path);
 	free_tree_exe(root);
@@ -73,7 +79,13 @@ void run_command(t_tree *root, char **env, t_env **env_list)
 		free_tree_exe(root);
 		exit(EXIT_FAILURE);
 	}
+	sleep(2);
+	printf("Run command for check the redirections \n ");
 	apply_redirections(root->redirections);
+	/*
+		free_tree_exe(root);
+		exit(EXIT_FAILURE);
+	*/
 	if (is_builtin(root->data[0]) == 0) 
 	{
 		int status = execute_builtin(root, env, env_list);
@@ -94,8 +106,9 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 
 	if (root->type == BLOCK) 
 	{
-		
-	   expand(*env_list, root);
+		//sleep(2);
+		printf("here in exec tree for one command \n ");
+	   	expand(*env_list, root);
 		//todo check here the expand fucntion return int 
 		if (in_subshell)
 		{
@@ -135,13 +148,29 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 		else
 		{
 			//todo Not in subshell: execute built-ins directly, fork for external commands
-			apply_redirections(root->redirections);
+			//sleep(2);
+			printf("in the exec tree for check why the program exit and the entered is valide command\n ");
+			
 			printf("here 1\n\n\n");
 			if (is_builtin(root->data[0]) == 0)
 			{
-				return execute_builtin(root, env, env_list);
+				sleep(2);
+				printf("does built-in fucntion \n ");
+				int saved_stdin = dup(STDIN_FILENO);
+			int saved_stdout = dup(STDOUT_FILENO);
+			apply_redirections(root->redirections);
+			int built_in_status = execute_builtin(root, env, env_list);
+			dup2(saved_stdin, STDIN_FILENO);   // ✅ Restore stdin
+			dup2(saved_stdout, STDOUT_FILENO); // ✅ Restore stdout
+			close(saved_stdin);
+			close(saved_stdout);
+			return (built_in_status);
+
 			}
 			pid_t pid = fork();
+			
+			sleep(2);
+			printf("for pid-----------------------[%d] \n ", pid);
 			if (pid < 0) 
 			{
 				perror("fork");
@@ -149,13 +178,18 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 			}
 			if (pid == 0) 
 			{
+				apply_redirections(root->redirections);
 				if (input_fd != STDIN_FILENO)
 				{
 					dup2(input_fd, STDIN_FILENO);
 					close(input_fd);
 				}
+				// sleep(2);
+				 printf("open the execute external command \n ");
 				execute_external_command(root, env);
-				exit(EXIT_FAILURE); //todo Unreachable
+				// sleep(2);
+				printf("here for  check why it exit and should not exit\n ");
+				//exit(EXIT_FAILURE); //todo Unreachable
 			}
 			if (pid > 0) 
 			{
@@ -288,7 +322,10 @@ int execution(t_tree *root, char **env, t_env **env_list)
 {
 	if (!root) 
 		return 1;
-	prepare_heredocs(root);
+	//if (root->redirections !=NULL)
+	prepare_heredocs(root); //todo check if the it command and has heredoc
+	sleep(2);
+	printf("exection fucntion \n ");
 	int status = exec_tree(root, env, env_list, STDIN_FILENO, 0);
 	free_tree_exe(root);
 	return status;

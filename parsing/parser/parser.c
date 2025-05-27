@@ -19,11 +19,11 @@ t_tree *parser(t_tree *tree, char *input)
 		printf("tokenizer returns NULL\n");
 		return (NULL);
 	}
-	if (!validate_sytax(tokenized_input))
-	{
+	// if (!validate_sytax(tokenized_input))
+	// {
 
-		return (free_tokens_list(tokenized_input), NULL);
-	}
+	// 	return (free_tokens_list(tokenized_input), NULL);
+	// }
 
 	printf("validate syntax OK\n");
 

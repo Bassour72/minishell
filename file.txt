@@ -1,0 +1,2 @@
+end of fucntion for check why it's exit with error 
+hello
