@@ -74,7 +74,7 @@ int	env_generate(t_env **env_list, char **env)
 	int		i;
 	
 	if (!env)
-		return (1);
+		return (-1);
 	i = -1;
 	while (env[++i])
 	{

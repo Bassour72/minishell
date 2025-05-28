@@ -8,6 +8,13 @@
 #include <fcntl.h>
 
 
+typedef struct s_env_var 
+{
+    char *key;             // e.g., "PATH"
+    char *value;           // e.g., "/usr/bin"
+    int exported;         // true if visible to execve/env
+    struct s_env_var *next;
+} t_env_var;
 typedef struct s_pipe
 {
     int fds[2];         // fds[0] for reading, fds[1] for writing
@@ -24,7 +31,7 @@ int handle_shlvl(char *argv0, t_env **env_list);
 int pwd_print_working_directory(t_tree *root);
 int is_builtin(char *command);
 int execute_builtin(t_tree *root, char **env, t_env **env_list);
-int	env_environment(t_tree *root, char **env);
+int	env_environment(t_tree *root, char **env, t_env *env_list);
 char *get_binary_file_path(t_tree *root, char **env);
 int	exit_exe(t_tree *root);
 int	export_command_builtin(t_tree *root, t_env **env_list);
