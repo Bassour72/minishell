@@ -57,6 +57,7 @@ long compute_next_shlvl(long current)
 		return 0;
 	if (current >= 1000)
 	{
+		//todo 
 		fprintf(stderr, "bash: warning: shell level (%ld) too high, resetting to 1\n", current);
 		return 1;
 	}
@@ -80,6 +81,7 @@ int update_env_shlvl(t_env **env_list, long value)
 		{
 			free(tmp->value);
 			tmp->value = new_value;
+			printf("\033[32msss->%s\033[0m\n", tmp->value);
 			return 0;
 		}
 		tmp = tmp->next;
@@ -91,9 +93,10 @@ int update_env_shlvl(t_env **env_list, long value)
 
 int should_increment_shlvl(char *program_path)
 {
+	//printf("\n\n\n\n   ======[%s]==== \n\n\n", program_path);
 	if (ft_strcmp(program_path, "./minishell") == 0)
 	{
-		printf("\n\n\n\n   ======[%s]==== \n\n\n", program_path);
+		printf("\n\n\n\n   ======###[%s]==== \n\n\n", program_path);
 		return (0);
 	}
 	else
@@ -110,11 +113,11 @@ int handle_shlvl(char *argv0, t_env **env_list)
 	if (!env_list || !*env_list)
 		return 1;
 	shlvl_str = env_get_value(*env_list, "SHLVL");
-	printf("\n\n\n\n  shlvl_str ======[%s]==== \n\n\n", shlvl_str);
+	//printf("\n\n\n\n  shlvl_str ======[%s]==== \n\n\n", shlvl_str);
 	current = parse_shlvl(shlvl_str);
-	printf("\n\n\n\n  current ======[%lld]==== \n\n\n", current);
+	printf("\n\n\n\n  current ======[%ld]==== \n\n\n", current);
 	next = compute_next_shlvl(current);
-	printf("\n\n\n\n  next ======[%lld]==== \n\n\n", next);
+	//printf("\n\n\n\n  next ======[%ld]==== \n\n\n", next);
 	return update_env_shlvl(env_list, next);
 }
 
@@ -158,25 +161,7 @@ void expand_all(t_env *env, t_tree *root)
 //     print_memory_leaks();
 //     exit(0);
 // }
-int	init_env(t_env **env_list)
-{
-	t_env *tmp;
-	tmp = malloc(sizeof(t_env));
-	tmp->key = ft_strdup("OLDPWD");
-	tmp->value = NULL;
-	tmp->next = NULL;
-	/******************************** */
-	tmp->next = malloc(sizeof(t_env));
-	tmp->next->key = ft_strdup("PWD");
-	tmp->next->value = ft_strdup("/home/ybassour/Desktop/minishell");;
-	tmp->next->next = NULL;
-	/********************************************* */
-	tmp->next->next = malloc(sizeof(t_env));
-	tmp->next->next->key = ft_strdup("SHLVL");
-	tmp->next->next->value = ft_strdup("1");;
-	tmp->next->next->next = NULL;
-	*env_list = tmp;
-}
+
 int main(int ac, char **av, char **env)
 {
 	//atexit(f);
@@ -186,11 +171,9 @@ int main(int ac, char **av, char **env)
 	input = NULL;
 	// signal(SIGINT, handle_exit);
     // signal(SIGTERM, handle_exit);
-	printf("if has null [%p]\n", *env);
-	printf("herer\n");
-	if (env_generate(&env_list, env) == -1)
-		init_env(&env_list);
-	print_env(env_list);
+	// printf("if has null [%p]\n", *env);
+	// printf("herer\n");
+	env_generate(&env_list, env);
 	handle_shlvl(av[0],&env_list);
 	while (1)
 	{
@@ -218,7 +201,7 @@ int main(int ac, char **av, char **env)
 
 
 		//lable =^=^=^=^=^=^=^=^=^=^=
-		
+		print_env(env_list);
 		execution(tree, env, &env_list);
 		// if (tree->data)
 		// 	printf("here echo command built-in [%s]\n",tree->data[0]);

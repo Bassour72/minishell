@@ -65,10 +65,13 @@ static void swap_node(t_env *a, t_env *b)
 		return;
 	char *temp_key = a->key;
 	char *temp_value = a->value;
+	bool temp_exported = a->exported;
 	a->key = b->key;
 	a->value = b->value;
+	a->exported = b->exported;
 	b->key = temp_key;
 	b->value = temp_value;
+	b->exported = temp_exported;
 }
 
 static void list_env_add_back(t_env **env_list, t_env *new_node_env)
@@ -98,8 +101,13 @@ static t_env *copy_env_list(t_env *env_list)
 		new_node = malloc(sizeof(t_env));
 		if (!new_node)
 			return NULL;
-		new_node->key = env_list->key ? strdup(env_list->key) : NULL;
-		new_node->value = env_list->value ? strdup(env_list->value) : NULL;
+		new_node->key = NULL;
+		new_node->value = NULL;
+		if (env_list->key)
+			new_node->key = strdup(env_list->key);
+		if (env_list->value)
+			new_node->value = strdup(env_list->value);
+		new_node->exported = env_list->exported;
 		new_node->next = NULL;
 		list_env_add_back(&copy, new_node);
 		env_list = env_list->next;
@@ -142,9 +150,15 @@ static void print_env_export_sort(t_env *env_list)
 	while (tmp)
 	{
 		if (tmp->value)
-			printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
+		{
+			if (tmp->exported)
+				printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
+		}
 		else
-			printf("declare -x %s\n", tmp->key);
+		{
+			if (tmp->exported)
+				printf("declare -x %s\n", tmp->key);
+		}
 		tmp = tmp->next;
 	}
 	free_env_list(sorted_list);
@@ -197,6 +211,7 @@ static void	add_env(t_tree *root, t_env **env_list)
 		return ;
 	new_node->key = new_key;
 	new_node->value = new_value;
+	new_node->exported = true;
 	new_node->next = NULL;
 	if (!*env_list)
 		*env_list = new_node;
@@ -212,17 +227,9 @@ static void	add_env(t_tree *root, t_env **env_list)
 int export_command_builtin(t_tree *root, t_env **env_list)
 {
 	if (env_list == NULL)
-	{
-		
-		printf("\n\n\n [%s]\n\n\n", "root->data[1]");
-		sleep(1);
 		return 0;
-	}
 	else if (root->data[1] != NULL)
 	{
-
-		printf("\n\n\n [%s]\n\n\n", "for add noe env");
-		sleep(1);
 		add_env(root, env_list);
 		return 0;
 	}

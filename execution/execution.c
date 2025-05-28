@@ -48,13 +48,36 @@ int execute_builtin(t_tree *root, char **env, t_env **env_list)
 	return 1;
 }
 
-
-void execute_external_command(t_tree *root, char **env) 
+char **gen_new_env(t_env *env_list)
 {
-	sleep(2);
+	int len = 0;
+	t_env *tmp = env_list;
+	while (tmp)
+	{
+		len++;
+		tmp = tmp->next;
+	}
+
+	char **new_env = malloc(sizeof(char *) * (len + 1));
+	tmp = env_list;
+	int i = 0;
+	while (tmp)
+	{
+		char *key = ft_strjoin(tmp->key, "=");
+		char *end = ft_strjoin(key, tmp->value);
+		new_env[i++] = end;
+		tmp = tmp->next;
+	}
+	new_env[i] = NULL;
+	return (new_env);
+}
+
+void execute_external_command(t_tree *root, char **env, t_env **env_list) 
+{
+	// sleep(2);
 	printf("inside the execute external command \n ");
-	char *binary_path = get_binary_file_path(root, env);
-	sleep(2);
+	char *binary_path = get_binary_file_path(root, env,env_list);
+	//sleep(2);
 	printf("check if the get_binary_file_path return success value*************[%s] \n ", binary_path);
 	if (!binary_path) 
 	{
@@ -62,8 +85,9 @@ void execute_external_command(t_tree *root, char **env)
 		free_tree_exe(root);
 		exit(EXIT_FAILURE);
 	}
-	execve(binary_path, root->data, env);
-	sleep(2);
+	char **new_env = gen_new_env(*env_list);
+	execve(binary_path, root->data, new_env);
+	//sleep(2);
 	printf("here check if execve return error\n ");
 	perror("execve");
 	free(binary_path);
@@ -79,7 +103,7 @@ void run_command(t_tree *root, char **env, t_env **env_list)
 		free_tree_exe(root);
 		exit(EXIT_FAILURE);
 	}
-	sleep(2);
+	//sleep(2);
 	printf("Run command for check the redirections \n ");
 	apply_redirections(root->redirections);
 	/*
@@ -92,7 +116,7 @@ void run_command(t_tree *root, char **env, t_env **env_list)
 		free_tree_exe(root);
 		exit(status);
 	}
-	execute_external_command(root, env);
+	execute_external_command(root, env, env_list);
 	exit(EXIT_FAILURE); //todo Unreachable
 }
 
@@ -200,7 +224,7 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 				}
 				// sleep(2);
 				 printf("open the execute external command \n ");
-				execute_external_command(root, env);
+				execute_external_command(root, env, env_list);
 				// sleep(2);
 				printf("here for  check why it exit and should not exit\n ");
 				//exit(EXIT_FAILURE); //todo Unreachable

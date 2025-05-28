@@ -10,6 +10,7 @@
 #include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <stdbool.h>
 //-------------------------------------------------------------------
 
 //node types --------------------------------------------------------
@@ -43,6 +44,7 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
+	int exported;
 	struct s_env	*next;
 }			t_env;
 

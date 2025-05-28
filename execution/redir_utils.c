@@ -8,7 +8,7 @@
 void write_heredoc(int fd, const char *limiter) 
 {
 	char *line;
-		sleep(2);
+	//	sleep(2);
 	printf("Write heredoc \n ");
 	while (1) 
 	{
@@ -44,7 +44,7 @@ void create_heredoc(t_red *redir)
 
 void prepare_heredocs(t_tree *root) 
 {
-		sleep(2);
+		//sleep(2);
 	printf("Prepare heredoc \n ");
 	if (!root) return;
 	t_red *redir = root->redirections;
