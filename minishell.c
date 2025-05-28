@@ -158,6 +158,25 @@ void expand_all(t_env *env, t_tree *root)
 //     print_memory_leaks();
 //     exit(0);
 // }
+int	init_env(t_env **env_list)
+{
+	t_env *tmp;
+	tmp = malloc(sizeof(t_env));
+	tmp->key = ft_strdup("OLDPWD");
+	tmp->value = NULL;
+	tmp->next = NULL;
+	/******************************** */
+	tmp->next = malloc(sizeof(t_env));
+	tmp->next->key = ft_strdup("PWD");
+	tmp->next->value = ft_strdup("/home/ybassour/Desktop/minishell");;
+	tmp->next->next = NULL;
+	/********************************************* */
+	tmp->next->next = malloc(sizeof(t_env));
+	tmp->next->next->key = ft_strdup("SHLVL");
+	tmp->next->next->value = ft_strdup("1");;
+	tmp->next->next->next = NULL;
+	*env_list = tmp;
+}
 int main(int ac, char **av, char **env)
 {
 	//atexit(f);
@@ -167,7 +186,11 @@ int main(int ac, char **av, char **env)
 	input = NULL;
 	// signal(SIGINT, handle_exit);
     // signal(SIGTERM, handle_exit);
-	env_generate(&env_list, env);
+	printf("if has null [%p]\n", *env);
+	printf("herer\n");
+	if (env_generate(&env_list, env) == -1)
+		init_env(&env_list);
+	print_env(env_list);
 	handle_shlvl(av[0],&env_list);
 	while (1)
 	{

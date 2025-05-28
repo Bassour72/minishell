@@ -35,7 +35,7 @@ int execute_builtin(t_tree *root, char **env, t_env **env_list)
 	if (strcmp(root->data[0], "pwd") == 0)
 		return pwd_print_working_directory(root);
 	if (strcmp(root->data[0], "env") == 0)
-		return env_environment(root, env);
+		return env_environment(root, env, *env_list);
 	if (strcmp(root->data[0], "exit") == 0)
 	{
 		exit_exe(root);
@@ -103,7 +103,21 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 	{
 		return 1;
 	}
-
+	if (root->data == NULL && root->type == BLOCK)
+	{
+		// this is a subshell (e.g., due to parentheses)
+		pid_t pid = fork();
+		if (pid == 0) {
+			// execute the inner subtree in child process
+			 exec_tree(root->left, env, env_list, STDIN_FILENO, 0);
+			exit(EXIT_SUCCESS);
+		} else {
+			// wait for child
+			int status;
+			waitpid(pid, &status, 0);
+			return WEXITSTATUS(status);
+		}
+	}
 	if (root->type == BLOCK) 
 	{
 		//sleep(2);
@@ -112,7 +126,7 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 		//todo check here the expand fucntion return int 
 		if (in_subshell)
 		{
-			printf("here 2\n\n\n");
+			printf("int subshell here 2\n\n\n");
 			//todo Always fork for commands in subshells (e.g., pipelines)
 			pid_t pid = fork();
 			if (pid < 0)
@@ -152,19 +166,19 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 			printf("in the exec tree for check why the program exit and the entered is valide command\n ");
 			
 			printf("here 1\n\n\n");
-			if (is_builtin(root->data[0]) == 0)
+			if (root->data != NULL &&  is_builtin(root->data[0]) == 0)
 			{
 				sleep(2);
 				printf("does built-in fucntion \n ");
 				int saved_stdin = dup(STDIN_FILENO);
-			int saved_stdout = dup(STDOUT_FILENO);
-			apply_redirections(root->redirections);
-			int built_in_status = execute_builtin(root, env, env_list);
-			dup2(saved_stdin, STDIN_FILENO);   // ✅ Restore stdin
-			dup2(saved_stdout, STDOUT_FILENO); // ✅ Restore stdout
-			close(saved_stdin);
-			close(saved_stdout);
-			return (built_in_status);
+				int saved_stdout = dup(STDOUT_FILENO);
+				apply_redirections(root->redirections);
+				int built_in_status = execute_builtin(root, env, env_list);
+				dup2(saved_stdin, STDIN_FILENO);
+				dup2(saved_stdout, STDOUT_FILENO);
+				close(saved_stdin);
+				close(saved_stdout);
+				return (built_in_status);
 
 			}
 			pid_t pid = fork();
