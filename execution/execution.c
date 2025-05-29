@@ -4,7 +4,7 @@
 
 //todo remove this 
 //fixme 
-
+//todo you don't need to share **env with all fucntion 
 
 int is_builtin(char *command) 
 {
@@ -50,26 +50,50 @@ int execute_builtin(t_tree *root, char **env, t_env **env_list)
 
 char **gen_new_env(t_env *env_list)
 {
-	int len = 0;
-	t_env *tmp = env_list;
-	while (tmp)
-	{
-		len++;
-		tmp = tmp->next;
-	}
-
-	char **new_env = malloc(sizeof(char *) * (len + 1));
+    int len;
+    t_env *tmp;
+	 char **new_env;
+	 int i;
+	len = 0;
 	tmp = env_list;
-	int i = 0;
-	while (tmp)
-	{
-		char *key = ft_strjoin(tmp->key, "=");
-		char *end = ft_strjoin(key, tmp->value);
-		new_env[i++] = end;
-		tmp = tmp->next;
-	}
-	new_env[i] = NULL;
-	return (new_env);
+    while (tmp)
+    {
+        len++;
+        tmp = tmp->next;
+    }
+    new_env = malloc(sizeof(char *) * (len + 1));
+    if (!new_env)
+        return NULL;
+
+    tmp = env_list;
+    i = 0;
+	size_t key_len;
+    size_t value_len;
+    size_t total_len;
+    char *env_string;
+    while (tmp)
+    {
+        key_len = ft_strlen(tmp->key);
+        value_len = ft_strlen(tmp->value);
+        total_len = key_len + value_len + 2;
+
+        char *env_string = malloc(total_len);
+        if (!env_string)
+        {
+            while (i > 0)
+                free(new_env[--i]);
+            free(new_env);
+            return NULL;
+        }
+        ft_strcpy(env_string, tmp->key);
+        ft_strcat(env_string, "=");
+        ft_strcat(env_string, tmp->value);
+
+        new_env[i++] = env_string;
+        tmp = tmp->next;
+    }
+    new_env[i] = NULL;
+    return new_env;
 }
 
 void execute_external_command(t_tree *root, char **env, t_env **env_list) 
