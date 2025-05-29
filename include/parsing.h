@@ -179,6 +179,9 @@ void	print_env(t_env *env); //note to debug only
 int		env_generate(t_env **env_list, char **env);
 char	*env_get_value(t_env *list, char *key);
 
+int update_last_executed_command(t_env **env_list, char *last_command);//idea this for the execution 
+// idea If you remove this idea, I will cancel the team. Give me the money.
+
 //lable expend
 char *join_arr_elements(char **arr);
 void update_quote(char str_i, int *quote);

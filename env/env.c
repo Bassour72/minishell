@@ -11,6 +11,25 @@ void print_env(t_env *env) //note to debug
 	}
 }
 
+int update_last_executed_command(t_env **env_list, char *last_command)
+{
+	t_env *env_tmp;
+	char *tmp_last_command;
+	 env_tmp = *env_list;
+	 printf("update_last_executed_command(t_env **env_list, char *last_command)(%s)\n", last_command);
+	while (env_tmp != NULL)
+	{
+		if (ft_strcmp(env_tmp->key, "_") == 0)
+		{
+			free(env_tmp->value);
+			env_tmp->value = ft_strdup(last_command);
+			return 0;
+		}
+		env_tmp = env_tmp->next;
+	}
+	return 1;
+}
+
 void print_debugg(char **env)
 {
 	while (*env != NULL)
@@ -63,6 +82,8 @@ static int	create_env_node(t_env **list, char *key, char *value)
 	new_node->key = key;
 	new_node->value = value;
 	new_node->exported = 1;
+	if (!ft_strcmp(key, "_"))
+		new_node->exported = 0;
 	new_node->next = NULL;
 
 	if (!*list)
