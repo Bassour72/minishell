@@ -31,9 +31,9 @@ int execute_builtin(t_tree *root, char **env, t_env **env_list)
 	if (strcmp(root->data[0], "echo") == 0)
 		return builtin_echo(root);
 	if (strcmp(root->data[0], "cd") == 0)
-		return cd_change_working_directory(root);
+		return cd_change_working_directory(root, env_list);
 	if (strcmp(root->data[0], "pwd") == 0)
-		return pwd_print_working_directory(root);
+		return pwd_print_working_directory(root, env_list);
 	if (strcmp(root->data[0], "env") == 0)
 		return env_environment(root, env, *env_list);
 	if (strcmp(root->data[0], "exit") == 0)
@@ -192,7 +192,7 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 			printf("here 1\n\n\n");
 			if (root->data != NULL &&  is_builtin(root->data[0]) == 0)
 			{
-				sleep(2);
+				//sleep(2);
 				printf("does built-in fucntion \n ");
 				int saved_stdin = dup(STDIN_FILENO);
 				int saved_stdout = dup(STDOUT_FILENO);
@@ -207,7 +207,7 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 			}
 			pid_t pid = fork();
 			
-			sleep(2);
+			//sleep(2);
 			printf("for pid-----------------------[%d] \n ", pid);
 			if (pid < 0) 
 			{
@@ -276,7 +276,6 @@ int exec_pipe(t_tree *root, char **env, int input_fd, t_env **env_list)
 	int pipefd[2];
 	pid_t pid_left, pid_right;
 	int status = 0;
-
 	if (!root || root->type != PIPE) 
 	{
 		return 1;
@@ -287,7 +286,6 @@ int exec_pipe(t_tree *root, char **env, int input_fd, t_env **env_list)
 		perror("pipe");
 		return 1;
 	}
-
 	pid_left = fork();
 	if (pid_left < 0) 
 	{
@@ -355,14 +353,45 @@ int exec_pipe(t_tree *root, char **env, int input_fd, t_env **env_list)
 	return 1;
 }
 
+int is_forkred(t_tree *root)
+{
+    if (root == NULL)
+        return 0;
+    if (root->type == PIPE)
+        return 1;
+    if (is_forkred(root->left))
+        return 1;
+    if (is_forkred(root->right))
+        return 1;
+    return 0;
+}
+void propagate_fork_flag(t_tree *root, int is_forked)
+{
+    if (!root)
+        return;
+    root->is_forked = is_forked;
+    if (root->type == PIPE)
+    {
+        propagate_fork_flag(root->left, 1);
+        propagate_fork_flag(root->right, 1);
+    }
+    else
+    {
+        propagate_fork_flag(root->left, is_forked);
+        propagate_fork_flag(root->right, is_forked);
+    }
+}
 
 int execution(t_tree *root, char **env, t_env **env_list)
 {
 	if (!root) 
 		return 1;
-	//if (root->redirections !=NULL)
+	if (is_forkred(root))
+    	propagate_fork_flag(root, 1);
+	else
+    	propagate_fork_flag(root, 0);
 	prepare_heredocs(root); //todo check if the it command and has heredoc
-	sleep(2);
+	//sleep(2);
 	printf("exection fucntion \n ");
 	int status = exec_tree(root, env, env_list, STDIN_FILENO, 0);
 	free_tree_exe(root);

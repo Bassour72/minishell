@@ -201,7 +201,7 @@ int main(int ac, char **av, char **env)
 
 
 		//lable =^=^=^=^=^=^=^=^=^=^=
-		print_env(env_list);
+		//print_env(env_list);
 		execution(tree, env, &env_list);
 		// if (tree->data)
 		// 	printf("here echo command built-in [%s]\n",tree->data[0]);
