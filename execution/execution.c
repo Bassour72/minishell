@@ -133,6 +133,7 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 		pid_t pid = fork();
 		if (pid == 0) {
 			// execute the inner subtree in child process
+			apply_redirections(root->redirections);
 			 exec_tree(root->left, env, env_list, STDIN_FILENO, 0);
 			exit(EXIT_SUCCESS);
 		} else {
