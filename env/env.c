@@ -94,7 +94,7 @@ int	init_env(t_env **env_list)
 	/********************************************* */
 	tmp->next->next = malloc(sizeof(t_env));
 	tmp->next->next->key = ft_strdup("SHLVL");
-	tmp->next->next->value = ft_strdup("1");;
+	tmp->next->next->value = ft_strdup("0");;
 	tmp->next->next->exported = 1;
 	tmp->next->next->next = NULL;
 	/*********************************/

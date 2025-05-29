@@ -25,9 +25,9 @@ typedef struct s_pipe
 int		execution(t_tree *root, char **env, t_env **env_list);
 void    execute_command(t_tree *root, char **env, t_env **env_list);
 int		builtin_echo(t_tree *root);
-int	cd_change_working_directory(t_tree *root);
+int	cd_change_working_directory(t_tree *root, t_env **env_list);
 int handle_shlvl(char *argv0, t_env **env_list);
-int pwd_print_working_directory(t_tree *root);
+int pwd_print_working_directory(t_tree *root, t_env **env_list);
 int is_builtin(char *command);
 int execute_builtin(t_tree *root, char **env, t_env **env_list);
 int	env_environment(t_tree *root, char **env, t_env *env_list);

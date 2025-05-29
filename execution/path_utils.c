@@ -70,7 +70,7 @@ char *get_binary_file_path(t_tree *root, char **env, t_env **env_list)
 
      if (!root || !root->data || !root->data[0])
     {
-        fprintf(stderr, "Error: Empty command node\n");
+        fprintf(stderr, "Error: Empty command node\n"); //todo change fprint
         return NULL;
     }
 

@@ -26,7 +26,7 @@ void write_heredoc(int fd, const char *limiter)
 
 void create_heredoc(t_red *redir) 
 {
-	sleep(2);
+	//sleep(2);
 	printf("Create heredoc \n ");
 	char tmp_path[] = "/tmp/heredocXXXXXX";
 	int fd = open(tmp_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -60,7 +60,7 @@ void prepare_heredocs(t_tree *root)
 
 void apply_redirections(t_red *redir) 
 {
-	sleep(2);
+	//sleep(2);
 	printf("apply redirections \n ");
 	if (redir == NULL)
 		return ;

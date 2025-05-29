@@ -39,6 +39,7 @@ int	exit_exe(t_tree *root)
 {
 	long	code;
 
+	
 	if (!root || !root->data)
         exit(0);
     if (!root->is_forked)
