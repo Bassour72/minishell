@@ -169,7 +169,6 @@ void run_command(t_tree *root, char **env, t_env **env_list)
 	exit(EXIT_FAILURE); //todo Unreachable
 }
 
-
 int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_subshell) 
 {
 	if (!root) 
@@ -319,7 +318,6 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 	}
 	return 1;
 }
-
 
 int exec_pipe(t_tree *root, char **env, int input_fd, t_env **env_list)
 {
