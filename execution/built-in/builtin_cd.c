@@ -70,6 +70,14 @@ static char	*resolve_path(char *arg, t_env *env)
 	return (strdup(arg));
 }
 
+int	has_permission_to_change_directory(t_tree *root, t_env **env)
+{
+	if (access(root->data[0], X_OK) != 0)
+		return (1);
+	else
+		return 1;
+}
+
 int	cd_change_working_directory(t_tree *root, t_env **env)
 {
 	char	*old;
@@ -115,7 +123,13 @@ int	cd_change_working_directory(t_tree *root, t_env **env)
 		}
 	}
 	else
+	{
+		if (has_permission_to_change_directory(root, env))
+		{
+			printf("not has permission\n");
+		}
 		perror("cd");
+	}
 	free(old);
 	free(dir);
 	return (res != 0);

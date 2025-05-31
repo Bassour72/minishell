@@ -1,0 +1,33 @@
+end of fucntion for check why it's exit with error 
+ open the execute external command 
+ inside the execute external command 
+ check if the get_binary_file_path return success value*************[/usr/bin/ls] 
+total 204
+-rw-r--r--  1 ybassour 2024_khouribga   209 May 29 19:49 mon.tx
+drwxr-xr-x 12 ybassour 2024_khouribga  4096 May 29 19:43 .
+-rwxr-xr-x  1 ybassour 2024_khouribga 75104 May 29 19:39 minishell
+drwxr-xr-x  3 ybassour 2024_khouribga   153 May 29 19:39 execution
+drwxr-xr-x  2 ybassour 2024_khouribga    70 May 29 19:39 env
+drwxr-xr-x  8 ybassour 2024_khouribga   255 May 29 19:39 parsing
+-rw-r--r--  1 ybassour 2024_khouribga  5768 May 29 19:39 minishell.o
+drwxr-xr-x  2 ybassour 2024_khouribga  4096 May 29 19:39 _libft
+drwxr-xr-x  7 ybassour 2024_khouribga   204 May 29 18:45 .git
+-rw-r--r--  1 ybassour 2024_khouribga  1187 May 29 17:48 youn.txt
+-rw-r--r--  1 ybassour 2024_khouribga  1148 May 29 17:40 out.txt
+-rw-r--r--  1 ybassour 2024_khouribga  1169 May 29 15:08 file.txt
+drwxr-xr-x  3 ybassour 2024_khouribga    32 May 29 14:30 three
+drwxr-xr-x  2 ybassour 2024_khouribga     6 May 29 12:07 two
+-rw-r--r--  1 ybassour 2024_khouribga  4638 May 29 11:00 minishell.c
+drwxr-xr-x  4 ybassour 2024_khouribga    39 May 29 10:57 ..
+drwxr-xr-x  2 ybassour 2024_khouribga    57 May 29 08:53 include
+-rw-r--r--  1 ybassour 2024_khouribga  1678 May 27 20:01 makefile
+-rw-r--r--  1 ybassour 2024_khouribga   264 May 22 19:58 git.txt_txt
+-rw-r--r--  1 ybassour 2024_khouribga   327 May 22 14:09 test_comd.txt
+drwxr-xr-x  2 ybassour 2024_khouribga    32 May 22 14:09 debug
+drwxr-xr-x  2 ybassour 2024_khouribga    27 May 21 18:58 .vscode
+-rw-r--r--  1 ybassour 2024_khouribga 51361 May 17 18:00 .excalidraw
+-rw-r--r--  1 ybassour 2024_khouribga   270 May 17 18:00 git.txt
+-rw-r--r--  1 ybassour 2024_khouribga  6746 May 14 20:20 split2.c
+-rw-r--r--  1 ybassour 2024_khouribga     8 May 14 13:56 .gitignore
+-rw-r--r--  1 ybassour 2024_khouribga   604 May 11 20:25 update.txt
+-rw-r--r--  1 ybassour 2024_khouribga    11 May 11 20:25 README.md
