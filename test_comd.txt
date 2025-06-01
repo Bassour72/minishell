@@ -21,3 +21,6 @@ line2$
 //todo for print env
 printenv | grep ELECTRON
 
+///
+(echo hekk > file1 && (echo fd > FILE2 || ECHO > FILE3) >> FILE4 > FILE5 << FILE6 ) >> FILE7
+///

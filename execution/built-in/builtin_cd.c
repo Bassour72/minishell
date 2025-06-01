@@ -114,6 +114,7 @@ void set_env_var(char *key, char *value, t_env **env)
     *env = new;
 }
 
+
 static char *expand_home(char *arg, t_env *env)
 {
     char *home;
@@ -214,6 +215,57 @@ int cd_change_working_directory(t_tree *root, t_env **env)
             perror("cd");
             free(old_pwd);
             free(parent);
+
+
+int	is_exist_directory(t_tree *root)
+{
+	if (!root || !root->data)
+		return 1;
+	else if (root->data[0] && root->data[1])
+	{
+		if (access(root->data[1], F_OK) != 0)
+		{
+			printf("the directory not exist[%d]  \n", access(root->data[1], F_OK));
+			return 1;
+		}
+	}
+	return 0;
+}
+
+ int has_permission(t_tree *root, t_env **env, char *current)
+{
+	is_exist_directory(root);
+	if (!root || !root->data)
+	{
+		printf("root =NULL || root->data == NULL \n");
+		return (1);
+	}
+	if (root->data[0] && !root->data[1])
+	{
+		printf("root =NULL || root->data == NULL \n");
+		return (1);
+	}
+	if (access(current, X_OK) == 0)
+	{
+		printf("the dirctory does not has permission for change \n");
+		return (1);
+	}
+	return 0;
+}
+int	cd_change_working_directory(t_tree *root, t_env **env)
+{
+	char	*old;
+	char	*new;
+	char	*dir;
+	int		res;
+
+	old = getcwd(NULL, 0);
+	if (has_permission(root, env, old))
+		return 1;
+	if (!old)
+	{
+        if (root->data[0] && ft_strcmp(root->data[1], "-") == 0)
+
             return 1;
         }
 
