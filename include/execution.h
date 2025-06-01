@@ -5,9 +5,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 #include <fcntl.h>
 
 
+extern int g_exit_status;
 typedef struct s_env_var 
 {
     char *key;             // e.g., "PATH"

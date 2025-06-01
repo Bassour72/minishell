@@ -12,7 +12,6 @@ char *get_env_path_parent(const char *path)
     // Skip trailing slashes
     while (len > 0 && path[len - 1] == '/')
         len--;
-
     // Find the last '/' before the basename
     while (len > 0 && path[len - 1] != '/')
         len--;

@@ -135,6 +135,9 @@ void execute_external_command(t_tree *root, char **env, t_env **env_list)
 		exit(EXIT_FAILURE);
 	}
 	char **new_env = gen_new_env(*env_list);
+	// signal(SIGINT, SIG_DFL);
+	// signal(SIGQUIT, SIG_DFL);
+
 	execve(binary_path, root->data, new_env);
 	//sleep(2);
 	printf("here check if execve return error\n ");
@@ -180,12 +183,14 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 	{
 		// this is a subshell (e.g., due to parentheses)
 		pid_t pid = fork();
-		if (pid == 0) {
+		if (pid == 0) 
+		{
 			// execute the inner subtree in child process
 			apply_redirections(root->redirections);
-			 exec_tree(root->left, env, env_list, STDIN_FILENO, 0);
+			exec_tree(root->left, env, env_list, STDIN_FILENO, 0);
 			exit(EXIT_SUCCESS);
-		} else {
+		} else 
+		{
 			// wait for child
 			int status;
 			waitpid(pid, &status, 0);
@@ -371,6 +376,7 @@ int exec_pipe(t_tree *root, char **env, int input_fd, t_env **env_list)
 		}
 		return 1;
 	}
+	
 	if (pid_right == 0) 
 	{
 		//todo Right child: set input
@@ -396,8 +402,13 @@ int exec_pipe(t_tree *root, char **env, int input_fd, t_env **env_list)
 	waitpid(pid_left, &status, 0);
 	waitpid(pid_right, &status, 0);
 
+	if (WIFSIGNALED(status))
+	{
+		int s = WTERMSIG(status);
+	}
 	if (WIFEXITED(status)) 
 	{
+		
 		return WEXITSTATUS(status);
 	}
 	return 1;
