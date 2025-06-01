@@ -1,5 +1,6 @@
 
 #include "include/execution.h"
+int g_exit_status = 0; 
 /* Special handling for SHLVL*/
 int update_env_shlvl(t_env **env_list, long value);
 int env_add_back(t_env **env_list, const char *key, const char *value);
@@ -155,12 +156,18 @@ void expand_all(t_env *env, t_tree *root)
 		expand_all(env, root->right);
 }
 
+
 //todo for debug
-// void handle_exit(int sig) 
-// {
-//     print_memory_leaks();
-//     exit(0);
-// }
+void handle_sigint_prompt(int sig)
+{
+    (void)sig;
+   rl_replace_line("", 0);
+    write(STDOUT_FILENO, "\n", 1);
+    rl_on_new_line();
+   rl_redisplay();
+    g_exit_status = 130;
+}
+
 
 int main(int ac, char **av, char **env)
 {
@@ -169,8 +176,10 @@ int main(int ac, char **av, char **env)
 	t_env *env_list = NULL;	
 	char	*input;
 	input = NULL;
-	// signal(SIGINT, handle_exit);
-    // signal(SIGTERM, handle_exit);
+
+	signal(SIGINT, handle_sigint_prompt);
+	signal(SIGQUIT, SIG_IGN);
+
 	// printf("if has null [%p]\n", *env);
 	// printf("herer\n");
 	env_generate(&env_list, env);

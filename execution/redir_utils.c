@@ -4,6 +4,13 @@
 
 //todo remove this 
 //fixme 
+void heredoc_handler(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+	g_exit_status = 130;
+	exit(130);  // Ensure heredoc process exits
+}
 
 void write_heredoc(int fd, const char *limiter) 
 {
@@ -12,6 +19,9 @@ void write_heredoc(int fd, const char *limiter)
 	printf("Write heredoc \n ");
 	while (1) 
 	{
+		signal(SIGINT, heredoc_handler);
+		signal(SIGQUIT, SIG_IGN);
+
 		line = readline("> ");
 		if (!line || ft_strcmp(line, limiter) == 0) 
 		{
