@@ -1,6 +1,18 @@
 #include "../include/execution.h"
 
+/*
 
+
+
+if (WIFSIGNALED(status)) {
+    int sig = WTERMSIG(status);
+    if (sig == SIGINT)
+        g_exit_status = 130;
+    else if (sig == SIGQUIT)
+        g_exit_status = 131;
+}
+
+*/
 
 //todo remove this 
 //fixme 

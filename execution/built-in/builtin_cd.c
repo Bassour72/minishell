@@ -1,33 +1,153 @@
 #include "../../include/execution.h"
 #include <sys/stat.h>
+#include <errno.h>
+
+
+#include "../../include/execution.h"
+#include <sys/stat.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
 
 #define DIR_STATUS_NO_PER 11
 #define DIR_STATUS_NOT_EXI 12
-#define DIR_STATUS_IS_RM 13
+
+
+char *get_env_value(char *key, t_env *env)
+{
+    while (env)
+    {
+        if (!strcmp(env->key, key))
+            return env->value;
+        env = env->next;
+    }
+    return NULL;
+}
+
+void set_env_var(char *key, char *value, t_env **env)
+{
+    t_env *tmp = *env;
+    while (tmp)
+    {
+        if (!strcmp(tmp->key, key))
+        {
+            free(tmp->value);
+            tmp->value = strdup(value);
+            return;
+        }
+        tmp = tmp->next;
+    }
+    t_env *new = malloc(sizeof(t_env));
+    if (!new)
+        return;
+    new->key      = strdup(key);
+    new->value    = strdup(value);
+    new->exported = 1;
+    new->next     = *env;
+    *env          = new;
+}
 
 char *get_env_path_parent(const char *path)
 {
     int len = strlen(path);
 
-    // Skip trailing slashes
-    while (len > 0 && path[len - 1] == '/')
-        len--;
-    // Find the last '/' before the basename
-    while (len > 0 && path[len - 1] != '/')
+    /* Strip trailing slashes, but leave "/" if path == "/" */
+    while (len > 1 && path[len - 1] == '/')
         len--;
 
-    // If there's no parent (e.g., "/"), return "/"
-    if (len == 0)
+    /* Find last '/' in path[0..len-1] */
+    int i = len - 1;
+    while (i >= 0 && path[i] != '/')
+        i--;
+
+    /* No '/' found → parent is "/" */
+    if (i < 0)
         return strdup("/");
 
-    char *parent = malloc(len + 1);
+    /* If that '/' is at index 0, parent is "/" */
+    if (i == 0)
+        return strdup("/");
+
+    /* Otherwise, copy path[0..i-1] into parent */
+    char *parent = malloc(i + 1);
     if (!parent)
         return NULL;
-
-    strncpy(parent, path, len);
-    parent[len] = '\0';
-
+    strncpy(parent, path, i);
+    parent[i] = '\0';
     return parent;
+}
+
+static char *expand_home(char *arg, t_env *env)
+{
+    char *home = get_env_value("HOME", env);
+    if (!home)
+        return NULL;
+
+    size_t needed = strlen(home) + strlen(arg);
+    char *res = malloc(needed + 1);
+    if (!res)
+        return NULL;
+
+    strcpy(res, home);
+    strcat(res, arg + 1);
+    return res;
+}
+
+static char *resolve_path(char *arg, t_env *env)
+{
+    if (!arg)
+        return NULL;
+
+    if (arg[0] == '~')
+        return expand_home(arg, env);
+
+    if (!strcmp(arg, "-"))
+    {
+        char *oldpwd = get_env_value("OLDPWD", env);
+        if (!oldpwd)
+            return NULL;
+        printf("%s\n", oldpwd);
+        return strdup(oldpwd);
+    }
+
+    return strdup(arg);
+}
+
+static int diagnose_cd_error(const char *path, int print_error)
+{
+    struct stat st;
+
+    if (access(path, F_OK) != 0)
+    {
+        if (print_error)
+            fprintf(stderr, "cd: no such file or directory: %s\n", path);
+        return DIR_STATUS_NOT_EXI;
+    }
+
+    if (stat(path, &st) != 0)
+    {
+        if (print_error)
+            perror("cd: stat");
+        return DIR_STATUS_NOT_EXI;
+    }
+
+    if (!S_ISDIR(st.st_mode))
+    {
+        if (print_error)
+            fprintf(stderr, "cd: not a directory: %s\n", path);
+        return DIR_STATUS_NOT_EXI;
+    }
+
+    if (access(path, X_OK) != 0)
+    {
+        if (print_error)
+            fprintf(stderr, "cd: permission denied: %s\n", path);
+        return DIR_STATUS_NO_PER;
+    }
+
+    return 0;
 }
 
 
@@ -41,111 +161,9 @@ static int check_argument(t_tree *root)
     return 0;
 }
 
-static int diagnose_cd_error(const char *path, int print_error)
-{
-    struct stat st;
-    
-    if (access(path, F_OK) != 0)
-    {
-         printf("here for here go her=f_ok \n");
-        if (print_error)
-            fprintf(stderr, "cd: no such file or directory: %s\n", path);
-        return DIR_STATUS_NOT_EXI;
-    }
-    if (stat(path, &st) != 0)
-    {
-         printf("here for here go her=stat \n");
-        perror("cd: stat");
-        return 1;
-    }
-    if (!S_ISDIR(st.st_mode))
-    {
-         printf("here for here go her=s_isdir \n");
-         if (print_error)
-            fprintf(stderr, "cd: not a directory: %s\n", path);
-        printf("THE DIR IS REMOVE \n\n\n\n");
-        return DIR_STATUS_NOT_EXI;;
-    }
-    if (access(path, X_OK) != 0)
-    {
-         printf("here for here go her=********************x_ok \n");
-         if (print_error)
-            fprintf(stderr, "cd: permission denied: %s\n", path);
-        return DIR_STATUS_NO_PER;
-    }
-    return 0; // fallback
-}
-
-char *get_env_value(char *key, t_env *env)
-{
-    while (env)
-    {
-        if (!strcmp(env->key, key))
-            return (env->value);
-        env = env->next;
-    }
-    return (NULL);
-}
-
-void set_env_var(char *key, char *value, t_env **env)
-{
-    t_env *tmp;
-    t_env *new;
-
-    tmp = *env;
-    while (tmp)
-    {
-        if (!strcmp(tmp->key, key))
-        {
-            free(tmp->value);
-            tmp->value = strdup(value);
-            return;
-        }
-        tmp = tmp->next;
-    }
-    new = malloc(sizeof(t_env));
-    if (!new)
-        return;
-    new->key = strdup(key);
-    new->value = strdup(value);
-    new->exported = 1;
-    new->next = *env;
-    *env = new;
-}
-
-static char *expand_home(char *arg, t_env *env)
-{
-    char *home;
-    char *res;
-
-    home = get_env_value("HOME", env);
-    if (!home)
-        return (NULL);
-    res = malloc(strlen(home) + strlen(arg));
-    if (!res)
-        return (NULL);
-    strcpy(res, home);
-    strcat(res, arg + 1);
-    return (res);
-}
-
-static char *resolve_path(char *arg, t_env *env)
-{
-    if (!arg || arg[0] == '~')
-        return (expand_home(arg, env));
-    if (!strcmp(arg, "-"))
-    {
-        arg = get_env_value("OLDPWD", env);
-        if (!arg)
-            return (NULL);
-        printf("%s\n", arg);
-        return (strdup(arg));
-    }
-    return (strdup(arg));
-}
-
 int cd_change_working_directory(t_tree *root, t_env **env)
 {
+    /* 1) Save old_pwd = getcwd(); if getcwd() fails, fall back to env “PWD” */
     char *old_pwd = getcwd(NULL, 0);
     if (!old_pwd)
     {
@@ -158,200 +176,292 @@ int cd_change_working_directory(t_tree *root, t_env **env)
         old_pwd = strdup(env_pwd);
     }
 
+    /* 2) Check for too many arguments */
     if (check_argument(root))
-        return free(old_pwd), 1;
-
-    char *target_dir = NULL;
-    int dir_status;
-
-    if (!root->data[1]) // cd with no argument
     {
-        target_dir = get_env_value("HOME", *env);
-        if (!target_dir)
-        {
-            fprintf(stderr, "cd: HOME not set\n");
-            return free(old_pwd), 1;
-        }
-        target_dir = strdup(target_dir);
-    }
-    else if (!strcmp(root->data[1], "-")) // cd -
-    {
-        target_dir = get_env_value("OLDPWD", *env);
-        if (!target_dir)
-        {
-            fprintf(stderr, "cd: OLDPWD not set\n");
-            return free(old_pwd), 1;
-        }
-        target_dir = strdup(target_dir);
-        printf("%s\n", target_dir);
-    }
-    else
-    {
-        dir_status = diagnose_cd_error(old_pwd, 0);
-
-        // Handle inaccessible/removed current dir + `cd ..`
-        if (!strcmp(root->data[1], "..") && (dir_status == DIR_STATUS_NO_PER || dir_status == DIR_STATUS_NOT_EXI))
-        {
-            char *fake_pwd = get_env_value("PWD", *env);
-            if (!fake_pwd)
-            {
-                fprintf(stderr, "cd: cannot determine current directory\n");
-                return free(old_pwd), 1;
-            }
-            char *parent = get_env_path_parent(fake_pwd);
-            if (!parent)
-                return free(old_pwd), 1;
-
-            if (chdir(parent) == 0)
-            {
-                set_env_var("OLDPWD", old_pwd, env);
-                set_env_var("PWD", parent, env);
-                free(old_pwd);
-                free(parent);
-                return 0;
-            }
-            perror("cd");
-            free(old_pwd);
-            free(parent);
-            return 1;
-        }
-
-        // Normal path resolution
-        target_dir = resolve_path(root->data[1], *env);
-        if (!target_dir)
-        {
-            free(old_pwd);
-            return 1;
-        }
-    }
-
-    if (chdir(target_dir) != 0)
-    {
-        perror("cd");
         free(old_pwd);
-        free(target_dir);
         return 1;
     }
 
-    // Update OLDPWD and PWD
-    set_env_var("OLDPWD", old_pwd, env);
-    char *new_pwd = getcwd(NULL, 0);
-    if (new_pwd)
-    {
-        set_env_var("PWD", new_pwd, env);
-        free(new_pwd);
-    }
-    
-    else
-    {
-        set_env_var("PWD", target_dir, env); // fallback
-    }
-    free(old_pwd);
-    free(target_dir);
-    return 0;
-}
+    char *arg       = (root->data[1] ? root->data[1] : NULL);
+    char *candidate = NULL;
+    int status;
 
-/*
-int cd_change_working_directory(t_tree *root, t_env **env)
-{
-    char *old_pwd = getcwd(NULL, 0);
-    char *logical_pwd = get_env_value("PWD", *env);
-    char *target_dir = NULL;
-    int result;
-
-    if (check_argument(root))
-        return 1;
-
-    // Handle no args => cd to HOME
-    if (!root->data[1])
+    /* ----- Case A: no argument → cd $HOME ----- */
+    if (!arg)
     {
-        target_dir = get_env_value("HOME", *env);
-        if (!target_dir)
+        char *home = get_env_value("HOME", *env);
+        if (!home)
         {
             fprintf(stderr, "cd: HOME not set\n");
             free(old_pwd);
             return 1;
         }
-        target_dir = strdup(target_dir);
-    }
-    // Handle cd -
-    else if (!strcmp(root->data[1], "-"))
-    {
-        target_dir = get_env_value("OLDPWD", *env);
-        if (!target_dir)
+        candidate = strdup(home);
+        if (!candidate)
         {
-            fprintf(stderr, "cd: OLDPWD not set\n");
             free(old_pwd);
             return 1;
         }
-        target_dir = strdup(target_dir);
-        printf("%s\n", target_dir);
-    }
-    // Handle cd ..
-    else if (!strcmp(root->data[1], ".."))
-    {
-        // If getcwd fails (e.g., directory deleted or inaccessible), fallback to logical PWD
-        char *base = old_pwd ? old_pwd : (logical_pwd ? strdup(logical_pwd) : NULL);
-        if (!base)
-            return fprintf(stderr, "cd: error retrieving current directory\n"), 1;
 
-        target_dir = get_env_path_parent(base);
-        free(base);
-
-        if (!target_dir || chdir(target_dir) != 0)
+        status = diagnose_cd_error(candidate, 1);
+        if (status != 0)
+        {
+            free(candidate);
+            free(old_pwd);
+            return 1;
+        }
+        if (chdir(candidate) != 0)
         {
             perror("cd");
-            free(target_dir);
+            free(candidate);
             free(old_pwd);
             return 1;
         }
 
-        set_env_var("OLDPWD", logical_pwd, env);
-        set_env_var("PWD", target_dir, env);
-        free(target_dir);
+        set_env_var("OLDPWD", old_pwd, env);
+        char *newcwd = getcwd(NULL, 0);
+        if (newcwd)
+        {
+            set_env_var("PWD", newcwd, env);
+            free(newcwd);
+        }
+        else
+        {
+            /* Fallback if getcwd() somehow fails */
+            set_env_var("PWD", candidate, env);
+        }
+
+        free(candidate);
         free(old_pwd);
         return 0;
     }
-    // All other arguments
-    else
+
+    /* ----- Case B: arg == "-" → cd $OLDPWD (after printing it) ----- */
+    if (!strcmp(arg, "-"))
     {
-        target_dir = resolve_path(root->data[1], *env);
-        if (!target_dir)
+        char *oldpwd_env = get_env_value("OLDPWD", *env);
+        if (!oldpwd_env)
+        {
+            fprintf(stderr, "cd: OLDPWD not set\n");
+            free(old_pwd);
+            return 1;
+        }
+        printf("%s\n", oldpwd_env);
+        candidate = strdup(oldpwd_env);
+        if (!candidate)
         {
             free(old_pwd);
             return 1;
         }
+
+        status = diagnose_cd_error(candidate, 1);
+        if (status != 0)
+        {
+            free(candidate);
+            free(old_pwd);
+            return 1;
+        }
+        if (chdir(candidate) != 0)
+        {
+            perror("cd");
+            free(candidate);
+            free(old_pwd);
+            return 1;
+        }
+
+        set_env_var("OLDPWD", old_pwd, env);
+        char *newcwd = getcwd(NULL, 0);
+        if (newcwd)
+        {
+            set_env_var("PWD", newcwd, env);
+            free(newcwd);
+        }
+        else
+        {
+            set_env_var("PWD", candidate, env);
+        }
+
+        free(candidate);
+        free(old_pwd);
+        return 0;
     }
 
-    // Normal chdir
-    result = chdir(target_dir);
-    if (result != 0)
+    /* ----- Case C: arg == ".." ----- */
+    /* ----- Case C: arg == ".." ----- */
+    if (!strcmp(arg, ".."))
     {
-        perror("cd");
-        free(target_dir);
+        /* Try getcwd() to see if the current directory is still valid */
+        char *phys = getcwd(NULL, 0);
+        if (!phys)
+        {
+            /* 1) Error: we’re in a deleted/inaccessible directory */
+            perror("cd: error retrieving current directory");
+            /* No free(phys) needed—getcwd returned NULL */
+
+            /* 2) Build new logical PWD = old logical PWD + "/.." */
+            char *logic_pwd = get_env_value("PWD", *env);
+            if (!logic_pwd)
+                logic_pwd = old_pwd;  /* fallback */
+
+            size_t newlen = strlen(logic_pwd) + 3; /* for "/.." + '\0' */
+            char *newpwd = malloc(newlen);
+            if (!newpwd)
+            {
+                free(old_pwd);
+                return 1;
+            }
+            strcpy(newpwd, logic_pwd);
+            strcat(newpwd, "/..");
+
+            /* 3) UPDATE ONLY THE LOGICAL PWD—NO chdir() HERE */
+            set_env_var("OLDPWD", logic_pwd, env);
+            set_env_var("PWD",    newpwd,    env);
+
+            free(newpwd);
+            free(old_pwd);
+            return 1;  /* return error, like bash does */
+        }
+
+        /* If getcwd() succeeded, we are now in a valid inode */
+        free(phys);
+
+        /* 4) Compute the logical parent of the old PWD and actually chdir() */
+        char *logic_pwd = get_env_value("PWD", *env);
+        if (!logic_pwd)
+            logic_pwd = old_pwd;  /* fallback */
+
+        char *parent = get_env_path_parent(logic_pwd);
+        if (!parent)
+        {
+            free(old_pwd);
+            return 1;
+        }
+
+        if (chdir(parent) != 0)
+        {
+            fprintf(stderr, "cd: no such file or directory: %s\n", parent);
+            free(parent);
+            free(old_pwd);
+            return 1;
+        }
+
+        /* 5) On success, update OLDPWD and PWD to the real parent */
+        set_env_var("OLDPWD", old_pwd, env);
+        set_env_var("PWD",    parent,  env);
+
+        free(parent);
+        free(old_pwd);
+        return 0;
+    }
+
+
+    /* ----- Case D: any other argument (absolute or relative) ----- */
+    candidate = resolve_path(arg, *env);
+    if (!candidate)
+    {
         free(old_pwd);
         return 1;
     }
 
-    // Update environment
-    if (old_pwd)
+    status = diagnose_cd_error(candidate, 1);
+    if (status != 0)
     {
-        set_env_var("OLDPWD", old_pwd, env);
+        free(candidate);
         free(old_pwd);
+        return 1;
     }
-    char *new_pwd = getcwd(NULL, 0);
-    if (new_pwd)
+    if (chdir(candidate) != 0)
     {
-        set_env_var("PWD", new_pwd, env);
-        free(new_pwd);
+        perror("cd");
+        free(candidate);
+        free(old_pwd);
+        return 1;
+    }
+
+    set_env_var("OLDPWD", old_pwd, env);
+    char *newcwd = getcwd(NULL, 0);
+    if (newcwd)
+    {
+        set_env_var("PWD", newcwd, env);
+        free(newcwd);
     }
     else
     {
-        set_env_var("PWD", target_dir, env); // fallback to logical
+        /* Fallback if getcwd() fails */
+        set_env_var("PWD", candidate, env);
     }
 
-    free(target_dir);
+    free(candidate);
+    free(old_pwd);
     return 0;
 }
 
-*/
+
+ int recover_invalid_pwd(t_tree *root, t_env **env)
+{
+    char *old_pwd  = get_env_value("OLDPWD", *env);
+    char *fake_pwd = get_env_value("PWD", *env);
+    char *candidate;
+    char *collapsed;
+    int steps_back = 0;
+
+    if (!old_pwd || !fake_pwd)
+        return 1;
+
+    candidate = ft_strjoin(fake_pwd, "/..");
+    if (!candidate)
+        return 1;
+
+   int i = 0;
+    while (candidate[i]) {
+        if (candidate[i] == '/' && candidate[i + 1] == '.' && candidate[i + 2] == '.' &&
+            (candidate[i + 3] == '/' || candidate[i + 3] == '\0')) {
+            steps_back++;
+        }
+        i++;
+    }
+
+
+    collapsed = ft_strdup(fake_pwd);
+    if (!collapsed)
+    {
+        free(candidate);
+        return 1;
+    }
+
+    while (steps_back-- > 0)
+    {
+        char *parent = get_env_path_parent(collapsed);
+        if (!parent)
+            break;
+
+        free(collapsed);
+        collapsed = parent;
+
+        if (access(collapsed, X_OK) == 0)
+        {
+            set_env_var("OLDPWD", old_pwd, env);
+            set_env_var("PWD", collapsed, env);
+            chdir(collapsed);
+            free(candidate);
+            free(collapsed);
+            return 0;
+        }
+    }
+
+    // If no valid collapsed path was found, try using the candidate itself
+    if (access(candidate, X_OK) == 0 && chdir(candidate) == 0)
+    {
+        set_env_var("OLDPWD", old_pwd, env);
+        set_env_var("PWD", candidate, env);
+        free(candidate);
+        free(collapsed);
+        return 0;
+    }
+
+    free(candidate);
+    free(collapsed);
+    return 1;
+}
+

@@ -1,7 +1,13 @@
 #include "../include/execution.h"
 
 
+/*
+if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+    g_exit_status = 130;
+    close(pipefd[0]); // discard heredoc
+    return;
 
+*/
 //todo remove this 
 //fixme 
 void heredoc_handler(int sig)
