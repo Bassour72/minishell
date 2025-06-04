@@ -16,7 +16,7 @@ void write_heredoc(int fd, const char *limiter)
 {
 	char *line;
 	//	sleep(2);
-	printf("Write heredoc \n ");
+	// printf("Write heredoc \n ");
 	while (1) 
 	{
 		signal(SIGINT, heredoc_handler);
@@ -37,7 +37,7 @@ void write_heredoc(int fd, const char *limiter)
 void create_heredoc(t_red *redir) 
 {
 	//sleep(2);
-	printf("Create heredoc \n ");
+	// printf("Create heredoc \n ");
 	char tmp_path[] = "/tmp/heredocXXXXXX";
 	int fd = open(tmp_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	//int out_fd = open(tmp_path, O_RDONLY, 0644);
@@ -55,7 +55,7 @@ void create_heredoc(t_red *redir)
 void prepare_heredocs(t_tree *root) 
 {
 		//sleep(2);
-	printf("Prepare heredoc \n ");
+	// printf("Prepare heredoc \n ");
 	if (!root) return;
 	t_red *redir = root->redirections;
 	while (redir) 
@@ -71,19 +71,19 @@ void prepare_heredocs(t_tree *root)
 void apply_redirections(t_red *redir) 
 {
 	//sleep(2);
-	printf("apply redirections \n ");
+	// printf("apply redirections \n ");
 	if (redir == NULL)
 		return ;
-	printf("check the value of fd is  incrrect value################### [%d] \n", redir->type);
+	// printf("check the value of fd is  incrrect value################### [%d] \n", redir->type);
 	while (redir) 
 	{
 		int fd = -1;
-		printf("check the value of fd is  incrrect value################### [%d] \n", redir->type);
+		// printf("check the value of fd is  incrrect value################### [%d] \n", redir->type);
 		if (redir->type == RED_INPUT)
 			fd = open(redir->data, O_RDONLY);
 		else if (redir->type == RED_TRUNK)
 		{
-			printf("check the value of fd is  incrrect value################### [%d] \n", redir->type);
+			// printf("check the value of fd is  incrrect value################### [%d] \n", redir->type);
 			fd = open(redir->data, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		}
 		else if (redir->type == RED_APPEND)
@@ -91,14 +91,14 @@ void apply_redirections(t_red *redir)
 		else if (redir->type == HER_DOC)
 		{
 			//sleep(2);
-			printf("here for the if the out_put has the correct value################### [%d] \n", redir->out_fd);
-			printf("In the apply redirections fucntion for check the heredoc file and why??\n[%s] program exit!!! \n ", redir->heredoc_path);
+			// printf("here for the if the out_put has the correct value################### [%d] \n", redir->out_fd);
+			// printf("In the apply redirections fucntion for check the heredoc file and why??\n[%s] program exit!!! \n ", redir->heredoc_path);
 			fd = open(redir->heredoc_path, O_RDONLY);
 			//sleep(2);
-			printf("check the value of fd is  incrrect value################### [%d] \n", fd);
+			// printf("check the value of fd is  incrrect value################### [%d] \n", fd);
 			if (fd == -1)
 			{
-				printf("hervalue################### [%d] \n", fd);
+				// printf("hervalue################### [%d] \n", fd);
 			}
 		}
 		if (fd == -1)
@@ -109,7 +109,7 @@ void apply_redirections(t_red *redir)
 		if (redir->type == RED_INPUT || redir->type == HER_DOC)
 		{
 			//sleep(2);
-			printf("For check why it exit and know the type=========[%d]\n ", redir->type);
+			// printf("For check why it exit and know the type=========[%d]\n ", redir->type);
 			dup2(fd, STDIN_FILENO);
 		}
 		else
@@ -118,5 +118,5 @@ void apply_redirections(t_red *redir)
 		redir = redir->next;
 	}
 	//sleep(2);
-	printf("end of fucntion for check why it's exit with error \n ");
+	// printf("end of fucntion for check why it's exit with error \n ");
 }

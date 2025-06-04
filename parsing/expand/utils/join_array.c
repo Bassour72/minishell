@@ -25,8 +25,9 @@ static void cpy_to_songle_arr(char **double_arr, char **single_arr, int len)
 	i = -1;
 	while (double_arr[++i])
 	{
-		ft_strlcat(*single_arr, " ", len);
 		ft_strlcat(*single_arr, double_arr[i], len);
+		if (double_arr[i + 1])
+			ft_strlcat(*single_arr, " ", len);
 	}
 
 }

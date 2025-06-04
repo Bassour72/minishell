@@ -16,7 +16,7 @@ int update_last_executed_command(t_env **env_list, char *last_command)
 	t_env *env_tmp;
 	char *tmp_last_command;
 	 env_tmp = *env_list;
-	 printf("update_last_executed_command(t_env **env_list, char *last_command)(%s)\n", last_command);
+	//  printf("update_last_executed_command(t_env **env_list, char *last_command)(%s)\n", last_command);
 	while (env_tmp != NULL)
 	{
 		if (ft_strcmp(env_tmp->key, "_") == 0)

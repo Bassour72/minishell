@@ -23,7 +23,7 @@ int env_environment(t_tree *root, char **env, t_env *env_list)
 {
     if (root->data[1])
     {
-        printf("env: '%s': No such file or directory\n", root->data[1]);
+        // printf("env: '%s': No such file or directory\n", root->data[1]);
         return (127);
     }
     return print_environment(env_list);

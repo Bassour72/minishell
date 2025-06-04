@@ -86,12 +86,7 @@ static void free_double_array(char **arr) //add to utils
 	}
 }
 
-int is_export(char *line)
-{
-	if (ft_memcmp("export ", line, 7) == 0)
-		return (1);
-	return (0);
-}
+
 
 int expand(char ***new_args, char **old_args, t_env *env)
 {
@@ -107,22 +102,16 @@ int expand(char ***new_args, char **old_args, t_env *env)
 		return (R_FAIL);
 	// free(line);
 	// line = ft_strdup("export $#  gg=$USER");
-	if (is_export(line))
-	{
-		if (tokenize_export(line, &tokens, env) == R_FAIL)
-			return (R_FAIL);
-	}
-	else
-	{
+	
 		if (tokenize(line, &tokens, env) == R_FAIL)
 			return (R_FAIL);
-	}
+
 	// free(line);
 	// return NULL;
 	// print_expand_tokens(tokens);
 	nodes_list = split_tokens_into_nodes(tokens);
 	// for(t_expand_node *tmp = nodes_list; tmp; tmp = tmp->next)
-	// 	printf(">>{%s}\n", 
+		// printf(">>{%s}\n", tmp->data); 
 	free_expand_tokens_list(tokens);
 	free(line);
 	if (!nodes_list)
