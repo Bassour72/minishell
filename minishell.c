@@ -146,10 +146,6 @@ void f()
 	system("leaks -q minishell");
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
 
 
 //todo for debug

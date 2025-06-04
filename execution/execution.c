@@ -163,13 +163,13 @@ void run_command(t_tree *root, char **env, t_env **env_list)
 {
 	if (!root || !root->data || !root->data[0]) 
 	{
-		fprintf(stderr, "Error: Empty command node\n");
+		fprintf(stderr, "Error: Empty command node \n");
 		free_tree_exe(root);
 		exit(EXIT_FAILURE);
 	}
+	apply_redirections(root->redirections);
 	//sleep(2);
 	printf("Run command for check the redirections \n ");
-	apply_redirections(root->redirections);
 	/*
 		free_tree_exe(root);
 		exit(EXIT_FAILURE);
@@ -190,8 +190,9 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 	{
 		return 1;
 	}
-	if (root->data == NULL && root->type == BLOCK)
+	if (root->data == NULL && root->type == BLOCK && root->left)
 	{
+
 		// this is a subshell (e.g., due to parentheses)
 		pid_t pid = fork();
 		if (pid == 0) 
@@ -212,7 +213,13 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 	{
 		//sleep(2);
 		printf("here in exec tree for one command \n ");
-		
+		if (root->data)
+		{
+			char **old_args = root->data;
+			if (expand(&root->data, old_args, *env_list) == R_FAIL)
+				return(1);
+			
+		}
 		//todo check here the expand fucntion return int 
 		if (in_subshell)
 		{

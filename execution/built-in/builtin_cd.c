@@ -5,6 +5,27 @@
 #define DIR_STATUS_NO_PER 11
 #define DIR_STATUS_NOT_EXI 12
 
+int is_valide_arg_cd(const char *arg)
+{
+    if (!arg)
+        return 0;
+    struct stat sb;
+    if (stat(arg, &sb) == 0 && S_ISDIR(sb.st_mode))
+        return 0;
+    perror("cd: ....:");
+    return 1;
+}
+
+char * get_arg_cd(const char *arg)
+{
+    if (!arg)
+        return NULL;
+    struct stat sb;
+    if (stat(arg, &sb) == 0 && S_ISDIR(sb.st_mode))
+        return ft_strdup(arg);
+    return NULL;
+}
+
 int recover_invalid_pwd(t_tree *root, t_env **env);
 
 char *get_env_value(char *key, t_env *env)
@@ -45,24 +66,19 @@ char *get_env_path_parent(const char *path)
 {
     int len = strlen(path);
 
-    /* Strip trailing slashes, but leave "/" if path == "/" */
     while (len > 1 && path[len - 1] == '/')
         len--;
 
-    /* Find last '/' in path[0..len-1] */
     int i = len - 1;
     while (i >= 0 && path[i] != '/')
         i--;
 
-    /* No '/' found → parent is "/" */
     if (i < 0)
         return strdup("/");
 
-    /* If that '/' is at index 0, parent is "/" */
     if (i == 0)
         return strdup("/");
 
-    /* Otherwise, copy path[0..i-1] into parent */
     char *parent = malloc(i + 1);
     if (!parent)
         return NULL;
@@ -155,8 +171,12 @@ static int check_argument(t_tree *root)
 
 int cd_change_working_directory(t_tree *root, t_env **env)
 {
-    /* 1) Save old_pwd = getcwd(); if getcwd() fails, fall back to env “PWD” */
-    char *old_pwd = getcwd(NULL, 0);
+    char *old_pwd;
+    char *env_pwd;
+    char *arg;
+    char *candidate;
+    int status;
+    old_pwd = getcwd(NULL, 0);
     if (!old_pwd)
     {
         char *env_pwd = get_env_value("PWD", *env);
@@ -168,16 +188,15 @@ int cd_change_working_directory(t_tree *root, t_env **env)
         old_pwd = strdup(env_pwd);
     }
 
-    /* 2) Check for too many arguments */
     if (check_argument(root))
     {
         free(old_pwd);
         return 1;
     }
 
-    char *arg       = (root->data[1] ? root->data[1] : NULL);
-    char *candidate = NULL;
-    int status;
+    arg       = get_arg_cd(root->data[1]);
+    candidate = NULL;
+    status;
 
     /* ----- Case A: no argument → cd $HOME ----- */
     if (!arg)
@@ -230,7 +249,7 @@ int cd_change_working_directory(t_tree *root, t_env **env)
     }
 
     /* ----- Case B: arg == "-" → cd $OLDPWD (after printing it) ----- */
-    if (!strcmp(arg, "-"))
+    if (!strncmp(arg, "-", 1))
     {
         char *oldpwd_env = get_env_value("OLDPWD", *env);
         if (!oldpwd_env)
@@ -279,38 +298,22 @@ int cd_change_working_directory(t_tree *root, t_env **env)
         return 0;
     }
 
-    /* ----- Case C: arg == ".." ----- */
-    /* ----- Case C: arg == ".." ----- */
-    if (!strcmp(arg, ".."))
+    if (!strncmp(arg, "..", 2))
     {
         char *phys = getcwd(NULL, 0);
         if (!phys)
         {
             perror("cd: error retrieving current directory");
 
-            // char *logic_pwd = get_env_value("PWD", *env);
-            // if (!logic_pwd)
-            //     logic_pwd = old_pwd;
-
-            // size_t newlen = strlen(logic_pwd) + 3;
-            // char *newpwd = malloc(newlen);
-            // if (!newpwd)
-            // {
-            //     free(old_pwd);
-            //     return 1;
-            // }
-            // strcpy(newpwd, logic_pwd);
-            // strcat(newpwd, "/..");
-            recover_invalid_pwd(root, env);
-            // set_env_var("OLDPWD", logic_pwd, env);
-            // set_env_var("PWD",    newpwd,    env);
-            // if (chdir(newpwd) != 0)
-            // {
-            //     fprintf(stderr, "cd: no such file or directory: %s\n", newpwd);
-            //     return 1;
-            // }
-            // free(newpwd);
-            // free(old_pwd);
+            char **logic_pwd = ft_split(arg, '/');
+            int i = 0;
+            while (logic_pwd[i] != NULL)
+            {
+                /* code */
+                recover_invalid_pwd(root, env);
+                i++;
+            }
+            //todo I  HAVE LEAKS HERE FOR THE logic_pwd
             return 1;
         }
         free(phys);
@@ -386,75 +389,95 @@ int cd_change_working_directory(t_tree *root, t_env **env)
 }
 
 
- int recover_invalid_pwd(t_tree *root, t_env **env)
+char *remove_trailing_slash(const char *path) 
 {
-    char *old_pwd  = get_env_value("OLDPWD", *env);
-    char *fake_pwd = get_env_value("PWD", *env);
-    char *candidate;
-    char *collapsed;
-    int steps_back = 0;
+    if (!path)
+        return NULL;
 
-    if (!old_pwd || !fake_pwd)
+    int len = strlen(path);
+    while (len > 1 && path[len - 1] == '/')
+        len--;
+
+    char *cleaned = malloc(len + 1);
+    if (!cleaned)
+        return NULL;
+
+    memcpy(cleaned, path, len);
+    cleaned[len] = '\0';
+    return cleaned;
+}
+
+
+int recover_invalid_pwd(t_tree *root, t_env **env)
+{
+    char *fake_pwd = get_env_value("PWD", *env);
+    if (!fake_pwd)
         return 1;
 
-    candidate = ft_strjoin(fake_pwd, "/..");
-    set_env_var("OLDPWD", fake_pwd, env);
-    set_env_var("PWD", candidate, env);
+    char *candidate = ft_strjoin(fake_pwd, "/..");
     if (!candidate)
         return 1;
 
-   int i = 0;
+    set_env_var("OLDPWD", fake_pwd, env);
+    set_env_var("PWD", candidate, env);
+
+
+    int steps_back = 0;
+    int i = 0;
     while (candidate[i])
     {
         if (candidate[i] == '/' && candidate[i + 1] == '.' && candidate[i + 2] == '.' &&
-            (candidate[i + 3] == '/' || candidate[i + 3] == '\0')) {
+            (candidate[i + 3] == '/' || candidate[i + 3] == '\0'))
             steps_back++;
-        }
         i++;
     }
-    // collapsed = ft_strdup(fake_pwd);
-    // if (!collapsed)
-    // {
-    //     free(candidate);
-    //     return 1;
-    // }
-    collapsed  = ft_strtrim(candidate , "/..");
-     char *parent;
+
+    char *collapsed = ft_strdup(candidate);
+    if (!collapsed)
+    {
+        free(candidate);
+        return 1;
+    }
+
+    
+    for (i = 0; i < steps_back; i++)
+    {
+        char *temp = ft_strtrim(collapsed, "..");
+        if (!temp)
+        {
+            free(collapsed);
+            free(candidate);
+            return 1;
+        }
+        free(collapsed);
+        collapsed = remove_trailing_slash(temp);
+        free(temp); 
+    }
+
+    char *parent = collapsed;
     while (steps_back-- > 0)
     {
-        parent = get_env_path_parent(collapsed);
-        printf("======[%s]\n", collapsed);
-        if (!parent)
-            break;
-
-        free(collapsed);
-        collapsed = parent;
-
-        // if (access(collapsed, X_OK) == 0)
-        // {
-        //     set_env_var("OLDPWD", old_pwd, env);
-        //     set_env_var("PWD", collapsed, env);
-        //     chdir(collapsed);
-        //     free(candidate);
-        //     free(collapsed);
-        //     return 0;
-        // }
+        char *new_parent = get_env_path_parent(parent);
+        if (!new_parent)
+        {
+            free(parent);
+            free(candidate);
+            return 1;
+        }
+        free(parent);
+        parent = new_parent;
     }
 
-    // If no valid collapsed path was found, try using the candidate itself
-    if (access(parent, X_OK) == 0)
-         printf("[bbbbbbbb]======[%s]\n", parent);
     if (access(parent, X_OK) == 0 && chdir(parent) == 0)
     {
-        //set_env_var("OLDPWD", old_pwd, env);
-        set_env_var("PWD", collapsed, env);
+        set_env_var("PWD", parent, env);
+        free(parent);
         free(candidate);
-        free(collapsed);
         return 0;
     }
-
+    free(parent);
     free(candidate);
-    free(collapsed);
     return 1;
 }
+
 
