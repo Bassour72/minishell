@@ -5,6 +5,7 @@
 #define DIR_STATUS_NO_PER 11
 #define DIR_STATUS_NOT_EXI 12
 
+int recover_invalid_pwd(t_tree *root, t_env **env);
 
 char *get_env_value(char *key, t_env *env)
 {
@@ -282,45 +283,41 @@ int cd_change_working_directory(t_tree *root, t_env **env)
     /* ----- Case C: arg == ".." ----- */
     if (!strcmp(arg, ".."))
     {
-        /* Try getcwd() to see if the current directory is still valid */
         char *phys = getcwd(NULL, 0);
         if (!phys)
         {
-            /* 1) Error: we’re in a deleted/inaccessible directory */
             perror("cd: error retrieving current directory");
-            /* No free(phys) needed—getcwd returned NULL */
 
-            /* 2) Build new logical PWD = old logical PWD + "/.." */
-            char *logic_pwd = get_env_value("PWD", *env);
-            if (!logic_pwd)
-                logic_pwd = old_pwd;  /* fallback */
+            // char *logic_pwd = get_env_value("PWD", *env);
+            // if (!logic_pwd)
+            //     logic_pwd = old_pwd;
 
-            size_t newlen = strlen(logic_pwd) + 3; /* for "/.." + '\0' */
-            char *newpwd = malloc(newlen);
-            if (!newpwd)
-            {
-                free(old_pwd);
-                return 1;
-            }
-            strcpy(newpwd, logic_pwd);
-            strcat(newpwd, "/..");
-
-            /* 3) UPDATE ONLY THE LOGICAL PWD—NO chdir() HERE */
-            set_env_var("OLDPWD", logic_pwd, env);
-            set_env_var("PWD",    newpwd,    env);
-
-            free(newpwd);
-            free(old_pwd);
-            return 1;  /* return error, like bash does */
+            // size_t newlen = strlen(logic_pwd) + 3;
+            // char *newpwd = malloc(newlen);
+            // if (!newpwd)
+            // {
+            //     free(old_pwd);
+            //     return 1;
+            // }
+            // strcpy(newpwd, logic_pwd);
+            // strcat(newpwd, "/..");
+            recover_invalid_pwd(root, env);
+            // set_env_var("OLDPWD", logic_pwd, env);
+            // set_env_var("PWD",    newpwd,    env);
+            // if (chdir(newpwd) != 0)
+            // {
+            //     fprintf(stderr, "cd: no such file or directory: %s\n", newpwd);
+            //     return 1;
+            // }
+            // free(newpwd);
+            // free(old_pwd);
+            return 1;
         }
-
-        /* If getcwd() succeeded, we are now in a valid inode */
         free(phys);
 
-        /* 4) Compute the logical parent of the old PWD and actually chdir() */
         char *logic_pwd = get_env_value("PWD", *env);
         if (!logic_pwd)
-            logic_pwd = old_pwd;  /* fallback */
+            logic_pwd = old_pwd;
 
         char *parent = get_env_path_parent(logic_pwd);
         if (!parent)
@@ -401,51 +398,56 @@ int cd_change_working_directory(t_tree *root, t_env **env)
         return 1;
 
     candidate = ft_strjoin(fake_pwd, "/..");
+    set_env_var("OLDPWD", fake_pwd, env);
+    set_env_var("PWD", candidate, env);
     if (!candidate)
         return 1;
 
    int i = 0;
-    while (candidate[i]) {
+    while (candidate[i])
+    {
         if (candidate[i] == '/' && candidate[i + 1] == '.' && candidate[i + 2] == '.' &&
             (candidate[i + 3] == '/' || candidate[i + 3] == '\0')) {
             steps_back++;
         }
         i++;
     }
-
-
-    collapsed = ft_strdup(fake_pwd);
-    if (!collapsed)
-    {
-        free(candidate);
-        return 1;
-    }
-
+    // collapsed = ft_strdup(fake_pwd);
+    // if (!collapsed)
+    // {
+    //     free(candidate);
+    //     return 1;
+    // }
+    collapsed  = ft_strtrim(candidate , "/..");
+     char *parent;
     while (steps_back-- > 0)
     {
-        char *parent = get_env_path_parent(collapsed);
+        parent = get_env_path_parent(collapsed);
+        printf("======[%s]\n", collapsed);
         if (!parent)
             break;
 
         free(collapsed);
         collapsed = parent;
 
-        if (access(collapsed, X_OK) == 0)
-        {
-            set_env_var("OLDPWD", old_pwd, env);
-            set_env_var("PWD", collapsed, env);
-            chdir(collapsed);
-            free(candidate);
-            free(collapsed);
-            return 0;
-        }
+        // if (access(collapsed, X_OK) == 0)
+        // {
+        //     set_env_var("OLDPWD", old_pwd, env);
+        //     set_env_var("PWD", collapsed, env);
+        //     chdir(collapsed);
+        //     free(candidate);
+        //     free(collapsed);
+        //     return 0;
+        // }
     }
 
     // If no valid collapsed path was found, try using the candidate itself
-    if (access(candidate, X_OK) == 0 && chdir(candidate) == 0)
+    if (access(parent, X_OK) == 0)
+         printf("[bbbbbbbb]======[%s]\n", parent);
+    if (access(parent, X_OK) == 0 && chdir(parent) == 0)
     {
-        set_env_var("OLDPWD", old_pwd, env);
-        set_env_var("PWD", candidate, env);
+        //set_env_var("OLDPWD", old_pwd, env);
+        set_env_var("PWD", collapsed, env);
         free(candidate);
         free(collapsed);
         return 0;

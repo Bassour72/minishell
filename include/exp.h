@@ -7,12 +7,12 @@
 # include "../_libft/libft.h"
 # include <stdio.h>
 # include <string.h>
-# include <errno.h>
+#include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <stdbool.h>
-# include "env.h"
-# include "expand.h"
+
+#include "env.h"
+#include "expand.h"
 //-------------------------------------------------------------------
 
 //node types --------------------------------------------------------
@@ -25,8 +25,6 @@ typedef enum e_type
 	RED_INPUT,  	// <
 	RED_APPEND, // >
 	RED_TRUNK,	// >>
-	//FIX ME 
-	//TODO RED_OUTPUT
 	HER_DOC,  			// <<
 	BLOCK,//
 	OP_AND,//
@@ -42,14 +40,22 @@ typedef enum e_type
 
 extern const char *typetostring[];
 
+// typedef struct s_env
+// {
+// 	char			*key;
+// 	char			*value;
+// 	struct s_env	*next;
+// }			t_env;
+
+// typedef struct s_node
+// {
+// 	char *data;
+// 	struct s_node *next;
+// }	t_node;
 
 typedef struct s_red
 {
 	t_type			type;
-	char			*target;
-	char			*heredoc_path;
-	int				in_fd;
-	int				out_fd;
 	char			*data; //note file name or herdoc 
 	struct s_red	*next;
 }	t_red;
@@ -162,9 +168,11 @@ char **append_command(char **old_list, char *new_cmd);
 //redirection
 void append_redirection(t_red *redirections_list, char *data, t_type type);
 
-
-int update_last_executed_command(t_env **env_list, char *last_command);//idea this for the execution 
-// idea If you remove this idea, I will cancel the team. Give me the money.
+//env
+// void	free_env_list(t_env *list);
+// void	print_env(t_env *env); //note to debug only
+// int		env_generate(t_env **env_list, char **env);
+// char	*env_get_value(t_env *list, char *key);
 
 //lable expend
 char *join_arr_elements(char **arr);
@@ -174,6 +182,9 @@ void free_2d_arr(char **arr);
 char *extract_target_key(char *str);
 
 
+
+int arr_to_list(char **arr, t_node **list);
+int do_exp(t_node **list, t_env *env);
 
 //syntax_validate
 int validate_sytax(t_token *token);

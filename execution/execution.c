@@ -212,7 +212,7 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 	{
 		//sleep(2);
 		printf("here in exec tree for one command \n ");
-	   	expand(*env_list, root);
+		
 		//todo check here the expand fucntion return int 
 		if (in_subshell)
 		{
