@@ -7,7 +7,16 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		parsing/commands.c\
 		parsing/tree/append_flat_tree_node.c parsing/tree/flat_tree.c\
 		parsing/split/split.c parsing/split/manage_normal.c parsing/split/manage_operators.c parsing/split/manage_parenth.c parsing/split/manage_quotes.c parsing/split/manage_redirections.c parsing/split/append_node.c\
- 		parsing/expantion/expand.c parsing/expantion/expand_utils.c parsing/expantion/expand_redirections.c parsing/expantion/do_expantion.c parsing/expantion/trim_quotes.c\
+ 		parsing/expand/expand.c \
+		parsing/expand/tokenizer/tokenizer.c \
+		parsing/expand/tokenizer/append_expand_token.c \
+		parsing/expand/tokenizer/free_expand_tokens_list.c \
+		parsing/expand/tokenizer/print_expand_tokens.c\
+		parsing/expand/utils/array_to_list.c \
+		parsing/expand/utils/join_array.c\
+		parsing/expand/expand_split.c\
+		parsing/expand/build_args_list.c\
+		parsing/expand/expand_list_to_array.c\
 		parsing/utils/get_list_size.c\
 		parsing/validate_syntax/validate_syntax.c parsing/validate_syntax/validate_quotes.c parsing/validate_syntax/validate_parenthecies.c\
 		env/env.c env/env_utils.c\
