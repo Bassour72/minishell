@@ -2,15 +2,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-
-#include "../../include/execution.h"
-#include <sys/stat.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <errno.h>
-
 #define DIR_STATUS_NO_PER 11
 #define DIR_STATUS_NOT_EXI 12
 

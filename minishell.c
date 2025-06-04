@@ -146,15 +146,7 @@ void f()
 	system("leaks -q minishell");
 }
 
-void expand_all(t_env *env, t_tree *root)
-{
-	if (root->type == BLOCK)
-		expand(env, root);
-	if (root->left)
-		expand_all(env, root->left);
-	if (root->right)
-		expand_all(env, root->right);
-}
+
 
 
 //todo for debug
