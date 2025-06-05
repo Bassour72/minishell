@@ -40,20 +40,19 @@ int	builtin_unset_environment(t_tree *root, t_env **env_list, char **env);
 void execute_command(t_tree *root, char **env, t_env **env_list);
 void free_tree_exe(t_tree *root);
 int exec_pipe(t_tree *root, char **env, int input_fd, t_env **env_list);
-void write_here_doc(int fd, char *limiter_nl);
 int execution(t_tree *root, char **env, t_env **env_list);
 int setup_redirections(t_tree *root);
 void free_tree_exe(t_tree *root);
-void write_heredoc(int fd, const char *limiter);
-void create_heredoc(t_red *redir);
-void prepare_heredocs(t_tree *root);
-void apply_redirections(t_red *redir);
-void write_here_doc(int fd, char *limiter_nl);
+void write_heredoc(int fd, const char *limiter,  t_env **env_list);
+void create_heredoc(t_red *redir,  t_env **env_list);
+void prepare_heredocs(t_tree *root,  t_env **env_list);
+void apply_redirections(t_red *redir,  t_env **env_list);
 int handle_heredocs(t_tree *root);
 int setup_here_doc(t_tree *root);
 int setup_input_for_read(t_tree *root);
 int setup_input_for_append(t_tree *root);
 int setup_input_for_trunk(t_tree *root);
 int setup_redirections(t_tree *root);
+void	print_debu(char *target, int time_to_sleep);
 #endif
 

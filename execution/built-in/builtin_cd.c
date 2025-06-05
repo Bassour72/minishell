@@ -5,21 +5,77 @@
 #define DIR_STATUS_NO_PER 11
 #define DIR_STATUS_NOT_EXI 12
 
-int is_valide_arg_cd(const char *arg)
+int is_valid_cd_arg(const char *arg)
 {
-    if (!arg)
+    if (arg == NULL)
         return 0;
-    struct stat sb;
-    if (stat(arg, &sb) == 0 && S_ISDIR(sb.st_mode))
-        return 0;
-    perror("cd: ....:");
-    return 1;
+    int i = 0;
+    int count_dot = 0;
+    while (arg[i] != '\0')
+    {
+        if (arg[i] == '.')
+        {
+            count_dot++;
+            if (count_dot == 3)
+            {
+                fprintf(stderr, "cd: %s: invalid argument (three consecutive dots)\n", arg);
+                return 1;
+            }
+        }
+        else
+        {
+            count_dot = 0;
+        }
+        i++;
+    }
+    i = 0;
+    int count_hyphen = 0;
+    while (arg[i] != '\0')
+    {
+        if (arg[i] == '-')
+        {
+            count_hyphen++;
+            if (count_hyphen == 3)
+            {
+                fprintf(stderr, "cd: %s: invalid argument (three consecutive hyphens)\n", arg);
+                return 1;
+            }
+        }
+        else
+        {
+            count_hyphen = 0;
+        }
+        i++;
+    }
+    i = 0;
+    while (arg[i] != '\0' && arg[i + 1] != '\0')
+    {
+        if (arg[i] == '.' && arg[i + 1] == '-')
+        {
+            fprintf(stderr, "cd: %s: invalid argument (\".-\" not allowed)\n", arg);
+            return 1;
+        }
+        if (arg[i] == '-' && (arg[i + 1] == '.' || arg[i + 1] == '/'))
+        {
+            if (arg[i + 1] == '.')
+                fprintf(stderr, "cd: %s: invalid argument (\"-.\" not allowed)\n", arg);
+            else
+                fprintf(stderr, "cd: %s: invalid argument (\"-/\" not allowed)\n", arg);
+            return 1;
+        }
+        i++;
+    }
+
+    return 0;
 }
+
 
 char * get_arg_cd(const char *arg)
 {
     if (!arg)
         return NULL;
+    if (strcmp(arg, "-") == 0)
+        return ft_strdup(arg);
     struct stat sb;
     if (stat(arg, &sb) == 0 && S_ISDIR(sb.st_mode))
         return ft_strdup(arg);
@@ -176,6 +232,10 @@ int cd_change_working_directory(t_tree *root, t_env **env)
     char *arg;
     char *candidate;
     int status;
+    if (check_argument(root) || is_valid_cd_arg(root->data[1]))
+    {
+        return 1;
+    }
     old_pwd = getcwd(NULL, 0);
     if (!old_pwd)
     {
@@ -188,16 +248,11 @@ int cd_change_working_directory(t_tree *root, t_env **env)
         old_pwd = strdup(env_pwd);
     }
 
-    if (check_argument(root))
-    {
-        free(old_pwd);
-        return 1;
-    }
 
     arg       = get_arg_cd(root->data[1]);
     candidate = NULL;
     status;
-
+    printf("here in cd for [%s] \n", arg);
     /* ----- Case A: no argument → cd $HOME ----- */
     if (!arg)
     {
@@ -248,9 +303,11 @@ int cd_change_working_directory(t_tree *root, t_env **env)
         return 0;
     }
 
-    /* ----- Case B: arg == "-" → cd $OLDPWD (after printing it) ----- */
-    if (!strncmp(arg, "-", 1))
+     printf("/* ----- Case B: arg == - → cd $OLDPWD (after printing it) ----- */ \n");
+     printf("here in cd for [%s] \n", arg);
+    if (!strcmp(arg, "-"))
     {
+        printf("here in cd for - \n");
         char *oldpwd_env = get_env_value("OLDPWD", *env);
         if (!oldpwd_env)
         {

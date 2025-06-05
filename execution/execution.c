@@ -14,6 +14,74 @@ if (WIFSIGNALED(status)) {
 
 */
 
+
+void	print_debu(char *target, int time_to_sleep)
+{
+	if (!strcmp("prepare_heredocs", target))
+	{
+		sleep(time_to_sleep);
+		printf("prepare heredocs before create new processe \n");
+	}
+	if (!strcmp("create_heredoc", target))
+	{
+		sleep(time_to_sleep);
+		printf("create heredoc\n");
+	}
+	if (!strcmp("write_heredoc", target))
+	{
+		sleep(time_to_sleep);
+		printf("write in heredoc \n");
+	}
+
+
+	if (!strcmp("execution", target))
+	{
+		sleep(time_to_sleep);
+		printf("execution this first \n");
+	}
+	if (!strcmp("propagate_fork_flag", target))
+	{
+		sleep(time_to_sleep);
+		printf("propagate_fork_flag  \n");
+	}
+	if (!strcmp("is_forkred", target))
+	{
+		sleep(time_to_sleep);
+		printf("is_forkred \n");
+	}
+	if (!strcmp("exec_pipe", target))
+	{
+		sleep(time_to_sleep);
+		printf("exec_pipe \n");
+	}
+	if (!strcmp("exec_tree", target))
+	{
+		sleep(time_to_sleep);
+		printf("exec_tree\n");
+	}
+	if (!strcmp("run_command", target))
+	{
+		sleep(time_to_sleep);
+		printf("run_command \n");
+	}
+	if (!strcmp("execute_external_command", target))
+	{
+		sleep(time_to_sleep);
+		printf("execute_external_command \n");
+	}
+	if (!strcmp("execute_builtin", target))
+	{
+		sleep(time_to_sleep);
+		printf("execute_builtin \n");
+	}
+	if (!strcmp("is_builtin", target))
+	{
+		sleep(time_to_sleep);
+		printf("is_builtin \n");
+	}
+	printf("[%s]\n", target);
+	
+}
 //todo remove this 
 //fixme 
 //todo you don't need to share **env with all fucntion 
@@ -167,7 +235,7 @@ void run_command(t_tree *root, char **env, t_env **env_list)
 		free_tree_exe(root);
 		exit(EXIT_FAILURE);
 	}
-	apply_redirections(root->redirections);
+	apply_redirections(root->redirections,env_list);
 	//sleep(2);
 	printf("Run command for check the redirections \n ");
 	/*
@@ -198,7 +266,7 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 		if (pid == 0) 
 		{
 			// execute the inner subtree in child process
-			apply_redirections(root->redirections);
+			apply_redirections(root->redirections, env_list);
 			exec_tree(root->left, env, env_list, STDIN_FILENO, 0);
 			exit(EXIT_SUCCESS);
 		} else 
@@ -269,7 +337,7 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 				printf("does built-in fucntion \n ");
 				int saved_stdin = dup(STDIN_FILENO);
 				int saved_stdout = dup(STDOUT_FILENO);
-				apply_redirections(root->redirections);
+				apply_redirections(root->redirections, env_list);
 				int built_in_status = execute_builtin(root, env, env_list);
 				dup2(saved_stdin, STDIN_FILENO);
 				dup2(saved_stdout, STDOUT_FILENO);
@@ -289,7 +357,7 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 			}
 			if (pid == 0) 
 			{
-				apply_redirections(root->redirections);
+				apply_redirections(root->redirections, env_list);
 				if (input_fd != STDIN_FILENO)
 				{
 					dup2(input_fd, STDIN_FILENO);
@@ -443,6 +511,7 @@ int is_forkred(t_tree *root)
         return 1;
     return 0;
 }
+
 void propagate_fork_flag(t_tree *root, int is_forked)
 {
     if (!root)
@@ -472,7 +541,7 @@ int execution(t_tree *root, char **env, t_env **env_list)
 		// char *binary_path = get_binary_file_path(root, env,env_list);
 		// update_last_executed_command(env_list, binary_path);
 	}
-	prepare_heredocs(root); //todo check if the it command and has heredoc
+	prepare_heredocs(root, env_list); //todo check if the it command and has heredoc
 	//sleep(2);
 	printf("exection fucntion \n ");
 	int status = exec_tree(root, env, env_list, STDIN_FILENO, 0);

@@ -178,7 +178,7 @@ static t_env *is_exist_env(t_env *env_list, const char *new_key)
 }
 
 
-static void	add_env(t_tree *root, t_env **env_list)
+static void	add_env(char *arg, t_env **env_list)
 {
 	t_env *existing;
 	t_env *new_node;
@@ -186,15 +186,15 @@ static void	add_env(t_tree *root, t_env **env_list)
 	char *new_key;
 	char *new_value;
 
-	if (!root || !root->data[1])
+	if (!arg)
 		return ;
-	if (is_valid_identifier(root->data[1]) == 1)
+	if (is_valid_identifier(arg) == 1)
 	{
-		printf("export: `%s': not a valid identifier\n", root->data[1]);
+		printf("export: `%s': not a valid identifier\n", arg);
 		return ;
 	}
-	new_key = get_env_key(root->data[1]);
-	new_value = get_env_value(root->data[1]);
+	new_key = get_env_key(arg);
+	new_value = get_env_value(arg);
 	existing = is_exist_env(*env_list, new_key);
 	if (existing)
 	{
@@ -226,11 +226,17 @@ static void	add_env(t_tree *root, t_env **env_list)
 
 int export_command_builtin(t_tree *root, t_env **env_list)
 {
+	int i = 0;
 	if (env_list == NULL)
 		return 0;
 	else if (root->data[1] != NULL)
 	{
-		add_env(root, env_list);
+		while (root->data[i] != NULL)
+		{
+			add_env(root->data[i], env_list);
+			i++;
+		}
+		
 		return 0;
 	}
 	else 
