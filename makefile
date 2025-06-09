@@ -1,4 +1,4 @@
-CFLAGS =  #-fsanitize=address -g3 #-Wall -Wextra -Werror
+CFLAGS =  -fsanitize=address -g3 #-Wall -Wextra -Werror
 
 NAME = minishell
 
@@ -8,6 +8,7 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		parsing/tree/append_flat_tree_node.c parsing/tree/flat_tree.c\
 		parsing/split/split.c parsing/split/manage_normal.c parsing/split/manage_operators.c parsing/split/manage_parenth.c parsing/split/manage_quotes.c parsing/split/manage_redirections.c parsing/split/append_node.c\
  		parsing/expand/expand.c \
+		parsing/expand/expand_node.c \
 		parsing/expand/tokenizer/tokenizer.c \
 		parsing/expand/tokenizer/append_expand_token.c \
 		parsing/expand/tokenizer/free_expand_tokens_list.c \
@@ -19,6 +20,9 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		parsing/expand/expand_list_to_array.c\
 		parsing/utils/get_list_size.c\
 		parsing/validate_syntax/validate_syntax.c parsing/validate_syntax/validate_quotes.c parsing/validate_syntax/validate_parenthecies.c\
+		wildcard/expand_wildcard.c\
+		wildcard/init_file_names.c\
+		wildcard/wildcard.c\
 		env/env.c env/env_utils.c\
 		execution/execution.c execution/built-in/builtin_echo.c \
 		execution/built-in/builtin_cd.c execution/built-in/builtin_env.c \
@@ -40,7 +44,7 @@ $(NAME): $(OBJ)
 libft:
 	make -C ./_libft
 
-%.o: %.c minishell.c include/parsing.h
+%.o: %.c minishell.c include/*.h
 	cc $(CFLAGS) -c $< -o $@
 
 clean:   

@@ -275,7 +275,7 @@ int tokenize(char *str, t_expand_token **tokens, t_env *env)
 			{
 				if (extract_var_value(str + i + 1, &i, &data, env) == R_FAIL)
 					return (free_expand_tokens_list(*tokens), R_FAIL);
-				if (str[i + 1] != ' ' && str[i + 1] != '\"')
+				if (str[i] && str[i + 1] != ' ' && str[i + 1] != '\"')
 					join = 1;
 			}
 			if (append_expand_token(tokens, data, VAR, split, join) == R_FAIL)

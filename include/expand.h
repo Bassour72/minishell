@@ -48,10 +48,16 @@ char *data, t_expand_type type, int need_split, int join);
 void free_expand_tokens_list(t_expand_token *tokens);
 void print_expand_tokens(t_expand_token *tokens);
 
-t_expand_node	*expand_split(char const *s, char c, int joinable);
+int	expand_split(t_expand_node **sub_list, char const *s, char c, int joinable);
 int build_args_list_from_nodes_by_joining(t_expand_node *list);
 int expand_list_to_array(char ***commands_arr, t_expand_node *list);
 
+int	split_tokens_into_nodes(t_expand_node **expanded_list,  t_expand_token *tokens);
+
+int is_valid_key_char(char c, int i);
+
+int extract_var_value(char *src, int *i, char **dst, t_env *env);
 
 void free_expand_list_nodes(t_expand_node *list);
+
 #endif

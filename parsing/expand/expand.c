@@ -1,17 +1,19 @@
 
 #include "../../include/parsing.h"
 
-t_expand_node *join_two_lists(t_expand_node *list_1, t_expand_node *list_2)
+void join_two_lists(t_expand_node **list_1, t_expand_node *list_2)
 {
 	t_expand_node *tmp;
 
-	if (!list_1)
-		return (list_2);
-	tmp = list_1;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = list_2;
-	return (list_1);
+	if (!*list_1)
+		*list_1 = list_2;
+	else
+	{
+		tmp = *list_1;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = list_2;
+	}
 }
 
 t_expand_node *append_str_to_list(t_expand_node *list_1, char *str, int join)
@@ -36,31 +38,31 @@ t_expand_node *append_str_to_list(t_expand_node *list_1, char *str, int join)
 	return (list_1);
 }
 
-t_expand_node *split_tokens_into_nodes(t_expand_token *tokens)
+int split_tokens_into_nodes(t_expand_node **expanded_list,  t_expand_token *tokens)
 {
 	t_expand_node *main_list = NULL;
 	t_expand_node *sub_list;
 
-	// print_expand_tokens(tokens);
-	int joinable = 0;
 	while (tokens)
 	{
+		sub_list = NULL;
 		if (tokens->data && tokens->data[0] && tokens->split)
 		{
-			sub_list = expand_split(tokens->data, ' ', tokens->join);//todo protect
-			if (!sub_list)
-				return (free_expand_list_nodes(main_list), NULL);
-			main_list = join_two_lists(main_list, sub_list);
+			// printf("NEED to split [%s]\n", tokens->data);
+			if (expand_split(&sub_list, tokens->data, ' ', tokens->join) == R_FAIL)//todo protect
+				return (free_expand_list_nodes(*expanded_list), R_FAIL);
+			join_two_lists(expanded_list, sub_list);
 		}
-		else if (tokens->data)
+		else if (tokens->data && tokens->data[0])
 		{
-			main_list = append_str_to_list(main_list, tokens->data, tokens->join);
-			if (!main_list)
-				return (NULL);
+			// printf("NO need to split [%s]\n", tokens->data);
+			*expanded_list = append_str_to_list(*expanded_list, tokens->data, tokens->join);
+			if (!expanded_list)
+				return (R_FAIL);
 		}
 		tokens = tokens->next;
 	}
-	return (main_list);
+	return (R_SUCCESS);
 }
 
 void free_expand_list_nodes(t_expand_node *list)
@@ -109,9 +111,9 @@ int expand(char ***new_args, char **old_args, t_env *env)
 	// free(line);
 	// return NULL;
 	// print_expand_tokens(tokens);
-	nodes_list = split_tokens_into_nodes(tokens);
-	// for(t_expand_node *tmp = nodes_list; tmp; tmp = tmp->next)
-		// printf(">>{%s}\n", tmp->data); 
+	if (split_tokens_into_nodes(&nodes_list,  tokens) == R_FAIL)
+		return (R_FAIL);
+	for(t_expand_node *tmp = nodes_list; tmp; tmp = tmp->next)
 	free_expand_tokens_list(tokens);
 	free(line);
 	if (!nodes_list)

@@ -66,14 +66,11 @@ static int append_node_expand(t_expand_node **store, char *data)
 	return (R_SUCCESS);
 }
 
-static t_expand_node *do_split(char *str, char split_char)
+static int	do_split(t_expand_node **sub_list, char *str, char split_char)
 {
 	int				start;
-	t_expand_node	*store;
 	char 			*data;
 	int				i;
-
-	store = NULL;
 
 	i = 0;
 	while (str[i])
@@ -85,20 +82,25 @@ static t_expand_node *do_split(char *str, char split_char)
 			i++;
 		data = custom_strdub(str + start, i - start);
 		if (data == NULL)
-			return (free_store(store), NULL);
-        if (append_node_expand(&store, data) == R_FAIL)
-			return (free(store), NULL);
+			return (free_store(*sub_list), R_FAIL);
+        if (append_node_expand(sub_list, data) == R_FAIL)
+		{
+			free_store(*sub_list);
+			return (R_FAIL);
+		}
 	}
-	return (store);
+	return (R_SUCCESS);
 }
 
-t_expand_node	*expand_split(char const *str, char c, int joinable)
+int expand_split(t_expand_node **sub_list, char const *str, char c, int joinable)
 {
 	t_expand_node	*store = NULL;
 	t_expand_node	*tmp;
 
 	store = NULL;
-	store = do_split((char *)str, c);
+	if (do_split(sub_list, (char *)str, c) == R_FAIL)
+		return (R_FAIL);
+		
 	if (store && joinable)
 	{
 		tmp = store;
@@ -106,5 +108,5 @@ t_expand_node	*expand_split(char const *str, char c, int joinable)
 			tmp = tmp->next;
 		tmp->joinable = joinable;
 	}
-	return (store);
+	return (R_SUCCESS);
 }

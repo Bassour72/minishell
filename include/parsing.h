@@ -13,6 +13,7 @@
 # include <stdbool.h>
 # include "env.h"
 # include "expand.h"
+# include "wildcard.h"
 //-------------------------------------------------------------------
 
 //node types --------------------------------------------------------
@@ -23,10 +24,8 @@ typedef enum e_type
 	WORD,				// cat, ls,...
 	PIPE, //				// |
 	RED_INPUT,  	// <
-	RED_APPEND, // >
-	RED_TRUNK,	// >>
-	//FIX ME 
-	//TODO RED_OUTPUT
+	RED_APPEND, // >>
+	RED_TRUNK,	// >
 	HER_DOC,  			// <<
 	BLOCK,//
 	OP_AND,//
@@ -180,5 +179,9 @@ int validate_sytax(t_token *token);
 int validate_quotes(char *str);
 int validate_open_parenths(t_token *token);
 int validate_close_parenths(t_token *token);
+
+//expand
+int expand_redir(t_red *reds, t_env *env);
+int expand_herdoc(char **str, t_env *env);
 
 #endif
