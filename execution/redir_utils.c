@@ -22,7 +22,7 @@ void write_heredoc(int fd, const char *limiter,  t_env **env_list)
 {
 	char *line;
 	//	sleep(2);
-	//printf("Write heredoc \n ");
+	// printf("Write heredoc \n ");
 	while (1) 
 	{
 		signal(SIGINT, heredoc_handler);
@@ -111,7 +111,7 @@ void apply_redirections(t_red *redir, t_env **env_list)
 		//	printf("check the value of fd is  incrrect value################### [%d] \n", fd);
 			if (fd == -1)
 			{
-				printf("hervalue################### [%d] \n", fd);
+				// printf("hervalue################### [%d] \n", fd);
 			}
 		}
 		if (fd == -1)
@@ -131,5 +131,5 @@ void apply_redirections(t_red *redir, t_env **env_list)
 		redir = redir->next;
 	}
 	//sleep(2);
-	printf("end of fucntion for check why it's exit with error \n ");
+	// printf("end of fucntion for check why it's exit with error \n ");
 }

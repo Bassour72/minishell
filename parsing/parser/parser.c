@@ -25,7 +25,7 @@ t_tree *parser(t_tree *tree, char *input)
 	// 	return (free_tokens_list(tokenized_input), NULL);
 	// }
 
-	printf("validate syntax OK\n");
+	// printf("validate syntax OK\n");
 
 	// print_tokenized_inputs(tokenized_input);
 

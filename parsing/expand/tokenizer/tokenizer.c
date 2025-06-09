@@ -103,7 +103,7 @@ int extract_word_of_double_quote(char *str, int *i, char **data)
 	(*i) += _i;
 	
 	*data = ft_substr(str, start, len);
-	printf("data [%s]\n", *data);
+	// printf("data [%s]\n", *data);
 	if (!*data)
 		return (perror("error: "), R_FAIL);
 	return (R_SUCCESS);
@@ -148,13 +148,26 @@ int extract_normal_word(char *str, int *i, char **data)
 	len = 0;
 	start = 0;
 	_i = 0;
+	// printf("STR<%s>\n", str);
 	while (str[_i])
 	{
-		if (!str[_i] || str[_i] == '\'' || str[_i] == '\"' || str[_i] == ' ' || (str[_i] == '$' && (is_valid_key_char(str[_i + 1], 0) || (str[_i + 1] >= '0' && str[_i + 1] <= '9'))))
+		if (str[_i] != '\'' && str[_i] != '\"' && str[_i] != ' ')
+		{
+			if (str[_i] == '$' && str[_i + 1] != ' ' && str[_i + 1] != '\0' )
+				break;
+			_i++;
+			len++;
+		}
+		else
 			break;
-		len++;
-		_i++;
+		// if (!str[_i] || str[_i] == '\'' || str[_i] == '\"' || str[_i] == ' ' || (str[_i] == '$' && str[_i + 1] != ' '))
+		// 	break;
+		// len++;
+		// _i++;
 	}
+	// printf("LEN<%d>\n", len);
+	if (len == 0)
+		_i += 1;
 	(*i) += _i;
 	*data = ft_substr(str, start, len);
 	if (!*data)
@@ -173,7 +186,7 @@ int is_valid_key(char *key)
 	{
 		if (is_valid_key_char(key[i], i) == 0)
 		{
-			printf("not valid\n");
+			// printf("not valid\n");
 			return (0);
 		}
 	}
@@ -195,100 +208,26 @@ int is_befor_var_valid(t_expand_token *tokens)
 	if (tokens->join == 1 && tokens->split == 1 && is_valid_key(tokens->data))
 			return (1);
 
-	printf("not valid\n");	
+	// printf("not valid\n");	
 	return (0);
 }
 
-int tokenize_export(char *str, t_expand_token **tokens, t_env *env)
+
+int is_export(char *line)
 {
-	printf("export\n");
-	int quote;
-	int i;
-	char *data = NULL;
-	int join = 0;
-
-	quote = 0;
-	i = 0;
-	while (str[i])
-	{
-		data = NULL;
-		join = 0;
-		check_quote(str[i], &quote);
-		// printf("\033[33mquote: [%d] at [%d]\033[0m\n", quote, i);
-		// printf("\033[33mstr[i]: [%c] at: [%d] and quote: [%d]\033[0m\n", str[i], i, quote);
-		if (quote != 1 && str[i] == '$')
-		{
-			// printf("var\n");
-			if (!is_valid_key_char(str[i + 1], 0))
-			{
-				if (str[i + 1] == '\'' || str[i + 1] =='\"')
-					i++;
-				else
-					i += 2;
-
-			}
-			else {
-
-			if (extract_var_value(str + i + 1, &i, &data, env) == R_FAIL)
-			return (free_expand_tokens_list(*tokens), R_FAIL);
-			if (str[i] != ' ' && str[i] != '\"')
-				join = 1;
-			int split = quote;
-			if (is_befor_var_valid(*tokens))
-				split = 2;
-				printf("split: %d\n", split);
-			if (append_expand_token(tokens, data, VAR, split, join) == R_FAIL)
-					return (free_expand_tokens_list(*tokens), R_FAIL);
-			}
-				
-		}
-		else if (quote == 2)
-		{
-			// printf("double\n");
-			if (extract_word_of_double_quote(str + i, &i, &data) == R_FAIL)
-				return (free_expand_tokens_list(*tokens), R_FAIL);
-
-				if (str[i + 1] != ' ')
-					join = 1;
-				if (append_expand_token(tokens, data, e_WORD, quote, join) == R_FAIL)
-					return (free_expand_tokens_list(*tokens), R_FAIL);
-
-		}
-		else if (quote == 1)
-		{
-			// printf("single\n");
-			if (extract_word_of_single_quote(str + i, &i, &data) == R_FAIL)
-				return (free_expand_tokens_list(*tokens), R_FAIL);
-			if (str[i + 1] != ' ')
-				join = 1;
-			if (append_expand_token(tokens, data, e_WORD, quote, join) == R_FAIL)
-				return (free_expand_tokens_list(*tokens), R_FAIL);
-		}
-		else if (quote == 0 && str[i] != ' ' && str[i] != '\"' && str[i] != '\'')
-		{
-			// printf("normal\n");
-			if (extract_normal_word(str + i, &i, &data) == R_FAIL)
-				return (free_expand_tokens_list(*tokens), R_FAIL);
-				// printf("[%c]\n", str[i]);
-			if (str[i] != ' ' && str[i])
-				join = 1;
-			if (append_expand_token(tokens, data, e_WORD, quote, join) == R_FAIL)
-				return (free_expand_tokens_list(*tokens), R_FAIL);
-		}
-		else
-			i++;
-		// printf("\033[32mfinal data = {%s}\033[0m\n", data);
-		// join = 0;
-	}
-	return (R_SUCCESS);
+	if (ft_memcmp("export ", line, 7) == 0)
+		return (1);
+	return (0);
 }
 
 int tokenize(char *str, t_expand_token **tokens, t_env *env)
 {
+	
 	int quote;
 	int i;
 	char *data = NULL;
 	int join = 0;
+	int split;
 
 	quote = 0;
 	i = 0;
@@ -299,26 +238,48 @@ int tokenize(char *str, t_expand_token **tokens, t_env *env)
 		check_quote(str[i], &quote);
 		// printf("\033[33mquote: [%d] at [%d]\033[0m\n", quote, i);
 		// printf("\033[33mstr[i]: [%c] at: [%d] and quote: [%d]\033[0m\n", str[i], i, quote);
-		if (quote != 1 && str[i] == '$' && str[i + 1] && str[i + 1] != '\"')
+		if (quote != 1 && str[i] == '$' && str[i + 1] && str[i + 1] != '\"' && str[i + 1] != '\'' && str[i + 1] != ' ')
 		{
-			//  printf("var\n");
+				// printf("\033[33m#var {%s}\033[0m\n", str + i);
 			if (!is_valid_key_char(str[i + 1], 0))
 			{
+				if (quote == 2)
+				{
+					if (extract_word_of_double_quote(str + i, &i, &data) == R_FAIL)
+						return (free_expand_tokens_list(*tokens), R_FAIL);
+					if (str[i + 1] != ' ')
+						join = 1;
+					if (append_expand_token(tokens, data, e_WORD, quote, join) == R_FAIL)
+						return (free_expand_tokens_list(*tokens), R_FAIL);
+				}
 				if (str[i + 1] == '\'' || str[i + 1] =='\"')
 					i++;
 				else
 					i += 2;
-
+				continue;
 			}
-			else 
+			split = quote;
+			// printf("[%s]<<<<<<<<\n", str);
+			if (is_export(str))
 			{
 				if (extract_var_value(str + i + 1, &i, &data, env) == R_FAIL)
 					return (free_expand_tokens_list(*tokens), R_FAIL);
-				if (str[i + 1] != ' ' && str[i + 1] != '\"')
+				if (str[i] != ' ' && str[i] != '\"')
 					join = 1;
-				if (append_expand_token(tokens, data, VAR, quote, join) == R_FAIL)
-					return (free_expand_tokens_list(*tokens), R_FAIL);
+				if (is_befor_var_valid(*tokens))
+					split = 2;
+					// printf("split: %d| {%s}\n", split , data);
+
 			}
+			else
+			{
+				if (extract_var_value(str + i + 1, &i, &data, env) == R_FAIL)
+					return (free_expand_tokens_list(*tokens), R_FAIL);
+				if (str[i] && str[i + 1] != ' ' && str[i + 1] != '\"')
+					join = 1;
+			}
+			if (append_expand_token(tokens, data, VAR, split, join) == R_FAIL)
+				return (free_expand_tokens_list(*tokens), R_FAIL);
 		}
 		else if (quote == 2)
 		{
@@ -342,9 +303,9 @@ int tokenize(char *str, t_expand_token **tokens, t_env *env)
 			if (append_expand_token(tokens, data, e_WORD, quote, join) == R_FAIL)
 				return (free_expand_tokens_list(*tokens), R_FAIL);
 		}
-		else if (quote == 0 && str[i] != ' ' && str[i] != '\"' && str[i] != '\'')
+		else if (quote == 0 && str[i] != ' ' && str[i] != '\"' && str[i] != '\'')//todo check str[i] != ' ' && str[i] != '\"' && str[i] != '\''
 		{
-			// printf("normal\n");
+			// printf("\033[33m#Normal {%s}\033[0m\n", str + i);
 			if (extract_normal_word(str + i, &i, &data) == R_FAIL)
 				return (free_expand_tokens_list(*tokens), R_FAIL);
 				// printf("[%c]\n", str[i]);

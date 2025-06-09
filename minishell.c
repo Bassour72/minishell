@@ -82,7 +82,7 @@ int update_env_shlvl(t_env **env_list, long value)
 		{
 			free(tmp->value);
 			tmp->value = new_value;
-			printf("\033[32msss->%s\033[0m\n", tmp->value);
+			// printf("\033[32msss->%s\033[0m\n", tmp->value);
 			return 0;
 		}
 		tmp = tmp->next;
@@ -97,7 +97,7 @@ int should_increment_shlvl(char *program_path)
 	//printf("\n\n\n\n   ======[%s]==== \n\n\n", program_path);
 	if (ft_strcmp(program_path, "./minishell") == 0)
 	{
-		printf("\n\n\n\n   ======###[%s]==== \n\n\n", program_path);
+		// printf("\n\n\n\n   ======###[%s]==== \n\n\n", program_path);
 		return (0);
 	}
 	else
@@ -116,7 +116,7 @@ int handle_shlvl(char *argv0, t_env **env_list)
 	shlvl_str = env_get_value(*env_list, "SHLVL");
 	//printf("\n\n\n\n  shlvl_str ======[%s]==== \n\n\n", shlvl_str);
 	current = parse_shlvl(shlvl_str);
-	printf("\n\n\n\n  current ======[%ld]==== \n\n\n", current);
+	// printf("\n\n\n\n  current ======[%ld]==== \n\n\n", current);
 	next = compute_next_shlvl(current);
 	//printf("\n\n\n\n  next ======[%ld]==== \n\n\n", next);
 	return update_env_shlvl(env_list, next);
@@ -171,6 +171,7 @@ int main(int ac, char **av, char **env)
 	signal(SIGINT, handle_sigint_prompt);
 	signal(SIGQUIT, SIG_IGN);
 
+	
 	// printf("if has null [%p]\n", *env);
 	// printf("herer\n");
 	env_generate(&env_list, env);
@@ -191,21 +192,23 @@ int main(int ac, char **av, char **env)
 		add_history(input);
 
 		tree = parser(tree, input);
-		if (!tree)
-			continue;
+		// if (!tree)
+		// 	continue;
 		// lable parsing tests========
 		//  t_env *env_l = NULL;
 		//  env_generate(&env_l, env);
-		// expand_all(env_l, tree);
-		print_tree(tree, 0);
+		// print_tree(tree, 0);
+		// expand_redir(tree->redirections, env_list);
+
+
 
 
 		//lable =^=^=^=^=^=^=^=^=^=^=
 		//print_env(env_list);
-		execution(tree, env, &env_list);
+		// execution(tree, env, &env_list);
 		// if (tree->data)
 		// 	printf("here echo command built-in [%s]\n",tree->data[0]);
-		 //free_tree(tree); //note this is for freeing the tree
+		//  free_tree(tree); //note this is for freeing the tree
 		// take the tree and execute here
 
 		

@@ -28,7 +28,7 @@ char **append_command(char **old_list, char *new_cmd)
 			return (NULL);
 		*new_list = ft_strdup(new_cmd);
 		if (*new_list == NULL)
-			return (free(new_list), NULL);
+			return (perror("error: "), free(new_list), NULL);
 		*(new_list + 1) = NULL;
 		return (new_list);
 	}
@@ -39,7 +39,7 @@ char **append_command(char **old_list, char *new_cmd)
 		
 	new_list = malloc(sizeof(char *) * (size + 1));
 	if (!new_list)
-		return (free_cmd_list(old_list), NULL); //note free old list
+		return (perror("error: "), free_cmd_list(old_list), NULL); //note free old list
 		
 	i = -1;
 	while (old_list[++i]) 
@@ -48,7 +48,7 @@ char **append_command(char **old_list, char *new_cmd)
 		if (!new_list[i]) //note free old + new list 
 		{	
 			free_cmd_list(old_list);
-			return (free_cmd_list(new_list), NULL);
+			return (perror("error: "), free_cmd_list(new_list), NULL);
 		}
 	}
 
@@ -56,7 +56,7 @@ char **append_command(char **old_list, char *new_cmd)
 
 	new_list[i] = ft_strdup(new_cmd);
 	if (new_list[i] == NULL)
-		return (free_cmd_list(new_list), NULL);
+		return (perror("error: "), free_cmd_list(new_list), NULL);
 	new_list[i + 1] = NULL;
 	return (new_list);
 }
