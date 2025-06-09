@@ -8,8 +8,12 @@ t_tree *parser(t_tree *tree, char *input)
 
 	if (!validate_quotes(input))
 		return (free(input), NULL);
+ 
+	if (!tokenizer(&tokenized_input, input) == R_FAIL)
+		return (NULL);
 
-	tokenized_input = tokenizer( input);
+	free_tokens_list(tokenized_input);
+	return NULL;
 
 	// print_tokenized_inputs(tokenized_input);
 	// return NULL;

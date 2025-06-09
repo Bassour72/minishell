@@ -56,5 +56,7 @@ fclean: clean
 
 re: fclean all
 
+
+
 debug: fclean all #todo 
 	valgrind --leak-check=full --track-fds=yes ./minishell 

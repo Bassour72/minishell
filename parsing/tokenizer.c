@@ -24,6 +24,8 @@ void free_tokens_list(t_token *tokens)
 	int i;
 	t_token	*list;
 
+	if (!tokens)
+		return ;
 	list = tokens;
 	i = -1;
 	while ((list + ++i)->data)
@@ -113,15 +115,17 @@ void convert_inputs_to_tokens(t_token *tokenized_input, t_node *splitted_input)
 	(tokenized_input + i)->data = NULL;
 }
 
-t_token	*tokenizer(char *input)
+int tokenizer(t_token **tokenized_input, char *input)
 {
 	// char	**splitted_input; // need to be freeied
-	t_token	*tokenized_input;
 	int		i;
 	
-	t_node *splitted_input = split(input);//todo check for all cases
-	free(input); //todo find a better place for this
+	t_node *splitted_input;
+	if (split(&splitted_input, input) == R_FAIL)
+	{
 
+	}
+	free(input); //todo find a better place for this
 	// t_node *s = splitted_input;
 	// while (s)
 	// {
@@ -130,21 +134,21 @@ t_token	*tokenizer(char *input)
 	// }
 
 	if (!splitted_input)
-		return (NULL);
+		return (R_FAIL);
 
 	//alocate space for the tokenized inputs
-	tokenized_input = malloc(sizeof(t_token) * (count_splitted_input_nodes(splitted_input) + 1));
-	if (!tokenized_input)
+	*tokenized_input = malloc(sizeof(t_token) * (count_splitted_input_nodes(splitted_input) + 1));
+	if (!*tokenized_input)
 	{
 		printf("error: %s\n", strerror(errno));//todo this is tmp
 		free_splitted_input(splitted_input);
-		return (NULL);
+		return (R_FAIL);
 	}
 
-	convert_inputs_to_tokens(tokenized_input, splitted_input);
+	convert_inputs_to_tokens(*tokenized_input, splitted_input);
 	
 	free_splitted_input(splitted_input);
 
 
-	return (tokenized_input);
+	return (R_SUCCESS);
 }

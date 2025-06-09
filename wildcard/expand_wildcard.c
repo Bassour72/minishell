@@ -104,7 +104,7 @@ int do_expand_wildcard(t_wc_node **wc_node, t_wc_node *file_names)
 			if (fn->match)
 			{
 				if (append_wc_node(&new_list, fn->data) == R_FAIL)
-					return ( free_node_list(new_list), *wc_node = NULL, R_FAIL);
+					return (free_wc_node_list(new_list), *wc_node = NULL, R_FAIL);
 			}
 		}
 		free((*wc_node)->data);

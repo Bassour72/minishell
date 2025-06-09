@@ -9,14 +9,12 @@ int is_special(char *c)
 
 static void cleaner(t_node *list)
 {
-	t_node *_list;
 	t_node *tmp;
 
-	_list = list;
-	while (_list)
+	while (list)
 	{
-		tmp = _list;
-		_list = _list->next;
+		tmp = list;
+		list = list->next;
 		free(tmp->data);
 		free(tmp);
 	}
@@ -31,55 +29,67 @@ static void skip_spaces(char *str, int *i)
 int quotes(char *str, char **data, t_node **list, int *i)
 {
 	if (!m_quotes(str, data, i))
-		return (cleaner(*list), 0);
+		return (cleaner(*list), R_FAIL);
 	if (*data && (str[*i] == ' ' || is_special(str + *i) || !str[*i]) && !append_node(list, data))
-		return (cleaner(*list), 0);
-	return (1);
+		return (cleaner(*list), R_FAIL);
+	return (R_SUCCESS);
 }
 int specials(char *str, char **data, t_node **list, int *i)
 {
 	if (*data && !append_node(list, data))
-		return (cleaner(*list), 0);
+		return (cleaner(*list), R_FAIL);
 	if (!m_operators(list, str, i))
-		return (cleaner(*list), 0);
+		return (cleaner(*list), R_FAIL);
 	if (!m_parenth(list, str, i))
-		return (cleaner(*list), 0);
+		return (cleaner(*list), R_FAIL);
 	if (!m_redirections(list, str, i))
-		return (cleaner(*list), 0);
-	return (1);
+		return (cleaner(*list), R_FAIL);
+	return (R_SUCCESS);
 }
 
 int normal(char *str, char **data, t_node **list, int *i)
 {
 	if (!m_normal(str, data, i))
-		return (cleaner(*list), 0);
+		return (cleaner(*list), R_FAIL);
+	printf("here\n");
 	if (*data && (is_special(str + *i) || str[*i] == ' ' || !str[*i]) && !append_node(list, data))
-		return (cleaner(*list), 0);
-	return (1);
+		return (cleaner(*list), R_FAIL);
+	return (R_SUCCESS);
 }
 
-t_node *split(char *str)
+int split(t_node **list, char *str)
 {
-	t_node	*list;
 	char 	*data;
 	int		i;
 
-	list = NULL;
+	*list = NULL;
 	data = NULL;
 	i = 0;
-	if (!str)
-		return (NULL);
+	// if (!str)
+	// 	return (R_FAIL);
 	while (*(str + i) != '\0')
 	{
 		skip_spaces(str, &i);
 		
 		if (*(str + i) == '\"' || *(str + i) == '\'')
-			quotes(str, &data, &list, &i);
+		{
+			if(quotes(str, &data, list, &i) == R_FAIL)
+				return  (R_FAIL);
+		}
+	
 		else if (is_special(str + i))
-			specials(str, &data, &list, &i);
+		{
+			if(specials(str, &data, list, &i) == R_FAIL)
+				return ( R_FAIL);
+		}
+	
 		else
-			normal(str, &data, &list, &i);
+		{
+			if(normal(str, &data, list, &i) == R_FAIL)
+				return (R_FAIL);
+		}
+	
 		skip_spaces(str, &i);
 	}
-	return list;
+	return (R_SUCCESS);
 }

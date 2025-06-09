@@ -100,7 +100,7 @@ typedef struct s_flat_tree
 // }	t_node;
 
 //split.c
-t_node	*split(char *str);
+int	split(t_node **list, char *str);
 int		is_special(char *c);
 int append_node(t_node **list, char **data);
 int	m_operators(t_node **list, char *str, int *i);
@@ -147,7 +147,7 @@ t_flat_tree *create_flat_tree(t_token *token);
 // int get_list_size(t_node *list);
 
 //tokenizer.c
-t_token	*tokenizer(char *input);
+int	tokenizer(t_token **tokenized_input, char *input);
 void free_tokens_list(t_token *tokens);
 
 //tree

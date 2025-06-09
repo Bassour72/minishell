@@ -143,7 +143,7 @@ int	empty(char *str)
 
 void f()
 {
-	system("leaks -q minishell");
+	system("valgrind --leak-check=full --show-leak-kinds=all ./minishell");
 }
 
 
@@ -162,7 +162,7 @@ void handle_sigint_prompt(int sig)
 
 int main(int ac, char **av, char **env)
 {
-	//atexit(f);
+	atexit(f);
 	t_tree	*tree = NULL;
 	t_env *env_list = NULL;	
 	char	*input;
@@ -174,8 +174,8 @@ int main(int ac, char **av, char **env)
 	
 	// printf("if has null [%p]\n", *env);
 	// printf("herer\n");
-	env_generate(&env_list, env);
-	handle_shlvl(av[0],&env_list);
+	// env_generate(&env_list, env);
+	// handle_shlvl(av[0],&env_list);
 	while (1)
 	{
 		//get the input from the terminal

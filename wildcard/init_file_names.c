@@ -66,11 +66,11 @@ int init_file_names(t_wc_node **file_names)
         if (!dir_entry)
             break ;
         if (append_wc_node(file_names, dir_entry->d_name) == R_FAIL)
-            return (free_node_list(*file_names), closedir(dir), free(cwd), R_FAIL);
+            return (free_wc_node_list(*file_names), closedir(dir), free(cwd), R_FAIL);
     }
 	if (dir)
     	closedir(dir);
     if (errno != 0)
-        return (perror("error: "),free_node_list(*file_names), free(cwd), R_FAIL);
+        return (perror("error: "),free_wc_node_list(*file_names), free(cwd), R_FAIL);
     return (free(cwd), R_SUCCESS);
 }

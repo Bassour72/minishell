@@ -24,7 +24,7 @@ typedef struct s_wc_node
 int append_wc_node(t_wc_node **list, char *data);
 int wildcard(char ***args);
 int init_file_names(t_wc_node **file_names);
-void free_node_list(t_wc_node *list);
+void free_wc_node_list(t_wc_node *list);
 int wildcard(char ***args);
 int expand_wildcard(t_wc_node **args_list, t_wc_node *file_names);
 
