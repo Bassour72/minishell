@@ -11,10 +11,10 @@ static int operators(t_tree **tree_node, t_token *token, int *i)
 {
 	*tree_node = new_tree_node(token[*i].type);
 	if (!*tree_node)
-		return ( 0);//note on fail the clearance will be handled inside new_tree_node							
+		return (R_FAIL);//note on fail the clearance will be handled inside new_tree_node							
 	(*i)++;
 	// printf("inside :%s\n", typetostring[(*tree_node)->type]);
-	return (1);
+	return (R_SUCCESS);
 }
 
 static int close_parenths_block(t_tree **tree_node, int *i)

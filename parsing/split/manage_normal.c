@@ -44,7 +44,7 @@ static int join_data_to_old_data(char *str, char **data, int *i)
 	j = ft_strlen(*data);
 	len = get_normal_len(str);
 	(*i) = _i + len;
-	_data =NULL;// malloc(j + len + 1);
+	_data = malloc(j + len + 1);
 	if (!_data)
 		return (perror("error: "), free(*data), R_FAIL);
 	ft_strlcpy(_data, *data, j + 1);

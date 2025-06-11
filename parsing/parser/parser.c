@@ -1,28 +1,23 @@
 
 #include "../../include/parsing.h"
 
-t_tree *parser(t_tree *tree, char *input)
+int	parser(t_tree **tree, char *input)
 {
-	t_token *tokenized_input;
+	t_token *tokenized_input = NULL;
 	t_flat_tree *flat_tree;
 
 	if (!validate_quotes(input))
-		return (free(input), NULL);
+		return (free(input), R_SUCCESS);//check this 
  
-	if (!tokenizer(&tokenized_input, input) == R_FAIL)
-		return (NULL);
+	if (tokenizer(&tokenized_input, input) == R_FAIL)
+		return (free_tokens_list(tokenized_input), R_FAIL);
 
-	free_tokens_list(tokenized_input);
-	return NULL;
-
+	
+	
 	// print_tokenized_inputs(tokenized_input);
 	// return NULL;
 	// free(input);
-	if (!tokenized_input)
-	{
-		printf("tokenizer returns NULL\n");
-		return (NULL);
-	}
+
 	// if (!validate_sytax(tokenized_input))
 	// {
 
@@ -36,14 +31,17 @@ t_tree *parser(t_tree *tree, char *input)
 	// return NULL;
 	flat_tree = create_flat_tree(tokenized_input);
 	if (!flat_tree)
-		return (free_tokens_list(tokenized_input), NULL);
+		return (free_tokens_list(tokenized_input), R_FAIL);
 	// print_flat_tree(flat_tree);
-
+	printf("##################################\n");
+	free_tokens_list(tokenized_input);
+	
+	return R_SUCCESS;
 	free_tokens_list(tokenized_input);
 
 	// return NULL;
 
-	t_tree *root = init_tree(flat_tree);
+	*tree = init_tree(flat_tree);
 	// free(r);
 
 	// // printf("done %s\n", typetostring[root->type]);
@@ -72,5 +70,5 @@ t_tree *parser(t_tree *tree, char *input)
 
 	// return NULL;
 	
-	return (root);
+	return (R_SUCCESS);
 }

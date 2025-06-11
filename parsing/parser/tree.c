@@ -6,7 +6,7 @@ t_tree *new_tree_node(t_type type)
 
 	tree_node = malloc(sizeof(t_tree));//todo protect
 	if (!tree_node)
-		return (NULL);
+		return (perror("error: "), NULL);
 	// printf("new_tree_node : %p\n", tree_node);
 	tree_node->data = NULL;//todo naming
 	tree_node->redirections = NULL;

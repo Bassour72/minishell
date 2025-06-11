@@ -6,11 +6,11 @@ static int creat_the_list_from_zero(t_node **list, char **data)
 {
 	*list = malloc(sizeof(t_node));
 	if (!*list)
-		return (R_FAIL);
+		return (perror("error: "), free(*data), R_FAIL);
 	(*list)->next = NULL;
 	(*list)->data = ft_strdup(*data);
 	if (!(*list)->data)
-		return (R_FAIL);
+		return (perror("error: "),free(*data), R_FAIL);
 	free(*data);
 	*data = NULL;
 	return (R_SUCCESS);
@@ -25,11 +25,11 @@ static int append_new_node_to_existen_list(t_node **list, char **data)
 		tmp = tmp->next;
 	node = malloc(sizeof(t_node));
 	if (!node)
-		return (R_FAIL);
+		return (perror("error: "), free(*data), R_FAIL);
+	node->next = NULL;
 	node->data = ft_strdup(*data);
 	if (!node->data)
-		return (free(data), R_FAIL);
-	node->next = NULL;
+		return (perror("error: "), free(*data), free(node), R_FAIL);
 	tmp->next = node;
 	free(*data);
 	*data = NULL;

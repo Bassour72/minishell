@@ -113,14 +113,14 @@ int m_normal(char *str, char **data, int *i);
 
 
 //parser.c
-t_tree	*parser(t_tree *tree, char *input);
-void free_tree(t_tree *root);
-void print_tree(t_tree *root, int i);
+int		parser(t_tree **tree, char *input);
+void	free_tree(t_tree *root);
+void	print_tree(t_tree *root, int i);
 
 //lable parsing
 	//tree
-t_tree *new_tree_node(t_type type);
-t_tree *init_tree(t_flat_tree *ft);
+t_tree	*new_tree_node(t_type type);
+t_tree	*init_tree(t_flat_tree *ft);
 	// dbugging
 void print_tokenized_inputs(t_token *tokenized_input);
 void print_tree(t_tree *root, int i);

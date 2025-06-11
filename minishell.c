@@ -191,7 +191,11 @@ int main(int ac, char **av, char **env)
 	
 		add_history(input);
 
-		tree = parser(tree, input);
+		if (parser(&tree, input) == R_FAIL)
+		{
+			printf("failed\n");
+			return (1);
+		}
 		// if (!tree)
 		// 	continue;
 		// lable parsing tests========
