@@ -7,7 +7,7 @@ t_flat_tree *flat_tree_last(t_flat_tree *flat_tree)
 	return (flat_tree);
 }
 
-static int operators(t_tree **tree_node, t_token *token, int *i)
+static int operators(t_tree **tree_node, t_token *token, int *i) //checked
 {
 	*tree_node = new_tree_node(token[*i].type);
 	if (!*tree_node)
@@ -17,17 +17,17 @@ static int operators(t_tree **tree_node, t_token *token, int *i)
 	return (R_SUCCESS);
 }
 
-static int close_parenths_block(t_tree **tree_node, int *i)
+static int close_parenths_block(t_tree **tree_node, int *i) //checked
 {
 
 	// printf("empety block %d \n", i);
 	*tree_node = new_tree_node(BLOCK);//note init the tree node
 	if (!*tree_node)
-		return (0);//note on fail the clearance will be handled inside new_tree_node
+		return (R_FAIL);//note on fail the clearance will be handled inside new_tree_node
 	
 	(*tree_node)->empty = -1;
 	(*i)++;
-	return (1);
+	return (R_SUCCESS);
 }
 static int skip_listed_tokens(t_token *token, int *i)
 {
@@ -39,7 +39,7 @@ static int skip_listed_tokens(t_token *token, int *i)
 	return (0);
 }
 
-static int collect_redirections(t_token *token, int i, t_tree *tree_node)
+static int collect_redirections(t_token *token, int i, t_tree *tree_node)//checked
 {
 	if ((token[i].type == RED_INPUT ||
 		token[i].type == HER_DOC ||
@@ -49,25 +49,25 @@ static int collect_redirections(t_token *token, int i, t_tree *tree_node)
 	{
 		token[i].is_listed = 1;
 		if (!new_red(tree_node, token[i].type, token[i + 1].data))
-			return (0);
+			return (R_FAIL);
 	}
-	return (1);
+	return (R_SUCCESS);
 }
 
-static int collect_words(t_token *token, int i, t_tree *tree_node)
+static int collect_words(t_token *token, int i, t_tree *tree_node)//checked
 {
 	if (token[i].type == WORD)
 	{
 		tree_node->data = append_command(tree_node->data, token[i].data);
 		if (!tree_node->data)
-			return (0);
+			return (free_tree_node(tree_node), 0);
 		
 		// printf("$%d cmd %s\n",i,  token[i].data);
 	}
 	return (1);
 }
 
-int collect_reds_and_cmds(t_token *token, int *i, t_tree *tree_node, t_flat_tree *flat_tree_list)
+int collect_reds_and_cmds(t_token *token, int *i, t_tree *tree_node, t_flat_tree *flat_tree_list)//checked
 {
 
 	while (token[*i].data && token[*i].type != PIPE && token[*i].type != OP_AND && token[*i].type != OP_OR && token[*i].type != PAREN_CLOSE)//warning maybe this is wrong
@@ -80,9 +80,7 @@ int collect_reds_and_cmds(t_token *token, int *i, t_tree *tree_node, t_flat_tree
 		{
 		//LABLE save a word or append it to the list of commands
 			if (!collect_words(token, *i, tree_node))
-			{
 				return (free_flat_tree(flat_tree_list), 0);
-			}
 		}
 		else
 		{
@@ -96,19 +94,19 @@ int collect_reds_and_cmds(t_token *token, int *i, t_tree *tree_node, t_flat_tree
 	return (1);
 }
 
-static int open_parenths_block(t_token *token, t_tree **tree_node, int *i)
+static int open_parenths_block(t_token *token, t_tree **tree_node, int *i)//checked
 {
 
-	// printf("empety block %d \n", i);
+	printf("empety block %d \n", i);
 	*tree_node = new_tree_node(BLOCK);//note init the tree node
 	if (!*tree_node)
-		return (0);//note on fail the clearance will be handled inside new_tree_node
-
+		return (R_FAIL);//note on fail the clearance will be handled inside new_tree_node
+	printf("hello\n");
 	(*tree_node)->empty = 1;
-	if (!parenths_redirections(*tree_node,  &token[*i]))
-		return (0);
+	if (parenths_redirections(*tree_node,  &token[*i]) == R_FAIL)
+		return (R_FAIL); // cleared
 	(*i)++;
-	return (1);
+	return (R_SUCCESS);
 }
 
 t_flat_tree *create_flat_tree(t_token *token)
@@ -126,13 +124,13 @@ t_flat_tree *create_flat_tree(t_token *token)
 	//LABLE PIPE / OPERATOR
 		if ((token[i].type == PIPE || token[i].type == OP_AND || token[i].type == OP_OR))
 		{
-			if (!operators(&tree_node, token, &i))
+			if (operators(&tree_node, token, &i) == R_FAIL)
 				return (free_flat_tree(flat_tree_list), NULL);
 		}
 	//lable BLOCK 
 		else if (token[i].type == PAREN_CLOSE)
 		{
-			if (!close_parenths_block(&tree_node, &i))
+			if (close_parenths_block(&tree_node, &i) == R_FAIL)
 				return (free_flat_tree(flat_tree_list), NULL);
 		}
 		else if (token[i].type == PAREN_OPEN)
@@ -151,7 +149,8 @@ t_flat_tree *create_flat_tree(t_token *token)
 				return (NULL);
 		}
 		// printf("node type %s -> data: \n", typetostring[tree_node->type]);
-		flat_tree_list = append_new_flat_tree_node(flat_tree_list, tree_node);
+		if (append_new_flat_tree_node(&flat_tree_list, tree_node) == R_FAIL)
+			return (NULL);
 	}
 	return (flat_tree_list);
 }

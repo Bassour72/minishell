@@ -11,7 +11,7 @@ void free_cmd_list(char **old_list)
 	free(old_list);
 }
 
-char **append_command(char **old_list, char *new_cmd)
+char **append_command(char **old_list, char *new_cmd)//checked
 {
 	int	size;
 	int	i;
@@ -25,7 +25,7 @@ char **append_command(char **old_list, char *new_cmd)
 	{
 		new_list = malloc(sizeof(char *) * 2);
 		if (!new_list)
-			return (NULL);
+			return (perror("error: "), NULL);
 		*new_list = ft_strdup(new_cmd);
 		if (*new_list == NULL)
 			return (perror("error: "), free(new_list), NULL);

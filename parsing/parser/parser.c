@@ -1,6 +1,22 @@
 
 #include "../../include/parsing.h"
 
+void clean_the_flat_tree(t_flat_tree *flat_tree)
+{
+	t_flat_tree *tmp;
+
+	while (flat_tree)
+	{
+		tmp = flat_tree;
+		flat_tree = flat_tree->backup_next;
+	
+		if (tmp->tree_node->empty == -1)
+			free(tmp->tree_node);
+
+		free(tmp);
+	}
+}
+
 int	parser(t_tree **tree, char *input)
 {
 	t_token *tokenized_input = NULL;
@@ -14,7 +30,7 @@ int	parser(t_tree **tree, char *input)
 
 	
 	
-	// print_tokenized_inputs(tokenized_input);
+	print_tokenized_inputs(tokenized_input);
 	// return NULL;
 	// free(input);
 
@@ -30,14 +46,11 @@ int	parser(t_tree **tree, char *input)
 
 	// return NULL;
 	flat_tree = create_flat_tree(tokenized_input);
+	free_tokens_list(tokenized_input);
 	if (!flat_tree)
-		return (free_tokens_list(tokenized_input), R_FAIL);
+		return (R_FAIL);
 	// print_flat_tree(flat_tree);
-	printf("##################################\n");
-	free_tokens_list(tokenized_input);
 	
-	return R_SUCCESS;
-	free_tokens_list(tokenized_input);
 
 	// return NULL;
 
@@ -46,23 +59,7 @@ int	parser(t_tree **tree, char *input)
 
 	// // printf("done %s\n", typetostring[root->type]);
 	// free_tree(root);
-	t_flat_tree *t;
-	int k = 1;
-	t_tree *pp;
-	while (flat_tree)
-	{
-		t = flat_tree;
-		flat_tree = flat_tree->backup_next;
-		// // free_tree_node(t->tree_node);
-		if (t->tree_node->empty == -1)
-			free(t->tree_node);
-		// else
-		// 	pp = NULL;
-		// printf("out %p\n", t);
-		free(t);
-		// free(pp);
-	}
-
+	clean_the_flat_tree(flat_tree);
 
 	// expand(env, root);
 	// expand_variables(root, env);

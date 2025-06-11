@@ -136,7 +136,6 @@ int tokenizer(t_token **tokenized_input, char *input)
 	// }
 	if (!splitted_input)
 		return (R_FAIL);
-	printf("+++++++++++++++++++++++++++++++\n");
 	// free_splitted_input(splitted_input);
 	// return (R_SUCCESS);
 	//alocate space for the tokenized inputs
@@ -150,9 +149,8 @@ int tokenizer(t_token **tokenized_input, char *input)
 
 	if (convert_inputs_to_tokens(*tokenized_input, splitted_input) == R_FAIL)
 		return (free_splitted_input(splitted_input), free_tokens_list(*tokenized_input), R_FAIL); // maybe free *tokenized_input
-	
-	free_splitted_input(splitted_input);
 
+	free_splitted_input(splitted_input);
 
 	return (R_SUCCESS);
 }

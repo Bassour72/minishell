@@ -136,7 +136,7 @@ int new_red(t_tree  *tree_node, t_type type, char *data);
 int is_red(t_token *token);
 	//flat_tree
 t_flat_tree *flat_tree_last(t_flat_tree *flat_tree);
-t_flat_tree *append_new_flat_tree_node(t_flat_tree *flat_tree_list, t_tree *tree_node);
+int		append_new_flat_tree_node(t_flat_tree **flat_tree_list, t_tree *tree_node);
 t_flat_tree *create_flat_tree(t_token *token);
 
 
