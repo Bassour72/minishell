@@ -193,7 +193,6 @@ int main(int ac, char **av, char **env)
 
 		if (parser(&tree, input) == R_FAIL)
 		{
-			printf("failed\n");
 			return (1);
 		}
 		// if (!tree)
