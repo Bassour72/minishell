@@ -211,7 +211,7 @@ int main(int ac, char **av, char **env)
 		execution(tree, env, &env_list);
 		// if (tree->data)
 		// 	printf("here echo command built-in [%s]\n",tree->data[0]);
-		//  free_tree(tree); //note this is for freeing the tree
+		free_tree(tree); //no/te this is for freeing the tree
 		// take the tree and execute here
 
 		

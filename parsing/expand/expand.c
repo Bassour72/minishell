@@ -102,27 +102,32 @@ int expand(char ***new_args, char **old_args, t_env *env)
 	// 	return (NULL);
 	if (join_arr(old_args, &line) == R_FAIL)
 		return (R_FAIL);
+	free_double_array(old_args);
 	// free(line);
 	// line = ft_strdup("export $#  gg=$USER");
 	
-		if (tokenize(line, &tokens, env) == R_FAIL)
+	if (tokenize(line, &tokens, env) == R_FAIL)
 			return (R_FAIL);
 
 	// free(line);
 	// return NULL;
 	// print_expand_tokens(tokens);
 	if (split_tokens_into_nodes(&nodes_list,  tokens) == R_FAIL)
-		return (R_FAIL);
-	for(t_expand_node *tmp = nodes_list; tmp; tmp = tmp->next)
+		return (free(line), free_expand_tokens_list(tokens), R_FAIL);
+	// for(t_expand_node *tmp = nodes_list; tmp; tmp = tmp->next)
 	free_expand_tokens_list(tokens);
 	free(line);
-	if (!nodes_list)
-		return (R_FAIL);
+
 	build_args_list_from_nodes_by_joining(nodes_list);
+	// for(t_expand_node *tmp = nodes_list; tmp; tmp = tmp->next)
+	// {
+	// 	printf("[%s]\n", tmp->data);
+	// }
 	if (expand_list_to_array(new_args, nodes_list) == R_FAIL)
 		return (free_expand_list_nodes(nodes_list), R_FAIL);
 	free_expand_list_nodes(nodes_list);
-	
+	// for(int i = 0; (*new_args)[i]; i++)
+	// 	printf("(%s)\n", (*new_args)[i]);
 	return (R_SUCCESS);
 }
 

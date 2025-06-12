@@ -26,8 +26,8 @@ char **append_command(char **old_list, char *new_cmd)//checked
 		new_list = malloc(sizeof(char *) * 2);
 		if (!new_list)
 			return (perror("error: "), NULL);
-		*new_list = ft_strdup(new_cmd);
-		if (*new_list == NULL)
+		new_list[0] = ft_strdup(new_cmd);
+		if (new_list[0] == NULL)
 			return (perror("error: "), free(new_list), NULL);
 		*(new_list + 1) = NULL;
 		return (new_list);

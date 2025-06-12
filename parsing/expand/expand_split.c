@@ -94,16 +94,14 @@ static int	do_split(t_expand_node **sub_list, char *str, char split_char)
 
 int expand_split(t_expand_node **sub_list, char const *str, char c, int joinable)
 {
-	t_expand_node	*store = NULL;
 	t_expand_node	*tmp;
 
-	store = NULL;
 	if (do_split(sub_list, (char *)str, c) == R_FAIL)
 		return (R_FAIL);
 		
-	if (store && joinable)
+	if (joinable)
 	{
-		tmp = store;
+		tmp = *sub_list;
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->joinable = joinable;

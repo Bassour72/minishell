@@ -284,8 +284,9 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 		if (root->data)
 		{
 			char ** old_args = root->data;
-			if(expand(&root->data, old_args, *env_list) == R_FAIL)
+			if (expand(&root->data, old_args, *env_list) == R_FAIL)
 				return (1);
+			
 			
 		}
 		//todo check here the expand fucntion return int 
@@ -545,7 +546,8 @@ int execution(t_tree *root, char **env, t_env **env_list)
 	//sleep(2);
 	// printf("exection fucntion \n ");
 	int status = exec_tree(root, env, env_list, STDIN_FILENO, 0);
-	free_tree_exe(root);
+	// free_tree(root);
+	// free_tree_exe(root);
 	return status;
 }
 
