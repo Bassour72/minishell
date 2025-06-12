@@ -174,8 +174,8 @@ int main(int ac, char **av, char **env)
 	
 	// printf("if has null [%p]\n", *env);
 	// printf("herer\n");
-	// env_generate(&env_list, env);
-	// handle_shlvl(av[0],&env_list);
+	env_generate(&env_list, env);
+	handle_shlvl(av[0],&env_list);
 	while (1)
 	{
 		//get the input from the terminal
@@ -195,8 +195,8 @@ int main(int ac, char **av, char **env)
 		{
 			return (1);
 		}
-		// if (!tree)
-		// 	continue;
+		if (!tree)
+			continue;
 		// lable parsing tests========
 		//  t_env *env_l = NULL;
 		//  env_generate(&env_l, env);
@@ -208,15 +208,16 @@ int main(int ac, char **av, char **env)
 
 		//lable =^=^=^=^=^=^=^=^=^=^=
 		//print_env(env_list);
-		// execution(tree, env, &env_list);
+		execution(tree, env, &env_list);
 		// if (tree->data)
 		// 	printf("here echo command built-in [%s]\n",tree->data[0]);
-		 free_tree(tree); //note this is for freeing the tree
+		//  free_tree(tree); //note this is for freeing the tree
 		// take the tree and execute here
 
 		
 		//-----------------------------
 	}
+	free_env_list(env_list);
 
 	return (0);
 }

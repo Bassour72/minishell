@@ -74,10 +74,10 @@ static int	create_env_node(t_env **list, char *key, char *value)
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
 	{
+		perror("error: ");
 		free(key);
 		free(value);
-		free_env_list(*list);
-		return (0);
+		return (R_FAIL);
 	}
 	new_node->key = key;
 	new_node->value = value;
@@ -95,7 +95,7 @@ static int	create_env_node(t_env **list, char *key, char *value)
 			tmp = tmp->next;
 		tmp->next = new_node;
 	}
-	return (1);
+	return (R_SUCCESS);
 }
 int	init_env(t_env **env_list)
 {
@@ -141,15 +141,22 @@ int	env_generate(t_env **env_list, char **env)
 	i = -1;
 	while (env[++i])
 	{
-		if (!env_extract_key(env[i], &key) ||
-			!env_extract_value(env[i], &value) || 
-			!create_env_node(env_list, key, value))
-		{
-			return (0);
-		}
+		if (env_extract_key(env[i], &key) == R_FAIL)
+			return (perror("error: "), free_env_list(*env_list), R_FAIL);
+		if (env_extract_value(env[i], &value) == R_FAIL)
+			return (perror("error: "), free(key), free_env_list(*env_list), R_FAIL);
+		if (create_env_node(env_list, key, value) == R_FAIL)
+			return (perror("error: "), free_env_list(*env_list), R_FAIL);
 	}
-	create_env_node(env_list, "exit_status@gmail.com", "0");
-	return (1);
+	key = ft_strdup("exit_status@gmail.com");
+	if (!key)
+		return (perror("error: "), free_env_list(*env_list), R_FAIL);
+	value = ft_strdup("0");
+	if (!value)
+		return (perror("error: "), free(key), free_env_list(*env_list), R_FAIL);
+	if (create_env_node(env_list, key, value) == R_FAIL)
+		return (perror("error: "), free_env_list(*env_list), R_FAIL);
+	return (R_SUCCESS);
 }
 
 // int	exit_code_status(int exit_code)
