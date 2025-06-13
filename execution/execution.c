@@ -284,9 +284,8 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 		if (root->data)
 		{
 			char ** old_args = root->data;
-			if (expand(&root->data, old_args, *env_list) == R_FAIL)
-				return (1);
-			
+			if (expand(&root->data, *env_list) == R_FAIL)
+				return (1);			
 			
 		}
 		//todo check here the expand fucntion return int 

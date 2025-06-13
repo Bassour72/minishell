@@ -18,7 +18,7 @@ static int calculate_len(char **arr)
 	return (len);
 }
 
-static void cpy_to_songle_arr(char **double_arr, char **single_arr, int len)
+static void cpy_to_single_arr(char **double_arr, char **single_arr, int len)
 {
 	int i;
 
@@ -44,6 +44,6 @@ int join_arr(char **arr, char **joined_arr)
 		return (perror("error: "), R_FAIL);
 
 	ft_bzero(*joined_arr, len + 1);
-	cpy_to_songle_arr(arr, joined_arr, len + 1);
+	cpy_to_single_arr(arr, joined_arr, len + 1);
 	return (R_SUCCESS);
 }

@@ -57,7 +57,7 @@ int split_tokens_into_nodes(t_expand_node **expanded_list,  t_expand_token *toke
 		{
 			// printf("NO need to split [%s]\n", tokens->data);
 			*expanded_list = append_str_to_list(*expanded_list, tokens->data, tokens->join);
-			if (!expanded_list)
+			if (!*expanded_list)
 				return (R_FAIL);
 		}
 		tokens = tokens->next;
@@ -80,17 +80,17 @@ void free_expand_list_nodes(t_expand_node *list)
 
 static void free_double_array(char **arr) //add to utils
 {
-	if (arr)
-	{
-		for(int i = 0; arr[i]; i++)
-			free(arr[i]);
-		free(arr);
-	}
+	int	i;
+
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
 }
 
 
 
-int expand(char ***new_args, char **old_args, t_env *env)
+int expand(char ***new_args, t_env *env)
 {
 	t_expand_token *tokens;
 	t_expand_node *nodes_list;
@@ -100,14 +100,17 @@ int expand(char ***new_args, char **old_args, t_env *env)
 	tokens = NULL;
 	// if (!old_args)
 	// 	return (NULL);
-	if (join_arr(old_args, &line) == R_FAIL)
+	if (join_arr(*new_args, &line) == R_FAIL)
 		return (R_FAIL);
-	free_double_array(old_args);
+
+	char **tmp = *new_args;
+	*new_args = NULL;
+	free_double_array(tmp);
 	// free(line);
 	// line = ft_strdup("export $#  gg=$USER");
 	
 	if (tokenize(line, &tokens, env) == R_FAIL)
-			return (R_FAIL);
+			return (free(line), R_FAIL);
 
 	// free(line);
 	// return NULL;
@@ -118,7 +121,8 @@ int expand(char ***new_args, char **old_args, t_env *env)
 	free_expand_tokens_list(tokens);
 	free(line);
 
-	build_args_list_from_nodes_by_joining(nodes_list);
+	if (build_args_list_from_nodes_by_joining(nodes_list) == R_FAIL)
+		return (free_expand_list_nodes(nodes_list), R_FAIL);
 	// for(t_expand_node *tmp = nodes_list; tmp; tmp = tmp->next)
 	// {
 	// 	printf("[%s]\n", tmp->data);

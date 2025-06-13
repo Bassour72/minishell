@@ -46,7 +46,7 @@ int extarct_var_key(char *str, char **key)
 	// 	return (*key = NULL, R_SUCCESS);
 	*key = ft_substr(str, 0, len);
 	if (!*key)
-		return (R_FAIL);
+		return (perror("error: "), R_FAIL);
 	// printf("key: [%s]\n", *key);
 	return (R_SUCCESS);
 }

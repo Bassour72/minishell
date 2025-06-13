@@ -10,7 +10,7 @@ int append_expand_token(t_expand_token **tokens, char *data, t_expand_type type,
 		return (R_SUCCESS);
 	new_token = malloc(sizeof(t_expand_token));
 	if (!new_token)
-		return (perror("error: "), R_FAIL);
+		return (perror("error: "), free(data), R_FAIL);
 	new_token->data = data;
 	// printf(">>>{%s}\n",data);
 	new_token->join = join;

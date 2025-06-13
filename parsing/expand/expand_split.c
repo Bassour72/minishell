@@ -82,7 +82,7 @@ static int	do_split(t_expand_node **sub_list, char *str, char split_char)
 			i++;
 		data = custom_strdub(str + start, i - start);
 		if (data == NULL)
-			return (free_store(*sub_list), R_FAIL);
+			return (perror("error: "), free_store(*sub_list), R_FAIL);
         if (append_node_expand(sub_list, data) == R_FAIL)
 		{
 			free_store(*sub_list);

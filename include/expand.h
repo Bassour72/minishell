@@ -38,7 +38,7 @@ typedef struct s_expand_node
 
 
 
-int expand(char ***new_args, char **old_args, t_env *env);
+int expand(char ***new_args, t_env *env);
 int array_to_list(char **arr, t_node **list);
 int tokenize(char *str, t_expand_token **tokens, t_env *env);
 int join_arr(char **arr, char **joined_arr);

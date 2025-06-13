@@ -21,7 +21,7 @@ int join_joinable_nodes(t_expand_node *list, t_expand_node **current)
 		tmp_data = ft_strjoin((*current)->data, tmp->data);
 		// printf("now[%s] next[%s]\n", (*current)->data, tmp->data);
 		if (!tmp_data)
-			return (free_expand_list_nodes(list), R_FAIL);
+			return (perror("error: "), R_FAIL);
 		free((*current)->data);
 		(*current)->data = tmp_data;
 		(*current)->next = tmp->next;

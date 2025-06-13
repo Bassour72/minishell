@@ -29,7 +29,7 @@ int	expand_list_to_array(char ***commands_array, t_expand_node *list)
 	count = get_list_size(list);
 	*commands_array = malloc(sizeof(char *) * (count + 1));
 	if (!*commands_array)
-		return (perror("minishell: error: "), R_FAIL);
+		return (perror("error: "), R_FAIL);
 	tmp = list;
 	i = 0;
 	while (tmp)
@@ -38,6 +38,7 @@ int	expand_list_to_array(char ***commands_array, t_expand_node *list)
 		if (!(*commands_array)[i])
 		{
 			clear_failed_arr(*commands_array, i);
+			*commands_array = NULL;
 			return (R_FAIL);
 		}
 		i++;
