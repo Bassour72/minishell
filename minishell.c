@@ -82,6 +82,7 @@ int update_env_shlvl(t_env **env_list, long value)
 		{
 			free(tmp->value);
 			tmp->value = new_value;
+			//todo
 			// printf("\033[32msss->%s\033[0m\n", tmp->value);
 			return 0;
 		}
