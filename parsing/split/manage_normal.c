@@ -42,7 +42,7 @@ static int join_data_to_old_data(char *str, char **data, int *i)
 
 	_i = *i;
 	j = ft_strlen(*data);
-	len = get_normal_len(str);
+	len = get_normal_len(str + _i);
 	(*i) = _i + len;
 	_data = malloc(j + len + 1);
 	if (!_data)
@@ -66,6 +66,7 @@ int m_normal(char *str, char **data, int *i)
 	len = 0;
 	_i = *i;
 
+	
 	if (!*data)
 	{
 		if (create_new_data(str, data, i) == R_FAIL)

@@ -2,9 +2,14 @@
 
 static int is_wildcard(char *str)
 {
+	int literal_string;
+
+	literal_string = -1;
     while (*str)
     {
-        if (*str == '*')
+		if (*str == DOUBLE_QUOTE || *str == SINGLE_QUOTE)
+			literal_string = -literal_string;
+        if (*str == '*' && literal_string == -1)
             return (1);
         str++;
     }

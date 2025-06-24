@@ -88,17 +88,22 @@ int extract_word_of_double_quote(char *str, int *i, char **data)
 	len = 0;
 	start = 0;
 	_i = 0;
-	if (str[0] == '\"')
-	{
-		start = 1;
-		_i++;
-	}
+	// if (str[0] == '\"')
+	// {
+	// 	start = 1;
+	// 	_i++;
+	// }
+	str[0] = DOUBLE_QUOTE;
 	while (str[_i])
 	{
-		if ((str[_i] == '$' && (is_valid_key_char(str[_i + 1], 0) || (str[_i + 1] >= '0' && str[_i + 1] <= '9') || str[_i + 1] == '$')) || str[_i] == '\"' )
-			break;
 		len++;
 		_i++;
+		if ((str[_i] == '$' && (is_valid_key_char(str[_i + 1], 0) || (str[_i + 1] >= '0' && str[_i + 1] <= '9') || str[_i + 1] == '$')) || str[_i] == '\"')
+		{
+			if (str[_i] == '\"')
+				str[_i] = DOUBLE_QUOTE;
+			break;
+		}
 	}
 	(*i) += _i;
 	
@@ -120,17 +125,21 @@ int extract_word_of_single_quote(char *str, int *i, char **data)
 	len = 0;
 	start = 0;
 	_i = 0;
-	if (str[0] == '\'')
-	{
-		start = 1;
-		_i++;
-	}
+	// if (str[0] == '\'')
+	// {
+	// 	start = 1;
+	// 	_i++;
+	// }
+	str[0] = SINGLE_QUOTE;
 	while (str[_i])
 	{
-		if (str[_i] == '\'')
-			break;
 		len++;
 		_i++;
+		if (str[_i] == '\'')
+		{
+			str[_i] = SINGLE_QUOTE;
+			break;
+		}
 	}
 	(*i) += _i;
 	*data = ft_substr(str, start, len);

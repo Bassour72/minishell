@@ -125,8 +125,11 @@ int tokenizer(t_token **tokenized_input, char *input)
 	int		i;
 	
 	t_node *splitted_input;
+	
+	splitted_input = NULL;
 	if (split(&splitted_input, input) == R_FAIL)
 		return (free(input), R_FAIL);
+		
 	free(input); //todo find a better place for this
 	// t_node *s = splitted_input;
 	// while (s)
@@ -134,6 +137,7 @@ int tokenizer(t_token **tokenized_input, char *input)
 	// 	printf("<%s>\n", s->data);
 	// 	s = s->next;
 	// }
+	
 	if (!splitted_input)
 		return (R_FAIL);
 	// free_splitted_input(splitted_input);
