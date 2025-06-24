@@ -97,11 +97,11 @@ int collect_reds_and_cmds(t_token *token, int *i, t_tree *tree_node, t_flat_tree
 static int open_parenths_block(t_token *token, t_tree **tree_node, int *i)//checked
 {
 
-	printf("empety block %d \n", i);
+	// printf("empety block %d \n", i);
 	*tree_node = new_tree_node(BLOCK);//note init the tree node
 	if (!*tree_node)
 		return (R_FAIL);//note on fail the clearance will be handled inside new_tree_node
-	printf("hello\n");
+	// printf("hello\n");
 	(*tree_node)->empty = 1;
 	if (parenths_redirections(*tree_node,  &token[*i]) == R_FAIL)
 		return (R_FAIL); // cleared

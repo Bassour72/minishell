@@ -100,8 +100,8 @@ int convert_inputs_to_tokens(t_token *tokenized_input, t_node *splitted_input)//
 			
 
 
-		else if (ft_strncmp(splitted_input->data, "*", 1) == 0)
-			state = create_token(tokenized_input + i, splitted_input->data, WILD_CARD);
+		// else if (ft_strncmp(splitted_input->data, "*", 1) == 0)
+		// 	state = create_token(tokenized_input + i, splitted_input->data, WILD_CARD);
 			
 		else if (i != 0 && (tokenized_input[i - 1].type == RED_APPEND || 
 							tokenized_input[i - 1].type == RED_TRUNK || 

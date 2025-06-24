@@ -30,7 +30,7 @@ int	parser(t_tree **tree, char *input)
 
 	
 	
-	// print_tokenized_inputs(tokenized_input);
+	print_tokenized_inputs(tokenized_input);
 	// return NULL;
 	// free(input);
 

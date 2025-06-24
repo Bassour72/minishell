@@ -32,41 +32,55 @@ int init_needle_len(char *name, int start)
 
 int is_file_name_match(char *file_name, char *str)
 {
-    int wc;			// abcd.c
+    int wc_pos;			// abcd.c
     int  i;			// *a
     int j;
 	int file_name_len = ft_strlen(file_name);
 	int str_len = ft_strlen(str);
+	int is_literal_string = -1;
 
-	wc = -1;
+	wc_pos = -1;
     j = 0;
     i = 0;
 	// printf("filename >>>>  [%s]\n", file_name);
+	if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
+		i++;
 	while (str[i] == file_name[j])
+	{
 		(i++, j++);
-	if(str[i] != '*')
-		return (0);
+		if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
+			i++;
+	}
 
 	while (1)
 	{
-		while (str[i] == '*')
-			wc = ++i;
+		if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
+		{
+			i++;
+			is_literal_string = -is_literal_string;
+		}
+		if (is_literal_string == 1)
+		{
+			while (str[i] == '*')
+				wc_pos = ++i;
+		}
+		else
+			i++;
 		if (str[i] == file_name[j])
 		{
-			// printf(">--1--<\n");
 			(i++, j++);
 			if (i == str_len && j == file_name_len)
-				return ( 1);
+				return (1);
 			continue;
 		}
 		else
 		{
 			// printf(">--2--<\n");
-			if (wc != i)
-				i = wc;
+			if (wc_pos != i)
+				i = wc_pos;
 			else
 				j++;
-			if (j == file_name_len && wc == i && i != str_len)
+			if (j == file_name_len && wc_pos == i && i != str_len)
 				return (0);
 			else if (j == file_name_len && i == str_len)
 				return (1);
@@ -129,10 +143,12 @@ int expand_wildcard(t_wc_node **args_list, t_wc_node *file_names)
     tmp = *args_list;
     while (tmp)
     {
+		// printf("[%s]\n", tmp[1].data);
         wc_node = tmp;
         tmp = tmp->next;
         if (is_wildcard(wc_node->data))
         {
+			printf("\033[33m[%s]\033[0m is a wildcard with lenght \033[33m[%d]\033[0m\n", wc_node->data, ft_strlen(wc_node->data));
 			befor = wc_node->prev;
 			after = wc_node->next;
             if (do_expand_wildcard(&wc_node, file_names) == R_FAIL)

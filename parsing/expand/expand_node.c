@@ -13,20 +13,21 @@ int expand_redir(t_red *reds, t_env *env)
 			return (R_FAIL);
 		
 		if (split_tokens_into_nodes(&nodes_list,  tokens) == R_FAIL)
-			return (R_FAIL);
-		
-		free(reds->data);
-		reds->data = NULL;
+			return (free_expand_tokens_list(tokens), R_FAIL);
+		free_expand_tokens_list(tokens);
+		// free(reds->data);
+		// reds->data = NULL;
 
 		if (nodes_list && (nodes_list->data && !nodes_list->next))
 		{
+			free(reds->data);
 			reds->data = nodes_list->data;
 		}
 		else
 		{
 			free_expand_list_nodes(nodes_list);
+			reds->is_ambiguous = 1;
 		}
-		free_expand_tokens_list(tokens);
 		reds = reds->next;
 	}
 	return (R_SUCCESS);

@@ -50,6 +50,7 @@ typedef struct s_red
 	int				in_fd;
 	int				out_fd;
 	char			*data; //note file name or herdoc 
+	int				is_ambiguous;
 	struct s_red	*next;
 }	t_red;
 
@@ -124,7 +125,9 @@ t_tree	*init_tree(t_flat_tree *ft);
 	// dbugging
 void print_tokenized_inputs(t_token *tokenized_input);
 void print_tree(t_tree *root, int i);
-void print_flat_tree(t_tree *list);
+
+
+
 	//clear_parsing
 void free_tree_node(t_tree *node);
 void free_flat_tree_list(t_flat_tree *flat_list);//todo doblicateed
@@ -138,8 +141,6 @@ int is_red(t_token *token);
 t_flat_tree *flat_tree_last(t_flat_tree *flat_tree);
 int		append_new_flat_tree_node(t_flat_tree **flat_tree_list, t_tree *tree_node);
 t_flat_tree *create_flat_tree(t_token *token);
-
-
 
 
 

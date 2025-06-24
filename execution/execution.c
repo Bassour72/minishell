@@ -284,10 +284,13 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 		printf("here in exec tree for one command \n ");
 		if (root->data)
 		{
-			char **old_args = root->data;
 			//todo
 			if (expand(&root->data, *env_list) == R_FAIL)
 				return(1);
+			// if (expand_redir(root->redirections, *env_list) == R_FAIL)
+			// 	return (1);
+			// if (wildcard(&root->data) == R_FAIL)
+			// 	return(1);
 		}
 		//todo check here the expand fucntion return int 
 		if (in_subshell)

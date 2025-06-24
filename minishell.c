@@ -163,7 +163,7 @@ void handle_sigint_prompt(int sig)
 
 int main(int ac, char **av, char **env)
 {
-	atexit(f);
+	// atexit(f);
 	t_tree	*tree = NULL;
 	t_env *env_list = NULL;	
 	char	*input;
@@ -212,7 +212,7 @@ int main(int ac, char **av, char **env)
 		if (execution(tree, env, &env_list) == 1)
 		{
 			
-			free_tree(tree); //no/te this is for freeing the tree
+			// free_tree(tree); //no/te this is for freeing the tree
 			break;
 		}
 		// free_tree(tree); //no/te this is for freeing the tree
