@@ -38,6 +38,13 @@ int extarct_var_key(char *str, char **key)
 	int len;
 
 	len = 0;
+	if (str[0] == '?')
+	{
+		*key = ft_strdup("exit_status@gmail.com");
+		if (!*key)
+			return (perror("error: "), R_FAIL);
+		return (R_SUCCESS);
+	}
 	// if (str[0] == '$')
 	// 	return (ft_strdup("$"));
 	while (str[len] && is_valid_key_char(str[len], len))
@@ -250,7 +257,7 @@ int tokenize(char *str, t_expand_token **tokens, t_env *env)
 		if (quote != 1 && str[i] == '$' && str[i + 1] && str[i + 1] != '\"' && str[i + 1] != '\'' && str[i + 1] != ' ')
 		{
 				// printf("\033[33m#var {%s}\033[0m\n", str + i);
-			if (!is_valid_key_char(str[i + 1], 0))
+			if (!is_valid_key_char(str[i + 1], 0) && str[i + 1] != '?')
 			{
 				if (quote == 2)
 				{
@@ -282,6 +289,7 @@ int tokenize(char *str, t_expand_token **tokens, t_env *env)
 			}
 			else
 			{
+				
 				if (extract_var_value(str + i + 1, &i, &data, env) == R_FAIL)
 					return (free_expand_tokens_list(*tokens), R_FAIL);
 				if (str[i] && str[i + 1] != ' ' && str[i + 1] != '\"')
