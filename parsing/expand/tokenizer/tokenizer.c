@@ -13,6 +13,8 @@ static void check_quote(char c, int *quote)
 		*quote = 0;
 	else if (*quote == 2 && c == '\"')
 		*quote = 0;
+	else
+		*quote = 0;
 }
 
 int is_valid_key_char(char c, int i)
@@ -252,8 +254,8 @@ int tokenize(char *str, t_expand_token **tokens, t_env *env)
 		data = NULL;
 		join = 0;
 		check_quote(str[i], &quote);
-		// printf("\033[33mquote: [%d] at [%d]\033[0m\n", quote, i);
-		// printf("\033[33mstr[i]: [%c] at: [%d] and quote: [%d]\033[0m\n", str[i], i, quote);
+		printf("\033[33mquote: [%d] at [%d]\033[0m\n", quote, i);
+		printf("\033[33mstr[i]: [%c] at: [%d] and quote: [%d]\033[0m\n", str[i], i, quote);
 		if (quote != 1 && str[i] == '$' && str[i + 1] && str[i + 1] != '\"' && str[i + 1] != '\'' && str[i + 1] != ' ')
 		{
 				// printf("\033[33m#var {%s}\033[0m\n", str + i);
@@ -300,11 +302,12 @@ int tokenize(char *str, t_expand_token **tokens, t_env *env)
 		}
 		else if (quote == 2)
 		{
-			// printf("double\n");
+			printf("double\n");
 			if (extract_word_of_double_quote(str + i, &i, &data) == R_FAIL)
 				return (free_expand_tokens_list(*tokens), R_FAIL);
 
-			if (str[i + 1] != ' ')
+			printf("---------------&%d&------------\n",i);
+			if (str[i] && str[i + 1] != ' ')
 				join = 1;
 			if (append_expand_token(tokens, data, e_WORD, quote, join) == R_FAIL)
 				return (free_expand_tokens_list(*tokens), R_FAIL);
@@ -312,21 +315,21 @@ int tokenize(char *str, t_expand_token **tokens, t_env *env)
 		}
 		else if (quote == 1)
 		{
-			// printf("single\n");
+			printf("single\n");
 			if (extract_word_of_single_quote(str + i, &i, &data) == R_FAIL)
 				return (free_expand_tokens_list(*tokens), R_FAIL);
-			if (str[i + 1] != ' ')
+			if (str[i] && str[i + 1] != ' ')
 				join = 1;
 			if (append_expand_token(tokens, data, e_WORD, quote, join) == R_FAIL)
 				return (free_expand_tokens_list(*tokens), R_FAIL);
 		}
 		else if (quote == 0 && str[i] != ' ' && str[i] != '\"' && str[i] != '\'')//todo check str[i] != ' ' && str[i] != '\"' && str[i] != '\''
 		{
-			// printf("\033[33m#Normal {%s}\033[0m\n", str + i);
+			printf("\033[33m#Normal {%s}\033[0m\n", str + i);
 			if (extract_normal_word(str + i, &i, &data) == R_FAIL)
 				return (free_expand_tokens_list(*tokens), R_FAIL);
 				// printf("[%c]\n", str[i]);
-			if (str[i] != ' ' && str[i])
+			if (str[i] && str[i] != ' ' && str[i])
 				join = 1;
 			if (append_expand_token(tokens, data, e_WORD, quote, join) == R_FAIL)
 				return (free_expand_tokens_list(*tokens), R_FAIL);

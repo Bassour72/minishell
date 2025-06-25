@@ -29,7 +29,7 @@ int init_needle_len(char *name, int start)
 
     return (len);
 }
-
+/*
 int is_file_name_match(char *file_name, char *str)
 {
     int wc_pos;			// abcd.c
@@ -51,23 +51,27 @@ int is_file_name_match(char *file_name, char *str)
 		if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
 			i++;
 	}
-
 	while (1)
 	{
+		printf("[i: %d]\n", i);
 		if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
 		{
+			printf("#######################\n");
 			i++;
 			is_literal_string = -is_literal_string;
 		}
-		if (is_literal_string == 1)
+		if (is_literal_string != 1)
 		{
+			printf("not litral-------------------------\n");
 			while (str[i] == '*')
 				wc_pos = ++i;
 		}
 		else
 			i++;
+		
 		if (str[i] == file_name[j])
 		{
+			printf(">--1--[%c][%c]----{%s}{%s}<\n", str[i], file_name[j], file_name, str);
 			(i++, j++);
 			if (i == str_len && j == file_name_len)
 				return (1);
@@ -75,7 +79,7 @@ int is_file_name_match(char *file_name, char *str)
 		}
 		else
 		{
-			// printf(">--2--<\n");
+			printf(">--2--[%c][%c]----{%s}{%s}<\n", str[i], file_name[j], file_name, str);
 			if (wc_pos != i)
 				i = wc_pos;
 			else
@@ -86,6 +90,79 @@ int is_file_name_match(char *file_name, char *str)
 				return (1);
 			continue;
 		}
+    }
+	   
+}
+*/
+
+int is_file_name_match(char *file_name, char *str)
+{
+    int wc_pos;			// abcd.c
+    int	i;			// *a
+    int j;
+	int file_name_len = ft_strlen(file_name);
+	int str_len = ft_strlen(str);
+	int is_literal_string = -1;
+
+	wc_pos = -1;
+    j = 0;
+    i = 0;
+	// while (str[i])
+	// {
+	// 	if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
+	// 	{
+	// 		printf("-quote found i:%d[%c] | j:%d[%c]\n", i, j, str[i], file_name[j]);												
+	// 		(i++, is_literal_string *= -1);
+	// 	}
+	// 	if (str[i] == '*' && is_literal_string == -1)
+	// 	{
+	// 		i++;
+	// 		break;
+	// 	}
+	// 	i++;
+	// }
+	// if (str[i])
+	// printf("\n\nfilename >>>>  [%s] [%s]\n",str, file_name);
+	while (1)
+	{
+		if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
+		{
+			printf("-quote found i:%d[%c] | j:%d[%c]\n", i, j, str[i], file_name[j]);												
+			(i++, is_literal_string *= -1);
+			
+		}
+		else if (str[i] == '*' && is_literal_string == -1)
+		{
+			printf("-wc found i:%d[%c] | j:%d[%c]\n", i, j, str[i], file_name[j]);
+			{
+				wc_pos = ++i;
+				if (str[i] == SINGLE_QUOTE || str[i] == DOUBLE_QUOTE)
+					wc_pos = i + 1;
+			}										
+		}
+		
+		else if (str[i] != file_name[j])
+		{
+			printf("-no match i:%d[%c] | j:%d[%c]\n", i, j, str[i], file_name[j]);
+			if (wc_pos != i)
+				i = wc_pos;
+			else
+				j++;							
+			if ((j == file_name_len && wc_pos == i && i != str_len) || wc_pos == -1)
+				return (0);
+			else if (j == file_name_len && i == str_len)
+				return (1);
+		}
+		else
+		{
+			printf("-match i:%d[%c] | j:%d[%c]\n", i, j, str[i], file_name[j]);											
+			if (i == str_len && j == file_name_len)
+				return (1);
+			(i++, j++);
+		}
+		if (j == file_name_len && i == str_len)
+			return (1);
+		// sleep(1);
     }
 	   
 }
@@ -148,7 +225,7 @@ int expand_wildcard(t_wc_node **args_list, t_wc_node *file_names)
         tmp = tmp->next;
         if (is_wildcard(wc_node->data))
         {
-			printf("\033[33m[%s]\033[0m is a wildcard with lenght \033[33m[%d]\033[0m\n", wc_node->data, ft_strlen(wc_node->data));
+			// printf("\033[33m[%s]\033[0m is a wildcard with lenght \033[33m[%d]\033[0m\n", wc_node->data, ft_strlen(wc_node->data));
 			befor = wc_node->prev;
 			after = wc_node->next;
             if (do_expand_wildcard(&wc_node, file_names) == R_FAIL)
