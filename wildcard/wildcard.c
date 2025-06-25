@@ -42,11 +42,12 @@ int wildcard(char ***args)
     if (init_args_list(&args_list, *args) == R_FAIL)
         return (free_wc_node_list(file_names), R_FAIL);
 
-	
+	printf("here---------------------------------------------\n");
     if (expand_wildcard(&args_list, file_names) == R_FAIL)
 	{
         return (free_wc_node_list(file_names), free_wc_node_list(args_list), R_FAIL);
 	}
+	printf("here---------------------------------------------\n");
 	free_wc_node_list(file_names);
     
 	for(int i = 0; (*args)[i]; i++)

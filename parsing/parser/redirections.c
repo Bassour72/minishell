@@ -32,6 +32,7 @@ int new_red(t_tree  *tree_node, t_type type, char *data)//checked
 	}
 	// free(data); //todo do i need to free data after strdup
 	new_red->type = type;
+	new_red->is_ambiguous = 0;
 	new_red->next = NULL;
 	
 	if (!tree_node->redirections)

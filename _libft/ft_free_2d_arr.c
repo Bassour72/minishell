@@ -1,20 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_free_2d_arr.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/13 19:28:55 by massrayb          #+#    #+#             */
-/*   Updated: 2025/03/13 19:47:10 by massrayb         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "libft.h"
 
-void	free_failed_list(char **list, int len)
+void	free_2d_arr(char **arr)
 {
-	while (len-- > 0)
-		free(list[len]);
-	free(list);
+	char	**original_arr;
+	char	*tmp;
+
+	original_arr = arr;
+	while (*arr)
+	{
+		tmp = *arr;
+		arr++;
+		free(tmp);
+	}
+	free(original_arr);
 }

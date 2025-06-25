@@ -68,5 +68,6 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 void	free_failed_list(char **list, int len);
 int		ft_strcmp(const char *s1, const char *s2);
+void	free_2d_arr(char **arr);
 
 #endif

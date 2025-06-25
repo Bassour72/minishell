@@ -7,6 +7,8 @@
 
 #define R_FAIL 0
 #define R_SUCCESS 1
+#define SINGLE_QUOTE 14
+#define DOUBLE_QUOTE 15
 
 typedef enum	e_expand_type
 {

@@ -4,7 +4,8 @@
 // static char *typetostring[] = {
 // 	[OP_OR] = "OR",
 // 	[OP_AND] = "AND",
-// 	[PIPE] = "PIPE",
+// 	[PIPE] = "PIPE",/ dup2(2, 0);
+	 printf("here 1000000000000000000000000\n");
 // 	[BLOCK] = "BLOCK"
 // };
 
@@ -100,8 +101,8 @@ int convert_inputs_to_tokens(t_token *tokenized_input, t_node *splitted_input)//
 			
 
 
-		else if (ft_strncmp(splitted_input->data, "*", 1) == 0)
-			state = create_token(tokenized_input + i, splitted_input->data, WILD_CARD);
+		// else if (ft_strncmp(splitted_input->data, "*", 1) == 0)
+		// 	state = create_token(tokenized_input + i, splitted_input->data, WILD_CARD);
 			
 		else if (i != 0 && (tokenized_input[i - 1].type == RED_APPEND || 
 							tokenized_input[i - 1].type == RED_TRUNK || 
@@ -126,10 +127,11 @@ int tokenizer(t_token **tokenized_input, char *input)
 	
 	
 	t_node *splitted_input;
-
+	
 	splitted_input = NULL;
 	if (split(&splitted_input, input) == R_FAIL)
 		return (free(input), R_FAIL);
+		
 	free(input); //todo find a better place for this
 	// t_node *s = splitted_input;
 	// while (s)
@@ -137,6 +139,7 @@ int tokenizer(t_token **tokenized_input, char *input)
 	// 	printf("<%s>\n", s->data);
 	// 	s = s->next;
 	// }
+	
 	if (!splitted_input)
 		return (R_FAIL);
 	// free_splitted_input(splitted_input);
