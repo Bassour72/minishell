@@ -45,7 +45,10 @@ int	exit_exe(t_tree *root)
     if (!root->is_forked)
 	    write(1, "exit\n", 5);
     if (root->data[1] == NULL)
+	{
+		printf("exit function \n\n");
         exit(0);
+	}
 	if (!is_numeric(root->data[1]))
 	{
 		write(2, "minishell: exit: numeric argument required\n", 43);
@@ -56,6 +59,7 @@ int	exit_exe(t_tree *root)
 		write(2, "minishell: exit: too many arguments\n", 36);
 		return (1);
 	}
+	printf("exit function \n\n");
 	code = ft_atol(root->data[1]);
 	exit((unsigned char)code);
 }

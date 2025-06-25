@@ -124,7 +124,10 @@ int tokenizer(t_token **tokenized_input, char *input)
 	// char	**splitted_input; // need to be freeied
 	int		i;
 	
+	
 	t_node *splitted_input;
+
+	splitted_input = NULL;
 	if (split(&splitted_input, input) == R_FAIL)
 		return (free(input), R_FAIL);
 	free(input); //todo find a better place for this
@@ -151,6 +154,5 @@ int tokenizer(t_token **tokenized_input, char *input)
 		return (free_splitted_input(splitted_input), free_tokens_list(*tokenized_input), R_FAIL); // maybe free *tokenized_input
 
 	free_splitted_input(splitted_input);
-
 	return (R_SUCCESS);
 }

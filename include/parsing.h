@@ -49,6 +49,7 @@ typedef struct s_red
 	char			*heredoc_path;
 	int				in_fd;
 	int				out_fd;
+	int				pipe[2];
 	char			*data; //note file name or herdoc 
 	struct s_red	*next;
 }	t_red;

@@ -25,7 +25,7 @@ static int	append_node_to_flat_tree_list(t_flat_tree **flat_tree_list, t_tree *t
 	tmp = *flat_tree_list;
 	while (tmp->next)
 		tmp = tmp->next;
-	tmp->next =NULL;// malloc(sizeof(t_flat_tree));
+	tmp->next = malloc(sizeof(t_flat_tree));
 	if (!tmp->next)
 	{
 		free_tree_node(tree_node);//note if malloc failed free the given tree_node and the pre allocated flat_tree_list

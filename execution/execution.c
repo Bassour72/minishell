@@ -201,29 +201,29 @@ char **gen_new_env(t_env *env_list)
     return (new_env);
 }
 
-void execute_external_command(t_tree *root, char **env, t_env **env_list) 
+void execute_external_command(t_tree *root,t_env **env_list) 
 {
-	// sleep(2);
+	char **new_env;
+	char *binary_path;
 	printf("inside the execute external command \n ");
-	char *binary_path = get_binary_file_path(root, env,env_list);
-	//sleep(2);
-	printf("check if the get_binary_file_path return success value*************[%s] \n ", binary_path);
+	binary_path = get_binary_file_path(root,env_list);
 	if (!binary_path) 
 	{
 		fprintf(stderr, "Error: Command not found: %s\n", root->data[0]);
-		free_tree_exe(root);
-		exit(EXIT_FAILURE);
+		free_tree(root);
+		free_env_list(*env_list);
+		dup2(0, STDIN_FILENO);
+		g_exit_status = 127;
+		exit(127);
 	}
-	char **new_env = gen_new_env(*env_list);
-	// signal(SIGINT, SIG_DFL);
-	// signal(SIGQUIT, SIG_DFL);
-
+	new_env = gen_new_env(*env_list);
+	free_env_list(*env_list);
+	printf("here i get the bad file descriptor \n");
 	execve(binary_path, root->data, new_env);
-	//sleep(2);
-	printf("here check if execve return error\n ");
+	// free new_env
 	perror("execve");
 	free(binary_path);
-	free_tree_exe(root);
+	free_tree(root);
 	exit(EXIT_FAILURE);
 }
 
@@ -232,23 +232,23 @@ void run_command(t_tree *root, char **env, t_env **env_list)
 	if (!root || !root->data || !root->data[0]) 
 	{
 		fprintf(stderr, "Error: Empty command node \n");
-		free_tree_exe(root);
+		free_tree(root);
 		exit(EXIT_FAILURE);
 	}
 	apply_redirections(root->redirections,env_list);
 	//sleep(2);
 	printf("Run command for check the redirections \n ");
 	/*
-		free_tree_exe(root);
+		free_tree(tree)(root);
 		exit(EXIT_FAILURE);
 	*/
 	if (is_builtin(root->data[0]) == 0) 
 	{
 		int status = execute_builtin(root, env, env_list);
-		free_tree_exe(root);
+		free_tree(root);
 		exit(status);
 	}
-	execute_external_command(root, env, env_list);
+	execute_external_command(root, env_list);
 	exit(EXIT_FAILURE); //todo Unreachable
 }
 
@@ -331,7 +331,7 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 			//sleep(2);
 			printf("in the exec tree for check why the program exit and the entered is valide command\n ");
 			
-			printf("here 1\n\n\n");
+			printf("here 10000000\n\n\n");
 			if (root->data != NULL &&  is_builtin(root->data[0]) == 0)
 			{
 				//sleep(2);
@@ -361,12 +361,13 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 				apply_redirections(root->redirections, env_list);
 				if (input_fd != STDIN_FILENO)
 				{
+					printf("FOR CHECK THE FILE DIRCRIPTE HERE ONE FUCK OFF \n ");
 					dup2(input_fd, STDIN_FILENO);
 					close(input_fd);
 				}
 				// sleep(2);
 				 printf("open the execute external command \n ");
-				execute_external_command(root, env, env_list);
+				 execute_external_command(root, env_list);
 				// sleep(2);
 				printf("here for  check why it exit and should not exit\n ");
 				//exit(EXIT_FAILURE); //todo Unreachable
@@ -379,6 +380,7 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 					close(input_fd);
 				}
 				waitpid(pid, &status, 0);
+				g_exit_status = status;
 				if (WIFEXITED(status))
 				{
 					return WEXITSTATUS(status);
@@ -543,31 +545,15 @@ int execution(t_tree *root, char **env, t_env **env_list)
 		// char *binary_path = get_binary_file_path(root, env,env_list);
 		// update_last_executed_command(env_list, binary_path);
 	}
-	prepare_heredocs(root, env_list); //todo check if the it command and has heredoc
+ //todo check if the it command and has heredoc
+	if (prepare_heredocs(root, env_list) == 1)
+	{
+			printf("here 3\n");
+		return 1;
+	}
 	//sleep(2);
 	printf("exection fucntion \n ");
 	status = exec_tree(root, env, env_list, STDIN_FILENO, 0);
-	free_tree_exe(root);
+	//free_tree(root);
 	return status;
-}
-
-
-void free_tree_exe(t_tree *root) 
-{
-	int i;
-	if (!root)
-		return;
-	free_tree_exe(root->left);
-	free_tree_exe(root->right);
-	if (root->data) 
-	{
-		i = 0;
-		while (root->data[i] != NULL) 
-		{
-			free(root->data[i]);
-			i++;
-		}
-		free(root->data);
-	}
-	free(root);
 }

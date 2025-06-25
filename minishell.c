@@ -163,7 +163,7 @@ void handle_sigint_prompt(int sig)
 
 int main(int ac, char **av, char **env)
 {
-	atexit(f);
+	// atexit(f);
 	t_tree	*tree = NULL;
 	t_env *env_list = NULL;	
 	char	*input;
@@ -180,10 +180,17 @@ int main(int ac, char **av, char **env)
 	while (1)
 	{
 		//get the input from the terminal
+		signal(SIGINT, handle_sigint_prompt);
+		dup2(2, 0);
 		input = readline("minishell$ ");
-		//printf("address : %p\n", input);
-		if (!input)
-			break ;
+		// printf("%s\n", input);
+		if (input == NULL)
+		{
+			write(1, "exit\n", 5);
+			free_env_list(env_list);
+			exit(g_exit_status);
+		}
+
 		if (empty(input))
 		{
 			free(input);
@@ -201,26 +208,19 @@ int main(int ac, char **av, char **env)
 		// lable parsing tests========
 		//  t_env *env_l = NULL;
 		//  env_generate(&env_l, env);
-		// print_tree(tree, 0);
+		 print_tree(tree, 0);
 		// expand_redir(tree->redirections, env_list);
 
 
-
-
 		//lable =^=^=^=^=^=^=^=^=^=^=
-		//print_env(env_list);
+		// //print_env(env_list);
 		if (execution(tree, env, &env_list) == 1)
 		{
 			
-			free_tree(tree); //no/te this is for freeing the tree
-			break;
+		 	//free_tree(tree); //no/te this is for freeing the tree
+			//break;
 		}
-		free_tree(tree); //no/te this is for freeing the tree
-		// if (tree->data)
-		// 	printf("here echo command built-in [%s]\n",tree->data[0]);
-		// take the tree and execute here
-
-		
+		printf("finsh\n");
 		//-----------------------------
 	}
 	free_env_list(env_list);

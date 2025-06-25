@@ -12,7 +12,8 @@ int print_environment(t_env *env_list)
     {
         if (tmp_env->key && tmp_env->value)
         {
-            printf("%s=%s\n", tmp_env->key, tmp_env->value);
+            if (strcmp(tmp_env->key, "exit_status@gmail.com") != 0)
+                printf("%s=%s\n", tmp_env->key, tmp_env->value);
         }
         tmp_env = tmp_env->next;
     }

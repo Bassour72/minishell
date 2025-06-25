@@ -1,4 +1,4 @@
-CFLAGS =  -fsanitize=address -g3 #-Wall -Wextra -Werror
+CFLAGS =  #fsanitize=address -g3 #-Wall -Wextra -Werror
 
 NAME = minishell
 
@@ -58,5 +58,5 @@ re: fclean all
 
 
 
-debug: fclean all #todo 
-	valgrind --leak-check=full --track-fds=yes ./minishell 
+#debug: fclean all #todo 
+#	valgrind --leak-check=full --track-fds=yes ./minishell 

@@ -64,18 +64,19 @@ static char *join_binary_path_with_command(char *command, char *binary_path)
     return (NULL);
 }
 
-char *get_binary_file_path(t_tree *root, char **env, t_env **env_list)
+char *get_binary_file_path(t_tree *root,t_env **env_list)
 {
-    char *binary_path;
-
-     if (!root || !root->data || !root->data[0])
+    char *defualt_path;
+    char    *binary_path;
+    if (!root || !root->data || !root->data[0])
     {
-        fprintf(stderr, "Error: Empty command node\n"); //todo change fprint
+        perror("Error: Empty command node\n"); //todo change fprint
         return NULL;
     }
-
-    binary_path = extract_path_variable(env_list);
-    if (binary_path == NULL)
+    defualt_path = extract_path_variable(env_list);
+    if (defualt_path == NULL)
         return (NULL);
-    return (join_binary_path_with_command(root->data[0], binary_path));
+    binary_path = join_binary_path_with_command(root->data[0], defualt_path);
+    free(defualt_path);
+    return (binary_path);
 }
