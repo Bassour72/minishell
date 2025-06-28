@@ -11,18 +11,21 @@ void print_env(t_env *env) //note to debug
 	}
 }
 
-int update_last_executed_command(t_env **env_list, char *last_command)
+int update_last_executed_command(t_env **env_list,char *key, char *last_command)
 {
 	t_env *env_tmp;
 	char *tmp_last_command;
 	 env_tmp = *env_list;
+	 if (!last_command)
+	 	return 1;
 	//  printf("update_last_executed_command(t_env **env_list, char *last_command)(%s)\n", last_command);
 	while (env_tmp != NULL)
 	{
-		if (ft_strcmp(env_tmp->key, "_") == 0)
+		if (ft_strcmp(env_tmp->key, key) == 0)
 		{
 			free(env_tmp->value);
 			env_tmp->value = ft_strdup(last_command);
+			free (last_command);
 			return 0;
 		}
 		env_tmp = env_tmp->next;
@@ -82,6 +85,7 @@ static int	create_env_node(t_env **list, char *key, char *value)
 	new_node->key = key;
 	new_node->value = value;
 	new_node->exported = 1;
+	new_node->is_remove = 1;
 	if (!ft_strcmp(key, "_") || !ft_strcmp(key, "exit_status@gmail.com"))
 		new_node->exported = 0;
 	new_node->next = NULL;
@@ -105,24 +109,28 @@ int	init_env(t_env **env_list)
 	tmp->key = ft_strdup("OLDPWD");
 	tmp->value = NULL;
 	tmp->exported = 1;
+	tmp->is_remove = 1;
 	tmp->next = NULL;
 	/******************************** */
 	tmp->next = malloc(sizeof(t_env));
 	tmp->next->key = ft_strdup("PWD");
 	tmp->next->value = ft_strdup("/home/ybassour/Desktop/minishell");
 	tmp->next->exported = 1;
+	tmp->next->is_remove = 1;
 	tmp->next->next = NULL;
 	/********************************************* */
 	tmp->next->next = malloc(sizeof(t_env));
 	tmp->next->next->key = ft_strdup("SHLVL");
 	tmp->next->next->value = ft_strdup("0");;
 	tmp->next->next->exported = 1;
+	tmp->next->next->is_remove = 1;
 	tmp->next->next->next = NULL;
 	/*********************************/
 	tmp->next->next->next = malloc(sizeof(t_env));
 	tmp->next->next->next->key = ft_strdup("PATH");
 	tmp->next->next->next->value = ft_strdup(path);;
 	tmp->next->next->next->exported = 0;
+	tmp->next->next->next->is_remove = 1;
 	tmp->next->next->next->next = NULL;
 	*env_list = tmp;
 	return 1;

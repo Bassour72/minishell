@@ -10,6 +10,8 @@ typedef struct s_env
 	char			*key;
 	char			*value;
 	int exported;
+	int is_remove;
+	char *temp_key;
 	struct s_env	*next;
 }			t_env;
 

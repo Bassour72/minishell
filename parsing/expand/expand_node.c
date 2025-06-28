@@ -4,7 +4,6 @@ int expand_redir(t_red *reds, t_env *env)
 {
 	t_expand_token *tokens;
 	t_expand_node *nodes_list;
-
 	while (reds)
 	{
 		nodes_list = NULL;

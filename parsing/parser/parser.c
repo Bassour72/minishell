@@ -23,14 +23,14 @@ int	parser(t_tree **tree, char *input)
 	t_flat_tree *flat_tree;
 
 	if (!validate_quotes(input))
-		return (free(input), R_SUCCESS);//check this 
+		return (free(input), *tree = NULL, R_SUCCESS);//check this 
  
 	if (tokenizer(&tokenized_input, input) == R_FAIL)
 		return (free_tokens_list(tokenized_input), R_FAIL);
 
 	
 	
-	print_tokenized_inputs(tokenized_input);
+//	print_tokenized_inputs(tokenized_input);
 	// return NULL;
 	// free(input);
 

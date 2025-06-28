@@ -5,7 +5,6 @@
 // 	[OP_OR] = "OR",
 // 	[OP_AND] = "AND",
 // 	[PIPE] = "PIPE",/ dup2(2, 0);
-	 printf("here 1000000000000000000000000\n");
 // 	[BLOCK] = "BLOCK"
 // };
 

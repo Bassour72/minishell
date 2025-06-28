@@ -164,7 +164,7 @@ char **append_command(char **old_list, char *new_cmd);
 void append_redirection(t_red *redirections_list, char *data, t_type type);
 
 
-int update_last_executed_command(t_env **env_list, char *last_command);//idea this for the execution 
+int update_last_executed_command(t_env **env_list,char *key, char *last_command);//idea this for the execution 
 // idea If you remove this idea, I will cancel the team. Give me the money.
 
 //lable expend
@@ -185,5 +185,7 @@ int validate_close_parenths(t_token *token);
 //expand
 int expand_redir(t_red *reds, t_env *env);
 int expand_herdoc(char **str, t_env *env);
+
+int	remove_non_printable_characters(char ***old_data);
 
 #endif
