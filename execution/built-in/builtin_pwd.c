@@ -28,11 +28,12 @@ int pwd_print_working_directory(t_tree *root, t_env **env_list)
         }
         write(fd, pathname, ft_strlen(pathname));
 	    write(fd, "\n", 1);
-        return 0;
+       // free(pathname);
+        return (0);
     }
 
     write(fd, pathname, ft_strlen(pathname));
 	write(fd, "\n", 1);
     free(pathname);
-    return 0;
+    return (0);
 }

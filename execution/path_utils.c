@@ -17,12 +17,28 @@ static char *extract_path_variable(t_env **env_list)
 
 int has_point(char *command)
 {
+    int i;
+
+    i = 0;
     if (access(command, X_OK) == 0)
     {
         return (0);
     }
-    else
-        return (1);
+    if (command[0] == '.')
+        return (0);
+    return (1);
+}
+char *check_valid_command_path(char *command)
+{
+    if (!command)
+        return (NULL);
+    if (access(command, X_OK) == 0)
+    {
+        if (command[0] == '.' || command[0] == '/')
+            return (ft_strdup(command));
+    }
+
+    return (NULL);
 }
 
 static char *join_binary_path_with_command(char *command, char *binary_path)
@@ -30,13 +46,14 @@ static char *join_binary_path_with_command(char *command, char *binary_path)
     char **binaries_path;
     char *full_path;
 	char *temp;
-    int i = 0;
+    int i;
 
     if (!has_point(command))
-        return (ft_strdup(command));
+        return (check_valid_command_path(command));
     binaries_path = ft_split(binary_path, ':');
     if (binaries_path == NULL)
         return (NULL);
+    i = 0;
     while (binaries_path[i] != NULL)
     {
         full_path = ft_strjoin(binaries_path[i], "/");
@@ -55,7 +72,6 @@ static char *join_binary_path_with_command(char *command, char *binary_path)
         free(temp);
         i++;
     }
-
     //todo Free the binaries_path array if no valid path is found
     i = 0;
     while (binaries_path[i] != NULL)
@@ -64,18 +80,19 @@ static char *join_binary_path_with_command(char *command, char *binary_path)
     return (NULL);
 }
 
-char *get_binary_file_path(t_tree *root, char **env, t_env **env_list)
+char *get_binary_file_path(t_tree *root,t_env **env_list)
 {
-    char *binary_path;
-
-     if (!root || !root->data || !root->data[0])
+    char *defualt_path;
+    char    *binary_path;
+    if (!root || !root->data || !root->data[0])
     {
-        fprintf(stderr, "Error: Empty command node\n"); //todo change fprint
+        perror("Error: Empty command node\n"); //todo change fprint
         return NULL;
     }
-
-    binary_path = extract_path_variable(env_list);
-    if (binary_path == NULL)
+    defualt_path = extract_path_variable(env_list);
+    if (defualt_path == NULL)
         return (NULL);
-    return (join_binary_path_with_command(root->data[0], binary_path));
+    binary_path = join_binary_path_with_command(root->data[0], defualt_path);
+    free(defualt_path);
+    return (binary_path);
 }

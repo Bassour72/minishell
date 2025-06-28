@@ -12,7 +12,7 @@ static int	is_valid_identifier(const char *identifier)
 	i = 1;
 	while (identifier[i] != '\0' && identifier[i] != '=')
 	{
-		if (!ft_isalnum(identifier[i]) && identifier[i] != '_')
+		if (!ft_isalnum(identifier[i]) && identifier[i] != '_') //todo
 			return (1);
 		i++;
 	}
@@ -121,8 +121,9 @@ static t_env *sort_env_list(t_env *env_list)
 	t_env *ptr;
 
 	if (!env_list)
-		return NULL;
-	do 
+		return (NULL);
+	swapped = true;
+	do //todo change to do loop into while loop
 	{
 		swapped = false;
 		ptr = env_list;
@@ -136,7 +137,7 @@ static t_env *sort_env_list(t_env *env_list)
 			ptr = ptr->next;
 		}
 	} while (swapped);
-	return env_list;
+	return (env_list);
 }
 
 static void print_env_export_sort(t_env *env_list)
@@ -149,7 +150,7 @@ static void print_env_export_sort(t_env *env_list)
 	tmp = sorted_list;
 	while (tmp)
 	{
-		if (tmp->value)
+		if (tmp->value && tmp->is_remove != 0)
 		{
 			if (tmp->exported)
 				printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
@@ -190,7 +191,9 @@ static void	add_env(char *arg, t_env **env_list)
 		return ;
 	if (is_valid_identifier(arg) == 1)
 	{
-		printf("export: `%s': not a valid identifier\n", arg);
+		ft_putstr_fd("export: `", STDERR_FILENO);
+		ft_putstr_fd(arg,STDERR_FILENO);
+		ft_putendl_fd("': not a valid identifier\n", STDERR_FILENO);
 		return ;
 	}
 	new_key = get_env_key(arg);
@@ -202,6 +205,11 @@ static void	add_env(char *arg, t_env **env_list)
 		{
 			free(existing->value);
 			existing->value = new_value;
+			existing->is_remove = 1;
+		}
+		if (existing->exported == 0 && existing->is_remove == 0)
+		{
+			existing->exported = 1;
 		}
 		free(new_key);
 		return ;
@@ -226,17 +234,17 @@ static void	add_env(char *arg, t_env **env_list)
 
 int export_command_builtin(t_tree *root, t_env **env_list)
 {
-	int i = 0;
+	int i;
 	if (env_list == NULL)
 		return ((0));
 	else if (root->data[1] != NULL)
 	{
+		i =  1;
 		while (root->data[i] != NULL)
 		{
 			add_env(root->data[i], env_list);
 			i++;
 		}
-		
 		return (0);
 	}
 	else 

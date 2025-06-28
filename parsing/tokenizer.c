@@ -4,7 +4,7 @@
 // static char *typetostring[] = {
 // 	[OP_OR] = "OR",
 // 	[OP_AND] = "AND",
-// 	[PIPE] = "PIPE",
+// 	[PIPE] = "PIPE",/ dup2(2, 0);
 // 	[BLOCK] = "BLOCK"
 // };
 
@@ -124,6 +124,7 @@ int tokenizer(t_token **tokenized_input, char *input)
 	// char	**splitted_input; // need to be freeied
 	int		i;
 	
+	
 	t_node *splitted_input;
 	
 	splitted_input = NULL;
@@ -155,6 +156,5 @@ int tokenizer(t_token **tokenized_input, char *input)
 		return (free_splitted_input(splitted_input), free_tokens_list(*tokenized_input), R_FAIL); // maybe free *tokenized_input
 
 	free_splitted_input(splitted_input);
-
 	return (R_SUCCESS);
 }

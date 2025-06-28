@@ -130,8 +130,12 @@ int expand(char ***new_args, t_env *env)
 	if (expand_list_to_array(new_args, nodes_list) == R_FAIL)
 		return (free_expand_list_nodes(nodes_list), R_FAIL);
 	free_expand_list_nodes(nodes_list);
+	remove_non_printable_characters(new_args);
 	// for(int i = 0; (*new_args)[i]; i++)
-	// 	printf("(%s)\n", (*new_args)[i]);
+	// {
+	// 	printf("(%s)[%d]\n", (*new_args)[i], strlen((*new_args)[i]));
+
+	// }
 	return (R_SUCCESS);
 }
 

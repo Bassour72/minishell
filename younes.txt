@@ -1,0 +1,29 @@
+✅ Steps to Catch Child Exit:
+Call fork()
+
+Creates a child process.
+
+In the child (pid == 0)
+
+Do the work, then call exit(status).
+
+In the parent
+
+Use waitpid(child_pid, &status, 0) to wait for the child to finish.
+
+Analyze status using macros:
+
+WIFEXITED(status) — true if child exited normally.
+
+WEXITSTATUS(status) — gives the exit code.
+
+WIFSIGNALED(status) — true if child was terminated by a signal.
+
+WTERMSIG(status) — gives the terminating signal number.
+
+🧠 Example Behavior
+Macro	Purpose
+WIFEXITED(s)	Child exited via exit() or return
+WEXITSTATUS(s)	Gets exit code (if WIFEXITED is true)
+WIFSIGNALED(s)	Child was killed by signal
+WTERMSIG(s)	Which signal caused termination
