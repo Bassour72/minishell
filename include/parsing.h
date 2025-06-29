@@ -16,6 +16,8 @@
 # include "wildcard.h"
 //-------------------------------------------------------------------
 
+#include <assert.h> //just for debugging
+
 //node types --------------------------------------------------------
 
 typedef enum e_type
@@ -184,5 +186,9 @@ int validate_close_parenths(t_token *token);
 //expand
 int expand_redir(t_red *reds, t_env *env);
 int expand_herdoc(char **str, t_env *env);
+
+int remove_non_printable_characters(char ***data);
+
+void print(char *s);//delete this
 
 #endif

@@ -9,6 +9,14 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		parsing/split/split.c parsing/split/manage_normal.c parsing/split/manage_operators.c parsing/split/manage_parenth.c parsing/split/manage_quotes.c parsing/split/manage_redirections.c parsing/split/append_node.c\
  		parsing/expand/expand.c \
 		parsing/expand/expand_node.c \
+		parsing/expand/utils/print.c\
+		parsing/expand/remove_non_printable_characters.c\
+		parsing/expand/tokenizer/single_quote_expander.c\
+		parsing/expand/tokenizer/double_quote_expander.c\
+		parsing/expand/tokenizer/variable_expander.c\
+		parsing/expand/tokenizer/normal_expander.c\
+		parsing/expand/tokenizer/normal_variable_expander.c\
+		parsing/expand/tokenizer/double_quote_variable_expander.c\
 		parsing/expand/tokenizer/tokenizer.c \
 		parsing/expand/tokenizer/append_expand_token.c \
 		parsing/expand/tokenizer/free_expand_tokens_list.c \
