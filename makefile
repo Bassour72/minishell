@@ -34,7 +34,9 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		execution/shell_levl/shlvl.c \
 		execution/built-in/execute_builtin.c \
 		execution/exec/exec_cmd.c \
-		execution/env/env_array.c
+		execution/env/env_array.c \
+		execution/built-in/cd_utils.c \
+		execution/built-in/cd_arg_validation.c 
 		# debug / memory_debugging.c 
 
 OBJ = $(SRC:.c=.o)

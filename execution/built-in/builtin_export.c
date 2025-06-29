@@ -1,5 +1,14 @@
 #include "../../include/execution.h"
-#include <stdbool.h>
+
+static  int ft_strcmp_v2(const char *s1, const char *s2)
+{
+	while (*s1 && *s2 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
+}
 
 static int	is_valid_identifier(const char *identifier)
 {
@@ -44,7 +53,7 @@ static char *get_env_key(const char *identifier)
 	return new_key;
 }
 
-static char *get_env_value(const char *identifier)
+static char *get_env_value1(const char *identifier)
 {
 	int i = 0;
 
@@ -56,7 +65,7 @@ static char *get_env_value(const char *identifier)
 
 	if (!identifier[i])
 		return (NULL);
-	return ft_strdup(ft_strtrim(identifier + i + 1, "\""));
+	return (ft_strtrim(identifier + i + 1, "\""));
 }
 
 static void swap_node(t_env *a, t_env *b)
@@ -100,19 +109,19 @@ static t_env *copy_env_list(t_env *env_list)
 	{
 		new_node = malloc(sizeof(t_env));
 		if (!new_node)
-			return NULL;
+			return (NULL);
 		new_node->key = NULL;
 		new_node->value = NULL;
 		if (env_list->key)
-			new_node->key = strdup(env_list->key);
+			new_node->key = ft_strdup(env_list->key);
 		if (env_list->value)
-			new_node->value = strdup(env_list->value);
+			new_node->value = ft_strdup(env_list->value);
 		new_node->exported = env_list->exported;
 		new_node->next = NULL;
 		list_env_add_back(&copy, new_node);
 		env_list = env_list->next;
 	}
-	return copy;
+	return (copy);
 }
 
 static t_env *sort_env_list(t_env *env_list)
@@ -123,20 +132,23 @@ static t_env *sort_env_list(t_env *env_list)
 	if (!env_list)
 		return (NULL);
 	swapped = true;
-	do //todo change to do loop into while loop
+
+	while (swapped)
 	{
 		swapped = false;
+	
 		ptr = env_list;
 		while (ptr->next)
 		{
-			if (strcmp(ptr->key, ptr->next->key) > 0)
+			if (ft_strcmp_v2(ptr->key, ptr->next->key) > 0)
 			{
 				swap_node(ptr, ptr->next);
 				swapped = true;
 			}
 			ptr = ptr->next;
 		}
-	} while (swapped);
+	}
+	//printf("end.....................\n");
 	return (env_list);
 }
 
@@ -165,6 +177,7 @@ static void print_env_export_sort(t_env *env_list)
 	free_env_list(sorted_list);
 }
 
+
 static t_env *is_exist_env(t_env *env_list, const char *new_key)
 {
 	t_env *tmp = env_list;
@@ -178,42 +191,23 @@ static t_env *is_exist_env(t_env *env_list, const char *new_key)
 	return (NULL);
 }
 
-
-static void	add_env(char *arg, t_env **env_list)
+static void	update_existing_env(t_env *existing, char *new_value)
 {
-	t_env *existing;
-	t_env *new_node;
-	t_env *ptr;
-	char *new_key;
-	char *new_value;
+	if (new_value)
+	{
+		free(existing->value);
+		existing->value = new_value;
+		existing->is_remove = 1;
+	}
+	if (existing->exported == 0 && existing->is_remove == 0)
+		existing->exported = 1;
+}
 
-	if (!arg)
-		return ;
-	if (is_valid_identifier(arg) == 1)
-	{
-		ft_putstr_fd("export: `", STDERR_FILENO);
-		ft_putstr_fd(arg,STDERR_FILENO);
-		ft_putendl_fd("': not a valid identifier\n", STDERR_FILENO);
-		return ;
-	}
-	new_key = get_env_key(arg);
-	new_value = get_env_value(arg);
-	existing = is_exist_env(*env_list, new_key);
-	if (existing)
-	{
-		if (new_value)
-		{
-			free(existing->value);
-			existing->value = new_value;
-			existing->is_remove = 1;
-		}
-		if (existing->exported == 0 && existing->is_remove == 0)
-		{
-			existing->exported = 1;
-		}
-		free(new_key);
-		return ;
-	}
+static void	add_new_env_node(t_env **env_list, char *new_key, char *new_value)
+{
+	t_env	*new_node;
+	t_env	*ptr;
+
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
 		return ;
@@ -231,6 +225,87 @@ static void	add_env(char *arg, t_env **env_list)
 		ptr->next = new_node;
 	}
 }
+
+static void	add_env(char *arg, t_env **env_list)
+{
+	t_env	*existing;
+	char	*new_key;
+	char	*new_value;
+
+	if (!arg)
+		return ;
+	if (is_valid_identifier(arg) == 1)
+	{
+		ft_putstr_fd("export: `", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putendl_fd("': not a valid identifier\n", STDERR_FILENO);
+		return ;
+	}
+	new_key = get_env_key(arg);
+	new_value = get_env_value1(arg);
+	existing = is_exist_env(*env_list, new_key);
+	if (existing)
+	{
+		update_existing_env(existing, new_value);
+		free(new_key);
+		return ;
+	}
+	add_new_env_node(env_list, new_key, new_value);
+}
+
+
+// static void	add_env(char *arg, t_env **env_list)
+// {
+// 	t_env *existing;
+// 	t_env *new_node;
+// 	t_env *ptr;
+// 	char *new_key;
+// 	char *new_value;
+
+// 	if (!arg)
+// 		return ;
+// 	if (is_valid_identifier(arg) == 1)
+// 	{
+// 		ft_putstr_fd("export: `", STDERR_FILENO);
+// 		ft_putstr_fd(arg,STDERR_FILENO);
+// 		ft_putendl_fd("': not a valid identifier\n", STDERR_FILENO);
+// 		return ;
+// 	}
+// 	new_key = get_env_key(arg);
+// 	new_value = get_env_value1(arg);
+// 	existing = is_exist_env(*env_list, new_key);
+// 	if (existing)
+// 	{
+// 		if (new_value)
+// 		{
+// 			free(existing->value);
+// 			existing->value = new_value;
+// 			existing->is_remove = 1;
+// 		}
+// 		if (existing->exported == 0 && existing->is_remove == 0)
+// 		{
+// 			existing->exported = 1;
+// 		}
+// 		free(new_key);
+// 		return ;
+// 	}
+// 	new_node = malloc(sizeof(t_env));
+// 	if (!new_node)
+// 		return ;
+// 	new_node->key = new_key;
+// 	new_node->value = new_value;
+// 	new_node->exported = true;
+// 	new_node->next = NULL;
+// 	if (!*env_list)
+// 		*env_list = new_node;
+// 	else
+// 	{
+// 		ptr = *env_list;
+// 		while (ptr->next)
+// 			ptr = ptr->next;
+// 		ptr->next = new_node;
+// 	}
+// }
 
 int export_command_builtin(t_tree *root, t_env **env_list)
 {

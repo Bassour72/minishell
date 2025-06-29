@@ -1,97 +1,115 @@
 // #include "../include/execution.h"
-int exec_pipe(t_tree *root, char **env, int input_fd, t_env **env_list)
-{
-	int pipefd[2];
-	pid_t pid_left, pid_right;
-	int status = 0;
-	if (!root || root->type != PIPE) 
-	{
-		return 1;
-	}
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <stdio.h>
+#include "../include/minishell.h" // adjust to your header path
 
+static int	create_pipe(int pipefd[2])
+{
 	if (pipe(pipefd) == -1)
 	{
 		perror("pipe");
-		return 1;
+		return (1);
 	}
-	pid_left = fork();
-	if (pid_left < 0) 
+	return (0);
+}
+
+static pid_t	fork_left_process(t_tree *root, char **env, t_env **env_list,
+		int input_fd, int pipe_out)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
 	{
 		perror("fork");
-		close(pipefd[0]);
-		close(pipefd[1]);
-		return 1;
+		return (-1);
 	}
-	if (pid_left == 0) 
+	if (pid == 0)
 	{
-		//todo Left child: set input and output
-		if (input_fd != STDIN_FILENO) 
+		if (input_fd != STDIN_FILENO)
 		{
-			sleep(6);
-			fprintf(stderr,"@@@@@@@@@@@@@[here for debugg the minishell for check if has leaks file descriptor]input_fd[%d]", input_fd);
 			dup2(input_fd, STDIN_FILENO);
 			close(input_fd);
 		}
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[0]);
-		close(pipefd[1]);
-		exit(exec_tree(root->left, env, env_list, STDIN_FILENO, 1)); //todo in_subshell=1
-	   //todo exit(EXIT_FAILURE);
+		dup2(pipe_out, STDOUT_FILENO);
+		close(pipe_out);
+		exit(exec_tree(root->left, env, env_list, STDIN_FILENO, 1));
 	}
+	return (pid);
+}
 
-	pid_right = fork();
-	if (pid_right < 0) 
+static pid_t	fork_right_process(t_tree *root, char **env, t_env **env_list,
+		int input_fd, int pipe_in)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
 	{
 		perror("fork");
-		close(pipefd[0]);
-		close(pipefd[1]);
-		if (input_fd != STDIN_FILENO) 
-		{
-			sleep(6);
-			fprintf(stderr,"@@@@@@@@@@@@@[here for debugg the minishell for check if has leaks file descriptor]input_fd[%d]", input_fd);
-			close(input_fd);
-		}
-		return 1;
+		return (-1);
 	}
-	
-	if (pid_right == 0) 
+	if (pid == 0)
 	{
-		//todo Right child: set input
-		close(pipefd[1]);
-		dup2(pipefd[0], STDIN_FILENO);
-		close(pipefd[0]);
-		if (input_fd != STDIN_FILENO) 
-		{
-			sleep(6);
-			fprintf(stderr,"@@@@@@@@@@@@@[here for debugg the minishell for check if has leaks file descriptor]input_fd[%d]", input_fd);
+		close(pipe_in + 1);
+		dup2(pipe_in, STDIN_FILENO);
+		close(pipe_in);
+		if (input_fd != STDIN_FILENO)
 			close(input_fd);
-		}
-		exit(exec_tree(root->right, env, env_list, STDIN_FILENO, 1)); //todo in_subshell=1
-	   //todo exit(EXIT_FAILURE);
+		exit(exec_tree(root->right, env, env_list, STDIN_FILENO, 1));
 	}
+	return (pid);
+}
 
-	//todo Parent: clean up and wait
+static void	close_parent_fds(int pipefd[2], int input_fd)
+{
 	close(pipefd[0]);
 	close(pipefd[1]);
-	if (input_fd != STDIN_FILENO) 
-	{
-		sleep(6);
-		fprintf(stderr,"@@@@@@@@@@@@@[here for debugg the minishell for check if has leaks file descriptor]input_fd[%d]", input_fd);
+	if (input_fd != STDIN_FILENO)
 		close(input_fd);
-	}
-	dup2(0, STDIN_FILENO);
+}
+
+static int	wait_for_children(pid_t pid_left, pid_t pid_right)
+{
+	int	status;
+
 	waitpid(pid_left, &status, 0);
 	waitpid(pid_right, &status, 0);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))
-	{
-		int s = WTERMSIG(status);
-		printf("if (WIFSIGNALED(status))[%d] \n ",s);
-	}
-	if (WIFEXITED(status)) 
-	{
-		printf("if (WIFEXITED(status))[%d] \n ",status);
-		int s = WTERMSIG(status);
-		return WEXITSTATUS(status);
-	}
+		return (128 + WTERMSIG(status));
 	return (1);
+}
+
+int	exec_pipe(t_tree *root, char **env, int input_fd, t_env **env_list)
+{
+	int		pipefd[2];
+	pid_t	pid_left;
+	pid_t	pid_right;
+
+	if (!root || root->type != PIPE)
+		return (1);
+	if (create_pipe(pipefd))
+		return (1);
+	pid_left = fork_left_process(root, env, env_list, input_fd, pipefd[1]);
+	if (pid_left < 0)
+	{
+		close(pipefd[0]);
+		close(pipefd[1]);
+		return (1);
+	}
+	pid_right = fork_right_process(root, env, env_list, input_fd, pipefd[0]);
+	if (pid_right < 0)
+	{
+		close(pipefd[0]);
+		close(pipefd[1]);
+		if (input_fd != STDIN_FILENO)
+			close(input_fd);
+		return (1);
+	}
+	close_parent_fds(pipefd, input_fd);
+	return (wait_for_children(pid_left, pid_right));
 }

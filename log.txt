@@ -1,0 +1,48 @@
+minishell$ pwd
+/home/ybassour/Desktop/minishell/1/2/3/4
+minishell$ ls
+minishell$ cd ..
+minishell$ pwd
+/home/ybassour/Desktop/minishell/1/2/3
+minishell$ cd ..
+minishell$ pwd
+/home/ybassour/Desktop/minishell/1/2
+minishell$ echo $OLDPWD
+/home/ybassour/Desktop/minishell/1/2/3
+minishell$ echo $PWD
+/home/ybassour/Desktop/minishell/1/2
+minishell$ CD ..
+minishell: CD: Command not found: 
+
+=================================================================
+==1587==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 80 byte(s) in 2 object(s) allocated from:
+    #0 0x7f123885e158 in realloc.part.0 (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x102158) (BuildId: d25e67d2640b00cfc20b3055f750dc7b71017cb3)
+    #1 0x7f123860f307 in getcwd (/usr/lib/x86_64-linux-gnu/libc.so.6+0x10e307) (BuildId: 2890b41de26262042831874e91ff2f647c9db3a5)
+    #2 0x7f12388017cd in getcwd (/usr/lib/x86_64-linux-gnu/libasan.so.8+0xa57cd) (BuildId: d25e67d2640b00cfc20b3055f750dc7b71017cb3)
+    #3 0x5597e47b1e42 in cd_change_working_directory execution/built-in/builtin_cd.c:338
+    #4 0x5597e47b63c4 in execute_builtin execution/built-in/execute_builtin.c:28
+    #5 0x5597e47af11b in exec_tree execution/execution.c:144
+    #6 0x5597e47b00be in execution execution/execution.c:344
+    #7 0x5597e479a97e in main /home/ybassour/Desktop/minishell/minishell.c:114
+    #8 0x7f123852b187 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a187) (BuildId: 2890b41de26262042831874e91ff2f647c9db3a5)
+    #9 0x7f123852b24a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a24a) (BuildId: 2890b41de26262042831874e91ff2f647c9db3a5)
+    #10 0x5597e479a404 in _start ../sysdeps/x86_64/start.S:115
+
+Direct leak of 76 byte(s) in 2 object(s) allocated from:
+    #0 0x7f123885e158 in realloc.part.0 (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x102158) (BuildId: d25e67d2640b00cfc20b3055f750dc7b71017cb3)
+    #1 0x7f123860f307 in getcwd (/usr/lib/x86_64-linux-gnu/libc.so.6+0x10e307) (BuildId: 2890b41de26262042831874e91ff2f647c9db3a5)
+    #2 0x7f12388017cd in getcwd (/usr/lib/x86_64-linux-gnu/libasan.so.8+0xa57cd) (BuildId: d25e67d2640b00cfc20b3055f750dc7b71017cb3)
+    #3 0x5597e47b20af in apply_cd_with_double_dots execution/built-in/builtin_cd.c:377
+    #4 0x5597e47b1f9c in cd_change_working_directory execution/built-in/builtin_cd.c:351
+    #5 0x5597e47b63c4 in execute_builtin execution/built-in/execute_builtin.c:28
+    #6 0x5597e47af11b in exec_tree execution/execution.c:144
+    #7 0x5597e47b00be in execution execution/execution.c:344
+    #8 0x5597e479a97e in main /home/ybassour/Desktop/minishell/minishell.c:114
+    #9 0x7f123852b187 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a187) (BuildId: 2890b41de26262042831874e91ff2f647c9db3a5)
+    #10 0x7f123852b24a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a24a) (BuildId: 2890b41de26262042831874e91ff2f647c9db3a5)
+    #11 0x5597e479a404 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 156 byte(s) leaked in 4 allocation(s).
+minishell$ 
