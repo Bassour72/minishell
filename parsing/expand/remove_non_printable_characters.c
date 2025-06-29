@@ -1,20 +1,20 @@
 #include "../../include/expand.h"
-#include <string.h>
 
-void	free_2d_arr(char **arr)
-{
-	char	**original_arr;
-	char	*tmp;
 
-	original_arr = arr;
-	while (*arr)
-	{
-		tmp = *arr;
-		arr++;
-		free(tmp);
-	}
-	free(original_arr);
-}
+// void	free_2d_arr(char **arr)
+// {
+// 	char	**original_arr;
+// 	char	*tmp;
+
+// 	original_arr = arr;
+// 	while (*arr)
+// 	{
+// 		tmp = *arr;
+// 		arr++;
+// 		free(tmp);
+// 	}
+// 	free(original_arr);
+// }
 
 int allocate_double_arr_size(char ***new_data, char **old_data)
 {
@@ -84,41 +84,41 @@ int	remove_non_printable_characters(char ***old_data)
 
 //---------TESTS-----------------
 
-void print_array(char **arr)
-{
-	while (*arr)
-		printf("'%s'\n", *arr++);
-}
+// void print_array(char **arr)
+// {
+// 	while (*arr)
+// 		printf("'%s'\n", *arr++);
+// }
 
-void test_remove_non_printable_characters()
-{
-	char **input = malloc(sizeof(char *) * 4);
-	input[0] = strdup("hel" "\x0E" "lo");			// "hello"
-	input[1] = strdup("wor" "\x0F" "ld");			// "world"
-	input[2] = strdup("noquote");					// "noquote"
-	input[3] = NULL;
+// void test_remove_non_printable_characters()
+// {
+// 	char **input = malloc(sizeof(char *) * 4);
+// 	input[0] = strdup("hel" "\x0E" "lo");			// "hello"
+// 	input[1] = strdup("wor" "\x0F" "ld");			// "world"
+// 	input[2] = strdup("noquote");					// "noquote"
+// 	input[3] = NULL;
 
-	if (remove_non_printable_characters(&input) == R_FAIL)
-	{
-		printf("Test failed: function returned R_FAIL\n");
-		return;
-	}
+// 	if (remove_non_printable_characters(&input) == R_FAIL)
+// 	{
+// 		printf("Test failed: function returned R_FAIL\n");
+// 		return;
+// 	}
 
-	if (
-		strcmp(input[0], "hello") == 0 &&
-		strcmp(input[1], "world") == 0 &&
-		strcmp(input[2], "noquote") == 0 &&
-		input[3] == NULL
-	)
-		printf("Test passed: remove_non_printable_characters\n");
-	else
-	{
-		printf("Test failed:\n");
-		print_array(input);
-	}
+// 	if (
+// 		strcmp(input[0], "hello") == 0 &&
+// 		strcmp(input[1], "world") == 0 &&
+// 		strcmp(input[2], "noquote") == 0 &&
+// 		input[3] == NULL
+// 	)
+// 		printf("Test passed: remove_non_printable_characters\n");
+// 	else
+// 	{
+// 		printf("Test failed:\n");
+// 		print_array(input);
+// 	}
 
-	free_2d_arr(input);
-}
+// 	free_2d_arr(input);
+// }
 
 // int main()
 // {

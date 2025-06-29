@@ -78,15 +78,6 @@ void free_expand_list_nodes(t_expand_node *list)
 	}
 }
 
-static void free_double_array(char **arr) //add to utils
-{
-	int	i;
-
-	i = -1;
-	while (arr[++i])
-		free(arr[i]);
-	free(arr);
-}
 
 
 
@@ -105,12 +96,12 @@ int expand(char ***new_args, t_env *env)
 
 	char **tmp = *new_args;
 	*new_args = NULL;
-	free_double_array(tmp);
+	free_2d_arr(tmp);
 	// free(line);
 	// line = ft_strdup("export $#  gg=$USER");
 	
 	if (tokenize(line, &tokens, env) == R_FAIL)
-			return (free(line), R_FAIL);
+		return (free(line), R_FAIL);
 
 	// free(line);
 	// return NULL;
@@ -129,13 +120,13 @@ int expand(char ***new_args, t_env *env)
 	// }
 	if (expand_list_to_array(new_args, nodes_list) == R_FAIL)
 		return (free_expand_list_nodes(nodes_list), R_FAIL);
-	free_expand_list_nodes(nodes_list);
-	remove_non_printable_characters(new_args);
 	// for(int i = 0; (*new_args)[i]; i++)
-	// {
-	// 	printf("(%s)[%d]\n", (*new_args)[i], strlen((*new_args)[i]));
-
-	// }
+	// 	printf("(%s)[%d]\n", (*new_args)[i] , ft_strlen((*new_args)[i]));
+	free_expand_list_nodes(nodes_list);
+	if(wildcard(new_args) == R_FAIL)
+		return (R_FAIL);
+	if(remove_non_printable_characters(new_args) == R_FAIL)
+		return (R_FAIL);
 	return (R_SUCCESS);
 }
 

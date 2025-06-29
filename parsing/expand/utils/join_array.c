@@ -3,20 +3,19 @@
 
 static int calculate_len(char **arr)
 {
-	int i;
-	int j;
-	int	len;
+	int i = 0;
+	int len = 0;
 
-	i = -1;
-	while (arr[++i])
+	while (arr[i])
 	{
-		j = -1;
-		while (arr[i][++j])
-			len++;
-		len++;
+		len += ft_strlen(arr[i]);
+		if (arr[i + 1])
+			len += 1;
+		i++;
 	}
-	return (len);
+	return len;
 }
+
 
 static void cpy_to_single_arr(char **double_arr, char **single_arr, int len)
 {
