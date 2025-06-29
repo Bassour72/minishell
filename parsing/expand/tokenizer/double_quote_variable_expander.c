@@ -1,13 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   double_quote_variable_expander.c                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/29 23:09:59 by massrayb          #+#    #+#             */
+/*   Updated: 2025/06/29 23:10:26 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/parsing.h"
 
-int double_quote_variable_expander(char *str, int *_i, char **data, t_env *env)
+int	double_quote_variable_expander(char *str, int *_i, char **data, t_env *env)
 {
-	// printf("\033[34m-----------DOUBLE QUOTE VARIABLE EXPANDER--------------------------\033[0m\n");
 	int		join;
 	int		split;
 	char	*new_data;
 	char	*tmp;
-	
+
 	new_data = NULL;
 	if (!is_valid_key_char(str[*_i + 1], 0) && str[*_i + 1] != '?')
 		return ((*_i) += 2, R_CONTINUE);

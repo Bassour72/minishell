@@ -57,7 +57,7 @@ int array_to_list(char **arr, t_node **list);
 int tokenize(char *str, t_expand_token **tokens, t_env *env);
 int join_arr(char **arr, char **joined_arr);
 int append_expand_token(t_expand_token **tokens,\
-char *data, t_expand_type type, int need_split, int join);
+char *data, int need_split, int join);
 
 void free_expand_tokens_list(t_expand_token *tokens);
 void print_expand_tokens(t_expand_token *tokens);

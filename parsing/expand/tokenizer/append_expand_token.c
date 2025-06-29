@@ -1,22 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   append_expand_token.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/29 22:52:17 by massrayb          #+#    #+#             */
+/*   Updated: 2025/06/29 22:58:30 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/parsing.h"
 
-int append_expand_token(t_expand_token **tokens, char *data, t_expand_type type, int split, int join)
+static void	init_token(t_expand_token *token, char *data, int join, int split)
 {
-	t_expand_token *new_token;
-	t_expand_token *tmp;
+	token->data = data;
+	token->join = join;
+	token->split = split;
+}
+
+int	append_expand_token(t_expand_token **tokens, \
+	char *data, int split, int join)
+{
+	t_expand_token	*new_token;
+	t_expand_token	*tmp;
 
 	if (!data)
 		return (R_SUCCESS);
-	// printf("\033[32mnew token data: [%s]| size:[%d]\033[0m\n", data, ft_strlen(data));
 	new_token = malloc(sizeof(t_expand_token));
 	if (!new_token)
 		return (perror("error: "), free(data), R_FAIL);
-	new_token->data = data;
-	// printf(">>>{%s}\n",data);
-	new_token->join = join;
-	new_token->split = split;
-	// if (split == 1 || split == 2 )
-	// 	new_token->split = 0;
+	init_token(new_token, data, join, split);
 	new_token->next = NULL;
 	new_token->prev = NULL;
 	if (!*tokens)

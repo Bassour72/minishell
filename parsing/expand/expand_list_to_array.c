@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_list_to_array.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/29 22:45:50 by massrayb          #+#    #+#             */
+/*   Updated: 2025/06/29 22:46:42 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/parsing.h"
 
-static void clear_failed_arr(char **arr, int fail_point)
+static void	clear_failed_arr(char **arr, int fail_point)
 {
 	while (--fail_point >= 0)
 		free(arr[fail_point]);
 	free(arr);
 }
 
-static int get_list_size(t_expand_node *list)
+static int	get_list_size(t_expand_node *list)
 {
 	int	size;
 
@@ -23,8 +35,8 @@ static int get_list_size(t_expand_node *list)
 int	expand_list_to_array(char ***commands_array, t_expand_node *list)
 {
 	t_expand_node	*tmp;
-	int		count;
-	int		i;
+	int				count;
+	int				i;
 
 	count = get_list_size(list);
 	*commands_array = malloc(sizeof(char *) * (count + 1));

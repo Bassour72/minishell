@@ -127,6 +127,7 @@ int expand(char ***new_args, t_env *env)
 		return (R_FAIL);
 	if(remove_non_printable_characters(new_args) == R_FAIL)
 		return (R_FAIL);
+	// printf("%s\n",*new_args[0]);
 	return (R_SUCCESS);
 }
 

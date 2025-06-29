@@ -56,7 +56,7 @@ static char *get_env_value(const char *identifier)
 
 	if (!identifier[i])
 		return (NULL);
-	return ft_strdup(ft_strtrim(identifier + i + 1, "\""));
+	return ft_strtrim(identifier + i + 1, "\"");
 }
 
 static void swap_node(t_env *a, t_env *b)

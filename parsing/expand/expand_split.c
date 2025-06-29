@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_split.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/29 22:29:38 by massrayb          #+#    #+#             */
+/*   Updated: 2025/06/29 22:35:32 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/parsing.h"
 
 static size_t	count_strings(char *str, char c)
@@ -30,23 +42,10 @@ static char	*custom_strdub(char *s, size_t len)
 	return (res);
 }
 
-static void free_store(t_expand_node *store)
+static int	append_node_expand(t_expand_node **store, char *data)
 {
-	t_expand_node *tmp;
-
-	while (store)
-	{
-		tmp = store;
-		store = store->next;
-		free(tmp->data);
-		free(tmp);
-	}
-}
-
-static int append_node_expand(t_expand_node **store, char *data)
-{
-	t_expand_node *new_node;
-	t_expand_node *tmp;
+	t_expand_node	*new_node;
+	t_expand_node	*tmp;
 
 	new_node = malloc(sizeof(t_expand_node));
 	if (!new_node)
@@ -69,7 +68,7 @@ static int append_node_expand(t_expand_node **store, char *data)
 static int	do_split(t_expand_node **sub_list, char *str, char split_char)
 {
 	int				start;
-	char 			*data;
+	char			*data;
 	int				i;
 
 	i = 0;
@@ -82,29 +81,31 @@ static int	do_split(t_expand_node **sub_list, char *str, char split_char)
 			i++;
 		data = custom_strdub(str + start, i - start);
 		if (data == NULL)
-			return (perror("error: "), free_store(*sub_list), R_FAIL);
-        if (append_node_expand(sub_list, data) == R_FAIL)
 		{
-			free_store(*sub_list);
+			perror("error: ");
+			return (free_expand_list_nodes(*sub_list), R_FAIL);
+		}
+		if (append_node_expand(sub_list, data) == R_FAIL)
+		{
+			free_expand_list_nodes(*sub_list);
 			return (R_FAIL);
 		}
 	}
 	return (R_SUCCESS);
 }
 
-int expand_split(t_expand_node **sub_list, char const *str, char c, int joinable)
+int	expand_split(t_expand_node **sub_list, char const *str, char c, int join)
 {
 	t_expand_node	*tmp;
 
 	if (do_split(sub_list, (char *)str, c) == R_FAIL)
 		return (R_FAIL);
-		
-	if (joinable)
+	if (join)
 	{
 		tmp = *sub_list;
 		while (tmp->next)
 			tmp = tmp->next;
-		tmp->joinable = joinable;
+		tmp->joinable = join;
 	}
 	return (R_SUCCESS);
 }

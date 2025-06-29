@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   array_to_list.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/29 22:49:22 by massrayb          #+#    #+#             */
+/*   Updated: 2025/06/29 22:49:54 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/parsing.h"
 
-static int append_new_list_node(t_node **list, char *str)
+static int	append_new_list_node(t_node **list, char *str)
 {
 	t_node	*tmp;
-	t_node 	*new_node;
+	t_node	*new_node;
 	char	*data;
 
 	data = ft_strdup(str);
@@ -23,9 +35,9 @@ static int append_new_list_node(t_node **list, char *str)
 	return (R_SUCCESS);
 }
 
-static void free_list(t_node *list)
+static void	free_list(t_node *list)
 {
-	t_node *tmp;
+	t_node	*tmp;
 
 	while (list)
 	{
@@ -36,9 +48,9 @@ static void free_list(t_node *list)
 	}
 }
 
-int array_to_list(char **arr, t_node **list)
+int	array_to_list(char **arr, t_node **list)
 {
-	int		i;
+	int	i;
 
 	i = -1;
 	while (arr[++i])
