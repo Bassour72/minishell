@@ -38,19 +38,19 @@ int 	builtin_unset_environment(t_tree *root, t_env **env_list, char **env)
 	i = 1;
 	while (root->data[i])
 	{
-		if (ft_strcmp(root->data[i], "PWD") == 0)
-		{
-			(*env_list)->is_remove = 0;
-			(*env_list)->exported = 0;
-			//remove_env_node(env_list, root->data[i]);
+		// if (ft_strcmp(root->data[i], "PWD") == 0)
+		// {
+		// 	(*env_list)->is_remove = 0;
+		// 	(*env_list)->exported = 0;
+		// 	//remove_env_node(env_list, root->data[i]);
 		
-		}
-		else
-		{
+		// }
+		// else
+		// {
 			
-			remove_env_node(env_list, root->data[i]);
-		}
-		
+		// 	remove_env_node(env_list, root->data[i]);
+		// }
+		remove_env_node(env_list, root->data[i]);
 		i++;
 	}
 	return (0);

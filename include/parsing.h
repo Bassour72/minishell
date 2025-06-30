@@ -84,7 +84,7 @@ typedef struct s_flat_tree
 }				t_flat_tree;
 
 
-
+int	init_env(t_env **env_list); //  for minishell !!
 // typedef enum e_node_type
 // {
 // 	GROUP, CMD, PIPE, OPERATOR

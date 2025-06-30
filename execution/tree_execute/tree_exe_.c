@@ -1,36 +1,58 @@
-// #include "../include/execution.h"
-int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_subshell)
-{
-	if (!root)
-		return (1);
-	if (root->type == BLOCK && root->data == NULL && root->left)
-		return exec_subshell_block(root, env, env_list);
-	if (root->type == BLOCK)
-		return exec_command_block(root, env, env_list, input_fd, in_subshell);
-	if (root->type == PIPE)
-		return exec_pipe(root, env, input_fd, env_list);
-	if (root->type == OP_AND || root->type == OP_OR)
-		return exec_logical_op(root, env, env_list);
-	return (1);
-}
-int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_subshell)
-{
-	if (!root)
-		return (1);
-	if (root->type == BLOCK && root->data == NULL && root->left)
-		return (exec_subshell(root, env, env_list));
-	if (root->type == BLOCK)
-		return (exec_block_command(root, env, env_list, input_fd, in_subshell));
-	if (root->type == PIPE)
-		return (exec_pipe(root, env, input_fd, env_list));
-	if (root->type == OP_AND)
-		return (handle_and_operator(root, env, env_list));
-	if (root->type == OP_OR)
-		return (handle_or_operator(root, env, env_list));
-	return (1);
-}
-int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_subshell);
+ #include "../../include/execution.h"
+// int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_subshell)
+// {
+// 	if (!root)
+// 		return (1);
+// 	if (root->type == BLOCK && root->data == NULL && root->left)
+// 		return exec_subshell_block(root, env, env_list);
+// 	if (root->type == BLOCK)
+// 		return exec_command_block(root, env, env_list, input_fd, in_subshell);
+// 	if (root->type == PIPE)
+// 		return exec_pipe(root, env, input_fd, env_list);
+// 	if (root->type == OP_AND || root->type == OP_OR)
+// 		return exec_logical_op(root, env, env_list);
+// 	return (1);
+// }
+// int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_subshell)
+// {
+// 	if (!root)
+// 		return (1);
+// 	if (root->type == BLOCK && root->data == NULL && root->left)
+// 		return (exec_subshell(root, env, env_list));
+// 	if (root->type == BLOCK)
+// 		return (exec_block_command(root, env, env_list, input_fd, in_subshell));
+// 	if (root->type == PIPE)
+// 		return (exec_pipe(root, env, input_fd, env_list));
+// 	if (root->type == OP_AND)
+// 		return (handle_and_operator(root, env, env_list));
+// 	if (root->type == OP_OR)
+// 		return (handle_or_operator(root, env, env_list));
+// 	return (1);
+// }
 
+int wait_child_status(int input_fd, pid_t pid, t_env **env_list)
+{
+	int status;
+	int sig;
+
+	if (input_fd != STDIN_FILENO)
+		close(input_fd);
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status)) //true if child exited normally.
+	{
+		int s = WTERMSIG(status); 
+		sig = WEXITSTATUS(status); // — gives the exit code. // Gets exit code (if WIFEXITED is true)
+		return (sig);
+	}
+	if (WIFSIGNALED(status)) // true if child was terminated by a signal.
+	{
+		 sig = WTERMSIG(status); // Which signal caused termination
+		return (sig + 128);
+	}
+	return (1);
+}
+//todo not subshell it parenthese
 static int exec_subshell(t_tree *root, char **env, t_env **env_list)
 {
 	pid_t pid;

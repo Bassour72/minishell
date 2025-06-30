@@ -46,3 +46,544 @@ Direct leak of 76 byte(s) in 2 object(s) allocated from:
 
 SUMMARY: AddressSanitizer: 156 byte(s) leaked in 4 allocation(s).
 minishell$ 
+
+
+
+
+SUMMARY: AddressSanitizer: 67 byte(s) leaked in 12 allocation(s).
+minishell$ unset 8x 
+minishell$ lunset 8x
+minishell: lunset: Command not found: 
+
+=================================================================
+==7129==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 40 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faa205d in create_env_node env/init_env.c:7
+    #2 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #3 0x564f8faa25b6 in init_env env/init_env.c:47
+    #4 0x564f8faa18fa in env_generate env/env.c:137
+    #5 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #6 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #7 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Direct leak of 24 byte(s) in 12 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab0df in ft_itoa (/home/ybassour/Desktop/minishell/minishell+0x230df) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8fa8ea10 in main /home/ybassour/Desktop/minishell/minishell.c:128
+    #3 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #4 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #5 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab3b3 in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x233b3) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8faa207e in create_env_node env/init_env.c:10
+    #3 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #4 0x564f8faa25b6 in init_env env/init_env.c:47
+    #5 0x564f8faa18fa in env_generate env/env.c:137
+    #6 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #7 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 71 byte(s) leaked in 14 allocation(s).
+minishell$ lunset 8x
+minishell: lunset: Command not found: 
+
+=================================================================
+==7181==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 40 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faa205d in create_env_node env/init_env.c:7
+    #2 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #3 0x564f8faa25b6 in init_env env/init_env.c:47
+    #4 0x564f8faa18fa in env_generate env/env.c:137
+    #5 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #6 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #7 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Direct leak of 26 byte(s) in 13 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab0df in ft_itoa (/home/ybassour/Desktop/minishell/minishell+0x230df) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8fa8ea10 in main /home/ybassour/Desktop/minishell/minishell.c:128
+    #3 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #4 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #5 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab3b3 in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x233b3) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8faa207e in create_env_node env/init_env.c:10
+    #3 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #4 0x564f8faa25b6 in init_env env/init_env.c:47
+    #5 0x564f8faa18fa in env_generate env/env.c:137
+    #6 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #7 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 73 byte(s) leaked in 15 allocation(s).
+minishell$ fsefasdf
+minishell: fsefasdf: Command not found: 
+
+=================================================================
+==7183==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 40 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faa205d in create_env_node env/init_env.c:7
+    #2 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #3 0x564f8faa25b6 in init_env env/init_env.c:47
+    #4 0x564f8faa18fa in env_generate env/env.c:137
+    #5 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #6 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #7 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Direct leak of 28 byte(s) in 14 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab0df in ft_itoa (/home/ybassour/Desktop/minishell/minishell+0x230df) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8fa8ea10 in main /home/ybassour/Desktop/minishell/minishell.c:128
+    #3 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #4 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #5 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab3b3 in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x233b3) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8faa207e in create_env_node env/init_env.c:10
+    #3 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #4 0x564f8faa25b6 in init_env env/init_env.c:47
+    #5 0x564f8faa18fa in env_generate env/env.c:137
+    #6 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #7 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 75 byte(s) leaked in 16 allocation(s).
+minishell$ vzdsgds
+minishell: vzdsgds: Command not found: 
+
+=================================================================
+==7189==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 40 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faa205d in create_env_node env/init_env.c:7
+    #2 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #3 0x564f8faa25b6 in init_env env/init_env.c:47
+    #4 0x564f8faa18fa in env_generate env/env.c:137
+    #5 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #6 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #7 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Direct leak of 30 byte(s) in 15 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab0df in ft_itoa (/home/ybassour/Desktop/minishell/minishell+0x230df) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8fa8ea10 in main /home/ybassour/Desktop/minishell/minishell.c:128
+    #3 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #4 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #5 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab3b3 in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x233b3) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8faa207e in create_env_node env/init_env.c:10
+    #3 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #4 0x564f8faa25b6 in init_env env/init_env.c:47
+    #5 0x564f8faa18fa in env_generate env/env.c:137
+    #6 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #7 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 77 byte(s) leaked in 17 allocation(s).
+minishell$ zdgrds
+minishell: zdgrds: Command not found: 
+
+=================================================================
+==7191==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 40 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faa205d in create_env_node env/init_env.c:7
+    #2 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #3 0x564f8faa25b6 in init_env env/init_env.c:47
+    #4 0x564f8faa18fa in env_generate env/env.c:137
+    #5 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #6 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #7 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Direct leak of 32 byte(s) in 16 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab0df in ft_itoa (/home/ybassour/Desktop/minishell/minishell+0x230df) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8fa8ea10 in main /home/ybassour/Desktop/minishell/minishell.c:128
+    #3 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #4 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #5 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab3b3 in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x233b3) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8faa207e in create_env_node env/init_env.c:10
+    #3 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #4 0x564f8faa25b6 in init_env env/init_env.c:47
+    #5 0x564f8faa18fa in env_generate env/env.c:137
+    #6 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #7 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 79 byte(s) leaked in 18 allocation(s).
+minishell$ fzytgrfv
+minishell: fzytgrfv: Command not found: 
+
+=================================================================
+==7193==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 40 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faa205d in create_env_node env/init_env.c:7
+    #2 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #3 0x564f8faa25b6 in init_env env/init_env.c:47
+    #4 0x564f8faa18fa in env_generate env/env.c:137
+    #5 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #6 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #7 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Direct leak of 34 byte(s) in 17 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab0df in ft_itoa (/home/ybassour/Desktop/minishell/minishell+0x230df) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8fa8ea10 in main /home/ybassour/Desktop/minishell/minishell.c:128
+    #3 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #4 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #5 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab3b3 in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x233b3) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8faa207e in create_env_node env/init_env.c:10
+    #3 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #4 0x564f8faa25b6 in init_env env/init_env.c:47
+    #5 0x564f8faa18fa in env_generate env/env.c:137
+    #6 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #7 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 81 byte(s) leaked in 19 allocation(s).
+minishell$ fdzygfzvc
+minishell: fdzygfzvc: Command not found: 
+
+=================================================================
+==7195==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 40 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faa205d in create_env_node env/init_env.c:7
+    #2 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #3 0x564f8faa25b6 in init_env env/init_env.c:47
+    #4 0x564f8faa18fa in env_generate env/env.c:137
+    #5 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #6 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #7 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Direct leak of 36 byte(s) in 18 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab0df in ft_itoa (/home/ybassour/Desktop/minishell/minishell+0x230df) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8fa8ea10 in main /home/ybassour/Desktop/minishell/minishell.c:128
+    #3 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #4 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #5 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab3b3 in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x233b3) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8faa207e in create_env_node env/init_env.c:10
+    #3 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #4 0x564f8faa25b6 in init_env env/init_env.c:47
+    #5 0x564f8faa18fa in env_generate env/env.c:137
+    #6 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #7 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 83 byte(s) leaked in 20 allocation(s).
+minishell$ l,;l,
+minishell: l,;l,: Command not found: 
+
+=================================================================
+==7209==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 40 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faa205d in create_env_node env/init_env.c:7
+    #2 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #3 0x564f8faa25b6 in init_env env/init_env.c:47
+    #4 0x564f8faa18fa in env_generate env/env.c:137
+    #5 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #6 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #7 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Direct leak of 38 byte(s) in 19 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab0df in ft_itoa (/home/ybassour/Desktop/minishell/minishell+0x230df) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8fa8ea10 in main /home/ybassour/Desktop/minishell/minishell.c:128
+    #3 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #4 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #5 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab3b3 in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x233b3) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8faa207e in create_env_node env/init_env.c:10
+    #3 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #4 0x564f8faa25b6 in init_env env/init_env.c:47
+    #5 0x564f8faa18fa in env_generate env/env.c:137
+    #6 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #7 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 85 byte(s) leaked in 21 allocation(s).
+
+minishell$ exit | exit                                               
+exit function 
+
+
+=================================================================
+==7535==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 42 byte(s) in 21 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab0df in ft_itoa (/home/ybassour/Desktop/minishell/minishell+0x230df) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8fa8ea10 in main /home/ybassour/Desktop/minishell/minishell.c:128
+    #3 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #4 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #5 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Direct leak of 40 byte(s) in 1 object(s) allocated from:
+
+=================================================================
+==7537==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 42 byte(s) in 21 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faa205d in create_env_node env/init_env.c:7
+    #2 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #3 0x564f8faa25b6 in init_env env/init_env.c:47
+    #4 0x564f8faa18fa in env_generate env/env.c:137
+    #5 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #6 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #7 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab0df in ft_itoa (/home/ybassour/Desktop/minishell/minishell+0x230df) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8fa8ea10 in main /home/ybassour/Desktop/minishell/minishell.c:128
+    #3 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #4 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #5 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Direct leak of 40 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab3b3 in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x233b3) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8faa207e in create_env_node env/init_env.c:10
+    #3 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #4 0x564f8faa25b6 in init_env env/init_env.c:47
+    #5 0x564f8faa18fa in env_generate env/env.c:137
+    #6 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #7 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 89 byte(s) leaked in 23 allocation(s).
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faa205d in create_env_node env/init_env.c:7
+    #2 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #3 0x564f8faa25b6 in init_env env/init_env.c:47
+    #4 0x564f8faa18fa in env_generate env/env.c:137
+    #5 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #6 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #7 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab3b3 in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x233b3) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8faa207e in create_env_node env/init_env.c:10
+    #3 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #4 0x564f8faa25b6 in init_env env/init_env.c:47
+    #5 0x564f8faa18fa in env_generate env/env.c:137
+    #6 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #7 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 89 byte(s) leaked in 23 allocation(s).
+minishell$                                        
+minishell$ 
+minishell$ 
+minishell$ 
+minishell$ exit
+
+=================================================================
+==6779==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 44 byte(s) in 22 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab0df in ft_itoa (/home/ybassour/Desktop/minishell/minishell+0x230df) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8fa8ea10 in main /home/ybassour/Desktop/minishell/minishell.c:128
+    #3 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #4 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #5 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Direct leak of 40 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faa205d in create_env_node env/init_env.c:7
+    #2 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #3 0x564f8faa25b6 in init_env env/init_env.c:47
+    #4 0x564f8faa18fa in env_generate env/env.c:137
+    #5 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #6 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #7 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+Indirect leak of 7 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01176e5387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x564f8faab3b3 in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x233b3) (BuildId: 2bd8576e50299bac57215c70e66a2daccd2722fb)
+    #2 0x564f8faa207e in create_env_node env/init_env.c:10
+    #3 0x564f8faa2388 in link_env_nodes env/init_env.c:31
+    #4 0x564f8faa25b6 in init_env env/init_env.c:47
+    #5 0x564f8faa18fa in env_generate env/env.c:137
+    #6 0x564f8fa8e823 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #7 0x7f01173b13c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #8 0x7f01173b148a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x564f8fa8e3f4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 91 byte(s) leaked in 24 allocation(s).
+sh-5.2$ ./minishell 
+minishell$ 
+minishell$ pwd
+/home/ybassour/Desktop/minishell
+minishell$ unset PWD
+minishell$ pwd
+/home/ybassour/Desktop/minishell
+minishell$ cd /
+minishell$ ped
+minishell: ped: Command not found: 
+minishell$ pwd
+/
+minishell$ cd
+minishell$ pwd
+/home/ybassour
+minishell$ unset HOME
+minishell$ cd
+cd: HOME not set
+: Success
+minishell$ ls < f
+redirection open failed: No such file or directory
+
+=================================================================
+==7918==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 24 byte(s) in 1 object(s) allocated from:
+    #0 0x7f0934089387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x563b8e320b6f in append_node_expand parsing/expand/expand_split.c:51
+    #2 0x563b8e320ea8 in do_split parsing/expand/expand_split.c:86
+    #3 0x563b8e320f66 in expand_split parsing/expand/expand_split.c:99
+    #4 0x563b8e31b255 in split_tokens_into_nodes parsing/expand/expand.c:52
+    #5 0x563b8e31c8e5 in expand_redir parsing/expand/expand_node.c:14
+    #6 0x563b8e32ddd9 in exec_external_command execution/tree_execute/tree_exe_.c:106
+    #7 0x563b8e32e07f in exec_block_command execution/tree_execute/tree_exe_.c:141
+    #8 0x563b8e32e334 in exec_tree execution/tree_execute/tree_exe_.c:167
+    #9 0x563b8e3269b4 in execution execution/execution.c:344
+    #10 0x563b8e3129f1 in main /home/ybassour/Desktop/minishell/minishell.c:126
+    #11 0x7f0933d553c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #12 0x7f0933d5548a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #13 0x563b8e3123f4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 24 byte(s) leaked in 1 allocation(s).
+minishell$ 
+
+minishell$ UNSET 
+BLOCK CMD=>[UNSET]  | RED=>  NULL
+minishell: UNSET: command not found
+=================================================================
+==30597==ERROR: AddressSanitizer: attempting double-free on 0x50b0000000f0 in thread T0:
+    #0 0x7f65f389ce48 in free.part.0 (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x101e48) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x55cbc47b6054 in free_env_list env/env_utils.c:25
+    #2 0x55cbc47bc625 in execute_external_command execution/exec/exec_cmd.c:82
+    #3 0x55cbc47be3c6 in exec_external_command execution/tree_execute/tree_exe_.c:115
+    #4 0x55cbc47be5d7 in exec_block_command execution/tree_execute/tree_exe_.c:141
+    #5 0x55cbc47be88c in exec_tree execution/tree_execute/tree_exe_.c:167
+    #6 0x55cbc47b69f6 in execution execution/execution.c:344
+    #7 0x55cbc47a2a33 in main /home/ybassour/Desktop/minishell/minishell.c:126
+    #8 0x7f65f356a3c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x7f65f356a48a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #10 0x55cbc47a2404 in _start ../sysdeps/x86_64/start.S:115
+
+0x50b0000000f0 is located 0 bytes inside of 104-byte region [0x50b0000000f0,0x50b000000158)
+freed by thread T0 here:
+    #0 0x7f65f389ce48 in free.part.0 (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x101e48) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x55cbc47bc5a7 in should_display_error execution/exec/exec_cmd.c:50
+    #2 0x55cbc47bc5eb in execute_external_command execution/exec/exec_cmd.c:80
+    #3 0x55cbc47be3c6 in exec_external_command execution/tree_execute/tree_exe_.c:115
+    #4 0x55cbc47be5d7 in exec_block_command execution/tree_execute/tree_exe_.c:141
+    #5 0x55cbc47be88c in exec_tree execution/tree_execute/tree_exe_.c:167
+    #6 0x55cbc47b69f6 in execution execution/execution.c:344
+    #7 0x55cbc47a2a33 in main /home/ybassour/Desktop/minishell/minishell.c:126
+    #8 0x7f65f356a3c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #9 0x7f65f356a48a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #10 0x55cbc47a2404 in _start ../sysdeps/x86_64/start.S:115
+
+previously allocated by thread T0 here:
+    #0 0x7f65f389e387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x55cbc47bf90b in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x2390b) (BuildId: 227be2d02794d83048bb27ca24591fda8f3b1892)
+    #2 0x55cbc47b5332 in env_extract_value env/env.c:58
+    #3 0x55cbc47b5a40 in env_generate env/env.c:145
+    #4 0x55cbc47a2833 in main /home/ybassour/Desktop/minishell/minishell.c:85
+    #5 0x7f65f356a3c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #6 0x7f65f356a48a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #7 0x55cbc47a2404 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: double-free (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x101e48) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa) in free.part.0
+==30597==ABORTING
+
+minishell$ cd ..
+BLOCK CMD=>[cd] [..]  | RED=>  NULL
+cd: permission denied: /home/ybassour/Desktop/minishell/hellllo
+minishell$ 
+exit
+
+=================================================================
+==38227==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 3 byte(s) in 1 object(s) allocated from:
+    #0 0x7f01ef591387 in malloc (/usr/lib/x86_64-linux-gnu/libasan.so.8+0x103387) (BuildId: 5af7125d07454e201d22d6b0c80c5f419f830caa)
+    #1 0x5642188b796a in ft_strdup (/home/ybassour/Desktop/minishell/minishell+0x2396a) (BuildId: 9851802e5e07a3efa4cf39bc43cdd5eddee09865)
+    #2 0x5642188b50e6 in get_arg_cd execution/built-in/cd_utils.c:38
+    #3 0x5642188af7f8 in cd_change_working_directory execution/built-in/builtin_cd.c:126
+    #4 0x5642188b3fc9 in execute_builtin execution/built-in/execute_builtin.c:28
+    #5 0x5642188b629f in exec_builtin_command execution/tree_execute/tree_exe_.c:87
+    #6 0x5642188b661d in exec_block_command execution/tree_execute/tree_exe_.c:139
+    #7 0x5642188b68eb in exec_tree execution/tree_execute/tree_exe_.c:167
+    #8 0x5642188ae9d6 in execution execution/execution.c:344
+    #9 0x56421889aa13 in main /home/ybassour/Desktop/minishell/minishell.c:126
+    #10 0x7f01ef25d3c7 in __libc_start_call_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a3c7) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #11 0x7f01ef25d48a in __libc_start_main (/usr/lib/x86_64-linux-gnu/libc.so.6+0x2a48a) (BuildId: 3a9aa509070824a5059aad120fa2f772aec41f1d)
+    #12 0x56421889a3e4 in _start ../sysdeps/x86_64/start.S:115
+
+SUMMARY: AddressSanitizer: 3 byte(s) leaked in 1 allocation(s).
+sh-5.2$ 

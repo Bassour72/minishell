@@ -82,6 +82,7 @@ int create_heredoc(t_red *redir, t_env **env_list)
 
 int prepare_heredocs(t_tree *root, t_env **env_list)
 {
+
 	if (!root)
 		return (0);
 	t_red *redir = root->redirections;

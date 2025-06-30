@@ -22,7 +22,8 @@ int	empty(char *str)
 
 void f()
 {
-	system("ls -l /proc/self/fd");
+	system("leaks ./minishell");
+	//system("ls -l /proc/self/fd");
 	//system("ls -l /proc/$$/fd");
 	//system("ls -l /proc/self/fd > fd_log.txt"); // Or print per command with identifier
 
@@ -36,7 +37,17 @@ void update_env_exit_status(t_env **env_list, int status)
     update_last_executed_command(env_list, "exit_status@gmail.com", str);
 }
 
+void print_debugg(char **env)
+{
+	while (*env != NULL)
+	{
+		printf("===[%s]\n", *env);
+		// sleep(2);
 
+		env++;
+	}
+	
+}
 
 //todo for debug
 void handle_sigint_prompt(int sig)
@@ -80,6 +91,7 @@ int main(int ac, char **av, char **env)
 		signal(SIGINT, handle_sigint_prompt);
 		dup2(2, 0);
 		input = readline("minishell$ ");
+		// print_debugg(env);
 		if (g_exit_status == 130)
 		{
 			update_env_exit_status(&env_list, 130);
@@ -88,8 +100,10 @@ int main(int ac, char **av, char **env)
 		if (input == NULL)
 		{
 			write(1, "exit\n", 5);
+			status =ft_atoi( get_env_value("exit_status@gmail.com", env_list));
 			free_env_list(env_list);
-			exit(g_exit_status);
+			//free_tree(tree);
+			exit(status);
 		}
 
 		if (empty(input))
@@ -109,7 +123,7 @@ int main(int ac, char **av, char **env)
 		// lable parsing tests========
 		//  t_env *env_l = NULL;
 		//  env_generate(&env_l, env);
-		// print_tree(tree, 0);
+		 print_tree(tree, 0);
 		// expand_redir(tree->redirections, env_list);
 		status = execution(tree, env, &env_list);
 		g_exit_status = status;

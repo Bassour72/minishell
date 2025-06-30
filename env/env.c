@@ -18,7 +18,6 @@ int update_last_executed_command(t_env **env_list,char *key, char *last_command)
 	 env_tmp = *env_list;
 	 if (!last_command)
 	 	return 1;
-	//  printf("update_last_executed_command(t_env **env_list, char *last_command)(%s)\n", last_command);
 	while (env_tmp != NULL)
 	{
 		if (ft_strcmp(env_tmp->key, key) == 0)
@@ -30,18 +29,11 @@ int update_last_executed_command(t_env **env_list,char *key, char *last_command)
 		}
 		env_tmp = env_tmp->next;
 	}
+	free (last_command);
 	return 1;
 }
 
-void print_debugg(char **env)
-{
-	while (*env != NULL)
-	{
-		printf("===[%s]\n", *env);
-		env++;
-	}
-	
-}
+
 static int	env_extract_key(char *env, char **key)
 {
 	char *end; 
@@ -101,38 +93,32 @@ static int	create_env_node(t_env **list, char *key, char *value)
 	}
 	return (R_SUCCESS);
 }
-int	init_env(t_env **env_list)
+
+int set_pwd_and_oldpwd_if_not_found(t_env **env_list)
 {
-	t_env *tmp;
-	char const path[] = "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.";
-	tmp = malloc(sizeof(t_env));
-	tmp->key = ft_strdup("OLDPWD");
-	tmp->value = NULL;
-	tmp->exported = 1;
-	tmp->is_remove = 1;
-	tmp->next = NULL;
-	/******************************** */
-	tmp->next = malloc(sizeof(t_env));
-	tmp->next->key = ft_strdup("PWD");
-	tmp->next->value = ft_strdup("/home/ybassour/Desktop/minishell");
-	tmp->next->exported = 1;
-	tmp->next->is_remove = 1;
-	tmp->next->next = NULL;
-	/********************************************* */
-	tmp->next->next = malloc(sizeof(t_env));
-	tmp->next->next->key = ft_strdup("SHLVL");
-	tmp->next->next->value = ft_strdup("0");;
-	tmp->next->next->exported = 1;
-	tmp->next->next->is_remove = 1;
-	tmp->next->next->next = NULL;
-	/*********************************/
-	tmp->next->next->next = malloc(sizeof(t_env));
-	tmp->next->next->next->key = ft_strdup("PATH");
-	tmp->next->next->next->value = ft_strdup(path);;
-	tmp->next->next->next->exported = 0;
-	tmp->next->next->next->is_remove = 1;
-	tmp->next->next->next->next = NULL;
-	*env_list = tmp;
+	t_env *temp_env;
+	t_env *temp;
+	int		is_pwd;
+
+	temp_env = *env_list;
+	temp = *env_list;
+	is_pwd = 0;
+	while (temp_env != NULL)
+	{
+		if (!ft_strcmp(temp_env->key, "PWD"))
+			is_pwd = 1;
+		if (is_pwd == 1)
+			break;
+		temp_env = temp_env->next;
+	}
+	if (is_pwd == 1)
+			return 1;
+	while (temp->next != NULL)
+		temp = temp->next;
+	char *pwd_value = getcwd(NULL,0);
+	char *pwd_key= ft_strdup("PWD");
+
+	 create_env_node(env_list, pwd_key, pwd_value);
 	return 1;
 }
 int	env_generate(t_env **env_list, char **env)
@@ -140,7 +126,7 @@ int	env_generate(t_env **env_list, char **env)
 	char	*key;
 	char	*value;
 	int		i;
-	//print_debugg(env);
+	
 	if (!env || !(*env))
 	{
 		init_env(env_list);
@@ -164,10 +150,6 @@ int	env_generate(t_env **env_list, char **env)
 		return (perror("error: "), free(key), free_env_list(*env_list), R_FAIL);
 	if (create_env_node(env_list, key, value) == R_FAIL)
 		return (perror("error: "), free_env_list(*env_list), R_FAIL);
+	set_pwd_and_oldpwd_if_not_found(env_list);
 	return (R_SUCCESS);
 }
-
-// int	exit_code_status(int exit_code)
-// {
-// 	static int exi
-// }

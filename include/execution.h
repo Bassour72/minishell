@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #define DIR_STATUS_NO_PER 11
 #define DIR_STATUS_NOT_EXI 12
+#define MAX_HEREDOC 16
 extern int g_exit_status;
 typedef struct s_env_var 
 {
@@ -38,7 +39,7 @@ int is_builtin(char *command);
 int execute_builtin(t_tree *root, char **env, t_env **env_list);
 int	env_environment(t_tree *root, char **env, t_env *env_list);
 char *get_binary_file_path(t_tree *root, t_env **env_list);
-int	exit_exe(t_tree *root);
+int	exit_exe(t_tree *root, t_env **env_list);
 int	export_command_builtin(t_tree *root, t_env **env_list);
 int	builtin_unset_environment(t_tree *root, t_env **env_list, char **env);
 void execute_command(t_tree *root, char **env, t_env **env_list);
@@ -67,5 +68,6 @@ void set_env_var(char *key, char *value, t_env **env);
 char * get_arg_cd(const char *arg);
  char *get_env_value(char *key, t_env *env);
 int diagnose_cd_error(const char *path, int print_error);
+int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_subshell);
 //#endif
 

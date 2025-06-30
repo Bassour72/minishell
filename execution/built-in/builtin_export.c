@@ -10,39 +10,43 @@ static  int ft_strcmp_v2(const char *s1, const char *s2)
 	return ((unsigned char)*s1 - (unsigned char)*s2);
 }
 
-static int	is_valid_identifier(const char *identifier)
+static int	is_valid_identifier(const char *identifier, int *is_append_mode)
 {
 	int	i;
-
+	int count_plus;
 	if (!identifier)
 		return (1);
 	if (!ft_isalpha(identifier[0]) && identifier[0] != '_')
 		return (1);
 	i = 1;
+	count_plus = 0;
 	while (identifier[i] != '\0' && identifier[i] != '=')
 	{
-		if (!ft_isalnum(identifier[i]) && identifier[i] != '_') //todo
+		if (identifier[i] == '+')
+			count_plus++;
+		else if (!ft_isalnum(identifier[i]) && identifier[i] != '_') //todo
+			return (1);
+		if (count_plus > 1)
 			return (1);
 		i++;
 	}
+	*is_append_mode = count_plus;
 	return (0);
 }
 static char *get_env_key(const char *identifier)
 {
 	char *new_key;
 	int len = 0;
-	int i = 0;
-
+	int i;
 	if (!identifier)
 		return NULL;
-
-	while (identifier[len] && identifier[len] != '=')
+	while (identifier[len] && identifier[len] != '=' && identifier[len] != '+')
 		len++;
 
 	new_key = malloc(len + 1);
 	if (!new_key)
 		return NULL;
-
+	i = 0;
 	while (i < len)
 	{
 		new_key[i] = identifier[i];
@@ -191,16 +195,23 @@ static t_env *is_exist_env(t_env *env_list, const char *new_key)
 	return (NULL);
 }
 
-static void	update_existing_env(t_env *existing, char *new_value)
+static void	update_existing_env(t_env *existing, char *new_value, int append_mode)
 {
+	char *temp_value;
+
 	if (new_value)
 	{
+		if (append_mode)
+		{
+			temp_value = ft_strjoin(existing->value, new_value);
+			free(existing->value);
+			free(new_value);
+			existing->value = temp_value;
+			return ;
+		}
 		free(existing->value);
 		existing->value = new_value;
-		existing->is_remove = 1;
 	}
-	if (existing->exported == 0 && existing->is_remove == 0)
-		existing->exported = 1;
 }
 
 static void	add_new_env_node(t_env **env_list, char *new_key, char *new_value)
@@ -226,86 +237,68 @@ static void	add_new_env_node(t_env **env_list, char *new_key, char *new_value)
 	}
 }
 
-static void	add_env(char *arg, t_env **env_list)
+
+int add_env_without_appned(t_env **env_list, char *new_key, char	*new_value)
+{
+	t_env	*existing;
+	existing = is_exist_env(*env_list, new_key);
+	if (existing)
+	{
+		update_existing_env(existing, new_value, 0);
+		free(new_key);
+		return (1);
+	}
+	add_new_env_node(env_list, new_key, new_value);
+	return (1);
+}
+
+
+
+int append_env_node(t_env **env_list, char *new_key, char	*new_value)
+{
+	t_env	*existing;
+	
+	existing = is_exist_env(*env_list, new_key);
+	if (existing)
+	{
+		update_existing_env(existing,new_value, 1);
+		free(new_key);
+		return (1);
+	}
+	add_new_env_node(env_list, new_key, new_value);
+	return (1);
+}
+
+static int	add_env(char *arg, t_env **env_list)
 {
 	t_env	*existing;
 	char	*new_key;
 	char	*new_value;
+	int is_append_mode;
 
 	if (!arg)
-		return ;
-	if (is_valid_identifier(arg) == 1)
+		return (1);
+	is_append_mode = 0;
+	if (is_valid_identifier(arg, &is_append_mode) == 1)
 	{
 		ft_putstr_fd("export: `", STDERR_FILENO);
 		ft_putstr_fd(arg, STDERR_FILENO);
 		ft_putendl_fd("': not a valid identifier\n", STDERR_FILENO);
-		return ;
+		return (1);
 	}
 	new_key = get_env_key(arg);
+	if (!new_key)
+		return (1);
 	new_value = get_env_value1(arg);
-	existing = is_exist_env(*env_list, new_key);
-	if (existing)
+	if (!new_value)
+		return (free(new_key), 1);
+	if (is_append_mode != 1)
 	{
-		update_existing_env(existing, new_value);
-		free(new_key);
-		return ;
+		add_env_without_appned(env_list, new_key,new_value);
+		return (1);
 	}
-	add_new_env_node(env_list, new_key, new_value);
+	return (append_env_node(env_list, new_key, new_value));
 }
-
-
-// static void	add_env(char *arg, t_env **env_list)
-// {
-// 	t_env *existing;
-// 	t_env *new_node;
-// 	t_env *ptr;
-// 	char *new_key;
-// 	char *new_value;
-
-// 	if (!arg)
-// 		return ;
-// 	if (is_valid_identifier(arg) == 1)
-// 	{
-// 		ft_putstr_fd("export: `", STDERR_FILENO);
-// 		ft_putstr_fd(arg,STDERR_FILENO);
-// 		ft_putendl_fd("': not a valid identifier\n", STDERR_FILENO);
-// 		return ;
-// 	}
-// 	new_key = get_env_key(arg);
-// 	new_value = get_env_value1(arg);
-// 	existing = is_exist_env(*env_list, new_key);
-// 	if (existing)
-// 	{
-// 		if (new_value)
-// 		{
-// 			free(existing->value);
-// 			existing->value = new_value;
-// 			existing->is_remove = 1;
-// 		}
-// 		if (existing->exported == 0 && existing->is_remove == 0)
-// 		{
-// 			existing->exported = 1;
-// 		}
-// 		free(new_key);
-// 		return ;
-// 	}
-// 	new_node = malloc(sizeof(t_env));
-// 	if (!new_node)
-// 		return ;
-// 	new_node->key = new_key;
-// 	new_node->value = new_value;
-// 	new_node->exported = true;
-// 	new_node->next = NULL;
-// 	if (!*env_list)
-// 		*env_list = new_node;
-// 	else
-// 	{
-// 		ptr = *env_list;
-// 		while (ptr->next)
-// 			ptr = ptr->next;
-// 		ptr->next = new_node;
-// 	}
-// }
 
 int export_command_builtin(t_tree *root, t_env **env_list)
 {

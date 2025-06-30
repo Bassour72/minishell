@@ -25,6 +25,7 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		wildcard/init_file_names.c\
 		wildcard/wildcard.c\
 		env/env.c env/env_utils.c\
+		env/init_env.c \
 		execution/execution.c execution/built-in/builtin_echo.c \
 		execution/built-in/builtin_cd.c execution/built-in/builtin_env.c \
 		execution/built-in/builtin_exit.c  execution/built-in/builtin_export.c \
@@ -36,7 +37,9 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		execution/exec/exec_cmd.c \
 		execution/env/env_array.c \
 		execution/built-in/cd_utils.c \
-		execution/built-in/cd_arg_validation.c 
+		execution/built-in/cd_arg_validation.c \
+		execution/tree_execute/tree_exe_.c \
+		execution/tree_execute/exec_pipe.c 
 		# debug / memory_debugging.c 
 
 OBJ = $(SRC:.c=.o)
@@ -112,3 +115,4 @@ debug_mode_all:
 #minishell$ $aasd
 # export )a
 #bash: syntax error near unexpected token `)'
+#leaks memory lunset 8x

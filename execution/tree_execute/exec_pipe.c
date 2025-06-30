@@ -1,9 +1,4 @@
-// #include "../include/execution.h"
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <stdio.h>
-#include "../include/minishell.h" // adjust to your header path
+#include "../../include/execution.h"
 
 static int	create_pipe(int pipefd[2])
 {

@@ -35,7 +35,7 @@ static long	ft_atol(const char *str)
 	return (result * sign);
 }
 
-int	exit_exe(t_tree *root)
+int	exit_exe(t_tree *root, t_env **env_list)
 {
 	long	code;
 
@@ -46,8 +46,8 @@ int	exit_exe(t_tree *root)
 	    write(1, "exit\n", 5);
     if (root->data[1] == NULL)
 	{
-		printf("exit function \n\n");
-        exit(0);
+		code =ft_atoi( get_env_value("exit_status@gmail.com", *env_list));
+        exit(code);
 	}
 	if (!is_numeric(root->data[1]))
 	{
