@@ -50,14 +50,18 @@ int validate_sytax(t_token *token)
 		}
 		else if (is_op(token[i].type))
 		{
+			print("OP---------------");
+			if (i != 0)
+				printf("[%s]{%d} [%s]{%d} [%s]{%d}\n", token[i - 1].data, token[i - 1].type, token[i].data, token[i].type, token[i + 1].data, token[i + 1].type);
+				printf(">>>%d\n", i);
 			if (i == 0)
 				return (put_operator_syntax_error_msg(token[i].type), 0);
 
 			if (token[i - 1].type != WORD && token[i - 1].type != T_FILE_NAME && token[i - 1].type != PAREN_CLOSE)
-				return (put_operator_syntax_error_msg(token[i].type), 0);
+				return (print("kakka"), put_operator_syntax_error_msg(token[i].type), 0);
 
-			if (!token[i + 1].data || (token[i - 1].type != WORD && !_is_red(token[i + 1].type) && token[i - 1].type != PAREN_OPEN))
-				return (put_operator_syntax_error_msg(token[i].type), 0);
+			if (!token[i + 1].data || (token[i + 1].type != WORD && !_is_red(token[i + 1].type) && token[i + 1].type != PAREN_OPEN))
+				return (print("bonga"), put_operator_syntax_error_msg(token[i].type), 0);
 		}
 	}
 	return 1;

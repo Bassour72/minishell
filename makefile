@@ -7,7 +7,9 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		parsing/commands.c\
 		parsing/tree/append_flat_tree_node.c parsing/tree/flat_tree.c\
 		parsing/split/split.c parsing/split/manage_normal.c parsing/split/manage_operators.c parsing/split/manage_parenth.c parsing/split/manage_quotes.c parsing/split/manage_redirections.c parsing/split/append_node.c\
- 		parsing/expand/expand.c \
+ 		parsing/expand_split/expand_split.c\
+		parsing/expand_split/manage_normal.c\
+		parsing/expand/expand.c \
 		parsing/expand/remove_non_printable_characters.c\
 		parsing/expand/expand_herdoc.c \
 		parsing/expand/utils/print.c\

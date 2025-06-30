@@ -2,3 +2,291 @@
 echo *.*
 herdoc expander
 sytax error
+
+l7wya dyal Omar ----------> white spaces ls \tb\tb\tb -la
+
+wildcard problem enforcemanet
+
+<< 't' cat
+> t
+> 't'
+t
+
+
+
+minishell$ $ldgksmkdhhdshdhdsdjdjs
+[1]    91456 segmentation fault  ./minishell
+
+
+
+export a=" ls -la "
+minishell$ $a
+ls: : No such file or directory
+
+
+
+
+minishell$ export a="b c"
+declare -x a
+
+
+
+========================================
+export a++s
+export: `a++s': not a valid identifier
+
+minishell$ echo $?
+0
+
+bash-3.2$ export a+sa+
+bash: export: `a+sa+': not a valid identifier
+bash-3.2$ echo $?
+1
+=========================================
+
+
+
+
+bash not should print ^c but in imac not linux
+minishell$ ^C
+minishell$ ^C
+minishell$ ^C
+minishell$ ^C
+
+
+
+
+exit status in imac is 258
+minishell$ "
+syntax error near unexpected token `"
+minishell$ echo $?
+0
+
+
+
+whene use ctrol + c in herdoc wxit status is 1 not 130
+minishell$ << a << b << c
+> ^C
+here 1000000000000000000000000
+minishell$ echo $?
+130
+
+
+
+whene use ctrol + c in herdoc exit status is 0 not 139
+minishell$ << a
+> 
+minishell: warning: here-document delimited by end-of-file (wanted `a')
+Error: Empty command node
+: Invalid argument
+minishell: minishell$ echo $?
+139
+
+
+
+
+minishell$ djsjdsjdsjdjs
+minishell: djsjdsjdsjdjs: Command not found: 
+minishell$ exit
+exit
+exit function 
+
+➜  minishell git:(parsing) ✗ echo $?
+0
+
+bash-3.2$ hdsdsjdsjdjs
+bash: hdsdsjdsjdjs: command not found
+bash-3.2$ exit
+exit
+➜  minishell git:(parsing) ✗ echo $?
+127
+
+
+
+
+
+bash-3.2$ << 1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 | << 16 << 17
+bash: maximum here-document count exceeded
+➜  minishell git:(parsing) ✗ echo $?
+2
+
+
+
+this is valid
+ export p+=skaksaks
+export: `p+=skaksaks': not a valid identifier
+
+
+
+if zz have spaces or tabs in his valuse you will dont do nothing it is not a permission denied or Command not found
+minishell$ export zz="    "
+minishell$ $zz
+execve: Permission denied
+
+
+
+
+minishell$ ""
+execve: Permission denied
+bash-3.2$ ""
+bash: : command not found
+
+
+
+
+minishell$ touch s.sh
+minishell$ ./s
+s.sh                   skaks askask akskaska  split2.c               
+minishell$ ./s.sh 
+minishell: ./s.sh: Command not found: 
+minishell$ chmod +x s.sh 
+minishell$ ./s.sh 
+execve: Exec format error
+minishell$ bin/bash bash/s.sh
+minishell: bin/bash: Command not found: 
+minishell$ bin/bash bash/s.sh
+
+
+
+minishell$ touch ls
+minishell$ export PATH=.
+minishell$ ls
+minishell: ls: Command not found: 
+
+bash-3.2$ touch ls
+bash-3.2$ export PATH=.
+bash-3.2$ ls
+bash: ./ls: Permission denied
+
+
+
+
+minishell$ unset PATH
+minishell$ ls
+minishell: ls: Command not found: 
+
+bash-3.2$ unset PATH
+bash-3.2$ ls
+bash: ls: Permission denied
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+minishell$ export PATH=.
+minishell$ minishell
+minishell: minishell: Command not found: 
+
+bash-3.2$ export PATH=.
+bash-3.2$ minishell
+
+
+
+
+
+
+
+minishell$ export HOME=
+minishell$ dc
+cd: no such file or directory: 
+
+bash-3.2$ export HOME=
+bash-3.2$ cd
+bash-3.2$ 
+
+
+
+
+
+
+
+
+
+
+minishell$ unset PATH
+minishell$ /bin/ls
+minishell: /bin/ls: Command not found: 
+
+bash-3.2$ unset PATH
+bash-3.2$ /bin/ls 
+       ayoub                    env                             parsing
+    skaks askask akskaska       execution                       skaks askask akskaska
+README.md                       include                         split2.c
+_libft                          ls                              test_comd.txt
+a                               makefile                        todo
+askkassa kkaks kaksksa          minishell                       uler
+b                               minishell.c                     wildcard
+c                               minishell.o                     younes.txt
+debug                           norm
+
+
+
+
+
+
+minishell$ mkdir -p 1/2/3
+minishell$  cd 1/2/3/
+minishell$ rm -rf ../../../1/
+minishell$ pwd
+error: : No such file or directory
+
+bash-3.2$ mkdir -p 1/2/3
+bash-3.2$ cd 1/2/3/
+bash-3.2$ rm -rf ../../../1/
+bash-3.2$ pwd
+/mnt/homes/massrayb/Desktop/minishell/1/2/3
+
+
+
+
+
+
+minishell$ mkdir -p 1/2/3
+minishell$  cd 1/2/3/
+minishell$ rm -rf ../../../1/
+minishell$ cd ..
+error: : No such file or directory
+
+bash-3.2$ mkdir -p 1/2/3
+bash-3.2$ cd 1/2/3/
+bash-3.2$ rm -rf ../../../1/
+bash-3.2$ cd ..
+cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+bash-3.2$ cd ..
+bash-3.2$ 
+
+
+
+
+
+
+minishell$ mkdir hellllllo
+minishell$ cd hellllllo/
+bash-3.2$ chmod 0 hellllllo/
+minishell$ cd ..
+error: : Permission denied
+
+bash-3.2$ cd hellllllo/
+minishell$ chmod 0 hellllllo/
+bash-3.2$ cd ..
+bash-3.2$ 
+
+
+
+

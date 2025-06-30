@@ -13,7 +13,7 @@ int	empty(char *str)
 {
 	if (!str[0])
 		return 1;
-	while (*str && *str == ' ')
+	while (*str && ft_isspace(*str))
 	{
 		str++;
 	}
@@ -53,13 +53,14 @@ void handle_sigint_prompt(int sig)
 int main(int ac, char **av, char **env)
 {
 	//  atexit(f);
-	if (isatty(STDIN_FILENO));
+	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
+		return (1);
 		//printf("stdin is a TTY\n");
-	else
-	{
-		//printf("stdin is a PIPE or redirected\n");
-		exit(0);
-	}
+	// else
+	// {
+	// 	//printf("stdin is a PIPE or redirected\n");
+	// 	exit(0);
+	// }
 
 
 	t_tree	*tree = NULL;
@@ -92,13 +93,15 @@ int main(int ac, char **av, char **env)
 			exit(g_exit_status);
 		}
 
+		add_history(input);
+
 		if (empty(input))
 		{
 			free(input);
 			continue ;
 		}
 	
-		add_history(input);
+		
 
 		if (parser(&tree, input) == R_FAIL)
 		{
@@ -111,6 +114,7 @@ int main(int ac, char **av, char **env)
 		//  env_generate(&env_l, env);
 		// print_tree(tree, 0);
 		// expand_redir(tree->redirections, env_list);
+		// printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 		status = execution(tree, env, &env_list);
 		g_exit_status = status;
 		exit_str = ft_itoa(status);

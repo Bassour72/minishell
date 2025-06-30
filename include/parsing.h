@@ -112,6 +112,8 @@ int m_parenth(t_node **list, char *str, int *i);
 int	m_redirections(t_node **list, char *str, int *i);
 int	m_quotes( char *str, char **data, int *i);
 int m_normal(char *str, char **data, int *i);
+int	m_expand_normal(char *str, char **data, int *i);
+int expand_split2(t_node **list, char *str);
 
 
 

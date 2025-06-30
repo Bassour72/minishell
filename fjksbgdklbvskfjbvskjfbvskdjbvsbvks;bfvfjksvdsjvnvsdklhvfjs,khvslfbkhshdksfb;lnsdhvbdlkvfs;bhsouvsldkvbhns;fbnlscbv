@@ -1,0 +1,29 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+minishell$ (ls||)
+OP---------------
+[ls]{1} [||]{9} [)]{11}
+>>>2
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==16067==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000008 (pc 0x00010c36d8ce bp 0x7ffee3896120 sp 0x7ffee3895ec0 T0)
+==16067==The signal is caused by a WRITE memory access.
+==16067==Hint: address points to the zero page.
+    #0 0x10c36d8ce in init_tree tree.c:39
+    #1 0x10c36e556 in init_tree tree.c:88
+    #2 0x10c36be07 in parser parser.c:47
+    #3 0x10c36b8e9 in main minishell.c:106
+    #4 0x7fff6bcaecc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+
+==16067==Register values:
+rax = 0x0000000000000008  rbx = 0x00007ffee38963e0  rcx = 0x0000000000000008  rdx = 0x0000100000000001  
+rdi = 0x0000603000003100  rsi = 0x0000100000000000  rbp = 0x00007ffee3896120  rsp = 0x00007ffee3895ec0  
+ r8 = 0x0000000000000050   r9 = 0x0000000000000000  r10 = 0xffffffffffffffff  r11 = 0x00000fffffffffff  
+r12 = 0x0000000000000000  r13 = 0x0000000000000000  r14 = 0x0000000000000000  r15 = 0x0000000000000000  
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV tree.c:39 in init_tree
+==16067==ABORTING
+[1]    16067 abort      ./minishell
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -78,14 +78,43 @@ void free_expand_list_nodes(t_expand_node *list)
 	}
 }
 
+int calculate_new_line_len(t_expand_token *tokens)
+{
+	int	len;
 
+	len = 0;
+	while (tokens)
+	{
+		len += ft_strlen(tokens->data) + 1;
+		tokens = tokens->next;
+	}
+	return (len);
+}
+
+int generate_new_line(char **new_line, t_expand_token *tokens)
+{
+	int len;
+
+	len = calculate_new_line_len(tokens) + 1;
+	*new_line = ft_calloc(len, 1);
+	if (!*new_line)
+		return (perror("error: "), R_FAIL);
+	while (tokens)
+	{
+		ft_strlcat(*new_line, tokens->data, len);
+		if(tokens->next && !tokens->join)
+			ft_strlcat(*new_line, " ", len);
+		tokens = tokens->next;
+	}
+	return (R_SUCCESS);
+}
 
 
 int expand(char ***new_args, t_env *env)
 {
-	t_expand_token *tokens;
-	t_expand_node *nodes_list;
-	char *line;
+	t_expand_token	*tokens;
+	t_expand_node	*nodes_list;
+	char			*line;
 
 	nodes_list = NULL;
 	tokens = NULL;
@@ -102,32 +131,66 @@ int expand(char ***new_args, t_env *env)
 	
 	if (tokenize(line, &tokens, env) == R_FAIL)
 		return (free(line), R_FAIL);
+	char *new_line;
 
+	if (generate_new_line(&new_line, tokens) == R_FAIL)
+		return (print("new_line failed"), R_FAIL);
+	// print(new_line);
+	
+	t_node *list = NULL;
+
+	if (expand_split2(&list, new_line) == R_FAIL)
+		return (print("dailedd 2"), R_FAIL);
+
+	int size = 0;
+
+	t_node *lkhra = list;
+	while (lkhra)
+	{
+		size++;
+		// printf("{%s}\n", lkhra->data);
+		lkhra = lkhra->next;
+	}
+
+
+	*new_args = malloc(sizeof(char *) * (size + 1));
+
+	int iii = 0;
+	t_node *lkhra2 = list;
+	while (lkhra2)
+	{
+		(*new_args)[iii++] = lkhra2->data;
+		lkhra2 = lkhra2->next;
+	}
+	(*new_args)[iii] = NULL;
 	// free(line);
 	// return NULL;
 	// print_expand_tokens(tokens);
-	if (split_tokens_into_nodes(&nodes_list,  tokens) == R_FAIL)
-		return (free(line), free_expand_tokens_list(tokens), R_FAIL);
+	// if (split_tokens_into_nodes(&nodes_list,  tokens) == R_FAIL)
+	// 	return (free(line), free_expand_tokens_list(tokens), R_FAIL);
 	// for(t_expand_node *tmp = nodes_list; tmp; tmp = tmp->next)
-	free_expand_tokens_list(tokens);
+	// free_expand_tokens_list(tokens);
 	free(line);
 
-	if (build_args_list_from_nodes_by_joining(nodes_list) == R_FAIL)
-		return (free_expand_list_nodes(nodes_list), R_FAIL);
+	// if (build_args_list_from_nodes_by_joining(nodes_list) == R_FAIL)
+	// 	return (free_expand_list_nodes(nodes_list), R_FAIL);
 	// for(t_expand_node *tmp = nodes_list; tmp; tmp = tmp->next)
 	// {
 	// 	printf("[%s]\n", tmp->data);
 	// }
-	if (expand_list_to_array(new_args, nodes_list) == R_FAIL)
-		return (free_expand_list_nodes(nodes_list), R_FAIL);
+	// if (expand_list_to_array(new_args, nodes_list) == R_FAIL)
+	// 	return (free_expand_list_nodes(nodes_list), R_FAIL);
 	// for(int i = 0; (*new_args)[i]; i++)
 	// 	printf("(%s)[%d]\n", (*new_args)[i] , ft_strlen((*new_args)[i]));
-	free_expand_list_nodes(nodes_list);
+	// free_expand_list_nodes(nodes_list);
 	if(wildcard(new_args) == R_FAIL)
 		return (R_FAIL);
 	if(remove_non_printable_characters(new_args) == R_FAIL)
 		return (R_FAIL);
-	// printf("%s\n",*new_args[0]);
+	for(int i = 0; (*new_args)[i]; i++)
+	{
+		// printf("(%s)[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
+	}
 	return (R_SUCCESS);
 }
 

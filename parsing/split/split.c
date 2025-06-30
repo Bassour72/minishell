@@ -34,7 +34,7 @@ int quotes(char *str, char **data, t_node **list, int *i)
 		return (cleaner(*list), R_FAIL);
 	return (R_SUCCESS);
 }
-int specials(char *str, char **data, t_node **list, int *i)
+static int specials(char *str, char **data, t_node **list, int *i)
 {
 	if (*data && !append_node(list, data)) //todo check this in the future
 		return (cleaner(*list), R_FAIL);
@@ -47,7 +47,7 @@ int specials(char *str, char **data, t_node **list, int *i)
 	return (R_SUCCESS);
 }
 
-int normal(char *str, char **data, t_node **list, int *i)
+static int normal(char *str, char **data, t_node **list, int *i)
 {
 	if (!m_normal(str, data, i))
 		return (cleaner(*list), R_FAIL);

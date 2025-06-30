@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 09:54:04 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/01 00:23:52 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/01 00:23:08 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static int	get_normal_len(char *str)
 	int	len;
 
 	len = 0;
-	while (*(str + len) && *(str + len) != ' ' && *(str + len) != '\'' \
-	&& *(str + len) != '\"' && !is_special(str + len))
+	while (*(str + len) && *(str + len) != ' ' && *(str + len) != SINGLE_QUOTE \
+	&& *(str + len) != DOUBLE_QUOTE && !is_special(str + len))
 	{
 		len++;
 	}
@@ -64,7 +64,7 @@ static int	join_data_to_old_data(char *str, char **data, int *i)
 	return (R_SUCCESS);
 }
 
-int	m_normal(char *str, char **data, int *i)
+int	m_expand_normal(char *str, char **data, int *i)
 {
 	char	*_data;
 	int		_i;

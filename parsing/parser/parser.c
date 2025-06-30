@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:11:46 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/29 21:13:01 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/06/30 14:27:06 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ int	parser(t_tree **tree, char *input)
 		return (free(input), *tree = NULL, R_SUCCESS);//check this 
 	if (tokenizer(&tokenized_input, input) == R_FAIL)
 		return (free_tokens_list(tokenized_input), R_FAIL);
-	// if (!validate_sytax(tokenized_input))
-	// {
-	// 		return (free_tokens_list(tokenized_input), NULL);
-	// }
+	if (!validate_sytax(tokenized_input))
+	{
+			return (free_tokens_list(tokenized_input), R_SUCCESS);
+	}
 	flat_tree = create_flat_tree(tokenized_input);
 	free_tokens_list(tokenized_input);
 	if (!flat_tree)

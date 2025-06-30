@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <dirent.h>
-#include <linux/limits.h>
+#include <limits.h>
 #include <errno.h>
 
 
