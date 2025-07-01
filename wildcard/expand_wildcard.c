@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_wildcard.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/29 21:07:15 by massrayb          #+#    #+#             */
+/*   Updated: 2025/06/29 21:07:16 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/wildcard.h"
 
 static int is_wildcard(char *str)
@@ -29,71 +41,6 @@ int init_needle_len(char *name, int start)
 
     return (len);
 }
-/*
-int is_file_name_match(char *file_name, char *str)
-{
-    int wc_pos;			// abcd.c
-    int  i;			// *a
-    int j;
-	int file_name_len = ft_strlen(file_name);
-	int str_len = ft_strlen(str);
-	int is_literal_string = -1;
-
-	wc_pos = -1;
-    j = 0;
-    i = 0;
-	// printf("filename >>>>  [%s]\n", file_name);
-	if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
-		i++;
-	while (str[i] == file_name[j])
-	{
-		(i++, j++);
-		if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
-			i++;
-	}
-	while (1)
-	{
-		printf("[i: %d]\n", i);
-		if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
-		{
-			printf("#######################\n");
-			i++;
-			is_literal_string = -is_literal_string;
-		}
-		if (is_literal_string != 1)
-		{
-			printf("not litral-------------------------\n");
-			while (str[i] == '*')
-				wc_pos = ++i;
-		}
-		else
-			i++;
-		
-		if (str[i] == file_name[j])
-		{
-			printf(">--1--[%c][%c]----{%s}{%s}<\n", str[i], file_name[j], file_name, str);
-			(i++, j++);
-			if (i == str_len && j == file_name_len)
-				return (1);
-			continue;
-		}
-		else
-		{
-			printf(">--2--[%c][%c]----{%s}{%s}<\n", str[i], file_name[j], file_name, str);
-			if (wc_pos != i)
-				i = wc_pos;
-			else
-				j++;
-			if (j == file_name_len && wc_pos == i && i != str_len)
-				return (0);
-			else if (j == file_name_len && i == str_len)
-				return (1);
-			continue;
-		}
-    }
-	   
-}
-*/
 
 int is_file_name_match(char *file_name, char *str)
 {
@@ -107,43 +54,21 @@ int is_file_name_match(char *file_name, char *str)
 	wc_pos = -1;
     j = 0;
     i = 0;
-	// while (str[i])
-	// {
-	// 	if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
-	// 	{
-	// 		printf("-quote found i:%d[%c] | j:%d[%c]\n", i, j, str[i], file_name[j]);												
-	// 		(i++, is_literal_string *= -1);
-	// 	}
-	// 	if (str[i] == '*' && is_literal_string == -1)
-	// 	{
-	// 		i++;
-	// 		break;
-	// 	}
-	// 	i++;
-	// }
-	// if (str[i])
-	// printf("\n\nfilename >>>>  [%s] [%s]\n",str, file_name);
+
 	while (1)
 	{
-		if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
-		{
-			printf("-quote found i:%d[%c] | j:%d[%c]\n", i, j, str[i], file_name[j]);												
+		if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)									
 			(i++, is_literal_string *= -1);
 			
-		}
 		else if (str[i] == '*' && is_literal_string == -1)
 		{
-			printf("-wc found i:%d[%c] | j:%d[%c]\n", i, j, str[i], file_name[j]);
-			{
-				wc_pos = ++i;
-				if (str[i] == SINGLE_QUOTE || str[i] == DOUBLE_QUOTE)
-					wc_pos = i + 1;
-			}										
+			wc_pos = ++i;
+			if (str[i] == SINGLE_QUOTE || str[i] == DOUBLE_QUOTE)
+				wc_pos = i + 1;								
 		}
 		
 		else if (str[i] != file_name[j])
 		{
-			printf("-no match i:%d[%c] | j:%d[%c]\n", i, j, str[i], file_name[j]);
 			if (wc_pos != i)
 				i = wc_pos;
 			else
@@ -154,20 +79,18 @@ int is_file_name_match(char *file_name, char *str)
 				return (1);
 		}
 		else
-		{
-			printf("-match i:%d[%c] | j:%d[%c]\n", i, j, str[i], file_name[j]);											
+		{									
 			if (i == str_len && j == file_name_len)
 				return (1);
 			(i++, j++);
 		}
 		if (j == file_name_len && i == str_len)
 			return (1);
-		// sleep(1);
     }
 	   
 }
 
-void init_file_names_matches(t_wc_node *file_names, char *name)
+void	init_file_names_matches(t_wc_node *file_names, char *name)
 {
     while (file_names)
     {

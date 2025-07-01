@@ -1,8 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   append_node.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/30 09:52:09 by massrayb          #+#    #+#             */
+/*   Updated: 2025/06/30 09:53:54 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-
-static int creat_the_list_from_zero(t_node **list, char **data)
+static int	creat_the_list_from_zero(t_node **list, char **data)
 {
 	*list = malloc(sizeof(t_node));
 	if (!*list)
@@ -10,17 +20,18 @@ static int creat_the_list_from_zero(t_node **list, char **data)
 	(*list)->next = NULL;
 	(*list)->data = ft_strdup(*data);
 	if (!(*list)->data)
-		return (perror("error: "),free(*data), R_FAIL);
+		return (perror("error: "), free(*data), R_FAIL);
 	free(*data);
 	*data = NULL;
 	return (R_SUCCESS);
 }
 
-static int append_new_node_to_existen_list(t_node **list, char **data)
+static int	append_new_node_to_existen_list(t_node **list, char **data)
 {
-	t_node *node;
+	t_node	*node;
+	t_node	*tmp;
 
-	t_node *tmp = *list;
+	tmp = *list;
 	while (tmp->next)
 		tmp = tmp->next;
 	node = malloc(sizeof(t_node));
@@ -36,11 +47,9 @@ static int append_new_node_to_existen_list(t_node **list, char **data)
 	return (R_SUCCESS);
 }
 
-int append_node(t_node **list, char **data)
+int	append_node(t_node **list, char **data)
 {
-	t_node *node;
-
-	// printf("new_node_data [%s]\n", *data);
+	t_node	*node;
 
 	if (!*list)
 		return (creat_the_list_from_zero(list, data));

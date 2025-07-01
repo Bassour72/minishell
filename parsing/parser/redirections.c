@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/29 21:14:25 by massrayb          #+#    #+#             */
+/*   Updated: 2025/06/29 21:16:23 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/parsing.h"
 
-int is_red(t_token *token)
+int	is_red(t_token *token)
 {
-	//note : is a redirection yes or no
 	if (token->type == T_FILE_NAME || 
 		token->type == RED_INPUT ||
 		token->type == HER_DOC || 
@@ -46,6 +57,8 @@ int new_red(t_tree  *tree_node, t_type type, char *data)//checked
 	}
 	return (1);
 }
+
+
 
 int	parenths_redirections(t_tree *tree_node, t_token *token)
 {

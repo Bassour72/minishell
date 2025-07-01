@@ -6,8 +6,12 @@ char *env_get_value(t_env *list, char *key)
 		return (NULL);
 	while (list)
 	{
-		if (ft_strlen(key) == ft_strlen(list->key) && ft_strnstr(list->key, key, ft_strlen(key)))
+		if (ft_memcmp(list->key, key, ft_strlen(key) + 1) == 0)
+		{
+			if (list->is_remove == 0)
+				break ;
 			return (list->value);
+		}
 		list = list->next;
 	}
 	return (NULL);

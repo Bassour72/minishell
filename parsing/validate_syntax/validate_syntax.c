@@ -56,7 +56,7 @@ int validate_sytax(t_token *token)
 			if (token[i - 1].type != WORD && token[i - 1].type != T_FILE_NAME && token[i - 1].type != PAREN_CLOSE)
 				return (put_operator_syntax_error_msg(token[i].type), 0);
 
-			if (!token[i + 1].data || (token[i - 1].type != WORD && !_is_red(token[i + 1].type) && token[i - 1].type != PAREN_OPEN))
+			if (!token[i + 1].data || (token[i + 1].type != WORD && !_is_red(token[i + 1].type) && token[i + 1].type != PAREN_OPEN))
 				return (put_operator_syntax_error_msg(token[i].type), 0);
 		}
 	}

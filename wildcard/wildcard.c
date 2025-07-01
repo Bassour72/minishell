@@ -29,8 +29,9 @@ int init_args_list(t_wc_node **list, char **args)
 
 int wildcard(char ***args)
 {
-    t_wc_node *file_names;
-    t_wc_node *args_list;
+    t_wc_node	*file_names;
+    t_wc_node	*args_list;
+	int			len;
 
     if (!args)
         return (R_SUCCESS);
@@ -38,42 +39,17 @@ int wildcard(char ***args)
     args_list = NULL;
     if (init_file_names(&file_names) == R_FAIL )
         return (R_FAIL);
-
     if (init_args_list(&args_list, *args) == R_FAIL)
-        return (free_wc_node_list(file_names), R_FAIL);
-
-	printf("here---------------------------------------------\n");
+        return (free_2d_arr(*args), free_wc_node_list(file_names), R_FAIL);
+	free_2d_arr(*args);
     if (expand_wildcard(&args_list, file_names) == R_FAIL)
-	{
         return (free_wc_node_list(file_names), free_wc_node_list(args_list), R_FAIL);
-	}
-	printf("here---------------------------------------------\n");
 	free_wc_node_list(file_names);
-    
-	for(int i = 0; (*args)[i]; i++)
-	{
-		free((*args)[i]);
-	}
-	free(*args);
-
-	int len  = 0;
-	for(t_wc_node *t = args_list; t; t = t->next)
-		len++;
+	len = get_wc_list_len(args_list);
 	*args = malloc(sizeof(char *) * (len + 1));
 	if (!*args)
 		return (perror("error: "), free_wc_node_list(args_list), R_FAIL);
-	int i = 0;
-	for(t_wc_node *t = args_list; t; t = t->next)
-	{
-		(*args)[i++] = t->data; 
-	}
-	(*args)[len]=  NULL;
-	t_wc_node *tmp;
-	while (args_list)
-	{
-		tmp = args_list;
-		args_list = args_list->next;
-		free(tmp);
-	}
+	assign_wc_node_data_to_args_array(args_list, args);
+	cleanup_wc_list_shels(args_list);
     return (R_SUCCESS);
 }

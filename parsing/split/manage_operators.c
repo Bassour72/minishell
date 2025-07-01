@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   manage_operators.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/30 09:57:26 by massrayb          #+#    #+#             */
+/*   Updated: 2025/06/30 09:58:07 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-static int _OR(t_node **list, char *str, int *i)
+static int	_OR(t_node **list, char *str, int *i)
 {
 	char	*data;
 	int		state;
@@ -17,7 +28,7 @@ static int _OR(t_node **list, char *str, int *i)
 	return (state);
 }
 
-static int _PIPE(t_node **list, char *str, int *i)
+static int	_PIPE(t_node **list, char *str, int *i)
 {
 	char	*data;
 	int		state;

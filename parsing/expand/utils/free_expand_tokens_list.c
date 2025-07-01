@@ -1,6 +1,6 @@
 #include "../../../include/parsing.h"
 
-void free_expand_tokens_list(t_expand_token *tokens)
+void	free_expand_tokens_list(t_expand_token *tokens)
 {
     t_expand_token *tmp;
 

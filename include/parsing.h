@@ -112,6 +112,8 @@ int m_parenth(t_node **list, char *str, int *i);
 int	m_redirections(t_node **list, char *str, int *i);
 int	m_quotes( char *str, char **data, int *i);
 int m_normal(char *str, char **data, int *i);
+int	m_expand_normal(char *str, char **data, int *i);
+int expand_split2(t_node **list, char *str);
 
 
 
@@ -148,7 +150,7 @@ t_flat_tree *create_flat_tree(t_token *token);
 
 
 //utils
-// int get_list_size(t_node *list);
+int get_list_size(t_node *list);
 
 //tokenizer.c
 int	tokenizer(t_token **tokenized_input, char *input);
@@ -187,7 +189,6 @@ int validate_close_parenths(t_token *token);
 //expand
 int expand_redir(t_red *reds, t_env *env);
 int expand_herdoc(char **str, t_env *env);
-
 int remove_non_printable_characters(char ***data);
 
 void print(char *s);//delete this

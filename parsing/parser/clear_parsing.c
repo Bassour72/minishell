@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   clear_parsing.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/29 21:13:41 by massrayb          #+#    #+#             */
+/*   Updated: 2025/06/29 21:14:11 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/parsing.h"
 
-void free_tree_node(t_tree *node)
+void	free_tree_node(t_tree *node)
 {
 	int		i;
 	t_red	*red;
@@ -27,7 +39,7 @@ void free_tree_node(t_tree *node)
 	free(node);
 }
 
-void free_flat_tree_list(t_flat_tree *flat_list)
+void	free_flat_tree_list(t_flat_tree *flat_list)
 {
 	t_flat_tree	*tmp;
 
@@ -42,7 +54,7 @@ void free_flat_tree_list(t_flat_tree *flat_list)
 
 void	free_flat_tree(t_flat_tree *flat_tree)
 {
-	t_flat_tree *tmp;
+	t_flat_tree	*tmp;
 
 	while (flat_tree)
 	{
@@ -53,7 +65,7 @@ void	free_flat_tree(t_flat_tree *flat_tree)
 	}
 }
 
-void free_tree(t_tree *root)
+void	free_tree(t_tree *root)
 {
 	if (root->right)
 		free_tree(root->right);

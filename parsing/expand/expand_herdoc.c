@@ -1,40 +1,5 @@
 #include "../../include/parsing.h"
 
-int expand_redir(t_red *reds, t_env *env)
-{
-	t_expand_token *tokens;
-	t_expand_node *nodes_list;
-	while (reds)
-	{
-		if (reds->type != HER_DOC)
-		{
-			nodes_list = NULL;
-			tokens = NULL;
-			if (tokenize(reds->data, &tokens, env) == R_FAIL)
-			return (R_FAIL);
-			
-			if (split_tokens_into_nodes(&nodes_list,  tokens) == R_FAIL)
-			return (free_expand_tokens_list(tokens), R_FAIL);
-			free_expand_tokens_list(tokens);
-			// free(reds->data);
-			// reds->data = NULL;
-			
-			if (nodes_list && (nodes_list->data && !nodes_list->next))
-			{
-				free(reds->data);
-				reds->data = nodes_list->data;
-			}
-			else
-			{
-				free_expand_list_nodes(nodes_list);
-				reds->is_ambiguous = 1;
-			}
-		}
-		reds = reds->next;
-	}
-	return (R_SUCCESS);
-}
-
 int join_line(char **str1, char *str2)
 {
 	char *old_str1;

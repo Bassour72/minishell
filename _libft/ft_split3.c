@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split2.c                                        :+:      :+:    :+:   */
+/*   ft_split3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 00:03:05 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/30 23:48:56 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/06/30 23:49:03 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	handle_quote(char *str, int *i, int *count)
 {
 	(*i)++;
-	while (str[*i] != '\0' && str[*i] != '\"')
+	while (str[*i] != '\0' && str[*i] != 15)
 		(*i)++;
-	if (str[*i] == '\"')
+	if (str[*i] == 15)
 		(*i)++;
 	(*count)++;
 }
@@ -33,11 +33,11 @@ static int	count_commands(char *str)
 	len = ft_strlen(str);
 	while (i < len)
 	{
-		if (str[i] == '\"')
+		if (str[i] == 15)
 			handle_quote(str, &i, &count);
 		else if (str[i] != ' ')
 		{
-			while (i < len && str[i] != ' ' && str[i] != '\"')
+			while (i < len && str[i] != ' ' && str[i] != 15)
 				i++;
 			count++;
 			i++;
@@ -64,12 +64,12 @@ static int	get_split_len(char *str)
 	int	i;
 
 	i = 0;
-	if (str[i] == '\"')
+	if (str[i] == 15)
 	{
 		i++;
-		while (str[i] != '\0' && str[i] != '\"')
+		while (str[i] != '\0' && str[i] != 15)
 			i++;
-		if (str[i] == '\"')
+		if (str[i] == 15)
 			i++;
 		return (i);
 	}
@@ -81,7 +81,7 @@ static int	get_split_len(char *str)
 	}
 }
 
-char	**ft_split2(char *str)
+char	**ft_split3(char *str)
 {
 	int		i;
 	char	**cmd_list;
@@ -109,13 +109,3 @@ char	**ft_split2(char *str)
 	}
 	return (cmd_list[j] = NULL, cmd_list);
 }
-
-// #include "stdio.h"
-// int main(int ac, char **av)
-// {
-// 	char **res = ft_split2("a     b\'hel\'");
-// 	for(int i = 0; res[i]; i++)
-// 	{
-// 		printf("[%s]\n", res[i]);
-// 	}
-// }
