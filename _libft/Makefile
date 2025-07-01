@@ -1,5 +1,5 @@
 CC = cc
-CfdS = #-Wall -Wextra -Werror #-fsanitize=address -g3
+CfdS = -fsanitize=address -g3
 AR = ar r
 RM = rm -f
 SRC = 	ft_atoi.c\
@@ -40,7 +40,7 @@ SRC = 	ft_atoi.c\
 		ft_free_2d_arr.c\
 		ft_strcmp.c\
 		ft_isspace.c\
-		ft_split3.c
+		ft_free_list.c
 
 		
 OBJ = $(SRC:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 17:11:34 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/30 23:47:48 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/01 09:11:43 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct s_node
+{
+	char			*data;
+	struct s_node	*next;
+}				t_node;
 
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
@@ -71,5 +77,6 @@ int		ft_strcmp(const char *s1, const char *s2);
 void	free_2d_arr(char **arr);
 int		ft_isspace(int c);
 char	**ft_split3(char *str);
+void	free_list(t_node *list);
 
 #endif

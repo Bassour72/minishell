@@ -150,7 +150,7 @@ t_flat_tree *create_flat_tree(t_token *token);
 
 
 //utils
-// int get_list_size(t_node *list);
+int get_list_size(t_node *list);
 
 //tokenizer.c
 int	tokenizer(t_token **tokenized_input, char *input);

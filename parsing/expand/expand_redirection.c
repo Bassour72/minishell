@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:21:42 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/29 22:29:13 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/01 09:12:30 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,16 @@ static int	remove_non_printable_chars(t_red *reds)
 	return (R_SUCCESS);
 }
 
-void	set_new_data_or_ambiguous(t_red *red_node, t_expand_node *expanded_node)
+void	set_new_data_or_ambiguous(t_red *red_node, t_node *splited_line)
 {
-	if (expanded_node && (expanded_node->data && !expanded_node->next))
+	if (splited_line && (splited_line->data && !splited_line->next))
 	{
 		free(red_node->data);
-		red_node->data = expanded_node->data;
+		red_node->data = splited_line->data;
 	}
 	else
 	{
-		free_expand_list_nodes(expanded_node);
+		free_list(splited_line);
 		red_node->is_ambiguous = 1;
 	}
 }
@@ -73,22 +73,26 @@ void	set_new_data_or_ambiguous(t_red *red_node, t_expand_node *expanded_node)
 int	expand_redir(t_red *reds, t_env *env)
 {
 	t_expand_token	*tokens;
-	t_expand_node	*expanded_node;
+	t_node			*splited_line;
 	t_red			*tmp;
-
+	char 			*new_line;
 	tmp = reds;
 	while (reds)
 	{
 		if (reds->type != HER_DOC)
 		{
-			expanded_node = NULL;
+			splited_line = NULL;
 			tokens = NULL;
 			if (tokenize(reds->data, &tokens, env) == R_FAIL)
 				return (R_FAIL);
-			if (split_tokens_into_nodes(&expanded_node, tokens) == R_FAIL)
+			if (expand_tokens_to_line(&new_line, tokens) == R_FAIL)
 				return (free_expand_tokens_list(tokens), R_FAIL);
 			free_expand_tokens_list(tokens);
-			set_new_data_or_ambiguous(reds, expanded_node);
+			if (expand_split2(&splited_line, new_line) == R_FAIL)
+				return (free(new_line), R_FAIL);
+			free(new_line);
+			
+			set_new_data_or_ambiguous(reds, splited_line);
 		}
 		reds = reds->next;
 	}

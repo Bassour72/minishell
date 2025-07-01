@@ -18,12 +18,6 @@ typedef enum	e_expand_type
 }				t_expand_type;
 
 
-typedef struct	s_node
-{
-	char			*data;
-	struct s_node	*next;
-}				t_node;
-
 typedef struct	s_expand_token
 {
 	char					*data;
@@ -62,9 +56,8 @@ char *data, int need_split, int join);
 void free_expand_tokens_list(t_expand_token *tokens);
 void print_expand_tokens(t_expand_token *tokens);
 
-int	expand_split(t_expand_node **sub_list, char const *s, char c, int joinable);
 int build_args_list_from_nodes_by_joining(t_expand_node *list);
-int expand_list_to_array(char ***commands_arr, t_expand_node *list);
+int	expand_list_to_array(char ***new_args, t_node *splited_line);
 
 int	split_tokens_into_nodes(t_expand_node **expanded_list,  t_expand_token *tokens);
 
@@ -79,7 +72,7 @@ int	double_quote_expander(char *str, int *i, t_expand_token **tokens, t_env *env
 int normal_expander(char *str, int *i, t_expand_token **tokens);
 int normal_variable_expander(char *str, int *i, t_expand_token **tokens, t_env *env);
 int	double_quote_variable_expander(char *str, int *_i, char **data, t_env *env);
-
+int expand_tokens_to_line(char **new_line, t_expand_token *tokens);
 
 // int	expand_single_quote(t_expand_funcs_data e);
 // int	expand_double_quote(t_expand_funcs_data e);

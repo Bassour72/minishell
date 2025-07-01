@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   array_to_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:49:22 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/29 22:49:54 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/01 09:12:19 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,6 @@ static int	append_new_list_node(t_node **list, char *str)
 		tmp = tmp->next;
 	tmp->next = new_node;
 	return (R_SUCCESS);
-}
-
-static void	free_list(t_node *list)
-{
-	t_node	*tmp;
-
-	while (list)
-	{
-		tmp = list;
-		list = list->next;
-		free(tmp->data);
-		free(tmp);
-	}
 }
 
 int	array_to_list(char **arr, t_node **list)
