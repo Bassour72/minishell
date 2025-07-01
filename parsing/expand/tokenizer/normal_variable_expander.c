@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   normal_variable_expander.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:22:03 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/01 11:09:58 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/01 22:25:21 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static int	is_befor_var_valid(t_expand_token *tokens)
 {
 	while (tokens->next)
 		tokens = tokens->next;
+		// if (ft_strcmp(tokens->data, "=") == 0 || ft_strcmp(tokens->data, "+=") == 0 || !tokens->data[0])
 	if (ft_strcmp(tokens->data, "=") == 0)
 		tokens = tokens->prev;
 	if (tokens->join == 1 && tokens->split == 1 && is_valid_key(tokens->data))
@@ -73,9 +74,9 @@ int	normal_variable_expander(char *str, int *i, t_expand_token **tokens, \
 		}
 	}
 	join = 1;
-	if (!str[*i] || str[*i] == ' ')
+	if (!str[*i] || ft_isspace(str[*i]))
 		join = 0;
-	if (append_expand_token(tokens, data, split, join) == R_FAIL)
+	if (append_expand_token(tokens, data, split, join, 1) == R_FAIL)
 		return (R_FAIL);
 	return (R_SUCCESS);
 }

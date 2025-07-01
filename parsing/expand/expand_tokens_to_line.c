@@ -7,7 +7,8 @@ int calculate_new_line_len(t_expand_token *tokens)
 	len = 0;
 	while (tokens)
 	{
-		len += ft_strlen(tokens->data) + 1;
+		if (tokens->data)
+			len += ft_strlen(tokens->data) + 1;
 		tokens = tokens->next;
 	}
 	return (len);
@@ -23,9 +24,12 @@ int expand_tokens_to_line(char **new_line, t_expand_token *tokens)
 		return (perror("error: "), R_FAIL);
 	while (tokens)
 	{
-		ft_strlcat(*new_line, tokens->data, len);
-		if(tokens->next && !tokens->join)
-			ft_strlcat(*new_line, " ", len);
+		if(tokens->data)
+		{
+			ft_strlcat(*new_line, tokens->data, len);
+			if(tokens->next && !tokens->join)
+				ft_strlcat(*new_line, " ", len);
+		}
 		tokens = tokens->next;
 	}
 	return (R_SUCCESS);

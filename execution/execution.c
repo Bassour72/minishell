@@ -77,8 +77,12 @@ int exec_tree(t_tree *root, char **env, t_env **env_list, int input_fd, int in_s
 		if (root->data)
 		{
 			//todo
-			if (expand(&root->data, *env_list) == R_FAIL)
+			int stt = expand(&root->data, *env_list);
+			if (stt == R_FAIL)
 				return(1);
+			else if (stt == R_CONTINUE)
+				return (0);
+
 			// if (wildcard(&root->data) == R_FAIL)
 			// 	return(1);
 		}

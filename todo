@@ -2,6 +2,7 @@
 echo *.*
 herdoc expander
 sytax error
+$''
 
 l7wya dyal Omar ----------> white spaces ls \tb\tb\tb -la
 
@@ -11,6 +12,26 @@ wildcard problem enforcemanet
 > t
 > 't'
 t
+
+export: `b%b=ls -la': not a valid identifier
+
+minishell$ export l=""$a b%b="$a"
+(export)[6]
+(l=ls)[4]
+(-la)[3]
+(b%b=ls -la)[10]
+------------------------------------------------------------------------------------
+export: `-la': not a valid identifier
+
+export: `b%b=ls -la': not a valid identifier
+
+minishell$ export l=""$a b%b="$a"
+
+
+
+export += 
+
+export a=$b$b
 
 
 

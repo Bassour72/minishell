@@ -18,7 +18,7 @@ static void cleaner(t_node *list)
 
 static void skip_spaces(char *str, int *i)
 {
-	while (*(str + *i) && *(str + *i) == ' ')
+	while (*(str + *i) && ft_isspace(*(str + *i)))
 		(*i)++;
 }
 
@@ -26,7 +26,7 @@ static int expand_quotes(char *str, char **data, t_node **list, int *i)
 {
 	if (!m_quotes(str, data, i))
 		return (cleaner(*list), R_FAIL);
-	if (*data && (str[*i] == ' ' || is_special(str + *i) || !str[*i]) && !append_node(list, data))
+	if (*data && (ft_isspace(str[*i]) || is_special(str + *i) || !str[*i]) && !append_node(list, data))
 		return (cleaner(*list), R_FAIL);
 	return (R_SUCCESS);
 }
@@ -35,7 +35,7 @@ static int normal(char *str, char **data, t_node **list, int *i)
 {
 	if (!m_expand_normal(str, data, i))
 		return (cleaner(*list), R_FAIL);
-	if (*data && (str[*i] == ' ' || !str[*i]) && !append_node(list, data))
+	if (*data && (ft_isspace(str[*i]) || !str[*i]) && !append_node(list, data))
 		return (cleaner(*list), R_FAIL);
 	return (R_SUCCESS);
 }

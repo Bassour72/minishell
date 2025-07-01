@@ -14,9 +14,40 @@ void free_expand_list_nodes(t_expand_node *list)
 		free(tmp);
 	}
 }
+int clean_slitted_line(char *line)
+{
+	int	is_empty_var;
+	int	i;
 
+	is_empty_var = 1;
+	i = 0;
+	while(line[i])
+	{
+		if((unsigned char)line[i] != 255)
+			is_empty_var = 0;
+		i++;
+	}
+	if (is_empty_var)
+		return (1);
+	while (*line)
+	{
+		if((unsigned char)*line == 255)
+			*line = ' ';
+		line++;
+	}
+	return (0);
+}
 
-
+int	check_empty(t_expand_token *tokens)
+{
+	while (tokens)
+	{
+		if (tokens->data && tokens->data[0])
+			return(0);
+		tokens = tokens->next;
+	}
+	return (1);
+}
 
 int expand(char ***new_args, t_env *env)
 {
@@ -33,10 +64,16 @@ int expand(char ***new_args, t_env *env)
 	*new_args = NULL;
 	if (tokenize(line, &tokens, env) == R_FAIL)
 		return (free(line), R_FAIL);
+	if (check_empty(tokens))
+		return (R_CONTINUE);
+	// print_expand_tokens(tokens);
 	free(line);
 	if (expand_tokens_to_line(&new_line, tokens) == R_FAIL)
 		return (free_expand_tokens_list(tokens), R_FAIL);
+		// print(new_line);
 	free_expand_tokens_list(tokens);
+	// if (clean_slitted_line(new_line))
+	// 	return (free(new_line), R_CONTINUE);
 	if (expand_split2(&splited_line, new_line) == R_FAIL)
 		return (free(new_line), R_FAIL);
 	free(new_line);
@@ -46,6 +83,11 @@ int expand(char ***new_args, t_env *env)
 		return (R_FAIL);
 	if(remove_non_printable_characters(new_args) == R_FAIL)
 		return (R_FAIL);
+	// for(int i = 0; (*new_args)[i]; i++)
+	// {
+	// 	printf("(%s)[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
+	// }
+	// print("------------------------------------------------------------------------------------");
 	return (R_SUCCESS);
 }
 

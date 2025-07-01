@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_non_printable_characters.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:36:33 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/29 22:40:13 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:48:24 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	allocate_double_arr_size(char ***new_data, char **old_data)
 	return (R_SUCCESS);
 }
 
-static int	generate_new_data_str(char **dst, char *str)
+int	generate_new_data_str(char **dst, char *str)
 {
 	int	size;
 	int	i;

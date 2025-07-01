@@ -190,6 +190,7 @@ int validate_close_parenths(t_token *token);
 int expand_redir(t_red *reds, t_env *env);
 int expand_herdoc(char **str, t_env *env);
 int remove_non_printable_characters(char ***data);
+int	generate_new_data_str(char **dst, char *str);
 
 void print(char *s);//delete this
 

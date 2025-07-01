@@ -6,13 +6,13 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:21:42 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/01 09:12:30 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:51:11 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-static int	generate_new_data_str(char **dst, char *str)
+static int	generate_new_data_str_red(char **dst, char *str)
 {
 	int	size;
 	int	i;
@@ -46,7 +46,7 @@ static int	remove_non_printable_chars(t_red *reds)
 	{
 		if (reds->type != HER_DOC && reds->is_ambiguous == 0)
 		{
-			if (generate_new_data_str(&new_data, reds->data) == R_FAIL)
+			if (generate_new_data_str_red(&new_data, reds->data) == R_FAIL)
 				return (R_FAIL);
 			free(reds->data);
 			reds->data = new_data;

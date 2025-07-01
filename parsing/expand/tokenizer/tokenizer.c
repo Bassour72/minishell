@@ -3,19 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:23:41 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/29 23:35:30 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:54:23 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/parsing.h"
 
-static int	is_variable(char *str, int i)
+static int	is_variable(char *str, int *i)
 {
-	return (str[i] == '$' && str[i + 1] && str[i + 1] != '\"' && \
-			str[i + 1] != '\'' && str[i + 1] != ' ');
+	if (str[*i] == '$' && str[*i + 1] && !ft_isspace(str[*i + 1]))
+	{
+		if (str[*i + 1] == '\"' || str[*i + 1] == '\'')
+		{
+			(*i) += 1;
+			return (0);
+		}
+		else
+			return (1);
+	}
+	return (0);
 }
 
 static int	handle_quotes(char *str, int *i, t_expand_token **tokens, \
@@ -47,7 +56,7 @@ int	tokenize(char *str, t_expand_token **tokens, t_env *env)
 			if (handle_quotes(str, &i, tokens, env) == R_FAIL)
 				return (R_FAIL);
 		}
-		else if (is_variable(str, i))
+		else if (is_variable(str, &i))
 		{
 			state = normal_variable_expander(str, &i, tokens, env);
 			if (state == R_CONTINUE)
@@ -55,7 +64,7 @@ int	tokenize(char *str, t_expand_token **tokens, t_env *env)
 			else if (state == R_FAIL)
 				return (R_FAIL);
 		}
-		else if (str[i] == ' ')
+		else if (ft_isspace(str[i]))
 			i++;
 		else if (normal_expander(str + i, &i, tokens) == R_FAIL)
 			return (R_FAIL);

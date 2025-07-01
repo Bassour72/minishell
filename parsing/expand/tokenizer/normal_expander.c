@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   normal_expander.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:59:08 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/29 22:59:37 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/01 22:25:08 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	calculate_data_len(char *str)
 	i = 0;
 	if (str[0] == '$')
 		i = 1;
-	while (str[i] && str[i] != ' ' && \
+	while (str[i] && !ft_isspace(str[i]) && \
 		str[i] != '\'' && str[i] != '\"' && str[i] != '$')
 		i++;
 	return (i);
@@ -36,9 +36,9 @@ int	normal_expander(char *str, int *i, t_expand_token **tokens)
 	if (!data)
 		return (perror("error: "), R_FAIL);
 	join = 1;
-	if (str[len] == ' ' || !str[len])
+	if (ft_isspace(str[len]) || !str[len])
 		join = 0;
-	if (append_expand_token(tokens, data, 1, join) == R_FAIL)
+	if (append_expand_token(tokens, data, 1, join, 0) == R_FAIL)
 		return (R_FAIL);
 	*i += len;
 	return (R_SUCCESS);
