@@ -1,22 +1,62 @@
 #include "../../include/execution.h"
 
 
-int check_valid_(char *command)
-{
-	int i;
-	int is_space;
+// int check_valid_(char *command)
+// {
+// 	int i;
+// 	int is_space;
 
-	if (!command)
-		return (0);
-	i = 0;
-	is_space = 0;
-	while (command[i] != '\0')
-	{
-		if (command[i] != ' ' && command[i] != '\t')
-			return (1);
-		i++;
-	}
-	return (0);
+// 	if (!command)
+// 		return (0);
+// 	i = 0;
+// 	is_space = 0;
+// 	while (command[i] != '\0')
+// 	{
+// 		if (command[i] != ' ' && command[i] != '\t')
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+
+void display_error_has_slash( char *cmd ,char *path)
+{
+		if (access(cmd, F_OK) != 0 && !path)
+        {
+            ft_putstr_fd("minishell: ", STDERR_FILENO);
+            ft_putstr_fd(cmd,         STDERR_FILENO);
+            ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+        }
+		else if (access(cmd, X_OK) != 0 && !path)
+        {
+            ft_putstr_fd("minishell: ", STDERR_FILENO);
+            ft_putstr_fd(cmd,         STDERR_FILENO);
+            ft_putendl_fd(": Permission **********************************************denied", STDERR_FILENO);
+        }
+		else
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(cmd,         STDERR_FILENO);
+			ft_putendl_fd(": command not found", STDERR_FILENO);
+		}
+}
+
+void display_error_no_slash( char *cmd ,char *path)
+{
+  if (access(cmd, F_OK) != 0)
+    {
+            ft_putstr_fd("minishell: ", STDERR_FILENO);
+            ft_putstr_fd(cmd,         STDERR_FILENO);
+            ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+    }
+     else if (access(cmd, X_OK) != 0)
+    {
+            ft_putstr_fd("minishell: ", STDERR_FILENO);
+            ft_putstr_fd(cmd,         STDERR_FILENO);
+            ft_putendl_fd(": Permission denied", STDERR_FILENO);
+			//should return beacuse the exit of permission denied it 126
+    }
 }
 void should_display_error(t_tree *root, t_env **env_list)
 {
@@ -31,39 +71,41 @@ void should_display_error(t_tree *root, t_env **env_list)
 		has_slash = true;
     if (!has_slash)
     {
-		if (access(cmd, F_OK) != 0 && !path)
-        {
-            ft_putstr_fd("minishell: ", STDERR_FILENO);
-            ft_putstr_fd(cmd,         STDERR_FILENO);
-            ft_putendl_fd(": No such file or directory", STDERR_FILENO);
-        }
-		else if (access(cmd, X_OK) != 0 && !path)
-        {
-            ft_putstr_fd("minishell: ", STDERR_FILENO);
-            ft_putstr_fd(cmd,         STDERR_FILENO);
-            ft_putendl_fd(": Permission denied", STDERR_FILENO);
-        }
-		else
-		{
-			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			ft_putstr_fd(cmd,         STDERR_FILENO);
-			ft_putendl_fd(": command not found", STDERR_FILENO);
-		}
+		 display_error_has_slash( cmd ,path);
+		// if (access(cmd, F_OK) != 0 && !path)
+        // {
+        //     ft_putstr_fd("minishell: ", STDERR_FILENO);
+        //     ft_putstr_fd(cmd,         STDERR_FILENO);
+        //     ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+        // }
+		// else if (access(cmd, X_OK) != 0 && !path)
+        // {
+        //     ft_putstr_fd("minishell: ", STDERR_FILENO);
+        //     ft_putstr_fd(cmd,         STDERR_FILENO);
+        //     ft_putendl_fd(": Permission denied", STDERR_FILENO);
+        // }
+		// else
+		// {
+		// 	ft_putstr_fd("minishell: ", STDERR_FILENO);
+		// 	ft_putstr_fd(cmd,         STDERR_FILENO);
+		// 	ft_putendl_fd(": command not found", STDERR_FILENO);
+		// }
     }
     else
     {
-        if (access(cmd, F_OK) != 0)
-        {
-            ft_putstr_fd("minishell: ", STDERR_FILENO);
-            ft_putstr_fd(cmd,         STDERR_FILENO);
-            ft_putendl_fd(": No such file or directory", STDERR_FILENO);
-        }
-        else if (access(cmd, X_OK) != 0)
-        {
-            ft_putstr_fd("minishell: ", STDERR_FILENO);
-            ft_putstr_fd(cmd,         STDERR_FILENO);
-            ft_putendl_fd(": Permission denied", STDERR_FILENO);
-        }
+		display_error_no_slash( cmd ,path);
+        // if (access(cmd, F_OK) != 0)
+        // {
+        //     ft_putstr_fd("minishell: ", STDERR_FILENO);
+        //     ft_putstr_fd(cmd,         STDERR_FILENO);
+        //     ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+        // }
+        // else if (access(cmd, X_OK) != 0)
+        // {
+        //     ft_putstr_fd("minishell: ", STDERR_FILENO);
+        //     ft_putstr_fd(cmd,         STDERR_FILENO);
+        //     ft_putendl_fd(": Permission denied", STDERR_FILENO);
+        // }
     }
 }
 
@@ -72,6 +114,8 @@ void execute_external_command(t_tree *root,t_env **env_list)
 {
 	char **new_env;
 	char *binary_path;
+	int exit_status;
+
 	if (!root->data || !root->data[0])
 	{
 		close(0);

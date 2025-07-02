@@ -65,14 +65,6 @@ int main(int ac, char **av, char **env)
 {
 	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
 		return (1);
-		//printf("stdin is a TTY\n");
-	// else
-	// {
-	// 	//printf("stdin is a PIPE or redirected\n");
-	// 	exit(0);
-	// }
-
-
 	t_tree	*tree = NULL;
 	t_env *env_list = NULL;	
 	char	*input;
@@ -123,7 +115,7 @@ int main(int ac, char **av, char **env)
 		// lable parsing tests========
 		//  t_env *env_l = NULL;
 		//  env_generate(&env_l, env);
-		// print_tree(tree, 0);
+		print_tree(tree, 0);
 		// expand_redir(tree->redirections, env_list);
 		// printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 		status = execution(tree,&env_list);
@@ -131,11 +123,6 @@ int main(int ac, char **av, char **env)
 		exit_str = ft_itoa(status);
 		update_last_executed_command(&env_list, "exit_status@gmail.com", exit_str);
 		free_tree(tree);
-		// for (int fd = 3; fd <= 50; ++fd)
-    	// {
-		// 	if (!isatty(fd));
-		// 		close(fd);
-		// }
 	}
 	free_env_list(env_list);
 

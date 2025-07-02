@@ -89,6 +89,7 @@ int create_heredoc(t_red *redir, t_env **env_list)
 int prepare_heredocs(t_tree *root, t_env **env_list)
 {
 
+	int	return_exit;
 	if (!root)
 		return (0);
 	t_red *redir = root->redirections;
@@ -98,8 +99,9 @@ int prepare_heredocs(t_tree *root, t_env **env_list)
 	{
 		if (redir->type == HER_DOC)
 		{
-			if (create_heredoc(redir, env_list) == 1)
-				return (1); // Interrupted, stop early
+			return_exit = create_heredoc(redir, env_list);
+			if (return_exit != 0)
+				return (return_exit);
 		}
 		redir = redir->next;
 	}

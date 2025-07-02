@@ -26,4 +26,8 @@ Macro	Purpose
 WIFEXITED(s)	Child exited via exit() or return
 WEXITSTATUS(s)	Gets exit code (if WIFEXITED is true)
 WIFSIGNALED(s)	Child was killed by signal
-WTERMSIG(s)	Which signal caused termination
+WTERMSIG(s)	Which signal caused termination 
+
+1. Limit your max number of processes (to prevent freezing your system): 
+
+ulimit -u 50
