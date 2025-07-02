@@ -45,6 +45,8 @@ extern const char *typetostring[];
 typedef struct s_red
 {
 	t_type			type;
+	int				save_stdout;
+	bool			is_has_stdout;
 	char			*target;
 	char			*heredoc_path;
 	int				in_fd;

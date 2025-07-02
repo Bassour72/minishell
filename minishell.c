@@ -22,8 +22,8 @@ int	empty(char *str)
 
 void f()
 {
-	system("leaks ./minishell");
-	//system("ls -l /proc/self/fd");
+	//system("leaks ./minishell");
+	system("ls -l /proc/self/fd");
 	//system("ls -l /proc/$$/fd");
 	//system("ls -l /proc/self/fd > fd_log.txt"); // Or print per command with identifier
 
@@ -63,7 +63,7 @@ void handle_sigint_prompt(int sig)
 
 int main(int ac, char **av, char **env)
 {
-	//  atexit(f);
+	 // atexit(f);
 	if (isatty(STDIN_FILENO));
 		//printf("stdin is a TTY\n");
 	else
@@ -79,6 +79,7 @@ int main(int ac, char **av, char **env)
 	input = NULL;
 	int status;
 	char *exit_str;
+	int stdin_backup;
 	signal(SIGINT, handle_sigint_prompt);
 	signal(SIGQUIT, SIG_IGN);
 
@@ -86,11 +87,9 @@ int main(int ac, char **av, char **env)
 	handle_shlvl(av[0],&env_list);
 	while (1)
 	{
-		//get the input from the terminal
-		//printf("signale [%d]\n", g_exit_status);
 		signal(SIGINT, handle_sigint_prompt);
-		dup2(2, 0);
 		input = readline("minishell$ ");
+		//stdin_backup = dup(0);
 		// print_debugg(env);
 		if (g_exit_status == 130)
 		{
@@ -100,6 +99,8 @@ int main(int ac, char **av, char **env)
 		if (input == NULL)
 		{
 			write(1, "exit\n", 5);
+			close(2);
+			close(0);
 			status =ft_atoi( get_env_value("exit_status@gmail.com", env_list));
 			free_env_list(env_list);
 			//free_tree(tree);
@@ -124,14 +125,25 @@ int main(int ac, char **av, char **env)
 		//  t_env *env_l = NULL;
 		//  env_generate(&env_l, env);
 		 print_tree(tree, 0);
-		// expand_redir(tree->redirections, env_list);
-		status = execution(tree, env, &env_list);
+		status = execution(tree,&env_list);
 		g_exit_status = status;
 		exit_str = ft_itoa(status);
 		update_last_executed_command(&env_list, "exit_status@gmail.com", exit_str);
 		free_tree(tree);
+		// for (int fd = 3; fd <= 50; ++fd)
+    	// {
+		// 	if (!isatty(fd));
+		// 		close(fd);
+		// }
+		// close(STDIN_FILENO);
+		// dup2(stdin_backup, STDIN_FILENO);
+		// close(stdin_backup);
 		//-----------------------------
 	}
+	// stdin_backup = dup(STDERR_FILENO);
+	// close(stdin_backup);
+	// 	// do some redirection...
+	// dup2(stdin_backup, STDIN_FILENO);
 	free_env_list(env_list);
 
 	return (0);

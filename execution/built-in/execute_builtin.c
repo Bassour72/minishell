@@ -20,7 +20,7 @@ int is_builtin(char *command)
 }
 
 
-int execute_builtin(t_tree *root, char **env, t_env **env_list)
+int execute_builtin(t_tree *root,  t_env **env_list)
 {
 	if (strcmp(root->data[0], "echo") == 0)
 		return (builtin_echo(root));
@@ -29,7 +29,7 @@ int execute_builtin(t_tree *root, char **env, t_env **env_list)
 	if (strcmp(root->data[0], "pwd") == 0)
 		return (pwd_print_working_directory(root, env_list));
 	if (strcmp(root->data[0], "env") == 0)
-		return (env_environment(root, env, *env_list));
+		return (env_environment(root, *env_list));
 	if (strcmp(root->data[0], "exit") == 0)
 	{
 		exit_exe(root, env_list);
@@ -38,6 +38,6 @@ int execute_builtin(t_tree *root, char **env, t_env **env_list)
 	if (strcmp(root->data[0], "export") == 0)
 		return (export_command_builtin(root, env_list));
 	if (strcmp(root->data[0], "unset") == 0)
-		return (builtin_unset_environment(root, env_list, env));
+		return (builtin_unset_environment(root, env_list));
 	return (1);
 }

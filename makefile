@@ -69,7 +69,7 @@ re: fclean all
 
 
 debug: fclean all #todo 
-	valgrind --leak-check=full --track-fds=yes ./minishell 
+	valgrind --leak-check=full  --track-origins=yes --track-fds=yes ./minishell 
 
 debugg: fclean all #todo 
 	valgrind --leak-check=full --show-leak-kinds=all ./minishell 
@@ -78,7 +78,7 @@ de:
 debug_mode_min:
 	valgrind --leak-check=full --show-leak-kinds=all ./minishell
 
-debug_mode_all:
+debug_mode_all: fclean all
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
 
 
@@ -115,4 +115,8 @@ debug_mode_all:
 #minishell$ $aasd
 # export )a
 #bash: syntax error near unexpected token `)'
-#leaks memory lunset 8x
+#leaks memory lunset 8x 
+#ls | ls |ll | ll | ll | ll | ll || ls && ll|| ss || zz || ooooo || ls && > out.out.txt
+# ls && > out.out.txt 
+#ls && <  out.out_out.txt 
+#ls && > out

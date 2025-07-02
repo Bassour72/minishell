@@ -23,7 +23,7 @@ int print_environment(t_env *env_list)
     return (0);
 }
 
-int env_environment(t_tree *root, char **env, t_env *env_list)
+int env_environment(t_tree *root,  t_env *env_list)
 {
     if (root->data[1])
     {

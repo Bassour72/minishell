@@ -30,7 +30,7 @@ char	*check_valid_command_path(char *command)
 		return (NULL);
 	if (access(command, X_OK) == 0)
 	{
-		if (command[0] == '.' || command[0] == '/')
+		if (ft_strchr(command, '.') || ft_strchr(command, '/'))
 			return (ft_strdup(command));
 	}
 	return (NULL);

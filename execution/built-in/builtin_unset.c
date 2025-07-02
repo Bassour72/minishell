@@ -29,7 +29,7 @@ int remove_env_node(t_env **env_list, const char *target_key)
 	return (1);
 }
 
-int 	builtin_unset_environment(t_tree *root, t_env **env_list, char **env)
+int 	builtin_unset_environment(t_tree *root, t_env **env_list)
 {
 	int i;
 

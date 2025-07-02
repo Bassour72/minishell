@@ -20,10 +20,13 @@ int check_valid_(char *command)
 }
 void should_display_error(t_tree *root, t_env **env_list)
 {
-    char *cmd = root->data[0];
+    char *cmd;
     bool has_slash;
-    char *path = get_env_value("PATH", *env_list);
+    char *path;
+
 	has_slash = false;
+	cmd = root->data[0];
+	path = get_env_value("PATH", *env_list);
 	if (ft_strchr(cmd, '/'))
 		has_slash = true;
     if (!has_slash)
@@ -69,12 +72,21 @@ void execute_external_command(t_tree *root,t_env **env_list)
 {
 	char **new_env;
 	char *binary_path;
-
+	if (!root->data || !root->data[0])
+	{
+		close(0);
+		close(1);
+		free_env_list(*env_list);
+		free_tree(root);
+		exit(127);
+		return ;
+	}
 	binary_path = get_binary_file_path(root,env_list);
 	if (!binary_path) 
 	{	
 		should_display_error(root, env_list);
 		close(0);
+		close(1);
 		free_env_list(*env_list);
 		free_tree(root);
 		exit(127);
@@ -88,23 +100,28 @@ void execute_external_command(t_tree *root,t_env **env_list)
 	exit(EXIT_FAILURE);
 }
 
-void run_command(t_tree *root, char **env, t_env **env_list) 
+void run_command(t_tree *root,  t_env **env_list) 
 {
 	int status;
 	if (!root || !root->data || !root->data[0]) 
 	{
 		ft_putendl_fd("Error: Empty command node \n", STDERR_FILENO);
+		//close(1);
 		free_tree(root);
 		exit(EXIT_FAILURE);
 	}
-	// if (expand_redir(root->redirections, *env_list) == R_FAIL)
-	// 			return ;
+	if (expand_redir(root->redirections, *env_list) == R_FAIL)
+				return ;
 	if (apply_redirections(root->redirections,env_list) == 1)
+	{
+		free_tree(root);
+		//free_env(env_list);
 		return;
+	}
 		// should if the function failure
 	if (is_builtin(root->data[0]) == 0) 
 	{
-		status = execute_builtin(root, env, env_list);
+		status = execute_builtin(root,  env_list);
 		free_tree(root);
 		exit(status);
 	}

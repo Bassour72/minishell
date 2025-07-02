@@ -18,23 +18,28 @@ void setup_heredoc_handler(int sig)
     g_exit_status = 130;
 	close(STDIN_FILENO);
 	write(STDOUT_FILENO, "\n", 1);
-	printf("here 1000000000000000000000000\n");
 }
 
 int write_heredoc(int fd, const char *limiter, t_env **env_list)
 {
     char *line;
-
+	int stdin_backup;
+	stdin_backup = dup(STDIN_FILENO);
    	g_exit_status = 0;
-	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, setup_heredoc_handler);
+	signal(SIGQUIT, SIG_IGN);
    while (1)
    {
         line = readline("> ");
 		if (!line)
 		{
 			if (g_exit_status == 130)
+			{
+				
+				dup2(stdin_backup, STDIN_FILENO);
+				close(stdin_backup);
 				return (1);
+			}
 			show_warning_heredoc(1, limiter);
 			break;
 		}
@@ -47,6 +52,7 @@ int write_heredoc(int fd, const char *limiter, t_env **env_list)
         write(fd, "\n", 1);
         free(line);
     }
+	close(stdin_backup);
 	return (0);
 }
 
@@ -86,7 +92,8 @@ int prepare_heredocs(t_tree *root, t_env **env_list)
 	if (!root)
 		return (0);
 	t_red *redir = root->redirections;
-
+	if (!redir)
+		return (0);
 	while (redir)
 	{
 		if (redir->type == HER_DOC)
@@ -103,95 +110,62 @@ int prepare_heredocs(t_tree *root, t_env **env_list)
 	return (0);
 }
 
-
-
-static int apply_single_redirection(t_red *redir, int fd)
+static int	open_redir_fd(t_red *redir)
 {
 	if (redir->type == RED_INPUT)
-		fd = open(redir->data, O_RDONLY);
+		return (open(redir->data, O_RDONLY));
 	else if (redir->type == RED_TRUNK)
-		fd = open(redir->data, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		return (open(redir->data, O_WRONLY | O_CREAT | O_TRUNC, 0644));
 	else if (redir->type == RED_APPEND)
-		fd = open(redir->data,  O_CREAT | O_APPEND, 0644);
+		return (open(redir->data, O_WRONLY | O_CREAT | O_APPEND, 0644));
 	else if (redir->type == HER_DOC)
-		fd = redir->out_fd;
-	if (fd == -1)
+		return (redir->out_fd);
+	return (-1);
+}
+
+static int	dup_redir_fd(t_red *redir, int fd)
+{
+	int	target;
+	target = STDOUT_FILENO;
+	if (redir->type == RED_INPUT || redir->type == HER_DOC)
+		target = STDIN_FILENO;
+	if (dup2(fd, target) == -1)
 	{
-		// todo if the here_doc should not exit  we can do something's like boolean
-		//todo I have idea not use exit use olny return for free tree and...
-		perror("redirection open failed");
+		perror("minishell: dup2 failed");
+		close(fd);
 		return (1);
 	}
-	if (redir->type == RED_INPUT || redir->type == HER_DOC)
-		dup2(fd, STDIN_FILENO);
-	else
-		dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (0);
 }
 
-int apply_redirections(t_red *redir, t_env **env_list) 
+static int	apply_single_redirection(t_red *redir)
 {
-	int fd;
-	
-	if (redir == NULL)
-		return 0;
-	while (redir) 
+	int	fd;
+
+	fd = open_redir_fd(redir);
+	if (fd == -1)
 	{
-		fd = -1;
+		perror("minishell: redirection open failed");
+		return (1);
+	}
+	return (dup_redir_fd(redir, fd));
+}
+
+int apply_redirections(t_red *redir, t_env **env_list)
+{
+	while (redir)
+	{
 		if (redir->is_ambiguous == 1)
 		{
-			//sould free any resources we are using
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putstr_fd(redir->data, STDERR_FILENO);
 			ft_putendl_fd(": ambiguous redirect", STDERR_FILENO);
 			return (1);
 		}
-		if (apply_single_redirection(redir, fd) == 1)
+		if (apply_single_redirection(redir) == 1)
 			return (1);
 		redir = redir->next;
 	}
-	return 0;
+	return (0);
 }
-
-/* int apply_redirections(t_red *redir, t_env **env_list) 
-{
-	int fd;
-	
-	if (redir == NULL)
-		return 0;
-	while (redir) 
-	{
-		fd = -1;
-		if (redir->type == RED_INPUT)
-			fd = open(redir->data, O_RDONLY);
-		else if (redir->type == RED_TRUNK)
-		{
-			fd = open(redir->data, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		}
-		else if (redir->type == RED_APPEND)
-			fd = open(redir->data,  O_CREAT | O_APPEND, 0644);
-		else if (redir->type == HER_DOC)
-		{
-			fd = redir->out_fd;
-			if (fd == -1)
-			{
-				printf("hervalue################### [%d] \n", fd);
-			}
-		}
-		if (fd == -1)
-		{
-			perror("redirection open failed");
-			exit(EXIT_FAILURE);
-		}
-		if (redir->type == RED_INPUT || redir->type == HER_DOC)
-		{
-			dup2(fd, STDIN_FILENO);
-		}
-		else
-			dup2(fd, STDOUT_FILENO);
-		close(fd);
-		redir = redir->next;
-	}
-	return 0;
-} */
