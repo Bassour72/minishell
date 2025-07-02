@@ -21,7 +21,7 @@ int init_args_list(t_wc_node **list, char **args)
     i = -1;
     while (args[++i])
     {
-        if (append_wc_node(list, args[i]) == R_FAIL)
+        if (append_wc_node(list, args[i], 0) == R_FAIL)
             return (free_wc_node_list(*list), R_FAIL);
     }
     return (R_SUCCESS);

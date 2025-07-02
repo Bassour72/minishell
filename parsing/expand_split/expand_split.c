@@ -50,7 +50,7 @@ int expand_split2(t_node **list, char *str)
 	while (*(str + i) != '\0')
 	{
 		skip_spaces(str, &i);
-		if (*(str + i) == DOUBLE_QUOTE || *(str + i) == SINGLE_QUOTE)
+		if (*(str + i) == '\"' || *(str + i) == '\'')
 		{
 			if(expand_quotes(str, &data, list, &i) == R_FAIL)
 				return  (R_FAIL);

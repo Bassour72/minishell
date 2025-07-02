@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:21:42 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/01 15:51:11 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/02 09:27:19 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	generate_new_data_str_red(char **dst, char *str)
 	size = 0;
 	while (*(str + ++i))
 	{
-		if (*(str + i) != DOUBLE_QUOTE && *(str + i) != SINGLE_QUOTE)
+		if (*(str + i) != '\"' && *(str + i) != '\'')
 			size++;
 	}
 	*dst = malloc(size + 1);
@@ -30,7 +30,7 @@ static int	generate_new_data_str_red(char **dst, char *str)
 	i = 0;
 	while (*str)
 	{
-		if (*str != DOUBLE_QUOTE && *str != SINGLE_QUOTE)
+		if (*str != '\"' && *str != '\'')
 			*(*dst + i++) = *str;
 		str++;
 	}

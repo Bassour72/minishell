@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 09:54:04 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/01 14:11:39 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/02 09:26:33 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static int	get_normal_len(char *str)
 	int	len;
 
 	len = 0;
-	while (*(str + len) && !ft_isspace(*(str + len)) && *(str + len) != SINGLE_QUOTE \
-	&& *(str + len) != DOUBLE_QUOTE && !is_special(str + len))
+	while (*(str + len) && !ft_isspace(*(str + len)) && *(str + len) != '\'' \
+	&& *(str + len) != '\"' && !is_special(str + len))
 	{
 		len++;
 	}

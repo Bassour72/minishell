@@ -18,7 +18,19 @@ static char *init_cwd()
     return (cwd);
 }
 
-int append_wc_node(t_wc_node **list, char *data)
+static void change_quotes(char *str)
+{
+    while (*str)
+    {
+        if (*str == '\"')
+            *str = DOUBLE_QUOTE;
+        else if (*str == '\'')
+            *str = SINGLE_QUOTE;
+        str++;
+    }
+}
+
+int append_wc_node(t_wc_node **list, char *data, int flag)
 {
     t_wc_node *node;
     t_wc_node *tmp;
@@ -27,6 +39,9 @@ int append_wc_node(t_wc_node **list, char *data)
     new_data = ft_strdup(data);
     if (!new_data)
         return (perror("error: "), R_FAIL);
+    if (flag)
+        change_quotes(new_data);
+    // printf("<<<%s [%d]\n", new_data, ft_strlen(new_data));
     node = malloc(sizeof(t_wc_node));
     if (!node)
         return (perror("error: "), free(new_data), R_FAIL);
@@ -65,7 +80,7 @@ int init_file_names(t_wc_node **file_names)
         dir_entry = readdir(dir);
         if (!dir_entry)
             break ;
-        if (append_wc_node(file_names, dir_entry->d_name) == R_FAIL)
+        if (append_wc_node(file_names, dir_entry->d_name, 1) == R_FAIL)
             return (free_wc_node_list(*file_names), closedir(dir), free(cwd), R_FAIL);
     }
 	if (dir)

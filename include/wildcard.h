@@ -27,7 +27,7 @@ typedef struct s_wc_node
 int		get_wc_list_len(t_wc_node *list);
 void	cleanup_wc_list_shels(t_wc_node *list);
 void	assign_wc_node_data_to_args_array(t_wc_node *list, char ***arr);
-int		append_wc_node(t_wc_node **list, char *data);
+int		append_wc_node(t_wc_node **list, char *data, int flag);
 int		wildcard(char ***args);
 int		init_file_names(t_wc_node **file_names);
 void	free_wc_node_list(t_wc_node *list);

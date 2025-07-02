@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:36:33 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/01 15:48:24 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/02 11:06:56 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	generate_new_data_str(char **dst, char *str)
 	size = 0;
 	while (*(str + ++i))
 	{
-		if (*(str + i) != DOUBLE_QUOTE && *(str + i) != SINGLE_QUOTE)
+		if (*(str + i) != '\"' && *(str + i) != '\'')
 			size++;
 	}
 	*dst = malloc(size + 1);
@@ -45,13 +45,21 @@ int	generate_new_data_str(char **dst, char *str)
 	i = 0;
 	while (*str)
 	{
-		if (*str != DOUBLE_QUOTE && *str != SINGLE_QUOTE)
+		if (*str != '\"' && *str != '\'')
 			*(*dst + i++) = *str;
 		str++;
 	}
 	*(*dst + i) = '\0';
 	return (R_SUCCESS);
 }
+// void	change_quotes(char *str)
+// {
+// 	while(*str)
+// 	{
+// 		if (*str == '\'')
+// 			*str = ""
+// 	}
+// }
 
 int	remove_non_printable_characters(char ***old_data)
 {
@@ -68,6 +76,7 @@ int	remove_non_printable_characters(char ***old_data)
 			(free_2d_arr(new_data), free_2d_arr(*old_data));
 			return (R_FAIL);
 		}
+		// change_quotes(new_data + i);
 	}
 	free_2d_arr(*old_data);
 	*old_data = new_data;

@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:01:43 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/01 22:25:51 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/02 10:41:41 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,15 @@ static int	is_done(char *data)
 		return (1);
 	return (0);
 }
+static void	conver_quotes(char *str)
+{
+	while (*str)
+	{
+		if (*str == '\'')
+			*str = SINGLE_QUOTE;
+		str++;
+	}
+}
 
 static int	finish_and_append(char *str, int _i, char *data, \
 	t_expand_token **tokens)
@@ -75,8 +84,10 @@ static int	finish_and_append(char *str, int _i, char *data, \
 	join = 1;
 	if (ft_isspace(str[_i]) || !str[_i])
 		join = 0;
-	data[0] = DOUBLE_QUOTE;
-	data[ft_strlen(data) - 1] = DOUBLE_QUOTE;
+	
+	conver_quotes(data);
+	// data[0] = DOUBLE_QUOTE;
+	// data[ft_strlen(data) - 1] = DOUBLE_QUOTE;
 	if (append_expand_token(tokens, data, 0, join, 0) == R_FAIL)
 		return (R_FAIL);
 	return (R_SUCCESS);

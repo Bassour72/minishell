@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_wildcard.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:07:15 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/29 21:07:16 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/02 11:19:25 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int is_wildcard(char *str)
 	literal_string = -1;
     while (*str)
     {
-		if (*str == DOUBLE_QUOTE || *str == SINGLE_QUOTE)
+		if (*str == '\"' || *str == '\'')
 			literal_string = -literal_string;
         if (*str == '*' && literal_string == -1)
             return (1);
@@ -42,6 +42,11 @@ int init_needle_len(char *name, int start)
     return (len);
 }
 
+int	is_match_quote(char str_i, char file_name_j)
+{
+	return ((str_i == DOUBLE_QUOTE && file_name_j == '\"') || (str_i == SINGLE_QUOTE && file_name_j == '\''));
+}
+
 int is_file_name_match(char *file_name, char *str)
 {
     int wc_pos;			// abcd.c
@@ -57,13 +62,13 @@ int is_file_name_match(char *file_name, char *str)
 
 	while (1)
 	{
-		if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)									
+		if (str[i] == '\"' || str[i] == '\'')									
 			(i++, is_literal_string *= -1);
 			
 		else if (str[i] == '*' && is_literal_string == -1)
 		{
 			wc_pos = ++i;
-			if (str[i] == SINGLE_QUOTE || str[i] == DOUBLE_QUOTE)
+			if (str[i] == '\'' || str[i] == '\"')
 				wc_pos = i + 1;								
 		}
 		
@@ -79,7 +84,8 @@ int is_file_name_match(char *file_name, char *str)
 				return (1);
 		}
 		else
-		{									
+		{
+									
 			if (i == str_len && j == file_name_len)
 				return (1);
 			(i++, j++);
@@ -122,7 +128,7 @@ int do_expand_wildcard(t_wc_node **wc_node, t_wc_node *file_names)
 		{
 			if (fn->match)
 			{
-				if (append_wc_node(&new_list, fn->data) == R_FAIL)
+				if (append_wc_node(&new_list, fn->data, 0) == R_FAIL)
 					return (free_wc_node_list(new_list), *wc_node = NULL, R_FAIL);
 			}
 		}

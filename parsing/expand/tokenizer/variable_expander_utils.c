@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:14:56 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/01 22:37:34 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/02 09:24:24 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,19 @@ static void	check_and_replace(char *value)
 		value++;
 	}
 }
+static void update_value(char *value)
+{
+	if (!value)
+		return;
+	while (*value)
+	{
+		if (*value == '\"')
+			*value = DOUBLE_QUOTE;
+		else if (*value == '\'')
+			*value = SINGLE_QUOTE;
+		value++;
+	}
+}
 
 int	extract_var_value(char *src, int *i, char **dst, t_env *env)
 {
@@ -77,7 +90,8 @@ int	extract_var_value(char *src, int *i, char **dst, t_env *env)
 	if (!key)
 		*dst = NULL;
 	value = env_get_value(env, key);
-	check_and_replace(value);
+	// check_and_replace(value);
+	update_value(value);
 	if (ft_strcmp("exit_status@gmail.com", key) == 0)
 		(*i) += 2;
 	else
