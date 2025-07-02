@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:52:17 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/01 22:31:28 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/02 14:30:41 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ int	append_expand_token(t_expand_token **tokens, \
 	t_expand_token	*new_token;
 	t_expand_token	*tmp;
 
-	// if (!data && !is_var)
-	// 	return (R_SUCCESS);
 	new_token = malloc(sizeof(t_expand_token));
 	if (!new_token)
 		return (perror("error: "), free(data), R_FAIL);

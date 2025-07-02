@@ -19,7 +19,7 @@ static void	close_all_fds_(void)
 	fd = 3;
 	while (fd <= 40)
     {
-		if (!isatty(fd));
+		if (!isatty(fd))
         { 
 			    close(fd);
         }
@@ -103,9 +103,7 @@ void enforce_heredoc_limit(t_tree *root, t_env **env_list)
 
     if (heredocs > MAX_HEREDOC)
     {
-        write(STDERR_FILENO,
-              "bash: maximum here-document count exceeded\n",
-              44);
+        write(STDERR_FILENO, "bash: maximum here-document count exceeded\n",44);
         free_env_list(*env_list);
         free_tree(root);
         exit(2);

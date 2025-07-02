@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:22:03 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/01 22:25:21 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/02 14:31:18 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ int	normal_variable_expander(char *str, int *i, t_expand_token **tokens, \
 			char *tmp;
 			int len = ft_strlen(data) + 3;
 			tmp = ft_calloc(len, 1);
-			ft_strlcat(tmp, "\x0F", len);
+			ft_strlcat(tmp, "\"", len);
 			ft_strlcat(tmp, data, len);
-			ft_strlcat(tmp, "\x0F", len);
+			ft_strlcat(tmp, "\"", len);
 			free(data);
 			data = tmp;
 		}

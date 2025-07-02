@@ -79,7 +79,6 @@ int main(int ac, char **av, char **env)
 	input = NULL;
 	int status;
 	char *exit_str;
-	int stdin_backup;
 	signal(SIGINT, handle_sigint_prompt);
 	signal(SIGQUIT, SIG_IGN);
 
@@ -89,8 +88,6 @@ int main(int ac, char **av, char **env)
 	{
 		signal(SIGINT, handle_sigint_prompt);
 		input = readline("minishell$ ");
-		//stdin_backup = dup(0);
-		// print_debugg(env);
 		if (g_exit_status == 130)
 		{
 			update_env_exit_status(&env_list, 130);
@@ -139,15 +136,7 @@ int main(int ac, char **av, char **env)
 		// 	if (!isatty(fd));
 		// 		close(fd);
 		// }
-		// close(STDIN_FILENO);
-		// dup2(stdin_backup, STDIN_FILENO);
-		// close(stdin_backup);
-		//-----------------------------
 	}
-	// stdin_backup = dup(STDERR_FILENO);
-	// close(stdin_backup);
-	// 	// do some redirection...
-	// dup2(stdin_backup, STDIN_FILENO);
 	free_env_list(env_list);
 
 	return (0);

@@ -105,7 +105,7 @@ void run_command(t_tree *root,  t_env **env_list)
 	int status;
 	if (!root || !root->data || !root->data[0]) 
 	{
-		ft_putendl_fd("Error: Empty command node \n", STDERR_FILENO);
+		// ft_putendl_fd("Error: Empty command node \n", STDERR_FILENO);
 		//close(1);
 		free_tree(root);
 		exit(EXIT_FAILURE);

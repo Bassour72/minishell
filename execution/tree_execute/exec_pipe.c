@@ -22,7 +22,7 @@ static void	close_all_fds_(void)
 	fd = 3;
 	while (fd <= 40)
     {
-		if (!isatty(fd));
+		if (!isatty(fd))
         {
 			    close(fd);
         }

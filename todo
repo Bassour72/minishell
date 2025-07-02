@@ -16,6 +16,13 @@ wildcard problem enforcemanet
 > 't'
 t
 
+declare -x a="x y z"
+minishell$ export b=$a
+export: `z"': not a valid identifier
+
+
+
+
 <<<<<<< HEAD
 export: `b%b=ls -la': not a valid identifier
 

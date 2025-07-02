@@ -85,7 +85,7 @@ int apply_cd_with_hyphen(t_env **env, char *old_pwd, char *candidate)
     char *oldpwd_env;
 
     oldpwd_env = get_env_value("OLDPWD", *env);
-    if (oldpwd_env == NULL);
+    if (oldpwd_env == NULL)
     {
         ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR_FILENO);
         return (free(old_pwd), 1);
