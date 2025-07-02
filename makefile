@@ -36,6 +36,7 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		wildcard/init_file_names.c\
 		wildcard/wildcard.c\
 		env/env.c env/env_utils.c\
+		env/init_env.c \
 		execution/execution.c execution/built-in/builtin_echo.c \
 		execution/built-in/builtin_cd.c execution/built-in/builtin_env.c \
 		execution/built-in/builtin_exit.c  execution/built-in/builtin_export.c \
@@ -45,7 +46,11 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		execution/shell_levl/shlvl.c \
 		execution/built-in/execute_builtin.c \
 		execution/exec/exec_cmd.c \
-		execution/env/env_array.c
+		execution/env/env_array.c \
+		execution/built-in/cd_utils.c \
+		execution/built-in/cd_arg_validation.c \
+		execution/tree_execute/tree_exe_.c \
+		execution/tree_execute/exec_pipe.c 
 		# debug / memory_debugging.c 
 
 OBJ = $(SRC:.c=.o)
@@ -75,7 +80,7 @@ re: fclean all
 
 
 debug: fclean all #todo 
-	valgrind --leak-check=full --track-fds=yes ./minishell 
+	valgrind --leak-check=full  --track-origins=yes --track-fds=yes ./minishell 
 
 debugg: fclean all #todo 
 	valgrind --leak-check=full --show-leak-kinds=all ./minishell 
@@ -84,7 +89,7 @@ de:
 debug_mode_min:
 	valgrind --leak-check=full --show-leak-kinds=all ./minishell
 
-debug_mode_all:
+debug_mode_all: fclean all
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
 
 
@@ -121,3 +126,8 @@ debug_mode_all:
 #minishell$ $aasd
 # export )a
 #bash: syntax error near unexpected token `)'
+#leaks memory lunset 8x 
+#ls | ls |ll | ll | ll | ll | ll || ls && ll|| ss || zz || ooooo || ls && > out.out.txt
+# ls && > out.out.txt 
+#ls && <  out.out_out.txt 
+#ls && > out

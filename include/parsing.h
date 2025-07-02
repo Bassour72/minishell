@@ -47,6 +47,8 @@ extern const char *typetostring[];
 typedef struct s_red
 {
 	t_type			type;
+	int				save_stdout;
+	bool			is_has_stdout;
 	char			*target;
 	char			*heredoc_path;
 	int				in_fd;
@@ -86,7 +88,7 @@ typedef struct s_flat_tree
 }				t_flat_tree;
 
 
-
+int	init_env(t_env **env_list); //  for minishell !!
 // typedef enum e_node_type
 // {
 // 	GROUP, CMD, PIPE, OPERATOR

@@ -2,7 +2,10 @@
 echo *.*
 herdoc expander
 sytax error
+<<<<<<< HEAD
 $''
+=======
+>>>>>>> execution
 
 l7wya dyal Omar ----------> white spaces ls \tb\tb\tb -la
 
@@ -13,6 +16,7 @@ wildcard problem enforcemanet
 > 't'
 t
 
+<<<<<<< HEAD
 export: `b%b=ls -la': not a valid identifier
 
 minishell$ export l=""$a b%b="$a"
@@ -33,6 +37,8 @@ export +=
 
 export a=$b$b
 
+=======
+>>>>>>> execution
 
 
 minishell$ $ldgksmkdhhdshdhdsdjdjs
@@ -224,7 +230,11 @@ bash-3.2$ minishell
 
 
 minishell$ export HOME=
+<<<<<<< HEAD
 minishell$ dc
+=======
+minishell$ dc ///
+>>>>>>> execution
 cd: no such file or directory: 
 
 bash-3.2$ export HOME=
@@ -311,6 +321,7 @@ bash-3.2$
 
 
 
+<<<<<<< HEAD
 
 
 minishell$ <  $hh cat | cat -e
@@ -318,3 +329,5 @@ redirection open failed: No such file or directory
 
 bash-3.2$  < $hh cat | cat -e
 bash: $hh: ambiguous redirect
+=======
+>>>>>>> execution

@@ -13,14 +13,17 @@ int print_environment(t_env *env_list)
         if (tmp_env->key && tmp_env->value)
         {
             if (strcmp(tmp_env->key, "exit_status@gmail.com") != 0)
+            {
+               // if (tmp_env->exported == 1)
                 printf("%s=%s\n", tmp_env->key, tmp_env->value);
+            }
         }
         tmp_env = tmp_env->next;
     }
     return (0);
 }
 
-int env_environment(t_tree *root, char **env, t_env *env_list)
+int env_environment(t_tree *root,  t_env *env_list)
 {
     if (root->data[1])
     {
