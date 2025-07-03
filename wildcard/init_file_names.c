@@ -1,5 +1,5 @@
 #include "../include/wildcard.h"
-
+#include <linux/limits.h>
 static char *init_cwd()
 {
     char *cwd;
@@ -73,7 +73,7 @@ int init_file_names(t_wc_node **file_names)
         return (R_FAIL);
     dir = opendir(cwd);
     if (!dir)
-        return (perror("error: "), free(cwd), R_FAIL);
+        return (free(cwd), 2);
     errno = 0;
     while (errno == 0)
     {

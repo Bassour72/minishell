@@ -18,6 +18,8 @@ int pwd_print_working_directory(t_tree *root, t_env **env_list)
         return 1;
 
     pathname = getcwd(NULL, 0);
+   // perror(pathname);
+  //  perror("pwd: getcwdjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj\n\n\n");
     if (!pathname)
     {
         pathname = get_env_value_v2("PWD", *env_list);

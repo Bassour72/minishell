@@ -23,7 +23,12 @@ static int	is_valid_identifier(const char *identifier, int *is_append_mode)
 	while (identifier[i] != '\0' && identifier[i] != '=')
 	{
 		if (identifier[i] == '+')
-			count_plus++;
+		{
+			if (identifier[i + 1] != '\0' && identifier[i + 1] == '=')
+				count_plus++;
+			else
+				return (1);
+		}
 		else if (!ft_isalnum(identifier[i]) && identifier[i] != '_') //todo
 			return (1);
 		if (count_plus > 1)
@@ -290,8 +295,6 @@ static int	add_env(char *arg, t_env **env_list)
 	if (!new_key)
 		return (1);
 	new_value = get_env_value1(arg);
-	if (!new_value)
-		return (free(new_key), 1);
 	if (is_append_mode != 1)
 	{
 		add_env_without_appned(env_list, new_key,new_value);

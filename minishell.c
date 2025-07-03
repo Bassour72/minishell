@@ -74,8 +74,8 @@ int main(int ac, char **av, char **env)
 	signal(SIGINT, handle_sigint_prompt);
 	signal(SIGQUIT, SIG_IGN);
 
-	env_generate(&env_list, env);
-	handle_shlvl(av[0],&env_list);
+	env_generate(&env_list, env); // check  if any  error
+	handle_shlvl(av[0],&env_list); // check if valid for update shlvl
 	while (1)
 	{
 		signal(SIGINT, handle_sigint_prompt);
@@ -90,7 +90,7 @@ int main(int ac, char **av, char **env)
 			write(1, "exit\n", 5);
 			close(2);
 			close(0);
-			status =ft_atoi( get_env_value("exit_status@gmail.com", env_list));
+			status =ft_atoi(get_env_value("exit_status@gmail.com", env_list));
 			free_env_list(env_list);
 			//free_tree(tree);
 			exit(status);
@@ -117,7 +117,7 @@ int main(int ac, char **av, char **env)
 		//  env_generate(&env_l, env);
 		print_tree(tree, 0);
 		// expand_redir(tree->redirections, env_list);
-		// printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+		// printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^0\n");
 		status = execution(tree,&env_list);
 		g_exit_status = status;
 		exit_str = ft_itoa(status);

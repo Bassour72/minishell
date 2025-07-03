@@ -12,20 +12,7 @@ void setup_exit_handler(int sig)
 	// close(STDIN_FILENO);
 	// write(STDOUT_FILENO, "\n", 1);
 }
-static void	close_all_fds_(void)
-{
-	int fd;
 
-	fd = 3;
-	while (fd <= 40)
-    {
-		if (!isatty(fd))
-        { 
-			    close(fd);
-        }
-		 ++fd;
-	}
-}
 
 void close_heredoc_fds(t_tree *root, t_red *redir)
 {
@@ -109,7 +96,30 @@ void enforce_heredoc_limit(t_tree *root, t_env **env_list)
         exit(2);
     }
 }
+static void	close_all_fds_(void)
+{
+	int fd;
 
+	fd = 3;
+	while (fd <= 40)
+    {
+		if (!isatty(fd))
+        {
+			if (read(fd, "", 0) != -1)
+			{
+				printf("hekkkkkkkkkkkkkkkkkkkkkk======================================*****************************************\n\n");
+				sleep(1);
+			    close(fd);
+			}
+            else
+            {
+                	printf("hekkkkkkkkkkkkkkkkkkkkkk======================================*****************************************\n\n");
+				sleep(1);
+            }
+        }
+		 ++fd;
+	}
+}
 int execution(t_tree *root,  t_env **env_list)
 {
 	int status;
@@ -129,7 +139,9 @@ int execution(t_tree *root,  t_env **env_list)
 			status = g_exit_status;
 		return (status);
 	}
+   // printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^1\n");
 	status = exec_tree(root, env_list,0);
+  //  close_all_fds_();
     close_heredoc_fds(root,root->redirections);
     // if (is_forkred(root))
     //     close_all_fds_();
