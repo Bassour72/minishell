@@ -47,11 +47,20 @@ int	exit_exe(t_tree *root, t_env **env_list)
     if (root->data[1] == NULL)
 	{
 		code =ft_atoi( get_env_value("exit_status@gmail.com", *env_list));
+		free_env_list(*env_list);
+		free_tree(root);
+		// close(1);
+		// close(0);
+
         exit(code);
 	}
 	if (!is_numeric(root->data[1]))
 	{
 		write(2, "minishell: exit: numeric argument required\n", 43);
+		free_env_list(*env_list);
+		free_tree(root);
+		// 		close(1);
+		// close(0);
 		exit(255);
 	}
 	if (root->data[2])
@@ -59,7 +68,10 @@ int	exit_exe(t_tree *root, t_env **env_list)
 		write(2, "minishell: exit: too many arguments\n", 36);
 		return (1);
 	}
-	printf("exit function \n\n");
 	code = ft_atol(root->data[1]);
+	free_env_list(*env_list);
+	free_tree(root);
+		// 	close(1);
+		// close(0);
 	exit((unsigned char)code);
 }

@@ -31,3 +31,20 @@ WTERMSIG(s)	Which signal caused termination
 1. Limit your max number of processes (to prevent freezing your system): 
 
 ulimit -u 50
+
+
+git checkout main
+git pull origin main
+
+
+git merge execution
+git push origin main
+
+
+git checkout execution
+git fetch origin
+git rebase origin/main
+# Fix conflicts if any, then
+git checkout main
+git merge execution
+git push origin main

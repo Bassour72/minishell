@@ -104,8 +104,8 @@ int expand(char ***new_args, t_env *env)
 	// {
 	// 	printf("<%s>[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
 	// }
-	if(wildcard(new_args) == R_FAIL)
-		return (R_FAIL);
+	// if(wildcard(new_args) == R_FAIL)
+	// 	return (R_FAIL);
 	if(remove_non_printable_characters(new_args) == R_FAIL)
 		return (R_FAIL);
 	// for(int i = 0; (*new_args)[i]; i++)

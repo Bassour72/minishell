@@ -129,8 +129,7 @@ int	env_generate(t_env **env_list, char **env)
 	
 	if (!env || !(*env))
 	{
-		init_env(env_list);
-		return (-1);
+		return (init_env(env_list));
 	}
 	i = -1;
 	while (env[++i])

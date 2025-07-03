@@ -87,11 +87,11 @@ char	*get_binary_file_path(t_tree *root, t_env **env_list)
 		return (NULL);
 	if (ft_strchr(root->data[0], '.') || ft_strchr(root->data[0], '/'))
 	{
+		 if (should_display_error(root->data[0], env_list, false) != 0)
+		 	return (NULL);
 		return (check_valid_command_path(root->data[0]));
 	}
 	default_path = extract_path_variable(env_list);
-	if (!default_path)
-		return (NULL);
 	binary_path = join_binary_path_with_command(root->data[0], default_path);
 	free(default_path);
 	return (binary_path);

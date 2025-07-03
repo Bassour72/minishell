@@ -1,5 +1,5 @@
 CC = cc
-CfdS = -fsanitize=address -g3
+CfdS = #-fsanitize=address -g3
 AR = ar r
 RM = rm -f
 SRC = 	ft_atoi.c\
