@@ -14,7 +14,20 @@ int calculate_new_line_len(t_expand_token *tokens)
 	return (len);
 }
 
-int expand_tokens_to_line(char **new_line, t_expand_token *tokens)
+static int	is_able_to_join(t_expand_token *token) //save this function for mac
+{
+	char	quote;
+
+	if (ft_strlen(token->data) == 2 &&  (token->next && token->next->data[0]))
+	{
+		quote = token->data[0];
+		if ((quote == '\'' || quote == '\"') && token->data[0] == token->data[1])
+			return (0);
+	}
+	return(1);
+}
+
+int	expand_tokens_to_line(char **new_line, t_expand_token *tokens)
 {
 	int len;
 

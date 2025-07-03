@@ -1,0 +1,40 @@
+======================================
+data: [[33mcat[0m],size[3] splitable: [1], join: [0]
+======================================
+<cat>[3]
+(cat)[3]
+------------------------------------------------------------------------------------
+======================================
+data: [[33mls[0m],size[2] splitable: [1], join: [0]
+======================================
+<ls>[2]
+(ls)[2]
+------------------------------------------------------------------------------------
+ayoub
+debug
+env
+execution
+file
+   hello 
+hello
+include
+L
+_libft
+log.txt
+makefile
+massrayb
+massraybayoub
+massraybayoubmassrayb
+minishell
+minishell.c
+minishell.o
+out.txt
+parsing
+README.md
+split2.c
+s.sh
+test_comd.txt
+test.sh
+todo
+wildcard
+younes.txt

@@ -64,7 +64,7 @@ int check_back(t_token *token, int i)
 
 
 
-int validate_open_parenths(t_token *token)
+int	validate_open_parenths(t_token *token)
 {
 	int p;
 	int	i;
@@ -75,9 +75,7 @@ int validate_open_parenths(t_token *token)
 	{
 		if (token[i].type == PAREN_OPEN)
 		{
-			if (!check_back(token, i))
-				return (0);
-			p = 0;
+			p = 1;
 			j = i;
 			while (token[++j].data)
 			{

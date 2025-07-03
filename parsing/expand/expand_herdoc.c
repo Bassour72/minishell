@@ -24,10 +24,10 @@ int expand_herdoc(char **herdoc_line, t_env *env)
 	int i = 0;
 	while (line[i])
 	{
-		if (line[i] == '$' && line[i + 1] != '\0' && !ft_isspace(line[i + 1]) && line[i + 1] != '\'' && line[i + 1] != '\"')
+		if (line[i] == '$' && line[i + 1] != '\0')
 		{
 			
-			if (is_valid_key_char(line[i + 1], 0))
+			if (is_valid_key_char(line[i + 1], 0) || line[i + 1] != '?')
 			{
 				if (extract_var_value(line + i + 1, &i, &value, env) == R_FAIL)
 				{

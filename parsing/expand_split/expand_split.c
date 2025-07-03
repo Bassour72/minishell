@@ -49,6 +49,7 @@ int expand_split2(t_node **list, char *str)
 	i = 0;
 	while (*(str + i) != '\0')
 	{
+		printf("%d\n", i);
 		skip_spaces(str, &i);
 		if (*(str + i) == '\"' || *(str + i) == '\'')
 		{

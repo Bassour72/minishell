@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:13:41 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/29 21:14:11 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/03 15:55:21 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,5 @@ void	free_tree(t_tree *root)
 	if (root->left)
 		free_tree(root->left);
 	free_tree_node(root);
+	
 }

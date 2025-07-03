@@ -1,29 +1,20 @@
+herdoc expander
+^^^^doing^^^^
+wc perm denied
+ambiguous when only space in variable
+sytax_error
 
 echo *.*
-herdoc expander
-sytax error
-<<<<<<< HEAD
-$''
-=======
->>>>>>> execution
 
 l7wya dyal Omar ----------> white spaces ls \tb\tb\tb -la
 
 wildcard problem enforcemanet
 
-<< 't' cat
-> t
-> 't'
-t
 
 declare -x a="x y z"
 minishell$ export b=$a
 export: `z"': not a valid identifier
 
-
-
-
-<<<<<<< HEAD
 export: `b%b=ls -la': not a valid identifier
 
 minishell$ export l=""$a b%b="$a"
@@ -44,8 +35,6 @@ export +=
 
 export a=$b$b
 
-=======
->>>>>>> execution
 
 
 minishell$ $ldgksmkdhhdshdhdsdjdjs

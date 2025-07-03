@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expander_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:14:56 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/02 09:24:24 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/03 20:20:22 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	extract_var_value(char *src, int *i, char **dst, t_env *env)
 	if (extarct_var_key(src + 1, &key) == R_FAIL)
 		return (R_FAIL);
 	if (!key)
-		*dst = NULL;
+		return (*dst = NULL, R_SUCCESS);
 	value = env_get_value(env, key);
 	// check_and_replace(value);
 	update_value(value);

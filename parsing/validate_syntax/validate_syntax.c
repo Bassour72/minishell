@@ -32,13 +32,43 @@ static void put_redirections_syntax_error_msg(t_type type)
 		printf("syntax error near unexpected token `<\'\n");
 }
 
+int	validate_ppp(t_token *tokens)
+{
+	int	i = -1;
+	int	p = 0;
+
+
+	while (tokens[++i].data)
+	{
+		if (tokens[i].type == PAREN_OPEN || tokens[i].type == PAREN_CLOSE)
+		{
+			if(tokens[i].type == PAREN_OPEN)
+			{
+			 	if (i && !is_op(tokens[i - 1].type) && tokens[i - 1].type != PAREN_OPEN)// cmd (
+					return (printf("syntax error near unexpected token `(\'\n"), 0);
+				p++;
+			}
+			if (tokens[i].type == PAREN_CLOSE)
+			{
+				if ((tokens[i + 1].data && tokens[i + 1].type == PAREN_OPEN) || (i && tokens[i - 1].type == PAREN_OPEN))
+					return (printf("syntax error near unexpected token `)\'\n"), 0);
+				p--;
+			}
+		}
+	}
+	if (p > 0)
+		return (printf("syntax error near unexpected token `(\'\n"), R_FAIL);
+	else if(p < 0)
+		return (printf("syntax error near unexpected token `)\'\n"), R_FAIL);
+	return (R_SUCCESS);
+}
+
 int validate_sytax(t_token *token)
 {
 	int i;
 	i = -1;
-
-	if (!validate_open_parenths(token) || !validate_close_parenths(token))
-		return (0);
+	if (validate_ppp(token) == R_FAIL)
+		return (R_FAIL);
 	while (token[++i].data)
 	{
 		if (_is_red(token[i].type) && (!token[i + 1].data || token[i + 1].type != T_FILE_NAME))
