@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expander_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:14:56 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/03 20:20:22 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/03 22:30:43 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,10 @@ int	extract_var_value(char *src, int *i, char **dst, t_env *env)
 	char	*key;
 	char	*value;
 
+	// printf("[%s]\n", src);
 	if (extarct_var_key(src + 1, &key) == R_FAIL)
 		return (R_FAIL);
+	// printf("key: %s\n", key);
 	if (!key)
 		return (*dst = NULL, R_SUCCESS);
 	value = env_get_value(env, key);

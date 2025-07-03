@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:21:42 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/03 20:18:05 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/03 22:20:01 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	generate_new_data_str_red(char **dst, char *str)
 		str++;
 	}
 	*(*dst + i) = '\0';
-	print(*dst);
+	// print(*dst);
 	return (R_SUCCESS);
 }
 

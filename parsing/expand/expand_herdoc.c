@@ -2,17 +2,68 @@
 
 int join_line(char **str1, char *str2)
 {
-	char *old_str1;
+	char *new_str;
 
-	old_str1 = *str1;
-	*str1 = ft_strjoin(*str1, str2);
-	free(old_str1);
+	new_str = *str1;
+	new_str = ft_strjoin(*str1, str2);
+	free(*str1);
 	free(str2);
-	if (!*str1)
+	if (!new_str)
 		return (perror("error: "), R_FAIL);
+	*str1 = new_str;
 	return (R_SUCCESS);
 }
 
+static int expand_variable(char *line, int *i, char **result, t_env *env)
+{
+	char	*value;
+
+	value = NULL;
+
+	if (is_valid_key_char(line[(*i) + 1], 0) || line[(*i) + 1] == '?')
+	{
+		if (extract_var_value(line + *i, i, &value, env) == R_FAIL)
+			return (free(*result), R_FAIL);
+		if (value &&  join_line(result, value) == R_FAIL)
+				return (R_FAIL);
+	}
+	else if (line [(*i) + 1] && line[(*i) + 1] != '\'' && line[(*i) + 1] != '\"')
+		(*i) += 2;
+	else 
+		(*i) += 1;
+	return (R_SUCCESS);
+}
+
+static int save_normal(char *line, int *i, char **result)
+{
+	int		len;
+	char	*value;
+
+	value = NULL;
+	len = (*i) + 1;
+	while (line[len] && line[len] != '$')
+		len++;
+	value = ft_substr(line, *i, len - *i);
+	if (!value)
+		return (perror("error: "), free(*result), R_FAIL);
+	if (join_line(result, value) == R_FAIL)
+		return (R_FAIL);
+	*i = len;
+	return (R_SUCCESS);
+}
+
+static int finalize_herdoc_expander(char **herdoc_line, char *result)
+{
+	free(*herdoc_line);
+	*herdoc_line = result;
+	if (!*herdoc_line)
+	{
+		*herdoc_line = calloc(1, 1);
+		if (!*herdoc_line)
+			return (R_FAIL);
+	}
+	return (R_SUCCESS);
+}
 int expand_herdoc(char **herdoc_line, t_env *env)
 {
 	char *line;
@@ -26,49 +77,14 @@ int expand_herdoc(char **herdoc_line, t_env *env)
 	{
 		if (line[i] == '$' && line[i + 1] != '\0')
 		{
-			
-			if (is_valid_key_char(line[i + 1], 0) || line[i + 1] != '?')
-			{
-				if (extract_var_value(line + i + 1, &i, &value, env) == R_FAIL)
-				{
-					//cleaup and return;
-					free(result);
-					return (R_FAIL);
-				}
-				if (value)
-				{
-					if (join_line(&result, value) == R_FAIL)
-					{
-						//cleaup and return;
-						return (R_FAIL);
-					}
-				}
-
-			}
-			else
-				i +=2;
+			if (expand_variable(line, &i, &result, env) == R_FAIL)
+				return (R_FAIL);
 		}
 		else
 		{
-			len = i + 1;
-			while (line[len] && line[len] != '$')
-				len++;
-			value = ft_substr(line, i, len - i);
-			if (!value)
-			{
-				//cleaup and return;
-				free(result);
+			if (save_normal(line, &i, &result) == R_FAIL)
 				return (R_FAIL);
-			}
-			if (join_line(&result, value) == R_FAIL)
-			{
-				//cleaup and return;
-				return (R_FAIL);
-			}
-			i = len;
 		}
 	}
-	free(*herdoc_line);
-	*herdoc_line = result;
-	return (R_SUCCESS);
+	return (finalize_herdoc_expander(herdoc_line, result));
 }
