@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:21:42 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/03 22:20:01 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/03 23:07:36 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,20 @@ static int	remove_non_printable_chars(t_red *reds)
 	}
 	return (R_SUCCESS);
 }
+static int is_empty(char *str)
+{
+	while (*str)
+	{
+		if (!ft_isspace(*str))
+			return (1);
+		str++;
+	}
+	return (0);
+}
 
 void	set_new_data_or_ambiguous(t_red *red_node, t_node *splited_line)
 {
-	if (splited_line && (splited_line->data && !splited_line->next))
+	if (splited_line && splited_line->data && !is_empty(splited_line->data) && !splited_line->next )
 	{
 		free(red_node->data);
 		red_node->data = splited_line->data;
