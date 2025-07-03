@@ -85,10 +85,10 @@ int expand(char ***new_args, t_env *env)
 	*new_args = NULL;
 	if (tokenize(line, &tokens, env) == R_FAIL)
 		return (free(line), R_FAIL);
+	free(line);
 	if (check_empty(tokens))
 		return (R_CONTINUE);
-	// print_expand_tokens(tokens);
-	free(line);
+	print_expand_tokens(tokens);
 	if (expand_tokens_to_line(&new_line, tokens) == R_FAIL)
 		return (free_expand_tokens_list(tokens), R_FAIL);
 		// print(new_line);
@@ -100,19 +100,19 @@ int expand(char ***new_args, t_env *env)
 	free(new_line);
 	if (expand_list_to_array(new_args, splited_line) == R_FAIL)
 		return (R_FAIL);
-	// for(int i = 0; (*new_args)[i]; i++)
-	// {
-	// 	printf("<%s>[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
-	// }
+	for(int i = 0; (*new_args)[i]; i++)
+	{
+		printf("<%s>[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
+	}
 	if(wildcard(new_args) == R_FAIL)
 		return (R_FAIL);
 	if(remove_non_printable_characters(new_args) == R_FAIL)
 		return (R_FAIL);
+	recover_quotes(*new_args);
 	// for(int i = 0; (*new_args)[i]; i++)
 	// {
 	// 	printf("(%s)[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
 	// }
-	recover_quotes(*new_args);
 	// print("------------------------------------------------------------------------------------");
 	return (R_SUCCESS);
 }

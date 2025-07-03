@@ -123,7 +123,7 @@ int main(int ac, char **av, char **env)
 		// lable parsing tests========
 		//  t_env *env_l = NULL;
 		//  env_generate(&env_l, env);
-		// print_tree(tree, 0);
+		//  print_tree(tree, 0);
 		// expand_redir(tree->redirections, env_list);
 		// printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 		status = execution(tree,&env_list);

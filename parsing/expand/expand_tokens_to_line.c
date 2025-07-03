@@ -14,6 +14,16 @@ int calculate_new_line_len(t_expand_token *tokens)
 	return (len);
 }
 
+static int	is_valid(t_expand_token *token)
+{
+	if (token->join == 1 || (token->prev && token->prev->join == 1))
+	{
+		if (ft_strlen(token->data) == 2 && token->data[0] == token->data[1] && (token->data[0] == '\"' || token->data[0] == '\''))
+			return (0);
+	}
+	return (1);
+}
+
 int expand_tokens_to_line(char **new_line, t_expand_token *tokens)
 {
 	int len;
@@ -26,9 +36,12 @@ int expand_tokens_to_line(char **new_line, t_expand_token *tokens)
 	{
 		if(tokens->data)
 		{
-			ft_strlcat(*new_line, tokens->data, len);
-			if(tokens->next && !tokens->join)
-				ft_strlcat(*new_line, " ", len);
+			if (is_valid(tokens))
+			{
+				ft_strlcat(*new_line, tokens->data, len);
+				if(tokens->next && !tokens->join)
+					ft_strlcat(*new_line, " ", len);
+			}
 		}
 		tokens = tokens->next;
 	}

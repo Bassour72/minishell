@@ -131,7 +131,7 @@ static int	link_env_nodes(t_env **env_list)
 		free(oldpwd);
 		return (1);
 	}
-	exit_status = create_env_node("exit_status@gmail.com", NULL, 0, 1);
+	exit_status = create_env_node("exit_status@gmail.com", "0", 0, 1);
 	if (exit_status == NULL)
 	{
 		free(path_node->key);
