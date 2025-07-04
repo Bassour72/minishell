@@ -74,7 +74,8 @@ static char *get_env_value1(const char *identifier)
 
 	if (!identifier[i])
 		return (NULL);
-	return (ft_strtrim(identifier + i + 1, "\""));
+		
+	return (ft_strdup(identifier + i + 1));
 }
 
 static void swap_node(t_env *a, t_env *b)
@@ -171,7 +172,7 @@ static void print_env_export_sort(t_env *env_list)
 	tmp = sorted_list;
 	while (tmp)
 	{
-		if (tmp->value && tmp->is_remove != 0)
+		if (tmp->value)
 		{
 			if (tmp->exported)
 				printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);

@@ -108,11 +108,11 @@ int expand(char ***new_args, t_env *env)
 	// 	return (R_FAIL);
 	if(remove_non_printable_characters(new_args) == R_FAIL)
 		return (R_FAIL);
-	// for(int i = 0; (*new_args)[i]; i++)
-	// {
-	// 	printf("(%s)[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
-	// }
 	recover_quotes(*new_args);
+	for(int i = 0; (*new_args)[i]; i++)
+	{
+		printf("(%s)[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
+	}
 	// print("------------------------------------------------------------------------------------");
 	return (R_SUCCESS);
 }

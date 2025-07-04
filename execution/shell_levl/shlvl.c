@@ -84,8 +84,6 @@ int update_env_shlvl(t_env **env_list, long value)
 		}
 		tmp = tmp->next;
 	}
-	//todo Add new SHLVL if not found
-	//return env_add_back(env_list, "SHLVL", new_value);
 	return (0);
 }
 

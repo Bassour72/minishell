@@ -2,9 +2,23 @@
 
 void display_error(char *sms_error, char *target)
 {
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(target, STDERR_FILENO);
-	ft_putendl_fd(sms_error, STDERR_FILENO);
+	char *temp_sms_error;
+	char *temp_sms_error_;
+
+	temp_sms_error = NULL;
+	temp_sms_error_ = NULL;
+
+	temp_sms_error = ft_strjoin(target, sms_error);
+	if (!temp_sms_error)
+		return (perror("malloc:"));
+
+	temp_sms_error_ = ft_strjoin("minishell: ", temp_sms_error);
+	free(temp_sms_error);
+
+	if (!temp_sms_error_)
+		return (perror("malloc:"));
+	write(2, temp_sms_error_, ft_strlen(temp_sms_error_));
+	free(temp_sms_error_);
 }
 
 int handle_error_with_slash(char *cmd, bool should_print)
@@ -113,6 +127,7 @@ void run_command(t_tree *root,  t_env **env_list)
 		// ft_putendl_fd("Error: Empty command node \n", STDERR_FILENO);
 		//close(1);
 		free_tree(root);
+		free_env_list(*env_list);
 		exit(EXIT_FAILURE);
 	}
 	if (expand_redir(root->redirections, *env_list) == R_FAIL)
@@ -128,9 +143,12 @@ void run_command(t_tree *root,  t_env **env_list)
 	{
 		status = execute_builtin(root,  env_list);
 		free_tree(root);
+		free_env_list(*env_list);
 		exit(status);
 	}
 	execute_external_command(root, env_list);
+		free_tree(root);
+		free_env_list(*env_list);
 	exit(EXIT_FAILURE);
 }
 

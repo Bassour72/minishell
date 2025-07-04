@@ -106,16 +106,8 @@ static void	close_all_fds_(void)
 		if (!isatty(fd))
         {
 			if (read(fd, "", 0) != -1)
-			{
-				printf("hekkkkkkkkkkkkkkkkkkkkkk======================================*****************************************\n\n");
-				sleep(1);
 			    close(fd);
-			}
-            else
-            {
-                	printf("hekkkkkkkkkkkkkkkkkkkkkk======================================*****************************************\n\n");
-				sleep(1);
-            }
+			
         }
 		 ++fd;
 	}
@@ -139,8 +131,9 @@ int execution(t_tree *root,  t_env **env_list)
 			status = g_exit_status;
 		return (status);
 	}
-   // printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^1\n");
-	status = exec_tree(root, env_list,0);
+	status = exec_tree(root, env_list,0, false);
+    if (status == -1)
+        exit(-1);
   //  close_all_fds_();
     close_heredoc_fds(root,root->redirections);
     // if (is_forkred(root))

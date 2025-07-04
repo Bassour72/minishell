@@ -8,8 +8,6 @@ char *env_get_value(t_env *list, char *key)
 	{
 		if (ft_memcmp(list->key, key, ft_strlen(key) + 1) == 0)
 		{
-			// if (list->is_remove == 0)
-			// 	break ;
 			return (list->value);
 		}
 		list = list->next;
