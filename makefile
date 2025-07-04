@@ -5,8 +5,19 @@ NAME = minishell
 SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tree.c \
 		parsing/parser/clear_parsing.c parsing/parser/debug.c  parsing/parser/redirections.c \
 		parsing/commands.c\
-		parsing/tree/append_flat_tree_node.c parsing/tree/flat_tree.c\
-		parsing/split/split.c parsing/split/manage_normal.c parsing/split/manage_operators.c parsing/split/manage_parenth.c parsing/split/manage_quotes.c parsing/split/manage_redirections.c parsing/split/append_node.c\
+		parsing/tree/append_flat_tree_node.c\
+		parsing/tree/flat_tree.c\
+		parsing/tree/flat_tree_collectors.c\
+		parsing/tree/flat_tree_utils.c\
+		parsing/tree/parenths_block.c\
+		parsing/split/split.c\
+		parsing/split/manage_normal.c\
+		parsing/split/manage_operators.c\
+		parsing/split/manage_parenth.c\
+		parsing/split/manage_quotes.c\
+		parsing/split/manage_redirections.c\
+		parsing/split/append_node.c\
+		parsing/split/split_utils.c\
  		parsing/expand_split/expand_split.c\
 		parsing/expand_split/manage_normal.c\
 		parsing/expand/expand.c \
@@ -33,7 +44,9 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		parsing/expand/expand_list_to_array.c\
 		parsing/utils/get_list_size.c\
 		parsing/utils/tokenize_utils.c\
-		parsing/validate_syntax/validate_syntax.c parsing/validate_syntax/validate_quotes.c parsing/validate_syntax/validate_parenthecies.c\
+		parsing/validate_syntax/validate_syntax.c\
+		parsing/validate_syntax/validate_quotes.c\
+		parsing/validate_syntax/validate_syntax_utils.c\
 		wildcard/expand_wildcard.c\
 		wildcard/wildcard_utils.c\
 		wildcard/init_file_names.c\

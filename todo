@@ -1,5 +1,8 @@
-ambiguous when only space in variable
+norminette
+make errors at fd 2
+rm the split from tokenizer expand
 ^^^^doing^^^^
+ambiguous when only space in variable
 herdoc expander
 wc perm denied
 sytax_error

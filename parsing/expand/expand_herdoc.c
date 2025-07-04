@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_herdoc.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/05 00:16:36 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/05 00:18:48 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/parsing.h"
 
-int join_line(char **str1, char *str2)
+int	join_line(char **str1, char *str2)
 {
-	char *new_str;
+	char	*new_str;
 
 	new_str = *str1;
 	new_str = ft_strjoin(*str1, str2);
@@ -14,27 +26,27 @@ int join_line(char **str1, char *str2)
 	return (R_SUCCESS);
 }
 
-static int expand_variable(char *line, int *i, char **result, t_env *env)
+static int	expand_variable(char *line, int *i, char **result, t_env *env)
 {
 	char	*value;
 
 	value = NULL;
-
 	if (is_valid_key_char(line[(*i) + 1], 0) || line[(*i) + 1] == '?')
 	{
 		if (extract_var_value(line + *i, i, &value, env) == R_FAIL)
 			return (free(*result), R_FAIL);
-		if (value &&  join_line(result, value) == R_FAIL)
-				return (R_FAIL);
+		if (value && join_line(result, value) == R_FAIL)
+			return (R_FAIL);
 	}
-	else if (line [(*i) + 1] && line[(*i) + 1] != '\'' && line[(*i) + 1] != '\"')
+	else if (line [(*i) + 1] && line[(*i) + 1] != '\'' \
+	&& line[(*i) + 1] != '\"')
 		(*i) += 2;
-	else 
+	else
 		(*i) += 1;
 	return (R_SUCCESS);
 }
 
-static int save_normal(char *line, int *i, char **result)
+static int	save_normal(char *line, int *i, char **result)
 {
 	int		len;
 	char	*value;
@@ -52,7 +64,7 @@ static int save_normal(char *line, int *i, char **result)
 	return (R_SUCCESS);
 }
 
-static int finalize_herdoc_expander(char **herdoc_line, char *result)
+static int	finalize_herdoc_expander(char **herdoc_line, char *result)
 {
 	free(*herdoc_line);
 	*herdoc_line = result;
@@ -64,16 +76,17 @@ static int finalize_herdoc_expander(char **herdoc_line, char *result)
 	}
 	return (R_SUCCESS);
 }
-int expand_herdoc(char **herdoc_line, t_env *env)
+
+int	expand_herdoc(char **herdoc_line, t_env *env)
 {
 	char	*line;
 	char	*result;
 	int		len;
-	int		quote;
+	int		i;
 
 	result = NULL;
 	line = *herdoc_line;
-	int i = 0;
+	i = 0;
 	while (line[i])
 	{
 		if (line[i] == '$' && line[i + 1] != '\0')

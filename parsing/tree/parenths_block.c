@@ -1,38 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_list_to_array.c                             :+:      :+:    :+:   */
+/*   parenths_block.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/29 22:45:50 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 00:19:11 by massrayb         ###   ########.fr       */
+/*   Created: 2025/07/04 23:27:15 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/04 23:33:22 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-int	expand_list_to_array(char ***new_args, t_node *splited_line)
+int	close_parenths_block(t_tree **tree_node, int *i)
 {
-	t_node	*tmp;
-	int		i;
+	*tree_node = new_tree_node(BLOCK);
+	if (!*tree_node)
+		return (R_FAIL);
+	(*tree_node)->empty = -1;
+	(*i)++;
+	return (R_SUCCESS);
+}
 
-	*new_args = malloc(sizeof(char *) * (get_list_size(splited_line) + 1));
-	if (!*new_args)
-		return (perror("error: "), free(splited_line), R_FAIL);
-	tmp = splited_line;
-	i = 0;
-	while (tmp)
-	{
-		(*new_args)[i++] = tmp->data;
-		tmp = tmp->next;
-	}
-	(*new_args)[i] = NULL;
-	while (splited_line)
-	{
-		tmp = splited_line;
-		splited_line = splited_line->next;
-		free(tmp);
-	}
+int	open_parenths_block(t_token *token, t_tree **tree_node, int *i)
+{
+	*tree_node = new_tree_node(BLOCK);
+	if (!*tree_node)
+		return (R_FAIL);
+	(*tree_node)->empty = 1;
+	if (parenths_redirections(*tree_node, &token[*i]) == R_FAIL)
+		return (R_FAIL);
+	(*i)++;
 	return (R_SUCCESS);
 }

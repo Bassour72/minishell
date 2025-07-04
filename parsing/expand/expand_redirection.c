@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:21:42 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/04 15:37:36 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/05 00:20:04 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-static int is_empty(char *str)
+static int	is_empty(char *str)
 {
 	while (*str)
 	{
@@ -53,10 +53,8 @@ int	expand_redir(t_red *reds, t_env *env)
 {
 	t_expand_token	*tokens;
 	t_node			*splited_line;
-	t_red			*tmp;
-	char 			*new_line;
+	char			*new_line;
 
-	tmp = reds;
 	while (reds)
 	{
 		if (reds->type != HER_DOC)
@@ -76,6 +74,5 @@ int	expand_redir(t_red *reds, t_env *env)
 		}
 		reds = reds->next;
 	}
-	
 	return (R_SUCCESS);
 }

@@ -1,22 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   delimiter_clear_dollar.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/05 00:13:33 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/05 00:14:37 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/parsing.h"
 
-static int check_quote(int *quote, char c)
+static int	check_quote(int *quote, char c)
 {
 	if (c == '\'' || c == '\"')
 	{
 		if (*quote == 0)
 			*quote = c;
-		else if(*quote == c)
+		else if (*quote == c)
 			*quote = 0;
 	}
 	return (*quote);
 }
 
-static int calculate_delimiter_len_and_replace_dolars(char *str)
+static int	calculate_delimiter_len_and_replace_dolars(char *str)
 {
 	int	len;
-	int i;
-	int quote;
+	int	i;
+	int	quote;
 
 	quote = 0;
 	len = 0;
@@ -24,8 +36,8 @@ static int calculate_delimiter_len_and_replace_dolars(char *str)
 	while (*(str + ++i))
 	{
 		if (*(str + i) == '$' && check_quote(&quote, *(str + i + 1)) == 0 && \
-		*(str + i + 1) && !ft_isspace(*(str + i + 1)) && (*(str + i + 1) == '\"' || \
-		*(str + i + 1) == '\''))
+		*(str + i + 1) && !ft_isspace(*(str + i + 1)) \
+		&& (*(str + i + 1) == '\"' || *(str + i + 1) == '\''))
 			*(str + i) = DOUBLE_QUOTE;
 		else
 			len++;
@@ -44,7 +56,6 @@ char	*delimiter_clear_dollar(char *str)
 	new_str = malloc(len + 1);
 	if (!new_str)
 		return (perror("error: "), NULL);
-	
 	i = -1;
 	j = 0;
 	while (*(str + ++i))

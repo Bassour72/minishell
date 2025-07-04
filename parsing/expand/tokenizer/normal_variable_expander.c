@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:22:03 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/02 14:31:18 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/05 00:30:38 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static int	is_befor_var_valid(t_expand_token *tokens)
 {
 	while (tokens->next)
 		tokens = tokens->next;
-		// if (ft_strcmp(tokens->data, "=") == 0 || ft_strcmp(tokens->data, "+=") == 0 || !tokens->data[0])
 	if (ft_strcmp(tokens->data, "=") == 0)
 		tokens = tokens->prev;
 	if (tokens->join == 1 && tokens->split == 1 && is_valid_key(tokens->data))
@@ -52,6 +51,7 @@ int	normal_variable_expander(char *str, int *i, t_expand_token **tokens, \
 	char	*data;
 	int		join;
 	int		split;
+	char	*tmp;
 
 	data = NULL;
 	if (!is_valid_key_char(str[*i + 1], 0) && str[*i + 1] != '?')
@@ -63,7 +63,6 @@ int	normal_variable_expander(char *str, int *i, t_expand_token **tokens, \
 	{
 		if (is_befor_var_valid(*tokens))
 		{
-			char *tmp;
 			int len = ft_strlen(data) + 3;
 			tmp = ft_calloc(len, 1);
 			ft_strlcat(tmp, "\"", len);

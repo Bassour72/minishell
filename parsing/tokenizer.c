@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/04 22:08:37 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/04 22:08:56 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/parsing.h"
 
 static int	convert_operators(t_token *tokenized_input, t_node *splitted_input, \
@@ -77,7 +89,7 @@ int	convert_inputs_to_tokens(t_token *tokenized_input, t_node *splitted_input)
 }
 
 int	tokenizer(t_token **tokenized_input, char *input)
-{	
+{
 	t_node	*splitted_input;
 
 	splitted_input = NULL;

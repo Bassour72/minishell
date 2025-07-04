@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_herdoc_delimiter.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/05 00:15:06 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/05 00:35:23 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/parsing.h"
 
 static int	check_quote(int *quote, char c)
@@ -32,7 +44,7 @@ static int	calculate_eof_size(char *str)
 	while (*(str + ++i))
 	{
 		if (check_quote(&quote, *(str + i)) == R_CONTINUE)
-			continue;
+			continue ;
 		size++;
 	}
 	return (size);
@@ -57,21 +69,21 @@ static int	remove_quotes_from_delimiter(char **dst, char *str)
 		str++;
 	}
 	*(*dst + i) = '\0';
-	// print(*dst);
 	return (R_SUCCESS);
 }
 
 int	expand_herdoc_delimiter(t_red *reds, t_env *env)
 {
 	char	*new_data;
-	
+
 	while (reds)
 	{
-		if(reds->type == HER_DOC)
+		if (reds->type == HER_DOC)
 		{
-			if ((reds->data = delimiter_clear_dollar(reds->data)) == NULL)
+			reds->data = delimiter_clear_dollar(reds->data);
+			if (reds->data == NULL)
 				return (R_FAIL);
-			if (remove_quotes_from_delimiter(&new_data, reds->data) == R_FAIL) //this may cause leaks
+			if (remove_quotes_from_delimiter(&new_data, reds->data) == R_FAIL)
 				return (R_FAIL);
 			free(reds->data);
 			reds->data = new_data;

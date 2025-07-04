@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:14:56 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/03 22:30:43 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/05 00:29:09 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	extarct_var_key(char *str, char **key)
 
 static void	check_and_replace(char *value)
 {
-	if (!value)	
+	if (!value)
 		return ;
 	while (*value)
 	{
@@ -66,10 +66,11 @@ static void	check_and_replace(char *value)
 		value++;
 	}
 }
-static void update_value(char *value)
+
+static void	update_value(char *value)
 {
 	if (!value)
-		return;
+		return ;
 	while (*value)
 	{
 		if (*value == '\"')
@@ -85,14 +86,11 @@ int	extract_var_value(char *src, int *i, char **dst, t_env *env)
 	char	*key;
 	char	*value;
 
-	// printf("[%s]\n", src);
 	if (extarct_var_key(src + 1, &key) == R_FAIL)
 		return (R_FAIL);
-	// printf("key: %s\n", key);
 	if (!key)
 		return (*dst = NULL, R_SUCCESS);
 	value = env_get_value(env, key);
-	// check_and_replace(value);
 	update_value(value);
 	if (ft_strcmp("exit_status@gmail.com", key) == 0)
 		(*i) += 2;
@@ -107,9 +105,7 @@ int	extract_var_value(char *src, int *i, char **dst, t_env *env)
 	}
 	else
 	{
-		// *dst = NULL;
 		*dst = calloc(1, 1);
-		// *dst[0] = 255;
 	}
 	return (R_SUCCESS);
 }

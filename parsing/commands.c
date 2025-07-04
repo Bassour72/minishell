@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   commands.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/04 22:09:14 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/04 22:10:03 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../include/parsing.h"
 
@@ -24,7 +35,7 @@ static char	**copy_old_list_to_new(char **old_list, char **new_list, int *_i)
 	{
 		new_list[i] = ft_strdup(old_list[i]);
 		if (!new_list[i])
-		{	
+		{
 			free_2d_arr(old_list);
 			free_2d_arr(new_list);
 			return (perror("error: "), NULL);
