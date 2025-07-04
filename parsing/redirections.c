@@ -1,8 +1,8 @@
-
 #include "../include/parsing.h"
-static t_red *new_redirection(char *data, t_type type)
+
+static t_red	*new_redirection(char *data, t_type type)
 {
-	t_red *new_red;
+	t_red	*new_red;
 
 	if (!data)
 		return (NULL);
@@ -14,7 +14,7 @@ static t_red *new_redirection(char *data, t_type type)
 	return (new_red);
 }
 
-void append_redirection(t_red *redirections_list, char *data, t_type type)
+void	append_redirection(t_red *redirections_list, char *data, t_type type)
 {
 	if (!redirections_list)
 		return (NULL);

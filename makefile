@@ -27,9 +27,12 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		parsing/expand/utils/array_to_list.c \
 		parsing/expand/utils/join_array.c\
 		parsing/expand/expand_redirection.c\
+		parsing/expand/delimiter_clear_dollar.c\
+		parsing/expand/expand_herdoc_delimiter.c\
 		parsing/expand/build_args_list.c\
 		parsing/expand/expand_list_to_array.c\
 		parsing/utils/get_list_size.c\
+		parsing/utils/tokenize_utils.c\
 		parsing/validate_syntax/validate_syntax.c parsing/validate_syntax/validate_quotes.c parsing/validate_syntax/validate_parenthecies.c\
 		wildcard/expand_wildcard.c\
 		wildcard/wildcard_utils.c\

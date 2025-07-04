@@ -66,11 +66,12 @@ static int finalize_herdoc_expander(char **herdoc_line, char *result)
 }
 int expand_herdoc(char **herdoc_line, t_env *env)
 {
-	char *line;
-	char *result = NULL;
-	char *value = NULL;
+	char	*line;
+	char	*result;
 	int		len;
+	int		quote;
 
+	result = NULL;
 	line = *herdoc_line;
 	int i = 0;
 	while (line[i])

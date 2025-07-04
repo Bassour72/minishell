@@ -106,16 +106,16 @@ int	init_env(t_env **env_list); //  for minishell !!
 // }	t_node;
 
 //split.c
-int	split(t_node **list, char *str);
+int		split(t_node **list, char *str);
 int		is_special(char *c);
-int append_node(t_node **list, char **data);
-int	m_operators(t_node **list, char *str, int *i);
-int m_parenth(t_node **list, char *str, int *i);
-int	m_redirections(t_node **list, char *str, int *i);
-int	m_quotes( char *str, char **data, int *i);
-int m_normal(char *str, char **data, int *i);
-int	m_expand_normal(char *str, char **data, int *i);
-int expand_split2(t_node **list, char *str);
+int		append_node(t_node **list, char **data);
+int		m_operators(t_node **list, char *str, int *i);
+int		m_parenth(t_node **list, char *str, int *i);
+int		m_redirections(t_node **list, char *str, int *i);
+int		m_quotes( char *str, char **data, int *i);
+int		m_normal(char *str, char **data, int *i);
+int		m_expand_normal(char *str, char **data, int *i);
+int		expand_split2(t_node **list, char *str);
 
 
 
@@ -156,6 +156,9 @@ int get_list_size(t_node *list);
 
 //tokenizer.c
 int	tokenizer(t_token **tokenized_input, char *input);
+int	create_token(t_token *token, char *data, int type);
+int	count_splitted_input_nodes(t_node *splitted_input);
+void	free_splitted_input(t_node *splitted_inpt);
 void free_tokens_list(t_token *tokens);
 
 //tree
@@ -191,8 +194,10 @@ int validate_close_parenths(t_token *token);
 //expand
 int expand_redir(t_red *reds, t_env *env);
 int expand_herdoc(char **str, t_env *env);
+char	*delimiter_clear_dollar(char *str);
 int remove_non_printable_characters(char ***data);
 int	generate_new_data_str(char **dst, char *str);
+int	expand_herdoc_delimiter(t_red *reds, t_env *env);
 
 void print(char *s);//delete this
 
