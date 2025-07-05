@@ -95,8 +95,6 @@ int prepare_heredocs(t_tree *root, t_env **env_list)
 	if (!root)
 		return (0);
 	t_red *redir = root->redirections;
-	if (!redir)
-		return (0);
 	if (expand_herdoc_delimiter(redir, *env_list) == R_FAIL)
 		return (0);
 	while (redir)

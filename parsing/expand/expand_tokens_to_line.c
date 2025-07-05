@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:20:27 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 00:21:29 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/05 16:36:29 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ int	calculate_new_line_len(t_expand_token *tokens)
 	return (len);
 }
 
-static int	is_able_to_join(t_expand_token *token) //save this function for mac
+static int	is_able_to_join(t_expand_token *token)
 {
 	char	quote;
 
-	if (ft_strlen(token->data) == 2 && (token->next && token->next->data[0]))
+	if (ft_strlen(token->data) == 2 && token->join  && ((token->next && token->next->data[0]) || \
+	(!token->next)))
 	{
 		quote = token->data[0];
-		if ((quote == '\'' || quote == '\"') \
-		&& token->data[0] == token->data[1])
+		if ((quote == '\'' || quote == '\"') && token->data[0] == token->data[1])
 			return (0);
 	}
 	return (1);
@@ -50,7 +50,7 @@ int	expand_tokens_to_line(char **new_line, t_expand_token *tokens)
 		return (perror("error: "), R_FAIL);
 	while (tokens)
 	{
-		if (tokens->data)
+		if (tokens->data && is_able_to_join(tokens))
 		{
 			ft_strlcat(*new_line, tokens->data, len);
 			if (tokens->next && !tokens->join)

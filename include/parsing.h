@@ -121,7 +121,7 @@ void		split_cleaner(t_node *list);
 
 
 //parser.c
-int			parser(t_tree **tree, char *input);
+int			parser(t_tree **tree, char *input, t_env **env);
 void		free_tree(t_tree *root);
 void		print_tree(t_tree *root, int i);
 
@@ -212,4 +212,6 @@ int			expand_herdoc_delimiter(t_red *reds, t_env *env);
 
 void	print(char *s);//delete this
 
+
+void update_env_exit_status(t_env **env_list, int status);
 #endif

@@ -22,8 +22,8 @@ int	empty(char *str)
 
 void f()
 {
-	//system("leaks ./minishell");
-	system("ls -l /proc/self/fd");
+	system("lsof -c minishell");
+	// system("ls -l /proc/self/fd");
 	//system("ls -l /proc/$$/fd");
 	//system("ls -l /proc/self/fd > fd_log.txt"); // Or print per command with identifier
 
@@ -63,6 +63,7 @@ void handle_sigint_prompt(int sig)
 
 int main(int ac, char **av, char **env)
 {
+	atexit(f);
 	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
 		return (1);
 	t_tree	*tree = NULL;
@@ -106,18 +107,16 @@ int main(int ac, char **av, char **env)
 	
 		
 
-		if (parser(&tree, input) == R_FAIL)
-		{
+		if (parser(&tree, input, &env_list) == R_FAIL)
 			return (1);
-		}
 		if (!tree)
 			continue;
+		//  printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 		// lable parsing tests========
 		//  t_env *env_l = NULL;
 		//  env_generate(&env_l, env);
-		// print_tree(tree, 0);
+		//  print_tree(tree, 0);
 		// expand_redir(tree->redirections, env_list);
-		// printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
 		status = execution(tree,&env_list);
 		g_exit_status = status;
 		exit_str = ft_itoa(status);

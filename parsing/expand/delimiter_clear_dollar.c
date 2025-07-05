@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:13:33 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 00:14:37 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:52:00 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	calculate_delimiter_len_and_replace_dolars(char *str)
 	i = -1;
 	while (*(str + ++i))
 	{
-		if (*(str + i) == '$' && check_quote(&quote, *(str + i + 1)) == 0 && \
+		if (*(str + i) == '$' && check_quote(&quote, *(str + i)) == 0 && \
 		*(str + i + 1) && !ft_isspace(*(str + i + 1)) \
 		&& (*(str + i + 1) == '\"' || *(str + i + 1) == '\''))
 			*(str + i) = DOUBLE_QUOTE;

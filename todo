@@ -1,3 +1,10 @@
+
+
+
+echo $one or echo $physical_PWD  echo just print new line
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 norminette
 make errors at fd 2
 rm the split from tokenizer expand
@@ -320,7 +327,6 @@ bash-3.2$
 
 
 
-<<<<<<< HEAD
 
 
 minishell$ <  $hh cat | cat -e
@@ -328,5 +334,3 @@ redirection open failed: No such file or directory
 
 bash-3.2$  < $hh cat | cat -e
 bash: $hh: ambiguous redirect
-=======
->>>>>>> execution

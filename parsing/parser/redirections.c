@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:14:25 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/29 21:16:23 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/05 10:39:01 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	is_red(t_token *token)
 {
-	if (token->type == T_FILE_NAME || 
-		token->type == RED_INPUT ||
-		token->type == HER_DOC || 
-		token->type == RED_APPEND ||
+	if (token->type == T_FILE_NAME || \
+		token->type == RED_INPUT || \
+		token->type == HER_DOC || \
+		token->type == RED_APPEND || \
 		token->type == RED_TRUNK)
 	{
 		return (1);
@@ -25,7 +25,7 @@ int	is_red(t_token *token)
 	return (0);
 }
 
-int new_red(t_tree  *tree_node, t_type type, char *data)//checked
+int	new_red(t_tree *tree_node, t_type type, char *data)
 {
 	t_red	*new_red;
 	t_red	*last_red;
@@ -33,7 +33,6 @@ int new_red(t_tree  *tree_node, t_type type, char *data)//checked
 	new_red = malloc(sizeof(t_red));
 	if (!new_red)
 		return (free_tree_node(tree_node), R_FAIL);
-	
 	new_red->data = ft_strdup(data);
 	if (!new_red->data)
 	{
@@ -53,50 +52,50 @@ int new_red(t_tree  *tree_node, t_type type, char *data)//checked
 		last_red = tree_node->redirections;
 		while (last_red->next)
 			last_red = last_red->next;
-		last_red->next = new_red;	
+		last_red->next = new_red;
 	}
 	return (1);
 }
 
+static void	skip_what_inside_parenths(t_token *token, int *i)
+{
+	int	p;
 
+	p = 0;
+	while (token[*i].data)
+	{
+		if (token[*i].type == PAREN_OPEN)
+			p++;
+		else if (token[*i].type == PAREN_CLOSE)
+			p--;
+		if (p == 0)
+			break ;
+		(*i) += 1;
+	}
+}
 
 int	parenths_redirections(t_tree *tree_node, t_token *token)
 {
-	//lable this function looks for reds if '(' appeared o sf
 	t_red	*tmp_red;
-	int		p;
 	int		i;
 
 	i = 0;
-	p = 0;
-	while (token[i].data)//note walk tell the )
-	{
-		if (token[i].type == PAREN_OPEN)
-			p++;
-		else if (token[i].type == PAREN_CLOSE)
-			p--;
-		// printf("data = %s, p = %d\n", token[i].data, p);
-		if (p == 0)
-			break;
-		i++;
-	}
+	skip_what_inside_parenths(token, &i);
 	i++;
-	while (token[i].data)//note collect the reds after ')' symbol
+	while (token[i].data)
 	{
-	// printf("i = %d\n", i);
-		if ((token[i].type == RED_INPUT ||
-			token[i].type == HER_DOC || 
-			token[i].type == RED_APPEND ||
-			token[i].type == RED_TRUNK) && 
+		if ((token[i].type == RED_INPUT || \
+			token[i].type == HER_DOC || \
+			token[i].type == RED_APPEND || \
+			token[i].type == RED_TRUNK) && \
 			token[i].is_listed == 0)
 		{
 			(token + i)->is_listed = 1;
-
-			if  (new_red(tree_node, (token + i)->type, token[i + 1].data) == R_FAIL)
+			if (new_red(tree_node, (token + i)->type, token[i + 1].data) == 0)
 				return (R_FAIL);
 		}
-		else //note if the token after the ) is not a red break the loop
-			break;
+		else
+			break ;
 		i += 2;
 	}
 	return (R_SUCCESS);
