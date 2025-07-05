@@ -130,6 +130,7 @@ int cd_change_working_directory(t_tree *root, t_env **env)
         return free(arg), apply_cd_with_hyphen(env, old_pwd, NULL);
     if (!ft_strcmp(arg, ".."))
         return free(old_pwd), apply_cd_with_double_dots(root, env, arg);
+    ///return free(old_pwd), cd_dotdots_only(env);
     candidate = resolve_path(arg, *env);
     if (!candidate || chdir(candidate) != 0)
     {

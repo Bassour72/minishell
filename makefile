@@ -1,4 +1,4 @@
-CFLAGS = -fsanitize=address -g3 #-Wall -Wextra -Werror
+CFLAGS = # -fsanitize=address -g3 #-Wall -Wextra -Werror
 
 NAME = minishell
 
@@ -131,3 +131,4 @@ debug_mode_all: fclean all
 # ls && > out.out.txt 
 #ls && <  out.out_out.txt 
 #ls && > out
+#  << 1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 << 19 

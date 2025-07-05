@@ -37,8 +37,12 @@ int wildcard(char ***args)
         return (R_SUCCESS);
     file_names = NULL;
     args_list = NULL;
-    if (init_file_names(&file_names) == R_FAIL )
+    int state = init_file_names(&file_names);
+    if (state == R_FAIL )
         return (R_FAIL);
+    else if(state == 2)
+        return (R_SUCCESS);
+    
     if (init_args_list(&args_list, *args) == R_FAIL)
         return (free_2d_arr(*args), free_wc_node_list(file_names), R_FAIL);
 	free_2d_arr(*args);

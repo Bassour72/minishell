@@ -11,9 +11,13 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <stdbool.h>
+
 #define DIR_STATUS_NO_PER 11
 #define DIR_STATUS_NOT_EXI 12
 #define MAX_HEREDOC 16
+#define CMD_ERR_NOT_FOUND 127
+#define CMD_ERR_NO_PERMISSION 126
+
 extern int g_exit_status;
 typedef struct s_env_var 
 {
@@ -69,5 +73,8 @@ char * get_arg_cd(const char *arg);
  char *get_env_value(char *key, t_env *env);
 int diagnose_cd_error(const char *path, int print_error);
 int exec_tree(t_tree *root, t_env **env_list, int in_subshell);
+int should_display_error(char *cmd, t_env **env_list, bool should_print);
+int cd_dotdots_only(t_env **env_list);
+void close_heredoc_fds(t_tree *root, t_red *redir);
 //#endif
 

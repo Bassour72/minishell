@@ -100,12 +100,12 @@ int expand(char ***new_args, t_env *env)
 	free(new_line);
 	if (expand_list_to_array(new_args, splited_line) == R_FAIL)
 		return (R_FAIL);
-	for(int i = 0; (*new_args)[i]; i++)
-	{
-		printf("<%s>[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
-	}
-	if(wildcard(new_args) == R_FAIL)
-		return (R_FAIL);
+	// for(int i = 0; (*new_args)[i]; i++)
+	// {
+	// 	printf("<%s>[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
+	// }
+	// if(wildcard(new_args) == R_FAIL)
+	// 	return (R_FAIL);
 	if(remove_non_printable_characters(new_args) == R_FAIL)
 		return (R_FAIL);
 	recover_quotes(*new_args);

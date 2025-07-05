@@ -15,14 +15,6 @@ static char	*extract_path_variable(t_env **env_list)
 	return (NULL);
 }
 
-int	has_point(char *command)
-{
-	if (access(command, X_OK) == 0)
-		return (0);
-	if (command[0] == '.')
-		return (0);
-	return (1);
-}
 
 char	*check_valid_command_path(char *command)
 {
@@ -30,7 +22,6 @@ char	*check_valid_command_path(char *command)
 		return (NULL);
 	if (access(command, X_OK) == 0)
 	{
-		if (ft_strchr(command, '.') || ft_strchr(command, '/'))
 			return (ft_strdup(command));
 	}
 	return (NULL);
@@ -76,8 +67,6 @@ static char	*join_binary_path_with_command(char *command, char *binary_path)
 {
 	char	**binaries_path;
 
-	if (!has_point(command))
-		return (check_valid_command_path(command));
 	binaries_path = ft_split(binary_path, ':');
 	if (!binaries_path)
 		return (NULL);
@@ -96,10 +85,13 @@ char	*get_binary_file_path(t_tree *root, t_env **env_list)
 	}
     if (root->data[0][0] == '\0')
 		return (NULL);
+	if (ft_strchr(root->data[0], '.') || ft_strchr(root->data[0], '/'))
+	{
+		 if (should_display_error(root->data[0], env_list, false) != 0)
+		 	return (NULL);
+		return (check_valid_command_path(root->data[0]));
+	}
 	default_path = extract_path_variable(env_list);
-	if (!default_path)
-		return (NULL);
-	
 	binary_path = join_binary_path_with_command(root->data[0], default_path);
 	free(default_path);
 	return (binary_path);

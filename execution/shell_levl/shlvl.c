@@ -91,8 +91,9 @@ int update_env_shlvl(t_env **env_list, long value)
 
 int should_increment_shlvl(char *program_path)
 {
-	if (ft_strcmp(program_path, "./minishell") == 0)
-	{
+	if (ft_strcmp(program_path, "./minishell") == 0 || ft_strcmp(program_path, "minishell") == 0)
+	{ 
+		
 		return (0);
 	}
 	else

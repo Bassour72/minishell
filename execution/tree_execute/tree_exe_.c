@@ -30,13 +30,21 @@ static int exec_subshell(t_tree *root,t_env **env_list)
 
 	pid = fork();
 	if (pid < 0)
-		return (1);
+		return (perror("minshell :"), 1);
 	if (pid == 0)
 	{
 		if (expand_redir(root->redirections, *env_list) == R_FAIL)
+		{
+			free_tree(root);
+			free_env_list(*env_list);//update
 			exit(1);
+		}
 		if (apply_redirections(root->redirections, env_list) == 1)
+		{
+			free_tree(root);
+			free_env_list(*env_list);//update
 			exit(1);
+		}
 		exec_tree(root->left, env_list, 0);
 		exit(EXIT_SUCCESS);
 	}
@@ -80,16 +88,17 @@ static int exec_external_command(t_tree *root, t_env **env_list)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		if (expand_redir(root->redirections, *env_list) == R_FAIL)
-			exit(1);
-		if (apply_redirections(root->redirections, env_list) == 1)
 		{
+			free_tree(root);
+			free_env_list(*env_list);//update
 			exit(1);
 		}
-		// if (input_fd != STDIN_FILENO)
-		// {
-		// 	dup2(input_fd, STDIN_FILENO);
-		// 	close(input_fd);
-		// }
+		if (apply_redirections(root->redirections, env_list) == 1)
+		{
+			free_tree(root);
+			free_env_list(*env_list); //update
+			exit(1);
+		}
 		execute_external_command(root, env_list);
 		exit(EXIT_FAILURE);
 	}
@@ -102,11 +111,6 @@ static int exec_block_command(t_tree *root,  t_env **env_list, int in_subshell)
 		return (1);
 	if (in_subshell)
 	{
-		// if (input_fd != STDIN_FILENO)
-		// {
-		// 	dup2(input_fd, STDIN_FILENO);
-		// 	close(input_fd);
-		// }
 		run_command(root, env_list);
 		exit(EXIT_FAILURE);
 	}
