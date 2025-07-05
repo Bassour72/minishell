@@ -98,10 +98,16 @@ int	expand(char ***new_args, t_env *env)
 	if(remove_non_printable_characters(new_args) == R_FAIL)
 		return (R_FAIL);
 	recover_quotes(*new_args);
+	for(int i = 0; (*new_args)[i]; i++)
+	{
+		printf("(%s)[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
+	}
+
 	// for(int i = 0; (*new_args)[i]; i++)
 	// {
 	// 	printf("(%s)[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
 	// }
+
 	// print("------------------------------------------------------------------------------------");
 	return (R_SUCCESS);
 }

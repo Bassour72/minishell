@@ -23,7 +23,8 @@ int update_last_executed_command(t_env **env_list,char *key, char *last_command)
 		if (ft_strcmp(env_tmp->key, key) == 0)
 		{
 			free(env_tmp->value);
-			env_tmp->value = ft_strdup(last_command);
+			tmp_last_command = ft_strdup(last_command);
+			env_tmp->value = tmp_last_command;
 			free (last_command);
 			return 0;
 		}

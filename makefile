@@ -100,8 +100,9 @@ debug: fclean all #todo
 
 debugg: fclean all #todo 
 	valgrind --leak-check=full --show-leak-kinds=all ./minishell 
-de:
-	valgrind --leak-check=full --track-fds=yes bash 
+de: fclean all
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind.log ./minishell
+
 debug_mode_min:
 	valgrind --leak-check=full --show-leak-kinds=all ./minishell
 

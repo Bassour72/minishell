@@ -27,13 +27,14 @@ static int exec_subshell(t_tree *root,t_env **env_list)
 {
 	pid_t pid;
 	int status;
-
+	int exit_tree;
 	pid = fork();
 	if (pid < 0)
-		return (perror("minshell :"), 1);
+		return (perror("fork :"), -1);
 	if (pid == 0)
 	{
-		if (expand_redir(root->redirections, *env_list) == R_FAIL)
+		printf("here 2"); sleep(1);
+		if (root->redirections != NULL && expand_redir(root->redirections, *env_list) == R_FAIL)
 		{
 			free_tree(root);
 			free_env_list(*env_list);//update
@@ -45,8 +46,10 @@ static int exec_subshell(t_tree *root,t_env **env_list)
 			free_env_list(*env_list);//update
 			exit(1);
 		}
-		exec_tree(root->left, env_list, 0);
-		exit(EXIT_SUCCESS);
+		exit_tree = exec_tree(root->left, env_list, 0, true);
+		free_tree(root);
+		free_env_list(*env_list);
+		exit(exit_tree);
 	}
 	waitpid(pid, &status, 0);
 	return (WEXITSTATUS(status));
@@ -82,12 +85,12 @@ static int exec_external_command(t_tree *root, t_env **env_list)
 
 	pid = fork();
 	if (pid < 0)
-		return (1);
+		return (perror("fork :"), -1);
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		if (expand_redir(root->redirections, *env_list) == R_FAIL)
+		// signal(SIGINT, SIG_DFL);
+		// signal(SIGQUIT, SIG_DFL);;
+		if ( root->redirections != NULL && expand_redir( root->redirections, *env_list) == R_FAIL)
 		{
 			free_tree(root);
 			free_env_list(*env_list);//update
@@ -100,6 +103,8 @@ static int exec_external_command(t_tree *root, t_env **env_list)
 			exit(1);
 		}
 		execute_external_command(root, env_list);
+			free_tree(root);
+		free_env_list(*env_list);
 		exit(EXIT_FAILURE);
 	}
 	return (wait_child_status( pid, env_list));
@@ -112,11 +117,13 @@ static int exec_block_command(t_tree *root,  t_env **env_list, int in_subshell)
 	if (in_subshell)
 	{
 		run_command(root, env_list);
+			free_tree(root);
+		free_env_list(*env_list);
 		exit(EXIT_FAILURE);
 	}
 	if (root->data && is_builtin(root->data[0]) == 0)
 	{
-		if (expand_redir(root->redirections, *env_list) == R_FAIL)
+		if (root->redirections != NULL && expand_redir(root->redirections, *env_list) == R_FAIL)
 			return (1);
 		return (exec_builtin_command(root, env_list));
 	}
@@ -127,9 +134,9 @@ static int handle_and_operator(t_tree *root, t_env **env_list)
 {
 	int status;
 
-	status = exec_tree(root->left, env_list, 0);
+	status = exec_tree(root->left, env_list, 0,  false);
 	if (status == 0)
-		return (exec_tree(root->right, env_list, 0));
+		return (exec_tree(root->right, env_list, 0, false));
 	return (status);
 }
 
@@ -137,13 +144,13 @@ static int handle_or_operator(t_tree *root, t_env **env_list)
 {
 	int status;
 
-	status = exec_tree(root->left, env_list,0);
+	status = exec_tree(root->left, env_list,0, false);
 	if (status != 0)
-		return (exec_tree(root->right, env_list, 0));
+		return (exec_tree(root->right, env_list, 0, false));
 	return (status);
 }
 
-int exec_tree(t_tree *root, t_env **env_list,int in_subshell)
+int exec_tree(t_tree *root, t_env **env_list, int in_subshell,  bool is_child)
 {
 	if (!root)
 		return (1);
@@ -152,7 +159,7 @@ int exec_tree(t_tree *root, t_env **env_list,int in_subshell)
 	if (root->type == BLOCK)
 		return (exec_block_command(root, env_list, in_subshell));
 	if (root->type == PIPE)
-		return (exec_pipe(root,env_list));
+		return (exec_pipe(root,env_list, is_child));
 	if (root->type == OP_AND)
 		return (handle_and_operator(root, env_list));
 	if (root->type == OP_OR)
