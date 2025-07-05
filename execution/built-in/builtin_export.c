@@ -74,7 +74,7 @@ static char *get_env_value1(const char *identifier)
 
 	if (!identifier[i])
 		return (NULL);
-		
+
 	return (ft_strdup(identifier + i + 1));
 }
 

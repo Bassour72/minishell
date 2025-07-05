@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:36:33 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/02 11:06:56 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/05 00:11:44 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,6 @@ int	generate_new_data_str(char **dst, char *str)
 	*(*dst + i) = '\0';
 	return (R_SUCCESS);
 }
-// void	change_quotes(char *str)
-// {
-// 	while(*str)
-// 	{
-// 		if (*str == '\'')
-// 			*str = ""
-// 	}
-// }
 
 int	remove_non_printable_characters(char ***old_data)
 {
@@ -76,7 +68,6 @@ int	remove_non_printable_characters(char ***old_data)
 			(free_2d_arr(new_data), free_2d_arr(*old_data));
 			return (R_FAIL);
 		}
-		// change_quotes(new_data + i);
 	}
 	free_2d_arr(*old_data);
 	*old_data = new_data;

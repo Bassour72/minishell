@@ -1,62 +1,69 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   commands.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/04 22:09:14 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/04 22:10:03 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../include/parsing.h"
 
-void free_cmd_list(char **old_list)
+static char	**create_new_list(char *new_cmd)
 {
-	int i;
+	char	**new_list;
+
+	new_list = malloc(sizeof(char *) * 2);
+	if (!new_list)
+		return (perror("error: "), NULL);
+	new_list[0] = ft_strdup(new_cmd);
+	if (new_list[0] == NULL)
+		return (perror("error: "), free(new_list), NULL);
+	*(new_list + 1) = NULL;
+	return (new_list);
+}
+
+static char	**copy_old_list_to_new(char **old_list, char **new_list, int *_i)
+{
+	int	i;
 
 	i = -1;
 	while (old_list[++i])
-		free(old_list[i]);
-	free(old_list);
+	{
+		new_list[i] = ft_strdup(old_list[i]);
+		if (!new_list[i])
+		{
+			free_2d_arr(old_list);
+			free_2d_arr(new_list);
+			return (perror("error: "), NULL);
+		}
+	}
+	return (*_i = i, new_list);
 }
 
-char **append_command(char **old_list, char *new_cmd)//checked
+char	**append_command(char **old_list, char *new_cmd)
 {
-	int	size;
-	int	i;
-	int	j;
-	char **new_list;
+	int		size;
+	int		i;
+	char	**new_list;
 
-	if (!new_cmd) //todo maybe i dont need this
-		return (printf("Error: check append command |temp|\n"), NULL);
-	//LABLE : build new cmd list from 0
 	if (!old_list)
-	{
-		new_list = malloc(sizeof(char *) * 2);
-		if (!new_list)
-			return (perror("error: "), NULL);
-		new_list[0] = ft_strdup(new_cmd);
-		if (new_list[0] == NULL)
-			return (perror("error: "), free(new_list), NULL);
-		*(new_list + 1) = NULL;
-		return (new_list);
-	}
-	//lable : fill new list with old list + new cmd
+		return (create_new_list(new_cmd));
 	size = 0;
 	while (old_list[size++])
 		;
-		
 	new_list = malloc(sizeof(char *) * (size + 1));
 	if (!new_list)
-		return (perror("error: "), free_cmd_list(old_list), NULL); //note free old list
-		
-	i = -1;
-	while (old_list[++i]) 
-	{
-		new_list[i] = ft_strdup(old_list[i]);
-		if (!new_list[i]) //note free old + new list 
-		{	
-			free_cmd_list(old_list);
-			return (perror("error: "), free_cmd_list(new_list), NULL);
-		}
-	}
-
-	free_cmd_list(old_list);//note don't need old_list anymore
-
+		return (perror("error: "), free_2d_arr(old_list), NULL);
+	if (copy_old_list_to_new(old_list, new_list, &i) == NULL)
+		return (NULL);
+	free_2d_arr(old_list);
 	new_list[i] = ft_strdup(new_cmd);
 	if (new_list[i] == NULL)
-		return (perror("error: "), free_cmd_list(new_list), NULL);
+		return (perror("error: "), free_2d_arr(new_list), NULL);
 	new_list[i + 1] = NULL;
 	return (new_list);
 }

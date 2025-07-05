@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_list_size.c                                    :+:      :+:    :+:   */
+/*   split_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/04 22:30:28 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/04 22:30:49 by massrayb         ###   ########.fr       */
+/*   Created: 2025/07/04 23:38:52 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/04 23:59:01 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-int	get_list_size(t_node *list)
+void	split_cleaner(t_node *list)
 {
-	int	size;
+	t_node	*tmp;
 
-	size = 0;
 	while (list)
 	{
-		size++;
+		tmp = list;
 		list = list->next;
+		free(tmp->data);
+		free(tmp);
 	}
-	return (size);
+}
+
+void	skip_spaces(char *str, int *i)
+{
+	while (*(str + *i) && ft_isspace(*(str + *i)))
+		(*i)++;
 }

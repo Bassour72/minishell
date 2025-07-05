@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_normal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 09:54:04 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/02 09:26:33 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:36:30 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	get_normal_len(char *str)
 
 	len = 0;
 	while (*(str + len) && !ft_isspace(*(str + len)) && *(str + len) != '\'' \
-	&& *(str + len) != '\"' && !is_special(str + len))
+	&& *(str + len) != '\"')
 	{
 		len++;
 	}
