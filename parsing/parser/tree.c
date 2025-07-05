@@ -1,28 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tree.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/05 10:07:32 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/05 10:08:30 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/parsing.h"
 
-t_tree *new_tree_node(t_type type)
+t_tree	*new_tree_node(t_type type)
 {
-	t_tree *tree_node;
+	t_tree	*tree_node;
 
-	tree_node = malloc(sizeof(t_tree));//todo protect
+	tree_node = malloc(sizeof(t_tree));
 	if (!tree_node)
 		return (perror("error: "), NULL);
-	// printf("new_tree_node : %p\n", tree_node);
-	tree_node->data = NULL;//todo naming
+	tree_node->data = NULL;
 	tree_node->redirections = NULL;
 	tree_node->type = type;
-	tree_node->left = tree_node->right = NULL;
+	tree_node->left = NULL;
+	tree_node->right = NULL;
 	tree_node->empty = 0;
 	return (tree_node);
 }
 
-
-
-t_tree *init_tree(t_flat_tree *ft)
+t_tree	*init_tree(t_flat_tree *ft)
 {
-	t_flat_tree *flat;
-	t_flat_tree *right;
-	t_flat_tree *left;
+	t_flat_tree		*flat;
+	t_flat_tree		*right;
+	t_flat_tree		*left;
 	int p = 0;
 
 	flat =  flat_tree_last(ft);

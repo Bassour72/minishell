@@ -32,13 +32,16 @@ int wildcard(char ***args)
     t_wc_node	*file_names;
     t_wc_node	*args_list;
 	int			len;
+    int         state;
 
     if (!args)
         return (R_SUCCESS);
     file_names = NULL;
     args_list = NULL;
-    int state = init_file_names(&file_names);
-    if (state == R_FAIL )
+    state = init_file_names(&file_names);
+    if (state == R_CONTINUE)
+        return (R_CONTINUE);
+    else if (state == R_FAIL)
         return (R_FAIL);
     else if(state == 2)
         return (R_SUCCESS);

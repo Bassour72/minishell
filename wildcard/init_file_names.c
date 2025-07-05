@@ -1,22 +1,4 @@
 #include "../include/wildcard.h"
-#include <linux/limits.h>
-static char *init_cwd()
-{
-    char *cwd;
-    // char *tmp;
-
-    cwd = malloc(PATH_MAX);
-    if (!cwd)
-        return (perror("error: "), NULL);
-    // tmp = cwd;
-    if (!getcwd(cwd, PATH_MAX))
-    {
-        perror("error: ");
-        free(cwd);
-        return (NULL);
-    }
-    return (cwd);
-}
 
 static void change_quotes(char *str)
 {
@@ -68,12 +50,12 @@ int init_file_names(t_wc_node **file_names)
     DIR     *dir;
     struct dirent *dir_entry;
 
-    cwd = init_cwd();
+    cwd = getcwd(NULL, 0);
     if (!cwd)
-        return (R_FAIL);
+        return (R_CONTINUE);
     dir = opendir(cwd);
     if (!dir)
-        return (free(cwd), 2);
+        return (free(cwd), R_CONTINUE);
     errno = 0;
     while (errno == 0)
     {
@@ -86,6 +68,6 @@ int init_file_names(t_wc_node **file_names)
 	if (dir)
     	closedir(dir);
     if (errno != 0)
-        return (perror("error: "),free_wc_node_list(*file_names), free(cwd), R_FAIL);
+        return (free_wc_node_list(*file_names), free(cwd), R_CONTINUE);
     return (free(cwd), R_SUCCESS);
 }

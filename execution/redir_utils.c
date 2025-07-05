@@ -48,6 +48,8 @@ int write_heredoc(int fd, const char *limiter, t_env **env_list)
             free(line);
             break;
         }
+		if (expand_herdoc(&line, *env_list) == R_FAIL)
+			return (1);// check the return value on fail ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         write(fd, line, ft_strlen(line));
         write(fd, "\n", 1);
         free(line);
@@ -93,7 +95,7 @@ int prepare_heredocs(t_tree *root, t_env **env_list)
 	if (!root)
 		return (0);
 	t_red *redir = root->redirections;
-	if (!redir)
+	if (expand_herdoc_delimiter(redir, *env_list) == R_FAIL)
 		return (0);
 	if (expand_redir(redir, *env_list) == R_FAIL)
 		return (1);

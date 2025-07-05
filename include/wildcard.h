@@ -5,12 +5,12 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <dirent.h>
-#include <limits.h>
 #include <errno.h>
 
 
 #define R_FAIL 0
 #define R_SUCCESS 1
+#define R_CONTINUE 2
 #define SINGLE_QUOTE 14
 #define DOUBLE_QUOTE 15
 

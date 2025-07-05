@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   manage_parenth.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/04 23:36:35 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/04 23:37:05 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/parsing.h"
 
-static int open_p(t_node **list, char *str, int *i)
+static int	open_p(t_node **list, char *str, int *i)
 {
 	char	*data;
 	int		state;
@@ -15,7 +27,7 @@ static int open_p(t_node **list, char *str, int *i)
 	return (state);
 }
 
-static int close_p(t_node **list, char *str, int *i)
+static int	close_p(t_node **list, char *str, int *i)
 {
 	char	*data;
 	int		state;
@@ -30,13 +42,13 @@ static int close_p(t_node **list, char *str, int *i)
 	return (state);
 }
 
-int m_parenth(t_node **list, char *str, int *i)
+int	m_parenth(t_node **list, char *str, int *i)
 {
 	char	*data;
 	int		state;
 
 	state = 1;
-	data =  NULL;
+	data = NULL;
 	if (*(str + *i) == '(')
 		return (open_p(list, str, i));
 	else if (*(str + *i) == ')')

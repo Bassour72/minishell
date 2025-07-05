@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   manage_quotes.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/04 23:37:29 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/04 23:38:32 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/parsing.h"
 
-static int create_new_data(char *str, char **data, int *i)
+static int	create_new_data(char *str, char **data, int *i)
 {
-	int _i;
-	int len;
-	char *_data;
-	char qoute_type;
+	int		_i;
+	int		len;
+	char	*_data;
+	char	qoute_type;
 
 	_i = (*i) + 1;
 	qoute_type = *(str + *i);
@@ -17,7 +29,7 @@ static int create_new_data(char *str, char **data, int *i)
 	}
 	_i -= len - 1;
 	_data = malloc(len + 1);
-	if (!_data) //todo !!!!
+	if (!_data)
 		return (0);
 	ft_strlcpy(_data, str + _i, len + 1);
 	*data = _data;
@@ -25,17 +37,17 @@ static int create_new_data(char *str, char **data, int *i)
 	return (1);
 }
 
-static int join_data_to_old_data(char *str, char **data, int *i)
+static int	join_data_to_old_data(char *str, char **data, int *i)
 {
-	int len;
-	int _i;
-	int j;
-	char *_data;
-	char qoute_type;
+	int		len;
+	int		_i;
+	int		j;
+	char	*_data;
+	char	qoute_type;
 
 	_i = (*i) + 1;
 	qoute_type = *(str + *i);
-	len  = ft_strlen(*data);
+	len = ft_strlen(*data);
 	j = 2;
 	while (*(str + _i) && *(str + _i) != qoute_type)
 	{
