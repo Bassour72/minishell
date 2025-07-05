@@ -97,8 +97,6 @@ int prepare_heredocs(t_tree *root, t_env **env_list)
 	t_red *redir = root->redirections;
 	if (expand_herdoc_delimiter(redir, *env_list) == R_FAIL)
 		return (0);
-	if (root->redirections != NULL && expand_redir(redir, *env_list) == R_FAIL)
-		return (1);
 	while (redir)
 	{
 		if (redir->type == HER_DOC)

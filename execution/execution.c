@@ -96,22 +96,22 @@ void enforce_heredoc_limit(t_tree *root, t_env **env_list)
         exit(2);
     }
 }
-static void	close_all_fds_(void)
-{
-	int fd;
+// static void	close_all_fds_(void)
+// {
+// 	int fd;
 
-	fd = 3;
-	while (fd <= 40)
-    {
-		if (!isatty(fd))
-        {
-			if (read(fd, "", 0) != -1)
-			    close(fd);
+// 	fd = 3;
+// 	while (fd <= 40)
+//     {
+// 		if (!isatty(fd))
+//         {
+// 			if (read(fd, "", 0) != -1)
+// 			    close(fd);
 			
-        }
-		 ++fd;
-	}
-}
+//         }
+// 		 ++fd;
+// 	}
+// }
 int execution(t_tree *root,  t_env **env_list)
 {
 	int status;

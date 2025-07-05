@@ -91,19 +91,19 @@ void execute_external_command(t_tree *root,t_env **env_list)
 
 	if (!root->data || !root->data[0])
 	{
-		close(0);
-		close(1);
+		// close(0);
+		// close(1);
 		free_env_list(*env_list);
 		free_tree(root);
-		exit(127);
+		exit(0);
 	}
 	binary_path = get_binary_file_path(root,env_list);
 	if (!binary_path) 
 	{	
 		exit_status =  should_display_error(root->data[0], env_list, true);
 		close_heredoc_fds(root,root->redirections);
-		close(0);
-		close(1);
+		// close(0);
+		// close(1);
 		free_env_list(*env_list);
 		free_tree(root);
 		exit(exit_status);
@@ -153,3 +153,54 @@ void run_command(t_tree *root,  t_env **env_list)
 }
 
 
+// static void	handle_command_not_found(t_tree *root, t_env **env_list);
+// static char	*get_or_exit_if_invalid_binary(t_tree *root, t_env **env_list);
+// static void	final_exec_or_fail(char *path, t_tree *root, char **envp);
+
+// void	execute_external_command(t_tree *root, t_env **env_list)
+// {
+// 	char	*binary_path;
+// 	char	**new_env;
+
+// 	if (!root->data || !root->data[0])
+// 		handle_command_not_found(root, env_list);
+// 	binary_path = get_or_exit_if_invalid_binary(root, env_list);
+// 	new_env = gen_new_env(*env_list);
+// 	free_env_list(*env_list);
+// 	close_heredoc_fds(root, root->redirections);
+// 	final_exec_or_fail(binary_path, root, new_env);
+// }
+// static void	handle_command_not_found(t_tree *root, t_env **env_list)
+// {
+// 	close(0);
+// 	close(1);
+// 	free_env_list(*env_list);
+// 	free_tree(root);
+// 	exit(127);
+// }
+// static char	*get_or_exit_if_invalid_binary(t_tree *root, t_env **env_list)
+// {
+// 	char	*binary_path;
+// 	int		exit_status;
+
+// 	binary_path = get_binary_file_path(root, env_list);
+// 	if (!binary_path)
+// 	{
+// 		exit_status = should_display_error(root->data[0], env_list, true);
+// 		close_heredoc_fds(root, root->redirections);
+// 		close(0);
+// 		close(1);
+// 		free_env_list(*env_list);
+// 		free_tree(root);
+// 		exit(exit_status);
+// 	}
+// 	return (binary_path);
+// }
+// static void	final_exec_or_fail(char *path, t_tree *root, char **envp)
+// {
+// 	execve(path, root->data, envp);
+// 	perror("execve");
+// 	free(path);
+// 	free_tree(root);
+// 	exit(EXIT_FAILURE);
+// }

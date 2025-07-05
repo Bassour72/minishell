@@ -5,13 +5,10 @@ int wait_child_status( pid_t pid, t_env **env_list)
 	int status;
 	int sig;
 
-	// if (input_fd != STDIN_FILENO)
-	// 	close(input_fd);
-
-	waitpid(pid, &status, 0);
+	if (pid > 0)
+		waitpid(pid, &status, 0);
 	if (WIFEXITED(status)) //true if child exited normally.
 	{
-		int s = WTERMSIG(status); 
 		sig = WEXITSTATUS(status); // — gives the exit code. // Gets exit code (if WIFEXITED is true)
 		return (sig);
 	}
@@ -33,8 +30,7 @@ static int exec_subshell(t_tree *root,t_env **env_list)
 		return (perror("fork :"), -1);
 	if (pid == 0)
 	{
-		printf("here 2"); sleep(1);
-		if (root->redirections != NULL && expand_redir(root->redirections, *env_list) == R_FAIL)
+		if (expand_redir(root->redirections, *env_list) == R_FAIL)
 		{
 			free_tree(root);
 			free_env_list(*env_list);//update
@@ -85,12 +81,12 @@ static int exec_external_command(t_tree *root, t_env **env_list)
 
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork :"), -1);
+		return (perror("fork :"), -1); // update fork failure
 	if (pid == 0)
 	{
 		// signal(SIGINT, SIG_DFL);
 		// signal(SIGQUIT, SIG_DFL);;
-		if ( root->redirections != NULL && expand_redir( root->redirections, *env_list) == R_FAIL)
+		if (expand_redir( root->redirections, *env_list) == R_FAIL)
 		{
 			free_tree(root);
 			free_env_list(*env_list);//update
@@ -99,11 +95,11 @@ static int exec_external_command(t_tree *root, t_env **env_list)
 		if (apply_redirections(root->redirections, env_list) == 1)
 		{
 			free_tree(root);
-			free_env_list(*env_list); //update
+			free_env_list(*env_list);//update
 			exit(1);
 		}
 		execute_external_command(root, env_list);
-			free_tree(root);
+		free_tree(root);
 		free_env_list(*env_list);
 		exit(EXIT_FAILURE);
 	}
@@ -117,13 +113,13 @@ static int exec_block_command(t_tree *root,  t_env **env_list, int in_subshell)
 	if (in_subshell)
 	{
 		run_command(root, env_list);
-			free_tree(root);
+		free_tree(root);
 		free_env_list(*env_list);
 		exit(EXIT_FAILURE);
 	}
 	if (root->data && is_builtin(root->data[0]) == 0)
 	{
-		if (root->redirections != NULL && expand_redir(root->redirections, *env_list) == R_FAIL)
+		if (expand_redir(root->redirections, *env_list) == R_FAIL)
 			return (1);
 		return (exec_builtin_command(root, env_list));
 	}

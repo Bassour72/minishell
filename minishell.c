@@ -33,21 +33,13 @@ void f()
 
 void update_env_exit_status(t_env **env_list, int status)
 {
-    char *str = ft_itoa(status);
-    update_last_executed_command(env_list, "exit_status@gmail.com", str);
+	char *exit_str;
+
+	exit_str = ft_itoa(status);
+	update_last_executed_command(env_list, "exit_status@gmail.com", exit_str);
 }
 
-void print_debugg(char **env)
-{
-	while (*env != NULL)
-	{
-		printf("===[%s]\n", *env);
-		// sleep(2);
 
-		env++;
-	}
-	
-}
 
 //todo for debug
 void handle_sigint_prompt(int sig)
@@ -63,7 +55,7 @@ void handle_sigint_prompt(int sig)
 
 int main(int ac, char **av, char **env)
 {
-	atexit(f);
+	//atexit(f);
 	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
 		return (1);
 	t_tree	*tree = NULL;
@@ -71,8 +63,6 @@ int main(int ac, char **av, char **env)
 	char	*input;
 	input = NULL;
 	int status;
-	char Buffer[70];
-	char *exit_str;
 	signal(SIGINT, handle_sigint_prompt);
 	signal(SIGQUIT, SIG_IGN);
 
@@ -116,22 +106,12 @@ int main(int ac, char **av, char **env)
 			return (1);
 		if (!tree)
 			continue;
-		//  printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
-		// lable parsing tests========
-		//  t_env *env_l = NULL;
-		//  env_generate(&env_l, env);
 
 	//	print_tree(tree, 0);
-		// // expand_redir(tree->redirections, env_list);
-		// // printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^0\n");
-
-		//  print_tree(tree, 0);
-		// expand_redir(tree->redirections, env_list);
-		// printf("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^0\n");
+	
 		status = execution(tree,&env_list);
 		g_exit_status = status;
-		exit_str = ft_itoa(status);
-		update_last_executed_command(&env_list, "exit_status@gmail.com", exit_str);
+		void update_env_exit_status(env_list, status);
 		free_tree(tree);
 	}
 	free_env_list(env_list);

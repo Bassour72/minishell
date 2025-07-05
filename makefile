@@ -66,7 +66,8 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		execution/built-in/cd_utils.c \
 		execution/built-in/cd_arg_validation.c \
 		execution/tree_execute/tree_exe_.c \
-		execution/tree_execute/exec_pipe.c 
+		execution/pipe_exec/exec_pipe.c \
+		execution/pipe_exec/exec_pipe_utils.c 
 		# debug / memory_debugging.c 
 
 OBJ = $(SRC:.c=.o)

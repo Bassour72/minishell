@@ -75,7 +75,7 @@ int	expand(char ***new_args, t_env *env)
 	free(line);
 	if (check_empty(tokens))
 		return (R_CONTINUE);
-	print_expand_tokens(tokens);
+	//print_expand_tokens(tokens);
 	if (expand_tokens_to_line(&new_line, tokens) == R_FAIL)
 		return (free_expand_tokens_list(tokens), R_FAIL);
 		// print(new_line);

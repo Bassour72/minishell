@@ -76,5 +76,14 @@ int exec_tree(t_tree *root, t_env **env_list, int in_subshell,  bool is_child);
 int should_display_error(char *cmd, t_env **env_list, bool should_print);
 int cd_dotdots_only(t_env **env_list);
 void close_heredoc_fds(t_tree *root, t_red *redir);
+
+
+
+void	close_pipe_fds(int pipefd[2]);
+int is_fd_open(int fd);
+
+ void	close_all_fds_(void);
+
+ int	create_pipe(int pipefd[2]);
 //#endif
 

@@ -38,7 +38,7 @@ static char *resolve_path(char *arg, t_env *env)
         printf("%s\n", oldpwd);
         return (ft_strdup(oldpwd));
     }
-    return ft_strdup(arg);
+    return (ft_strdup(arg));
 }
 
 static int check_argument(t_tree *root)
@@ -119,7 +119,7 @@ int cd_change_working_directory(t_tree *root, t_env **env)
     old_pwd = getcwd(NULL, 0);
     if (!old_pwd)
     {
-        old_pwd = ft_strdup(get_env_value("PWD", *env));
+        old_pwd = ft_strdup(get_env_value("physical_PWD", *env));
         if (!old_pwd)
             return (1);
     }

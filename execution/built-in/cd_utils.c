@@ -75,7 +75,12 @@ static void	create_env_var(char *key, char *value, t_env **env)
 void	set_env_var(char *key, char *value, t_env **env)
 {
 	if (update_env_var(key, value, *env))
+	{
+		if (!ft_strcmp("PWD", key))
+			update_env_var("physical_PWD", value, *env);
 		return ;
+	}
+	update_env_var("physical_PWD", value, *env);
 	create_env_var(key, value, env);
 }
 
@@ -124,7 +129,7 @@ static int	count_double_dots(const char *path)
 
 static char	*build_logical_path(char *base, char *suffix)
 {
-    perror("cd: error retrieving current directory: getcwd: cannot access parent directories:\n");
+   perror("cd: error retrieving current directory: getcwd: cannot access parent directories:\n");
 	if (ft_strlen(suffix) > 2)
 		return (ft_strjoin(base, suffix));
 	return (ft_strjoin(base, "/.."));
@@ -198,11 +203,9 @@ int	apply_cd_with_double_dots(t_tree *root, t_env **env, char *arg)
 	char	*cwd;
 
 	(void)root;
-	logical_pwd = get_env_value("PWD", *env);
-    if (!logical_pwd)
-        old_pwd =  ft_strdup(logical_pwd);
-    else 
-        old_pwd = getcwd(NULL, 0);
+	old_pwd = NULL;
+	logical_pwd = get_env_value("physical_PWD", *env);
+    old_pwd =  ft_strdup(logical_pwd);
 	if (chdir(arg) == 0)
 	{
 		cwd = getcwd(NULL, 0);
