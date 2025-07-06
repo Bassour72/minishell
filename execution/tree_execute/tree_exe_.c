@@ -1,7 +1,5 @@
  #include "../../include/execution.h"
-
-
-
+ 
 static int exec_block_command(t_tree *root,  t_env **env_list, int in_subshell)
 {
 	if (root->data && expand(&root->data, *env_list) == R_FAIL)
@@ -9,7 +7,7 @@ static int exec_block_command(t_tree *root,  t_env **env_list, int in_subshell)
 	if (in_subshell)
 	{
 		run_command(root, env_list);
-		check_non_interactive_exit(root, env_list, 1);
+		check_non_interactive_exit(root, env_list, 1, true);
 	}
 	if (root->data && is_builtin(root->data[0]) == 0)
 	{

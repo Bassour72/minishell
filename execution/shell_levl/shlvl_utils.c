@@ -1,6 +1,6 @@
 #include "../../include/execution.h"
 
-int is_valid_shlvl_string(char *str)
+int	is_valid_shlvl_string(char *str)
 {
 	int i = 0;
 
@@ -17,32 +17,32 @@ int is_valid_shlvl_string(char *str)
 	return (1);
 }
 
-int env_add_back(t_env **env_list, const char *key, const char *value)
+int	env_add_back(t_env **env_list, const char *key, const char *value)
 {
-    t_env *new;
-    t_env *last;
+	t_env *new;
+	t_env *last;
 
-    new = malloc(sizeof(t_env));
-    if (!new)
-        return (1);
-    new->key = ft_strdup(key);
-    new->value = ft_strdup(value);
-    new->next = NULL;
-    if (!new->key || !new->value)
-        return (free(new->key), free(new->value), free(new), 1);
-    if (!*env_list)
-        *env_list = new;
-    else
-    {
-        last = *env_list;
-        while (last->next)
-            last = last->next;
-        last->next = new;
-    }
-    return (0);
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (1);
+	new->key = ft_strdup(key);
+	new->value = ft_strdup(value);
+	new->next = NULL;
+	if (!new->key || !new->value)
+		return (free(new->key), free(new->value), free(new), 1);
+	if (!*env_list)
+		*env_list = new;
+	else
+	{
+		last = *env_list;
+		while (last->next)
+			last = last->next;
+		last->next = new;
+	}
+	return (0);
 }
 
-long parse_shlvl(char *str)
+long	parse_shlvl(char *str)
 {
 	if (!is_valid_shlvl_string(str))
 		return (1);

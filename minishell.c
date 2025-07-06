@@ -45,14 +45,33 @@ void update_env_exit_status(t_env **env_list, int status)
 void handle_sigint_prompt(int sig)
 {
     (void)sig;
-   rl_replace_line("", 0);
+	if (waitpid(-1, NULL, WNOHANG) == 0)
+			return ;
     write(STDOUT_FILENO, "\n", 1);
+   rl_replace_line("", 0);
     rl_on_new_line();
    rl_redisplay();
     g_exit_status = 130;
 }
+void enable_echoctl(void)
+{
+    struct termios term;
 
+    if (tcgetattr(STDIN_FILENO, &term) == -1)
+        return;
+    term.c_lflag |= ECHOCTL;
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
 
+void disable_echoctl(void)
+{
+    struct termios term;
+
+    if (tcgetattr(STDIN_FILENO, &term) == -1)
+        return;
+    term.c_lflag &= ~ECHOCTL;
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
 int main(int ac, char **av, char **env)
 {
 	//atexit(f);
@@ -63,15 +82,17 @@ int main(int ac, char **av, char **env)
 	char	*input;
 	input = NULL;
 	int status;
+
 	signal(SIGINT, handle_sigint_prompt);
 	signal(SIGQUIT, SIG_IGN);
-
-	env_generate(&env_list, env); // check  if any  error
-	handle_shlvl(av[0],&env_list); // check if valid for update shlvl
+	env_generate(&env_list, env);
+	handle_shlvl(av[0],&env_list);
 	while (1)
 	{
 		signal(SIGINT, handle_sigint_prompt);
+		disable_echoctl();
 		input = readline("minishell$ ");
+		enable_echoctl();
 		if (g_exit_status == 130)
 		{
 			update_env_exit_status(&env_list, 130);
@@ -87,7 +108,6 @@ int main(int ac, char **av, char **env)
 			//free_tree(tree);
 			exit(status);
 		}
-
 		add_history(input);
 
 		if (empty(input))
@@ -95,20 +115,17 @@ int main(int ac, char **av, char **env)
 			free(input);
 			continue ;
 		}
-	
-		
-
 		if (parser(&tree, input, &env_list) == R_FAIL)
 			return (1);
 		if (!tree)
 			continue;
 
 	//	print_tree(tree, 0);
-	
 		status = execution(tree,&env_list);
-		g_exit_status = status;
 		update_env_exit_status(&env_list, status);
 		free_tree(tree);
+		g_exit_status = 0;
+		
 	}
 	free_env_list(env_list);
 

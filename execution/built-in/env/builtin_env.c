@@ -14,7 +14,7 @@ int print_environment(t_env *env_list)
         {
             if (strcmp(tmp_env->key, "exit_status@gmail.com") != 0)
             {
-               //if (tmp_env->exported == 1)
+               if (tmp_env->exported == 1)
                     printf("%s=%s\n", tmp_env->key, tmp_env->value);
             }
         }

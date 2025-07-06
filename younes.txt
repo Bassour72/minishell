@@ -48,3 +48,15 @@ git rebase origin/main
 git checkout main
 git merge execution
 git push origin main
+
+/////////////////////////////////
+minishell$ ..
+execve: Permission denied
+minishell(96272,0x10adb3dc0) malloc: *** error for object 0x7ff39ec05890: pointer being freed was not allocated
+minishell(96272,0x10adb3dc0) malloc: *** set a breakpoint in malloc_error_break to debug
+minishell$ 
+
+minishell: minishell: command not found
+minishell$ export PATH+=:.
+zsh: segmentation fault  ./minishell
+ybassour@e3r10p1 minishell % 

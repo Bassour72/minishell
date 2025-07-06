@@ -2,8 +2,8 @@
 
 int remove_env_node(t_env **env_list, const char *target_key)
 {
-	t_env *tmp;
-	t_env *to_remove;
+	t_env	*tmp;
+	t_env	*to_remove;
 
 	if (!env_list || !*env_list || !target_key)
 		return (1);
@@ -29,7 +29,7 @@ int remove_env_node(t_env **env_list, const char *target_key)
 	return (1);
 }
 
-int 	builtin_unset_environment(t_tree *root, t_env **env_list)
+int	builtin_unset_environment(t_tree *root, t_env **env_list)
 {
 	int i;
 
@@ -38,18 +38,6 @@ int 	builtin_unset_environment(t_tree *root, t_env **env_list)
 	i = 1;
 	while (root->data[i])
 	{
-		// if (ft_strcmp(root->data[i], "PWD") == 0)
-		// {
-		// 	(*env_list)->is_remove = 0;
-		// 	(*env_list)->exported = 0;
-		// 	//remove_env_node(env_list, root->data[i]);
-		
-		// }
-		// else
-		// {
-			
-		// 	remove_env_node(env_list, root->data[i]);
-		// }
 		remove_env_node(env_list, root->data[i]);
 		i++;
 	}

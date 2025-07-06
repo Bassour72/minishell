@@ -23,10 +23,10 @@ static void	add_new_env_node(t_env **env_list, char *new_key, char *new_value)
 	}
 }
 
-
-int add_env_without_appned(t_env **env_list, char *new_key, char	*new_value)
+int	add_env_without_appned(t_env **env_list, char *new_key, char	*new_value)
 {
 	t_env	*existing;
+
 	existing = is_exist_env(*env_list, new_key);
 	if (existing)
 	{
@@ -38,7 +38,7 @@ int add_env_without_appned(t_env **env_list, char *new_key, char	*new_value)
 	return (1);
 }
 
-int append_env_node(t_env **env_list, char *new_key, char	*new_value)
+int	append_env_node(t_env **env_list, char *new_key, char	*new_value)
 {
 	t_env	*existing;
 	
@@ -67,7 +67,7 @@ static int	add_env(char *arg, t_env **env_list)
 	{
 		ft_putstr_fd("export: `", STDERR_FILENO);
 		ft_putstr_fd(arg, STDERR_FILENO);
-		ft_putendl_fd("': not a valid identifier\n", STDERR_FILENO);
+		ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 		return (1);
 	}
 	new_key = get_env_key(arg);
@@ -76,23 +76,24 @@ static int	add_env(char *arg, t_env **env_list)
 	new_value = get_env_value1(arg);
 	if (is_append_mode != 1)
 	{
-		add_env_without_appned(env_list, new_key,new_value);
-		return (1);
+		return (add_env_without_appned(env_list, new_key,new_value));
 	}
 	return (append_env_node(env_list, new_key, new_value));
 }
 
-int export_command_builtin(t_tree *root, t_env **env_list)
+int	export_command_builtin(t_tree *root, t_env **env_list)
 {
 	int i;
+
 	if (env_list == NULL)
-		return ((0));
+		return (0);
 	else if (root->data[1] != NULL)
 	{
 		i =  1;
 		while (root->data[i] != NULL)
 		{
 			add_env(root->data[i], env_list);
+			update_env_exit_status(env_list, 1);
 			i++;
 		}
 		return (0);
