@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 22:27:38 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 22:30:38 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/execution.h"
 
 static int	is_numeric(const char *str)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if (str[i] == '+' || str[i] == '-')
 		i++;
 	if (!str[i])
@@ -19,9 +32,11 @@ static int	is_numeric(const char *str)
 
 static long	ft_atol(const char *str)
 {
-	int		sign = 1;
-	long	result = 0;
+	int		sign;
+	long	result;
 
+	sign = 1;
+	result = 0;
 	while (*str == ' ' || (*str >= 9 && *str <= 13))
 		str++;
 	if (*str == '+' || *str == '-')
@@ -45,7 +60,7 @@ int	exit_exe(t_tree *root, t_env **env_list)
 		write(1, "exit\n", 5);
 	if (root->data[1] == NULL)
 	{
-		code = ft_atoi( get_env_value("exit_status@gmail.com", *env_list));
+		code = ft_atoi(get_env_value("exit_status@gmail.com", *env_list));
 		check_non_interactive_exit(root, env_list, code, true);
 		exit(code);
 	}
@@ -63,4 +78,3 @@ int	exit_exe(t_tree *root, t_env **env_list)
 	check_non_interactive_exit(root, env_list, (unsigned char)code, true);
 	return (1);
 }
-

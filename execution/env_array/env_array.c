@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_array.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:08:32 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 23:09:17 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/execution.h"
 
-static	int	env_list_len(t_env *env_list)
+static int	env_list_len(t_env *env_list)
 {
 	int	len;
 
@@ -20,9 +32,9 @@ static	char	*create_env_string(t_env *node)
 	size_t	total_len;
 	char	*env_string;
 
-	key_len =  0;
+	key_len = 0;
 	if (node->key)
-		key_len =  ft_strlen(node->key);
+		key_len = ft_strlen(node->key);
 	value_len = 0;
 	if (node->value)
 		value_len = ft_strlen(node->value);
@@ -40,7 +52,6 @@ static	char	*create_env_string(t_env *node)
 	return (env_string);
 }
 
-
 static char	**free_env_array(char **new_env, int i)
 {
 	while (i > 0)
@@ -48,6 +59,7 @@ static char	**free_env_array(char **new_env, int i)
 	free(new_env);
 	return (NULL);
 }
+
 char	**gen_new_env(t_env *env_list)
 {
 	int		len;

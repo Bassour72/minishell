@@ -120,8 +120,9 @@ int main(int ac, char **av, char **env)
 		if (!tree)
 			continue;
 
-	//	print_tree(tree, 0);
+		print_tree(tree, 0);
 		status = execution(tree,&env_list);
+		printf("\n\n\n\n [%d] \n\n\n", status);
 		update_env_exit_status(&env_list, status);
 		free_tree(tree);
 		g_exit_status = 0;

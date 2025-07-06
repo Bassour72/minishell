@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:06:46 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 23:07:00 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/execution.h"
 
-int remove_env_node(t_env **env_list, const char *target_key)
+int	remove_env_node(t_env **env_list, const char *target_key)
 {
 	t_env	*tmp;
 	t_env	*to_remove;
@@ -31,7 +43,7 @@ int remove_env_node(t_env **env_list, const char *target_key)
 
 int	builtin_unset_environment(t_tree *root, t_env **env_list)
 {
-	int i;
+	int	i;
 
 	if (!root || !env_list)
 		return (1);

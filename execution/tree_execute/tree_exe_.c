@@ -1,6 +1,18 @@
- #include "../../include/execution.h"
- 
-static int exec_block_command(t_tree *root,  t_env **env_list, int in_subshell)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tree_exe_.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:42:37 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 23:46:39 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/execution.h"
+
+static int	exec_block_command(t_tree *root, t_env **env_list, int in_subshell)
 {
 	if (root->data && expand(&root->data, *env_list) == R_FAIL)
 		return (1);
@@ -18,27 +30,27 @@ static int exec_block_command(t_tree *root,  t_env **env_list, int in_subshell)
 	return (exec_external_command(root, env_list));
 }
 
-static int handle_and_operator(t_tree *root, t_env **env_list)
+static int	handle_and_operator(t_tree *root, t_env **env_list)
 {
-	int status;
+	int	status;
 
-	status = exec_tree(root->left, env_list, 0,  false);
+	status = exec_tree(root->left, env_list, 0, false);
 	if (status == 0)
 		return (exec_tree(root->right, env_list, 0, false));
 	return (status);
 }
 
-static int handle_or_operator(t_tree *root, t_env **env_list)
+static int	handle_or_operator(t_tree *root, t_env **env_list)
 {
-	int status;
+	int	status;
 
-	status = exec_tree(root->left, env_list,0, false);
+	status = exec_tree(root->left, env_list, 0, false);
 	if (status != 0)
 		return (exec_tree(root->right, env_list, 0, false));
 	return (status);
 }
 
-int exec_tree(t_tree *root, t_env **env_list, int in_subshell,  bool is_child)
+int	exec_tree(t_tree *root, t_env **env_list, int in_subshell, bool is_child)
 {
 	if (!root)
 		return (1);
@@ -47,7 +59,7 @@ int exec_tree(t_tree *root, t_env **env_list, int in_subshell,  bool is_child)
 	if (root->type == BLOCK)
 		return (exec_block_command(root, env_list, in_subshell));
 	if (root->type == PIPE)
-		return (exec_pipe(root,env_list, is_child));
+		return (exec_pipe(root, env_list, is_child));
 	if (root->type == OP_AND)
 		return (handle_and_operator(root, env_list));
 	if (root->type == OP_OR)

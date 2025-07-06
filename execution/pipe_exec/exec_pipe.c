@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_pipe.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:33:14 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 23:36:25 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/execution.h"
 
-static	int wait_for_children(pid_t pid_left, pid_t pid_right)
+static int	wait_for_children(pid_t pid_left, pid_t pid_right)
 {
-	int status;
-	int exit_code;
+	int	status;
+	int	exit_code;
 
 	status = 0;
 	exit_code = 1;
@@ -26,18 +38,18 @@ static	int wait_for_children(pid_t pid_left, pid_t pid_right)
 	return (exit_code);
 }
 
-static	pid_t	fork_left_process(t_tree *root, t_env **env_list, int pipe[2], bool is_child)
+static pid_t	fork_left_process(t_tree *root, t_env **env_list, \
+int pipe[2], bool is_child)
 {
 	pid_t	pid;
-	int status;
+	int		status;
+
 	pid = fork();
 	if (pid < 0)
 	{
 		printf("fork left\n");
 		if (is_child)
-		{
 			check_non_interactive_exit(root, env_list, -1, true);
-		}
 		perror("fork right");
 		return (-1);
 	}
@@ -46,24 +58,24 @@ static	pid_t	fork_left_process(t_tree *root, t_env **env_list, int pipe[2], bool
 		close(pipe[0]);
 		dup2(pipe[1], STDOUT_FILENO);
 		close(pipe[1]);
-		status =  exec_tree(root->left, env_list, 1, true);
+		status = exec_tree(root->left, env_list, 1, true);
 		check_non_interactive_exit(root, env_list, status, true);
 	}
 	return (pid);
 }
 
-static	pid_t	fork_right_process(t_tree *root, t_env **env_list, int pipe[2],  bool is_child)
+static pid_t	fork_right_process(t_tree *root, t_env **env_list, \
+int pipe[2], bool is_child)
 {
 	pid_t	pid;
-	int status;
+	int		status;
+
 	pid = fork();
 	if (pid < 0)
 	{
 		if (is_child)
-		{
 			check_non_interactive_exit(root, env_list, -1, true);
-		}
-		perror("fork"); // exit if in child
+		perror("fork");
 		return (-1);
 	}
 	if (pid == 0)
@@ -83,7 +95,7 @@ static	void	close_parent_fds(int pipefd[2])
 	close(pipefd[1]);
 }
 
-int	exec_pipe(t_tree *root, t_env **env_list,  bool is_child)
+int	exec_pipe(t_tree *root, t_env **env_list, bool is_child)
 {
 	int		pipefd[2];
 	pid_t	pid_left;
