@@ -27,7 +27,8 @@ typedef struct s_node
 	char			*data;
 	struct s_node	*next;
 }				t_node;
-
+char *ft_strcat(char *dest, const char *src);
+char *ft_strcpy(char *dest, const char *src);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 void	*ft_memset(void *s, int c, size_t len);

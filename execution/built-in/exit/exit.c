@@ -1,4 +1,4 @@
-#include "../../include/execution.h"
+#include "../../../include/execution.h"
 
 static int	is_numeric(const char *str)
 {
@@ -47,21 +47,22 @@ int	exit_exe(t_tree *root, t_env **env_list)
     if (root->data[1] == NULL)
 	{
 		code =ft_atoi( get_env_value("exit_status@gmail.com", *env_list));
-		free_env_list(*env_list);
-		free_tree(root);
+		// free_env_list(*env_list);
+		// free_tree(root);
 		// close(1);
 		// close(0);
-
+		check_non_interactive_exit(root, env_list, code);
         exit(code);
 	}
 	if (!is_numeric(root->data[1]))
 	{
 		write(2, "minishell: exit: numeric argument required\n", 43);
-		free_env_list(*env_list);
-		free_tree(root);
-		// 		close(1);
-		// close(0);
-		exit(255);
+		// free_env_list(*env_list);
+		// free_tree(root);
+		// // 		close(1);
+		// // close(0);
+		// exit(255);
+		check_non_interactive_exit(root, env_list, 255);
 	}
 	if (root->data[2])
 	{
@@ -69,9 +70,10 @@ int	exit_exe(t_tree *root, t_env **env_list)
 		return (1);
 	}
 	code = ft_atol(root->data[1]);
-	free_env_list(*env_list);
-	free_tree(root);
-		// 	close(1);
-		// close(0);
-	exit((unsigned char)code);
+	// free_env_list(*env_list);
+	// free_tree(root);
+	// 	// 	close(1);
+	// 	// close(0);
+	// exit((unsigned char)code);
+	check_non_interactive_exit(root, env_list, (unsigned char)code);
 }

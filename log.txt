@@ -587,3 +587,21 @@ Direct leak of 3 byte(s) in 1 object(s) allocated from:
 
 SUMMARY: AddressSanitizer: 3 byte(s) leaked in 1 allocation(s).
 sh-5.2$ 
+WHY "ILE DESCRIPTORS: 6 open (4 inherited) at exit.
+==7541== Open file descriptor 1: /dev/pts/0
+==7541==    at 0x49EDC1B: dup2 (in /usr/lib/x86_64-linux-gnu/libc.so.6)
+==7541==    by 0x400F11C: exec_builtin_command (in /home/ybassour/Desktop/minishell/minishell)
+==7541==    by 0x400F2F3: exec_block_command (in /home/ybassour/Desktop/minishell/minishell)
+==7541==    by 0x400F44B: exec_tree (in /home/ybassour/Desktop/minishell/minishell)
+==7541==    by 0x400B111: execution (in /home/ybassour/Desktop/minishell/minishell)
+==7541==    by 0x40026B9: main (in /home/ybassour/Desktop/minishell/minishell)
+==7541== 
+==7541== Open file descriptor 0: /dev/pts/0
+==7541==    at 0x49EDC1B: dup2 (in /usr/lib/x86_64-linux-gnu/libc.so.6)
+==7541==    by 0x400F10D: exec_builtin_command (in /home/ybassour/Desktop/minishell/minishell)
+==7541==    by 0x400F2F3: exec_block_command (in /home/ybassour/Desktop/minishell/minishell)
+==7541==    by 0x400F44B: exec_tree (in /home/ybassour/Desktop/minishell/minishell)
+==7541==    by 0x400B111: execution (in /home/ybassour/Desktop/minishell/minishell)
+==7541==    by 0x40026B9: main (in /home/ybassour/Desktop/minishell/minishell)
+==7541== 
+==7541== "

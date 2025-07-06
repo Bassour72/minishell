@@ -72,10 +72,6 @@ int main(int ac, char **av, char **env)
 	{
 		signal(SIGINT, handle_sigint_prompt);
 		input = readline("minishell$ ");
-		// Buffer[0] = '\0';
-		// write(1, "minishell > ", 13);
-		// read(0, Buffer, 50);
-		// input = ft_strdup(Buffer);
 		if (g_exit_status == 130)
 		{
 			update_env_exit_status(&env_list, 130);
@@ -111,7 +107,7 @@ int main(int ac, char **av, char **env)
 	
 		status = execution(tree,&env_list);
 		g_exit_status = status;
-		void update_env_exit_status(env_list, status);
+		update_env_exit_status(&env_list, status);
 		free_tree(tree);
 	}
 	free_env_list(env_list);

@@ -48,9 +48,7 @@ static pid_t	fork_left_process(t_tree *root, t_env **env_list, int pipe[2], bool
 		printf("fork left\n");
 		if (is_child)
 		{
-			free_env_list(*env_list);
-			free_tree(root);
-			exit(-1);
+			check_non_interactive_exit(root, env_list, -1);
 		}
 		perror("fork right");
 		return (-1);
@@ -61,11 +59,7 @@ static pid_t	fork_left_process(t_tree *root, t_env **env_list, int pipe[2], bool
 		dup2(pipe[1], STDOUT_FILENO);
 		close(pipe[1]);
 		status =  exec_tree(root->left, env_list, 1, true);
-		close_all_fds_();
-		free_tree(root);
-		free_env_list(*env_list);
-		
-		exit(status);
+		check_non_interactive_exit(root, env_list, status);
 	}
 	return (pid);
 }
@@ -79,9 +73,7 @@ static pid_t	fork_right_process(t_tree *root, t_env **env_list, int pipe[2],  bo
 	{
 		if (is_child)
 		{
-			free_env_list(*env_list);
-			free_tree(root);
-			exit(-1);
+			check_non_interactive_exit(root, env_list, -1);
 		}
 		perror("fork"); // exit if in child
 		return (-1);
@@ -92,11 +84,7 @@ static pid_t	fork_right_process(t_tree *root, t_env **env_list, int pipe[2],  bo
 		dup2(pipe[0], STDIN_FILENO);
 		close(pipe[0]);
 		status = exec_tree(root->right, env_list, 1, true);
-
-		free_tree(root);
-		free_env_list(*env_list);
-		close_all_fds_();
-		exit(status);
+		check_non_interactive_exit(root, env_list, status);
 	}
 	return (pid);
 }
