@@ -1,6 +1,6 @@
 #include "../../include/execution.h"
 
-static void	free_split_array(char **arr)
+static	void	free_split_array(char **arr)
 {
 	int	i;
 
@@ -12,7 +12,7 @@ static void	free_split_array(char **arr)
 	free(arr);
 }
 
-static char	*search_command_in_path(char *command, char **binaries_path)
+static	char	*search_command_in_path(char *command, char **binaries_path)
 {
 	int		i;
 	char	*full_path;
@@ -56,11 +56,11 @@ char	*get_binary_file_path(t_tree *root, t_env **env_list)
 		perror("Error: Empty command node");
 		return (NULL);
 	}
-    if (root->data[0][0] == '\0')
+	if (root->data[0][0] == '\0')
 		return (NULL);
 	if (ft_strchr(root->data[0], '.') || ft_strchr(root->data[0], '/'))
 	{
-		 if (should_display_error(root->data[0], env_list, false) != 0)
+		if (should_display_error(root->data[0], env_list, false) != 0)
 		 	return (NULL);
 		return (check_valid_command_path(root->data[0]));
 	}

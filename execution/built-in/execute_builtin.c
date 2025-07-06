@@ -32,8 +32,7 @@ int execute_builtin(t_tree *root,  t_env **env_list)
 		return (env_environment(root, *env_list));
 	if (strcmp(root->data[0], "exit") == 0)
 	{
-		exit_exe(root, env_list);
-		return (0);
+		return (exit_exe(root, env_list));
 	}
 	if (strcmp(root->data[0], "export") == 0)
 		return (export_command_builtin(root, env_list));

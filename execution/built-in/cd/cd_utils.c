@@ -1,8 +1,6 @@
 #include "../../../include/execution.h"
 
 
-/**************************************************************************************************** */
-
 static int	count_double_dots(const char *path)
 {
 	int i = 0;
@@ -19,7 +17,7 @@ static int	count_double_dots(const char *path)
 
 static char	*build_logical_path(char *base, char *suffix)
 {
-   perror("cd: error retrieving current directory: getcwd: cannot access parent directories:\n");
+   perror(ERR_GETCWD_FAIL);
 	if (ft_strlen(suffix) > 2)
 		return (ft_strjoin(base, suffix));
 	return (ft_strjoin(base, "/.."));
@@ -86,13 +84,12 @@ static int	handle_cd_failure(t_env **env, char *arg, char *logical_pwd)
 	return (free(fallback), 1);
 }
 
-int	apply_cd_with_double_dots(t_tree *root, t_env **env, char *arg)
+int	cd_dotdots_only(t_env **env, char *arg)
 {
 	char	*logical_pwd;
 	char	*old_pwd;
 	char	*cwd;
 
-	(void)root;
 	old_pwd = NULL;
 	logical_pwd = get_env_value("physical_PWD", *env);
     old_pwd =  ft_strdup(logical_pwd);

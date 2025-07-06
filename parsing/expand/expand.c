@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:09:14 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 18:25:28 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/06 14:33:30 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,10 @@ int	expand(char ***new_args, t_env *env)
 	if(remove_non_printable_characters(new_args) == R_FAIL)
 		return (R_FAIL);
 	recover_quotes(*new_args);
-	for(int i = 0; (*new_args)[i]; i++)
-	{
-		printf("(%s)[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
-	}
+	// for(int i = 0; (*new_args)[i]; i++)
+	// {
+	// 	printf("(%s)[%d]\n", (*new_args)[i], ft_strlen((*new_args)[i]));
+	// }
 
 	// for(int i = 0; (*new_args)[i]; i++)
 	// {

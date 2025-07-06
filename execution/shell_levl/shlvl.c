@@ -38,7 +38,7 @@ int update_env_shlvl(t_env **env_list, long value)
 	return (0);
 }
 
-int should_increment_shlvl(char *program_path)
+int	should_increment_shlvl(char *program_path)
 {
 	if (ft_strcmp(program_path, "./minishell") == 0 || ft_strcmp(program_path, "minishell") == 0)
 	{ 
@@ -49,7 +49,7 @@ int should_increment_shlvl(char *program_path)
 		return (1);
 }
 
-int handle_shlvl(char *argv0, t_env **env_list)
+int	handle_shlvl(char *argv0, t_env **env_list)
 {
 	char *shlvl_str;
 	long current, next;

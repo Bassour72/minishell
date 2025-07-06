@@ -80,7 +80,7 @@ static int	create_env_node(t_env **list, char *key, char *value)
 	new_node->exported = 1;
 	new_node->is_remove = 1;
 	if (!ft_strcmp(key, "_") || !ft_strcmp(key, "exit_status@gmail.com"))
-		new_node->exported = 0;
+		new_node->exported = 0; 
 	new_node->next = NULL;
 
 	if (!*list)

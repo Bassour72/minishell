@@ -12,6 +12,9 @@
 # include "env.h"
 # include "expand.h"
 # include "wildcard.h"
+# include <termios.h>
+
+
 //-------------------------------------------------------------------
 
 #include <assert.h> //just for debugging

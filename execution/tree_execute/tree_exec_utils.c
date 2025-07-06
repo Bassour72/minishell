@@ -1,6 +1,6 @@
  #include "../../include/execution.h"
 
- int wait_child_status( pid_t pid, t_env **env_list)
+int	wait_child_status( pid_t pid, t_env **env_list)
 {
 	int status;
 	int sig;
@@ -19,12 +19,13 @@
 	}
 	return (1);
 }
-//todo not subshell it parenthese
- int exec_subshell(t_tree *root,t_env **env_list)
+
+int	exec_subshell(t_tree *root,t_env **env_list)
 {
 	pid_t pid;
 	int status;
 	int exit_tree;
+
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork :"), -1);
@@ -32,14 +33,14 @@
 	{
 		if (expand_redir(root->redirections, *env_list) == R_FAIL)
 		{
-			check_non_interactive_exit(root, env_list, 1);
+			check_non_interactive_exit(root, env_list, 1, true);
 		}
 		if (apply_redirections(root->redirections, env_list) == 1)
 		{
-			check_non_interactive_exit(root, env_list, 1);
+			check_non_interactive_exit(root, env_list, 1, true);
 		}
 		exit_tree = exec_tree(root->left, env_list, 0, true);
-		check_non_interactive_exit(root, env_list, exit_tree);
+		check_non_interactive_exit(root, env_list, exit_tree, true);
 	}
 	waitpid(pid, &status, 0);
 	return (WEXITSTATUS(status));
@@ -79,18 +80,18 @@
 		return (perror("fork :"), -1); // update fork failure
 	if (pid == 0)
 	{
-		// signal(SIGINT, SIG_DFL);
-		// signal(SIGQUIT, SIG_DFL);;
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (expand_redir( root->redirections, *env_list) == R_FAIL)
 		{
-			check_non_interactive_exit(root, env_list, 1);
+			check_non_interactive_exit(root, env_list, 1, true);
 		}
 		if (apply_redirections(root->redirections, env_list) == 1)
 		{
-			check_non_interactive_exit(root, env_list, 1);
+			check_non_interactive_exit(root, env_list, 1, true);
 		}
 		execute_external_command(root, env_list);
-		check_non_interactive_exit(root, env_list, 1);
+		check_non_interactive_exit(root, env_list, 1, true);
 	}
 	return (wait_child_status( pid, env_list));
 }

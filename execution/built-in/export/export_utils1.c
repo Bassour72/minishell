@@ -16,10 +16,10 @@ t_env *is_exist_env(t_env *env_list, const char *new_key)
 
  void list_env_add_back(t_env **env_list, t_env *new_node_env)
 {
-	t_env *copy;
+	t_env	*copy;
 
 	if (!new_node_env)
-		return;
+		return ;
 	if (!(*env_list))
 		*env_list = new_node_env;
 	else
@@ -33,9 +33,10 @@ t_env *is_exist_env(t_env *env_list, const char *new_key)
 
  t_env *copy_env_list(t_env *env_list)
 {
-	t_env *copy = NULL;
-	t_env *new_node;
+	t_env	*copy;
+	t_env	*new_node;
 
+	copy = NULL;
 	while (env_list != NULL)
 	{
 		new_node = malloc(sizeof(t_env));
@@ -57,17 +58,15 @@ t_env *is_exist_env(t_env *env_list, const char *new_key)
 
  t_env *sort_env_list(t_env *env_list)
 {
-	bool swapped;
-	t_env *ptr;
+	bool	swapped;
+	t_env	*ptr;
 
 	if (!env_list)
 		return (NULL);
 	swapped = true;
-
 	while (swapped)
 	{
 		swapped = false;
-	
 		ptr = env_list;
 		while (ptr->next)
 		{
@@ -79,7 +78,6 @@ t_env *is_exist_env(t_env *env_list, const char *new_key)
 			ptr = ptr->next;
 		}
 	}
-	//printf("end.....................\n");
 	return (env_list);
 }
 

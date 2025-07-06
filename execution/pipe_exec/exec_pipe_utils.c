@@ -1,10 +1,6 @@
 
 #include "../../include/execution.h"
 
-#include <sys/ioctl.h>
-#include <errno.h>
-#include <unistd.h>
-
 void	close_pipe_fds(int pipefd[2])
 {
 	if (pipefd[0] >= 0)
@@ -14,18 +10,18 @@ void	close_pipe_fds(int pipefd[2])
 }
 
 
-int is_fd_open(int fd)
-{
-    struct winsize ws;
-    if (ioctl(fd, TIOCGWINSZ, &ws) == -1)
-    {
-        if (errno == EBADF)
-            return 0; // FD is not open
-    }
-    return 1; // FD is open (or at least valid for ioctl)
-}
+// int is_fd_open(int fd)
+// {
+//     struct winsize ws;
+//     if (ioctl(fd, TIOCGWINSZ, &ws) == -1)
+//     {
+//         if (errno == EBADF)
+//             return 0; // FD is not open
+//     }
+//     return 1; // FD is open (or at least valid for ioctl)
+// }
 
- void	close_all_fds_(void)
+ void	close_all_fds_(void) // i  have in execcmd
 {
 	int fd;
 

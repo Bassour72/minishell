@@ -14,7 +14,7 @@ static int	has_three_consecutive_dots(const char *arg)
 			dot_count++;
 			if (dot_count == 3)
 			{
-				fprintf(stderr, "cd: %s: invalid argument (three consecutive dots)\n", arg);
+				display_error(ERR_DOT_DOT_DOT, arg);
 				return (1);
 			}
 		}
@@ -39,7 +39,7 @@ static int	has_three_consecutive_hyphens(const char *arg)
 			hyphen_count++;
 			if (hyphen_count == 3)
 			{
-				fprintf(stderr, "cd: %s: invalid argument (three consecutive hyphens)\n", arg);
+				display_error(ERR_HYPHEN_HYPHEN_HYPHEN, arg);
 				return (1);
 			}
 		}
@@ -59,15 +59,15 @@ static int	has_invalid_char_combination(const char *arg)
 	{
 		if (arg[i] == '.' && arg[i + 1] == '-')
 		{
-			fprintf(stderr, "cd: %s: invalid argument (\".-\" not allowed)\n", arg);
+			display_error(ERR_DOT_HYPHEN, arg);
 			return (1);
 		}
 		if (arg[i] == '-' && (arg[i + 1] == '.' || arg[i + 1] == '/'))
 		{
 			if (arg[i + 1] == '.')
-				fprintf(stderr, "cd: %s: invalid argument (\"-.\" not allowed)\n", arg);
+				display_error(ERR_HYPHEN_DOT , arg);
 			else
-				fprintf(stderr, "cd: %s: invalid argument (\"-/\" not allowed)\n", arg);
+				display_error(ERR_HYPHEN_SLASH, arg);
 			return (1);
 		}
 		i++;
