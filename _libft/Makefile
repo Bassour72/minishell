@@ -40,7 +40,9 @@ SRC = 	ft_atoi.c\
 		ft_free_2d_arr.c\
 		ft_strcmp.c\
 		ft_isspace.c\
-		ft_free_list.c
+		ft_free_list.c \
+		ft_strcat.c \
+		ft_strcpy.c
 
 		
 OBJ = $(SRC:.c=.o)

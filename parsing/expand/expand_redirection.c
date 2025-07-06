@@ -56,7 +56,6 @@ int	expand_redir(t_red *reds, t_env *env)
 	t_node			*splited_line;
 	char			*new_line;
 
-	//printf("+=-=-==-=-=-==\n");
 	while (reds)
 	{
 		if (reds->type != HER_DOC)
@@ -67,7 +66,6 @@ int	expand_redir(t_red *reds, t_env *env)
 				return (R_FAIL);
 			if (expand_tokens_to_line(&new_line, tokens) == R_FAIL)
 				return (free_expand_tokens_list(tokens), R_FAIL);
-			//printf("{%s}[%d]\n", new_line, ft_strlen(new_line));
 			free_expand_tokens_list(tokens);
 			if (expand_split2(&splited_line, new_line) == R_FAIL)
 				return (free(new_line), R_FAIL);

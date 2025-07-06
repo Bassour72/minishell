@@ -17,6 +17,20 @@
 #define MAX_HEREDOC 16
 #define CMD_ERR_NOT_FOUND 127
 #define CMD_ERR_NO_PERMISSION 126
+/******************************************************* */
+#define STATUS_OK        0     // Normal success
+#define STATUS_ERROR     1     // General error
+#define STATUS_BUILTIN   2     // Builtin misuse (used by Bash)
+#define STATUS_NOT_FOUND 127   // Command not found
+#define STATUS_IS_DIR    126   // Command is a directory or not executable
+#define STATUS_SIG_BASE  128   // Signals start from 128 + signum
+#define STATUS_SIGINT    130  // 128 + SIGINT (2)
+#define STATUS_SIGQUIT   131  // 128 + SIGQUIT (3)
+#define CMD_SUCCESS         0
+#define CMD_GENERAL_ERROR   1
+#define CMD_CANNOT_EXECUTE  126
+#define CMD_NOT_FOUND       127
+#define CMD_SIGNAL(n)      (128 + (n))
 
 extern int g_exit_status;
 typedef struct s_env_var 
@@ -33,6 +47,10 @@ typedef struct s_pipe
     struct s_pipe *prev;
 } t_pipe;
 // int exec_pipe(t_tree *root, char **env, int input_fd);
+char *get_env_path_parent(const char *path);
+int check_argument(t_tree *root);
+int recover_invalid_pwd(t_env **env, char *new_pwd);
+void check_non_interactive_exit(t_tree *root,  t_env **env_list, int exit_status);
 int		execution(t_tree *root, t_env **env_list);
 void    execute_command(t_tree *root, t_env **env_list);
 int		builtin_echo(t_tree *root);
@@ -85,5 +103,48 @@ int is_fd_open(int fd);
  void	close_all_fds_(void);
 
  int	create_pipe(int pipefd[2]);
+
+ void update_pwd(t_env **env);
+
+ char *get_env_value(char *key, t_env *env);
+
+ void	update_existing_env(t_env *existing, char *new_value, int append_mode);
+
+t_env *is_exist_env(t_env *env_list, const char *new_key);
+ void list_env_add_back(t_env **env_list, t_env *new_node_env);
+ t_env *copy_env_list(t_env *env_list);
+ t_env *sort_env_list(t_env *env_list);
+void print_env_export_sort(t_env *env_list);
+
+int ft_strcmp_v2(const char *s1, const char *s2);
+int	is_valid_identifier(const char *identifier, int *is_append_mode);
+char *get_env_key(const char *identifier);
+char *get_env_value1(const char *identifier);
+void swap_node(t_env *a, t_env *b);
+
+
+int is_valid_shlvl_string(char *str);
+int env_add_back(t_env **env_list, const char *key, const char *value);
+long parse_shlvl(char *str);
+
+///
+void close_heredoc_fds(t_tree *root, t_red *redir);
+void propagate_fork_flag(t_tree *root, int is_forked);
+
+int count_heredocs(t_tree *node);
+
+void enforce_heredoc_limit(t_tree *root, t_env **env_list);
+ char	*extract_path_variable(t_env **env_list);
+
+char	*check_valid_command_path(char *command);
+
+//
+
+
+ int wait_child_status( pid_t pid, t_env **env_list);
+//todo not subshell it parenthese
+ int exec_subshell(t_tree *root,t_env **env_list);
+ int exec_builtin_command(t_tree *root,  t_env **env_list);
+int exec_external_command(t_tree *root, t_env **env_list);
 //#endif
 

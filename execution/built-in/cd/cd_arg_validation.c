@@ -1,4 +1,4 @@
-#include "../../include/execution.h"
+#include "../../../include/execution.h"
 
 static int	has_three_consecutive_dots(const char *arg)
 {
@@ -86,4 +86,14 @@ int	is_illegal_cd_arg(const char *arg)
 	if (has_invalid_char_combination(arg))
 		return (1);
 	return (0);
+}
+
+int check_argument(t_tree *root)
+{
+    if (root && root->data && root->data[0] && root->data[1] && root->data[2])
+    {
+        perror("cd: too many arguments\n");
+        return (1);
+    }
+    return (0);
 }

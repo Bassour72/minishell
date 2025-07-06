@@ -1,4 +1,5 @@
-#include "../../include/execution.h"
+#include "../../../include/execution.h"
+
 char	*get_env_value_v2(char *key, t_env *env)
 {
 	while (env)
@@ -9,6 +10,7 @@ char	*get_env_value_v2(char *key, t_env *env)
 	}
 	return (NULL);
 }
+
 int pwd_print_working_directory(t_tree *root, t_env **env_list)
 {
     char *pathname;
@@ -16,7 +18,6 @@ int pwd_print_working_directory(t_tree *root, t_env **env_list)
 
     if (!root || !env_list)
         return 1;
-
     pathname = getcwd(NULL, 0);
     if (!pathname)
     {
@@ -30,7 +31,6 @@ int pwd_print_working_directory(t_tree *root, t_env **env_list)
 	    write(fd, "\n", 1);
         return (0);
     }
-
     write(fd, pathname, ft_strlen(pathname));
 	write(fd, "\n", 1);
     free(pathname);

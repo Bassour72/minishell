@@ -1,4 +1,4 @@
-#include "../../include/execution.h"
+#include "../../../include/execution.h"
 
 static char *expand_home(char *arg, t_env *env)
 {
@@ -15,8 +15,8 @@ static char *expand_home(char *arg, t_env *env)
     if (!res)
         return (NULL);
 
-    strcpy(res, home); // 
-    strcat(res, arg + 1); //
+    ft_strcpy(res, home);
+    ft_strcat(res, arg + 1);
     return (res);
 }
 
@@ -39,16 +39,6 @@ static char *resolve_path(char *arg, t_env *env)
         return (ft_strdup(oldpwd));
     }
     return (ft_strdup(arg));
-}
-
-static int check_argument(t_tree *root)
-{
-    if (root && root->data && root->data[0] && root->data[1] && root->data[2])
-    {
-        perror("cd: too many arguments\n");
-        return (1);
-    }
-    return (0);
 }
 
 int has_one_case_in_cd(t_env **env, char *old_pwd, char *candidate)
@@ -116,13 +106,9 @@ int cd_change_working_directory(t_tree *root, t_env **env)
 
     if (check_argument(root) || is_illegal_cd_arg(root->data[1]))
         return (1);
-    old_pwd = getcwd(NULL, 0);
+    old_pwd = ft_strdup(get_env_value("physical_PWD", *env));
     if (!old_pwd)
-    {
-        old_pwd = ft_strdup(get_env_value("physical_PWD", *env));
-        if (!old_pwd)
-            return (1);
-    }
+        return (1);
     arg = get_arg_cd(root->data[1]);
     if (!arg)
         return has_one_case_in_cd(env, old_pwd, NULL);

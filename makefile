@@ -53,21 +53,38 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		wildcard/wildcard.c\
 		env/env.c env/env_utils.c\
 		env/init_env.c \
-		execution/execution.c execution/built-in/builtin_echo.c \
-		execution/built-in/builtin_cd.c execution/built-in/builtin_env.c \
-		execution/built-in/builtin_exit.c  execution/built-in/builtin_export.c \
-		execution/built-in/builtin_pwd.c execution/built-in/builtin_unset.c \
-		execution/path_utils.c \
+		execution/execution.c \
+		execution/built-in/unset/unset.c \
 		execution/redir_utils.c \
 		execution/shell_levl/shlvl.c \
+		execution/shell_levl/shlvl_utils.c \
 		execution/built-in/execute_builtin.c \
 		execution/exec/exec_cmd.c \
-		execution/env/env_array.c \
-		execution/built-in/cd_utils.c \
-		execution/built-in/cd_arg_validation.c \
+		execution/env_array/env_array.c \
 		execution/tree_execute/tree_exe_.c \
+		execution/tree_execute/tree_exec_utils.c \
 		execution/pipe_exec/exec_pipe.c \
-		execution/pipe_exec/exec_pipe_utils.c 
+		execution/pipe_exec/exec_pipe_utils.c \
+		execution/handle_error_/handle_error_.c \
+		execution/built-in/cd/cd.c \
+		execution/built-in/cd/cd_arg_validation.c \
+		execution/built-in/cd/cd_utils.c \
+		execution/built-in/cd/cd_utils1.c \
+		execution/built-in/cd/cd_utils2.c \
+		execution/built-in/export/export.c \
+		execution/built-in/export/export_utils2.c \
+		execution/built-in/export/export_utils1.c \
+		execution/built-in/export/export_utils.c  \
+		execution/built-in/pwd/pwd.c \
+		execution/built-in/exit/exit.c \
+		execution/built-in/env/builtin_env.c \
+		execution/built-in/echo/echo.c \
+		execution/heredocs/heredocs_utils.c \
+		execution/heredocs/heredocs.c \
+		execution/path/path_utils.c \
+		execution/path/path.c 
+
+
 		# debug / memory_debugging.c 
 
 OBJ = $(SRC:.c=.o)
