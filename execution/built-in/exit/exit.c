@@ -76,4 +76,5 @@ int	exit_exe(t_tree *root, t_env **env_list)
 	// 	// close(0);
 	// exit((unsigned char)code);
 	check_non_interactive_exit(root, env_list, (unsigned char)code);
+	return (0);
 }

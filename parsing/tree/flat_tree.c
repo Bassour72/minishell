@@ -6,11 +6,27 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:33:46 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/04 23:32:48 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/06 16:10:52 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
+
+t_tree	*new_tree_node(t_type type)
+{
+	t_tree	*tree_node;
+
+	tree_node = malloc(sizeof(t_tree));
+	if (!tree_node)
+		return (perror("error: "), NULL);
+	tree_node->data = NULL;
+	tree_node->redirections = NULL;
+	tree_node->type = type;
+	tree_node->left = NULL;
+	tree_node->right = NULL;
+	tree_node->empty = 0;
+	return (tree_node);
+}
 
 static int	operators(t_tree **tree_node, t_token *token, int *i)
 {
@@ -52,7 +68,7 @@ t_tree **tree_node, t_token *token, int *i)
 	}
 	else if (token[*i].type == PAREN_OPEN)
 	{
-		if (!open_parenths_block(token, tree_node, i))
+		if (open_parenths_block(token, tree_node, i) == R_FAIL)
 			return (free_flat_tree(flat_tree_list), 0);
 		return (R_SUCCESS);
 	}

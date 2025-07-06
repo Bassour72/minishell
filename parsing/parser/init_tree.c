@@ -6,97 +6,109 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 10:07:32 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 10:08:30 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/06 16:09:16 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-t_tree	*new_tree_node(t_type type)
+static void	edit_parenths_count(t_flat_tree *flat, int *p)
 {
-	t_tree	*tree_node;
-
-	tree_node = malloc(sizeof(t_tree));
-	if (!tree_node)
-		return (perror("error: "), NULL);
-	tree_node->data = NULL;
-	tree_node->redirections = NULL;
-	tree_node->type = type;
-	tree_node->left = NULL;
-	tree_node->right = NULL;
-	tree_node->empty = 0;
-	return (tree_node);
+	if (flat->tree_node->empty == -1)
+		(*p)++;
+	else if (flat->tree_node->empty == 1)
+		(*p)--;
 }
 
-t_tree	*init_tree(t_flat_tree *ft)
+static t_tree	*collect_parenths(t_flat_tree *ft)
 {
-	t_flat_tree		*flat;
-	t_flat_tree		*right;
-	t_flat_tree		*left;
-	int p = 0;
-
-	flat =  flat_tree_last(ft);
-	while (flat->prev)
-	{
-		if (flat->tree_node->empty == -1)
-			p++;
-		else if (flat->tree_node->empty == 1)
-			p--;
-		else if (p == 0 && (flat->tree_node->type == OP_OR || flat->tree_node->type == OP_AND))
-		{
-			right = flat->next;
-			left = flat->prev;
-			flat->next->prev = NULL;
-			flat->prev->next = NULL;
-			flat->next = NULL;
-			flat->prev = NULL;
-			flat->tree_node->right = init_tree(right);
-			flat->tree_node->left = init_tree(left);
-			return (flat->tree_node);
-		}
-		flat = flat->prev;
-	}
-
-	p = 0;
-	flat =  flat_tree_last(ft);
-	while (flat->prev)
-	{
-		if (flat->tree_node->empty == -1)
-			p++;
-		else if (flat->tree_node->empty == 1)
-			p--;
-			
-		else if (p == 0 && flat->tree_node->type == PIPE)
-		{
-			right = flat->next;
-			left = flat->prev;
-			flat->next->prev = NULL;
-			flat->prev->next = NULL;
-			flat->next = NULL;
-			flat->prev = NULL;
-			flat->tree_node->right = init_tree(right);
-			flat->tree_node->left = init_tree(left);
-			return (flat->tree_node);
-		}
-		flat = flat->prev;
-	}
+	t_flat_tree	*left;
+	t_flat_tree	*flat;
 
 	flat = flat_tree_last(ft);
-	if (flat->tree_node->empty == -1)//  )
+	if (flat->tree_node->empty == -1)
 	{
-		flat->prev->next = NULL;//  ) = NULL
-		// flat->prev = NULL; // maybe this is unessessiry
+		flat->prev->next = NULL;
 		while (flat->prev)
-		{
 			flat = flat->prev;
-			// printf("he\n");
-		}
-
 		flat->next->prev = NULL;
-		// flat->prev = NULL; // maybe this is unessessiry
 		left = flat->next;
 		flat->tree_node->left = init_tree(left);
 		return (flat->tree_node);
 	}
+	return (NULL);
+}
+
+static t_tree	*collect_pipe(t_flat_tree *ft)
+{
+	t_flat_tree	*left;
+	t_flat_tree	*flat;
+	t_flat_tree	*right;
+	int			p;
+
+	p = 0;
+	flat = flat_tree_last(ft);
+	while (flat->prev)
+	{
+		edit_parenths_count(flat, &p);
+		if (p == 0 && flat->tree_node->type == PIPE)
+		{
+			right = flat->next;
+			left = flat->prev;
+			flat->next->prev = NULL;
+			flat->prev->next = NULL;
+			flat->next = NULL;
+			flat->prev = NULL;
+			flat->tree_node->right = init_tree(right);
+			flat->tree_node->left = init_tree(left);
+			return (flat->tree_node);
+		}
+		flat = flat->prev;
+	}
+	return (NULL);
+}
+
+static t_tree	*collect_operator(t_flat_tree *ft)
+{
+	t_flat_tree	*left;
+	t_flat_tree	*flat;
+	t_flat_tree	*right;
+	int			p;
+
+	p = 0;
+	flat = flat_tree_last(ft);
+	while (flat->prev)
+	{
+		edit_parenths_count(flat, &p);
+		if (p == 0 && (flat->tree_node->type == OP_OR || \
+		flat->tree_node->type == OP_AND))
+		{
+			1 && (right = flat->next, left = flat->prev);
+			flat->next->prev = NULL;
+			flat->prev->next = NULL;
+			flat->next = NULL;
+			flat->prev = NULL;
+			flat->tree_node->right = init_tree(right);
+			flat->tree_node->left = init_tree(left);
+			return (flat->tree_node);
+		}
+		flat = flat->prev;
+	}
+	return (NULL);
+}
+
+t_tree	*init_tree(t_flat_tree *ft)
+{
+	t_tree	*tree_node;
+
+	tree_node = collect_operator(ft);
+	if (tree_node)
+		return (tree_node);
+	tree_node = collect_pipe(ft);
+	if (tree_node)
+		return (tree_node);
+	tree_node = collect_parenths(ft);
+	if (tree_node)
+		return (tree_node);
 	return (ft->tree_node);
 }

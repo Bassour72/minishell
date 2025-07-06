@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 17:11:34 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/01 09:11:43 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:52:08 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ typedef struct s_node
 	char			*data;
 	struct s_node	*next;
 }				t_node;
-char *ft_strcat(char *dest, const char *src);
-char *ft_strcpy(char *dest, const char *src);
+char	*ft_strcat(char *dest, const char *src);
+char	*ft_strcpy(char *dest, const char *src);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 void	*ft_memset(void *s, int c, size_t len);
@@ -63,7 +63,6 @@ long	ft_atoi(const char *str);
 char	*ft_itoa(int n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
-char	**ft_split2(char *s);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 t_list	*ft_lstlast(t_list *lst);
@@ -77,7 +76,6 @@ void	free_failed_list(char **list, int len);
 int		ft_strcmp(const char *s1, const char *s2);
 void	free_2d_arr(char **arr);
 int		ft_isspace(int c);
-char	**ft_split3(char *str);
 void	free_list(t_node *list);
 
 #endif

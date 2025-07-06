@@ -209,8 +209,10 @@ char		*delimiter_clear_dollar(char *str);
 int			remove_non_printable_characters(char ***data);
 int			generate_new_data_str(char **dst, char *str);
 int			expand_herdoc_delimiter(t_red *reds, t_env *env);
-
-void	print(char *s);//delete this
+int			finish_and_append_double_quote_expand(char *str, int _i, \
+			char *data, t_expand_token **tokens);
+void		print(char *s);//delete this
+void		recover_quotes(char **new_args);
 
 
 void update_env_exit_status(t_env **env_list, int status);

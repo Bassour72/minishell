@@ -8,6 +8,8 @@ char *env_get_value(t_env *list, char *key)
 	{
 		if (ft_memcmp(list->key, key, ft_strlen(key) + 1) == 0)
 		{
+			if (ft_strcmp(key, "physical_PWD") == 0)
+				return (NULL);
 			return (list->value);
 		}
 		list = list->next;

@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:14:25 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 10:39:01 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/06 14:40:47 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,8 @@ int	new_red(t_tree *tree_node, t_type type, char *data)
 		free_tree_node(tree_node);
 		return (R_FAIL);
 	}
-	// free(data); //todo do i need to free data after strdup
-	new_red->type = type;
-	new_red->is_ambiguous = 0;
+	1 && (new_red->type = type, new_red->is_ambiguous = 0);
 	new_red->next = NULL;
-	
 	if (!tree_node->redirections)
 		tree_node->redirections = new_red;
 	else

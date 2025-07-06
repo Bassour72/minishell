@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcard.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:38:44 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/06 23:38:50 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef WILDCARD_H
 #define WILDCARD_H
 
@@ -23,7 +35,6 @@ typedef struct s_wc_node
 	struct s_wc_node   *prev;
 }   t_wc_node;
 
-//utils
 int		get_wc_list_len(t_wc_node *list);
 void	cleanup_wc_list_shels(t_wc_node *list);
 void	assign_wc_node_data_to_args_array(t_wc_node *list, char ***arr);

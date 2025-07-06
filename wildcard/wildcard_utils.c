@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcard_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:47:49 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/06 23:50:05 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/wildcard.h"
 
 int	get_wc_list_len(t_wc_node *list)
@@ -15,7 +27,7 @@ int	get_wc_list_len(t_wc_node *list)
 
 void	cleanup_wc_list_shels(t_wc_node *list)
 {
-	t_wc_node *tmp;
+	t_wc_node	*tmp;
 
 	while (list)
 	{
@@ -25,7 +37,7 @@ void	cleanup_wc_list_shels(t_wc_node *list)
 	}
 }
 
-void assign_wc_node_data_to_args_array(t_wc_node *list, char ***arr)
+void	assign_wc_node_data_to_args_array(t_wc_node *list, char ***arr)
 {
 	int	i;
 
@@ -38,6 +50,19 @@ void assign_wc_node_data_to_args_array(t_wc_node *list, char ***arr)
 	(*arr)[i] = NULL;
 }
 
+void	free_wc_node_list(t_wc_node *list)
+{
+	t_wc_node	*tmp;
+
+	while (list)
+	{
+		tmp = list;
+		list = list->next;
+		free(tmp->data);
+		free(tmp);
+	}
+}
+
 // int is_file_name_match(char *file_name, char *str)
 // {
 //     int wc_pos = -1;
@@ -46,24 +71,19 @@ void assign_wc_node_data_to_args_array(t_wc_node *list, char ***arr)
 //     int file_name_len = ft_strlen(file_name);
 //     int str_len = ft_strlen(str);
 //     int is_literal_string = -1;
-
 //     while (1)
 //     {
 //         if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
 //             (i++, is_literal_string *= -1);
-
 //         else if (str[i] == '*' && is_literal_string == -1)
 //         {
 //             wc_pos = ++i;
 //             while (str[wc_pos] == DOUBLE_QUOTE || str[wc_pos] == SINGLE_QUOTE)
 //                 wc_pos++;  // Skip quotes after *
-
 //             int suffix_len = str_len - wc_pos;
-
 //             // Make sure suffix exists
 //             if (suffix_len == 0)
 //                 return (1); // pattern was just "*", so all filenames match
-
 //             // Try to find the suffix at the right position
 //             while (file_name[j])
 //             {
@@ -81,7 +101,6 @@ void assign_wc_node_data_to_args_array(t_wc_node *list, char ***arr)
 //             }
 //             return (0);
 //         }
-
 //         else if (str[i] != file_name[j])
 //         {
 //             if (wc_pos != i)
@@ -99,7 +118,6 @@ void assign_wc_node_data_to_args_array(t_wc_node *list, char ***arr)
 //                 return (1);
 //             (i++, j++);
 //         }
-
 //         if (j == file_name_len && i == str_len)
 //             return (1);
 //     }

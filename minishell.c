@@ -103,7 +103,7 @@ int main(int ac, char **av, char **env)
 		if (!tree)
 			continue;
 
-	//	print_tree(tree, 0);
+		// print_tree(tree, 0);
 	
 		status = execution(tree,&env_list);
 		g_exit_status = status;

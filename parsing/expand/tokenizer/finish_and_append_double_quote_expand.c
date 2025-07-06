@@ -1,45 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   normal_expander.c                                  :+:      :+:    :+:   */
+/*   finish_and_append_double_quote_expand.c            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/29 22:59:08 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 17:16:29 by massrayb         ###   ########.fr       */
+/*   Created: 2025/07/06 17:08:41 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/06 17:26:19 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/parsing.h"
 
-static int	calculate_data_len(char *str)
+static void	conver_quotes(char *str)
 {
-	int	i;
-
-	i = 0;
-	if (str[0] == '$')
-		i = 1;
-	while (str[i] && !ft_isspace(str[i]) && \
-		str[i] != '\'' && str[i] != '\"' && str[i] != '$')
-		i++;
-	return (i);
+	while (*str)
+	{
+		if (*str == '\'')
+			*str = SINGLE_QUOTE;
+		str++;
+	}
 }
 
-int	normal_expander(char *str, int *i, t_expand_token **tokens)
+int	finish_and_append_double_quote_expand(char *str, int _i, \
+char *data, t_expand_token **tokens)
 {
-	int		len;
-	char	*data;
-	int		join;
+	int	join;
 
-	len = calculate_data_len(str);
-	data = ft_substr(str, 0, len);
-	if (!data)
-		return (perror("error: "), R_FAIL);
 	join = 1;
-	if (ft_isspace(str[len]) || !str[len])
+	if (ft_isspace(str[_i]) || !str[_i])
 		join = 0;
+	conver_quotes(data);
 	if (append_expand_token(tokens, data, join) == R_FAIL)
 		return (R_FAIL);
-	*i += len;
 	return (R_SUCCESS);
 }

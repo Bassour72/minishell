@@ -1,40 +1,6 @@
 
 #include "../include/parsing.h"
 
-void print_env(t_env *env) //note to debug
-{
-	while (env)
-	{
-		// if (env->exported)
-			printf("[%s]->[%s]\n", env->key, env->value);
-		env = env->next;
-	}
-}
-
-int update_last_executed_command(t_env **env_list,char *key, char *last_command)
-{
-	t_env *env_tmp;
-	char *tmp_last_command;
-	 env_tmp = *env_list;
-	 if (!last_command)
-	 	return 1;
-	while (env_tmp != NULL)
-	{
-		if (ft_strcmp(env_tmp->key, key) == 0)
-		{
-			free(env_tmp->value);
-			tmp_last_command = ft_strdup(last_command);
-			env_tmp->value = tmp_last_command;
-			free (last_command);
-			return 0;
-		}
-		env_tmp = env_tmp->next;
-	}
-	free (last_command);
-	return 1;
-}
-
-
 static int	env_extract_key(char *env, char **key)
 {
 	char *end; 
@@ -63,84 +29,19 @@ static int env_extract_value(char *env, char **value)
 	return (1);
 }
 
-static int	create_env_node(t_env **list, char *key, char *value)
-{
-	t_env	*new_node;
-	t_env	*tmp;
-	new_node = malloc(sizeof(t_env));
-	if (!new_node)
-	{
-		perror("error: ");
-		free(key);
-		free(value);
-		return (R_FAIL);
-	}
-	new_node->key = key;
-	new_node->value = value;
-	new_node->exported = 1;
-	new_node->is_remove = 1;
-	if (!ft_strcmp(key, "_") || !ft_strcmp(key, "exit_status@gmail.com"))
-		new_node->exported = 0;
-	new_node->next = NULL;
 
-	if (!*list)
-		*list = new_node;
-	else
-	{
-		tmp = *list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new_node;
-	}
-	return (R_SUCCESS);
-}
-
-int set_pwd_and_oldpwd_if_not_found(t_env **env_list, char *key)
-{
-	t_env *temp_env;
-	t_env *temp;
-	int		is_pwd;
-
-	temp_env = *env_list;
-	temp = *env_list;
-	is_pwd = 0;
-	while (temp_env != NULL)
-	{
-		if (!ft_strcmp(temp_env->key, key))
-			is_pwd = 1;
-		if (is_pwd == 1)
-			break;
-		temp_env = temp_env->next;
-	}
-	if (is_pwd == 1)
-			return 0;
-	while (temp->next != NULL)
-		temp = temp->next;
-	char *pwd_value = getcwd(NULL,0);
-	char *pwd_key= ft_strdup(key);
-
-	 create_env_node(env_list, pwd_key, pwd_value);
-	return 0;
-}
-
-int  set_pwd_and_physical_pwd_(t_env **env_list)
-{
-	int status;
-	status = set_pwd_and_oldpwd_if_not_found(env_list, "physical_PWD");
-	status = set_pwd_and_oldpwd_if_not_found(env_list, "PWD");
-	return (status);
-}
 int	env_generate(t_env **env_list, char **env)
 {
 	char	*key;
 	char	*value;
 	int		i;
-	int status;
+	int		status;
+
 	if (!env || !(*env))
 	{
 		status = init_env(env_list);
 		if (status != 0)
-			return 1;
+			return (R_FAIL);
 		status =  set_pwd_and_physical_pwd_(env_list);
 		return (status);
 	}

@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:07:15 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/02 11:19:25 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/07 00:00:59 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,28 @@ static int is_wildcard(char *str)
 	int literal_string;
 
 	literal_string = -1;
-    while (*str)
-    {
+	while (*str)
+	{
 		if (*str == '\"' || *str == '\'')
 			literal_string = -literal_string;
-        if (*str == '*' && literal_string == -1)
-            return (1);
-        str++;
-    }
-    return (0);
+		if (*str == '*' && literal_string == -1)
+			return (1);
+		str++;
+	}
+	return (0);
 }
 
 int init_needle_len(char *name, int start)
 {
-    int len;
-    int i;
+	int len;
+	int i;
 
-    len  = 0;
-    i = start - 1;
-    while (name[++i] && name[i] != '*')
-        len++; 
-    // printf("len:%d\n", len);
+	len  = 0;
+	i = start - 1;
+	while (name[++i] && name[i] != '*')
+		len++; 
 
-    return (len);
+	return (len);
 }
 
 int	is_match_quote(char str_i, char file_name_j)
@@ -49,16 +48,16 @@ int	is_match_quote(char str_i, char file_name_j)
 
 int is_file_name_match(char *file_name, char *str)
 {
-    int wc_pos;			// abcd.c
-    int	i;			// *a
-    int j;
+	int wc_pos;			// abcd.c
+	int	i;			// *a
+	int j;
 	int file_name_len = ft_strlen(file_name);
 	int str_len = ft_strlen(str);
 	int is_literal_string = -1;
 
 	wc_pos = -1;
-    j = 0;
-    i = 0;
+	j = 0;
+	i = 0;
 
 	while (1)
 	{
@@ -92,25 +91,25 @@ int is_file_name_match(char *file_name, char *str)
 		}
 		if (j == file_name_len && i == str_len)
 			return (1);
-    }
+	}
 	   
 }
 
 void	init_file_names_matches(t_wc_node *file_names, char *name)
 {
-    while (file_names)
-    {
-        if (is_file_name_match(file_names->data, name) == 1)
-            file_names->match = 1;
-        file_names = file_names->next;
-    }
+	while (file_names)
+	{
+		if (is_file_name_match(file_names->data, name) == 1)
+			file_names->match = 1;
+		file_names = file_names->next;
+	}
 }
 
 int do_expand_wildcard(t_wc_node **wc_node, t_wc_node *file_names)
 {
 	t_wc_node *new_list = NULL;
 
-    init_file_names_matches(file_names, (*wc_node)->data);
+	init_file_names_matches(file_names, (*wc_node)->data);
 	
 	int len = 0;
 	for(t_wc_node *fn = file_names; fn; fn = fn->next)
@@ -141,23 +140,23 @@ int do_expand_wildcard(t_wc_node **wc_node, t_wc_node *file_names)
 
 int expand_wildcard(t_wc_node **args_list, t_wc_node *file_names)
 {
-    t_wc_node *tmp;
-    t_wc_node *wc_node;
+	t_wc_node *tmp;
+	t_wc_node *wc_node;
 	t_wc_node *befor;
 	t_wc_node *after;
 
-    tmp = *args_list;
-    while (tmp)
-    {
-		// printf("[%s]\n", tmp[1].data);
-        wc_node = tmp;
-        tmp = tmp->next;
-        if (is_wildcard(wc_node->data))
-        {
+	tmp = *args_list;
+	while (tmp)
+	{
+
+		wc_node = tmp;
+		tmp = tmp->next;
+		if (is_wildcard(wc_node->data))
+		{
 			// printf("\033[33m[%s]\033[0m is a wildcard with lenght \033[33m[%d]\033[0m\n", wc_node->data, ft_strlen(wc_node->data));
 			befor = wc_node->prev;
 			after = wc_node->next;
-            if (do_expand_wildcard(&wc_node, file_names) == R_FAIL)
+			if (do_expand_wildcard(&wc_node, file_names) == R_FAIL)
 				return (R_FAIL);
 			if(!wc_node)
 			{
@@ -178,10 +177,7 @@ int expand_wildcard(t_wc_node **args_list, t_wc_node *file_names)
 					after->prev = wc_node;
 				wc_node->next = after;
 			}
-        }
-    }
+		}
+	}
 	return (R_SUCCESS);
-	// for (t_wc_node *t = *args_list; t; t = t->next)
-	// 	printf(">>{%s}\n", t->data);
-
 }

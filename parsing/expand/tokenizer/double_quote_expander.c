@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:01:43 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/02 10:41:41 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/06 17:26:00 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static int	calculate_new_data_len(char *str, int _i)
 			len++;
 			break ;
 		}
-		else if (str[len] == '$' && !ft_isspace(str[len + 1]) && str[len + 1] != '\"')
+		else if (str[len] == '$' && !ft_isspace(str[len + 1]) && \
+		str[len + 1] != '\"')
 		{
 			break ;
 		}
@@ -66,32 +67,6 @@ static int	is_done(char *data)
 		return (1);
 	return (0);
 }
-static void	conver_quotes(char *str)
-{
-	while (*str)
-	{
-		if (*str == '\'')
-			*str = SINGLE_QUOTE;
-		str++;
-	}
-}
-
-static int	finish_and_append(char *str, int _i, char *data, \
-	t_expand_token **tokens)
-{
-	int	join;
-
-	join = 1;
-	if (ft_isspace(str[_i]) || !str[_i])
-		join = 0;
-	
-	conver_quotes(data);
-	// data[0] = DOUBLE_QUOTE;
-	// data[ft_strlen(data) - 1] = DOUBLE_QUOTE;
-	if (append_expand_token(tokens, data, 0, join, 0) == R_FAIL)
-		return (R_FAIL);
-	return (R_SUCCESS);
-}
 
 int	double_quote_expander(char *str, int *i, t_expand_token **tokens, \
 	t_env *env)
@@ -119,5 +94,5 @@ int	double_quote_expander(char *str, int *i, t_expand_token **tokens, \
 		}
 	}
 	(*i) += _i;
-	return (finish_and_append(str, _i, data, tokens));
+	return (finish_and_append_double_quote_expand(str, _i, data, tokens));
 }

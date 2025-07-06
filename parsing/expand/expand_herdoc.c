@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:16:36 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 00:18:48 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/06 19:12:40 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	expand_herdoc(char **herdoc_line, t_env *env)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '$' && line[i + 1] != '\0')
+		if (line[i] == '$' && line[i + 1] != '\0' && !ft_isspace(line[i + 1]))
 		{
 			if (expand_variable(line, &i, &result, env) == R_FAIL)
 				return (R_FAIL);

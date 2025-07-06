@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:00:04 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 18:25:01 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/06 18:56:15 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	single_quote_expander(char *str, int *i, t_expand_token **tokens)
 	join = 1;
 	if (!str[len] || ft_isspace(str[len]))
 		join = 0;
-	if (append_expand_token(tokens, data, 0, join, 0) == R_FAIL)
+	if (append_expand_token(tokens, data, join) == R_FAIL)
 		return (free_expand_tokens_list(*tokens), R_FAIL);
 	*i += len;
 	return (R_SUCCESS);

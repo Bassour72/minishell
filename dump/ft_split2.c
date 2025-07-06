@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 00:03:05 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/30 23:48:56 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:47:50 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	**ft_split2(char *str)
 		{
 			len = get_split_len(str + i);
 			cmd_list[j] = custom_strdub(str + i, len);
-			// if (!cmd_list)
+			if (!cmd_list[j])
 			// 	return (free_failed_list(cmd_list, j), NULL);
 			j++;
 			i += len;
@@ -109,13 +109,3 @@ char	**ft_split2(char *str)
 	}
 	return (cmd_list[j] = NULL, cmd_list);
 }
-
-// #include "stdio.h"
-// int main(int ac, char **av)
-// {
-// 	char **res = ft_split2("a     b\'hel\'");
-// 	for(int i = 0; res[i]; i++)
-// 	{
-// 		printf("[%s]\n", res[i]);
-// 	}
-// }

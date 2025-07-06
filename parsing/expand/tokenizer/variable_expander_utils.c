@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:14:56 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 00:29:09 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/06 22:15:26 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int	extract_var_value(char *src, int *i, char **dst, t_env *env)
 	if (!key)
 		return (*dst = NULL, R_SUCCESS);
 	value = env_get_value(env, key);
-	update_value(value);
 	if (ft_strcmp("exit_status@gmail.com", key) == 0)
 		(*i) += 2;
 	else
@@ -102,6 +101,7 @@ int	extract_var_value(char *src, int *i, char **dst, t_env *env)
 		*dst = ft_strdup(value);
 		if (!*dst)
 			return (perror("error: "), R_FAIL);
+		update_value(*dst);
 	}
 	else
 	{

@@ -2,9 +2,14 @@ CFLAGS =# -fsanitize=address -g3 #-Wall -Wextra -Werror
 
 NAME = minishell
 
-SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tree.c \
-		parsing/parser/clear_parsing.c parsing/parser/debug.c  parsing/parser/redirections.c \
+SRC =	minishell.c\
 		parsing/commands.c\
+		parsing/tokenizer.c\
+		parsing/parser/parser.c\
+		parsing/parser/init_tree.c\
+		parsing/parser/clear_parsing.c\
+		parsing/parser/debug.c\
+		parsing/parser/redirections.c\
 		parsing/tree/append_flat_tree_node.c\
 		parsing/tree/flat_tree.c\
 		parsing/tree/flat_tree_collectors.c\
@@ -28,12 +33,13 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		parsing/expand/tokenizer/variable_expander_utils.c\
 		parsing/expand/tokenizer/single_quote_expander.c\
 		parsing/expand/tokenizer/double_quote_expander.c\
+		parsing/expand/tokenizer/finish_and_append_double_quote_expand.c\
 		parsing/expand/tokenizer/normal_expander.c\
 		parsing/expand/tokenizer/normal_variable_expander.c\
+		parsing/expand/tokenizer/is_befor_var_valid.c\
 		parsing/expand/tokenizer/double_quote_variable_expander.c\
 		parsing/expand/tokenizer/tokenizer.c \
 		parsing/expand/tokenizer/append_expand_token.c \
-		parsing/expand/tokenizer/print_expand_tokens.c\
 		parsing/expand/utils/free_expand_tokens_list.c\
 		parsing/expand/utils/array_to_list.c \
 		parsing/expand/utils/join_array.c\
@@ -51,8 +57,12 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		wildcard/wildcard_utils.c\
 		wildcard/init_file_names.c\
 		wildcard/wildcard.c\
-		env/env.c env/env_utils.c\
+		env/env.c\
+		env/env_utils.c\
 		env/init_env.c \
+		env/create_env_node.c\
+		env/set_pwd_and_oldpwd_if_not_found.c\
+		env/update_last_executed_command.c\
 		execution/execution.c \
 		execution/built-in/unset/unset.c \
 		execution/redir_utils.c \

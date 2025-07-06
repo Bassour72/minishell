@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:11:46 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 18:10:22 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/06 16:45:25 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,9 @@ int	parser(t_tree **tree, char *input, t_env **env)
 
 	tokenized_input = NULL;
 	if (!validate_quotes(input))
-		return (free(input), *tree = NULL, R_SUCCESS);//check this 
+		return (free(input), *tree = NULL, R_SUCCESS);
 	if (tokenizer(&tokenized_input, input) == R_FAIL)
 		return (free_tokens_list(tokenized_input), R_FAIL);
-		// print_tokenized_inputs(tokenized_input);
 	if (validate_sytax(tokenized_input) == R_FAIL)
 	{
 		update_env_exit_status(env, 258);

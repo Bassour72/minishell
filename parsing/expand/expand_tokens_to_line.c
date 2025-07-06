@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:20:27 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 20:22:09 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/06 16:55:33 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ static int	is_able_to_join(t_expand_token *token)
 {
 	char	quote;
 
-	if (ft_strlen(token->data) == 2 && token->join  && ((token->next && token->next->data[0]) || \
-	(!token->next)))
+	if (ft_strlen(token->data) == 2 && token->join && \
+	((token->next && token->next->data[0]) || (!token->next)))
 	{
 		quote = token->data[0];
-		if ((quote == '\'' || quote == '\"') && token->data[0] == token->data[1])
+		if ((quote == '\'' || quote == '\"') && \
+		token->data[0] == token->data[1])
 			return (0);
 	}
 	return (1);
