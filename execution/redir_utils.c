@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:54:10 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 23:55:08 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/execution.h"
 
 static int	open_redir_fd(t_red *redir)
@@ -16,6 +28,7 @@ static int	open_redir_fd(t_red *redir)
 static int	dup_redir_fd(t_red *redir, int fd)
 {
 	int	target;
+
 	target = STDOUT_FILENO;
 	if (redir->type == RED_INPUT || redir->type == HER_DOC)
 		target = STDIN_FILENO;
@@ -42,7 +55,7 @@ static int	apply_single_redirection(t_red *redir)
 	return (dup_redir_fd(redir, fd));
 }
 
-int apply_redirections(t_red *redir, t_env **env_list)
+int	apply_redirections(t_red *redir, t_env **env_list)
 {
 	while (redir)
 	{

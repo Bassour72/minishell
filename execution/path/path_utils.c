@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:55:33 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 23:58:05 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/execution.h"
 
-
- char	*extract_path_variable(t_env **env_list)
+char	*extract_path_variable(t_env **env_list)
 {
 	t_env	*env;
 
@@ -21,7 +32,7 @@ char	*check_valid_command_path(char *command)
 		return (NULL);
 	if (access(command, X_OK) == 0)
 	{
-			return (ft_strdup(command));
+		return (ft_strdup(command));
 	}
 	return (NULL);
 }

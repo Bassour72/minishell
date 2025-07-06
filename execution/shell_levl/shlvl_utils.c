@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shlvl_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:37:05 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 23:38:36 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/execution.h"
 
 int	is_valid_shlvl_string(char *str)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if (!str || !*str)
 		return (0);
 	if (str[i] == '+' || str[i] == '-')
@@ -19,8 +32,8 @@ int	is_valid_shlvl_string(char *str)
 
 int	env_add_back(t_env **env_list, const char *key, const char *value)
 {
-	t_env *new;
-	t_env *last;
+	t_env	*new;
+	t_env	*last;
 
 	new = malloc(sizeof(t_env));
 	if (!new)

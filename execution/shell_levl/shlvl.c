@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shlvl.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:38:57 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 23:41:58 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/execution.h"
 
-long compute_next_shlvl(long current)
+long	compute_next_shlvl(long current)
 {
 	if (current < 0)
 		return (0);
@@ -14,10 +26,10 @@ long compute_next_shlvl(long current)
 	return (current + 1);
 }
 
-int update_env_shlvl(t_env **env_list, long value)
+int	update_env_shlvl(t_env **env_list, long value)
 {
-	char *new_value;
-	t_env *tmp;
+	char	*new_value;
+	t_env	*tmp;
 
 	if (!env_list)
 		return (1);
@@ -40,9 +52,9 @@ int update_env_shlvl(t_env **env_list, long value)
 
 int	should_increment_shlvl(char *program_path)
 {
-	if (ft_strcmp(program_path, "./minishell") == 0 || ft_strcmp(program_path, "minishell") == 0)
-	{ 
-		
+	if (ft_strcmp(program_path, "./minishell") == 0 || \
+	ft_strcmp(program_path, "minishell") == 0)
+	{
 		return (0);
 	}
 	else
@@ -51,9 +63,10 @@ int	should_increment_shlvl(char *program_path)
 
 int	handle_shlvl(char *argv0, t_env **env_list)
 {
-	char *shlvl_str;
-	long current, next;
-	
+	char	*shlvl_str;
+	long	current;
+	long	next;
+
 	if (should_increment_shlvl(argv0))
 		return (0);
 	if (!env_list || !*env_list)

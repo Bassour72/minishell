@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:55:52 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 23:56:59 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/execution.h"
 
 static	void	free_split_array(char **arr)
@@ -61,7 +73,7 @@ char	*get_binary_file_path(t_tree *root, t_env **env_list)
 	if (ft_strchr(root->data[0], '.') || ft_strchr(root->data[0], '/'))
 	{
 		if (should_display_error(root->data[0], env_list, false) != 0)
-		 	return (NULL);
+			return (NULL);
 		return (check_valid_command_path(root->data[0]));
 	}
 	default_path = extract_path_variable(env_list);
