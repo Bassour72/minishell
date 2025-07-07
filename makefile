@@ -57,7 +57,6 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		env/init_env.c \
 		execution/execution.c \
 		execution/built-in/unset/unset.c \
-		execution/redir_utils.c \
 		execution/shell_levl/shlvl.c \
 		execution/shell_levl/shlvl_utils.c \
 		execution/built-in/execute_builtin.c \
@@ -84,7 +83,9 @@ SRC =	minishell.c parsing/parser/parser.c parsing/tokenizer.c parsing/parser/tre
 		execution/heredocs/heredocs_utils.c \
 		execution/heredocs/heredocs.c \
 		execution/path/path_utils.c \
-		execution/path/path.c 
+		execution/path/path.c \
+		execution/redirection_exec/redir_.c \
+		execution/redirection_exec/redir_utils.c
 
 
 		# debug / memory_debugging.c 
@@ -175,4 +176,3 @@ debug_mode_all: fclean all
 #while true; do lsof -c minishell; sleep 1; clear; done
 #while true; do leaks -q minishell; sleep 1; clear; done
 #ps aux | grep Z
-# (echo shshs) > ls ls

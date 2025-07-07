@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 18:58:41 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 14:21:51 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:47:07 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 # include <sys/stat.h>
 # include <errno.h>
 # include <stdbool.h>
-
-// cd_errors.h or general errors.h
 # define ERR_DOT_DOT_DOT        ": invalid argument (three consecutive dots)\n"
 # define ERR_HYPHEN_HYPHEN_HYPHEN ": invalid argument \
 (three consecutive hyphens)\n"
@@ -33,27 +31,24 @@
 # define ERR_HYPHEN_SLASH       ": invalid argument (\"-/\" not allowed)\n"
 # define ERR_GETCWD_FAIL        "cd: error retrieving current directory: getcwd: \
 cannot access parent directories"
-
 # define DIR_STATUS_NO_PER 11
 # define DIR_STATUS_NOT_EXI 12
 # define MAX_HEREDOC 16
 # define CMD_ERR_NOT_FOUND 127
 # define CMD_ERR_NO_PERMISSION 126
-/******************************************************* */
-# define STATUS_OK        0     // Normal success
-# define STATUS_ERROR     1     // General error
-# define STATUS_BUILTIN   2     // Builtin misuse (used by Bash)
-# define STATUS_NOT_FOUND 127   // Command not found
-# define STATUS_IS_DIR    126   // Command is a directory or not executable
-# define STATUS_SIG_BASE  128   // Signals start from 128 + signum
-# define STATUS_SIGINT    130  // 128 + SIGINT (2)
-# define STATUS_SIGQUIT   131  // 128 + SIGQUIT (3)
+# define STATUS_OK        0
+# define STATUS_ERROR     1
+# define STATUS_BUILTIN   2
+# define STATUS_NOT_FOUND 127
+# define STATUS_IS_DIR    126
+# define STATUS_SIG_BASE  128
+# define STATUS_SIGINT    130
+# define STATUS_SIGQUIT   131
 # define CMD_SUCCESS         0
 # define CMD_GENERAL_ERROR   1
 # define CMD_CANNOT_EXECUTE  126
 # define CMD_NOT_FOUND       127
 # define EX_USAGE 2
-# define CMD_SIGNAL(n)      (128 + (n))
 
 extern int	g_exit_status;
 char	*get_env_path_parent(const char *path);
@@ -125,14 +120,12 @@ void	swap_node(t_env *a, t_env *b);
 int		is_valid_shlvl_string(char *str);
 int		env_add_back(t_env **env_list, const char *key, const char *value);
 long	parse_shlvl(char *str);
-///
 void	close_heredoc_fds(t_tree *root, t_red *redir);
 void	propagate_fork_flag(t_tree *root, int is_forked);
 int		count_heredocs(t_tree *node);
 void	enforce_heredoc_limit(t_tree *root, t_env **env_list);
 char	*extract_path_variable(t_env **env_list);
 char	*check_valid_command_path(char *command);
-//
 int		wait_child_status(pid_t pid, t_env **env_list);
 int		exec_subshell(t_tree *root, t_env **env_list);
 int		exec_builtin_command(t_tree *root, t_env **env_list);
@@ -140,4 +133,5 @@ int		exec_external_command(t_tree *root, t_env **env_list);
 int		handle_cd_failure(t_env **env, char *arg, char *logical_pwd);
 int		free_all(char *a, char *b, char *c);
 char	*build_logical_path(char *base, char *suffix);
+int		apply_single_redirection(t_red *redir, t_env **env_list);
 #endif

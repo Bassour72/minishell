@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:09:42 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 23:14:25 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:20:35 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	run_command(t_tree *root, t_env **env_list)
 		return ;
 	if (apply_redirections(root->redirections, env_list) == 1)
 	{
-		free_tree(root);
 		return ;
 	}
 	if (is_builtin(root->data[0]) == 0)

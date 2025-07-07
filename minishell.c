@@ -56,7 +56,11 @@ void	update_env_exit_status(t_env **env_list, int status)
 	update_last_executed_command(env_list, "exit_status@gmail.com", exit_str);
 	//free(exit_str);
 }
-
+int handle_heredoc(t_tree *root, t_env **env_list)
+{
+	enforce_heredoc_limit(root, env_list);
+	return (prepare_heredocs(root, env_list));
+}
 void	shell_loop(t_env **env_list)
 {
 	t_tree	*tree;
@@ -101,7 +105,7 @@ void	shell_loop(t_env **env_list)
 			g_exit_status = 0;
 			continue;
 		}
-		if (prepare_heredocs(tree, env_list) != 0)
+		if (handle_heredoc(tree, env_list) != 0)
 		{
 			update_env_exit_status(env_list, 1);
 			close_heredoc_fds(tree, tree->redirections);
@@ -111,7 +115,6 @@ void	shell_loop(t_env **env_list)
 		}
 		print_tree(tree, 0);
 		status = execution(tree, env_list);
-		printf("herere\n\n");
 		update_env_exit_status(env_list, status);
 		free_tree(tree);
 		g_exit_status = 0;
