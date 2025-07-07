@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:52:05 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 23:53:54 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/07 20:33:02 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,7 @@ int	execution(t_tree *root, t_env **env_list)
 		propagate_fork_flag(root, 1);
 	else
 		propagate_fork_flag(root, 0);
-	enforce_heredoc_limit(root, env_list);
-	status = prepare_heredocs(root, env_list);
-	if (status != 0)
-	{
-		close_heredoc_fds(root, root->redirections);
-		if (g_exit_status == 130)
-			return (status);
-	}
+		//enforce_heredoc_limit(root, env_list);
 	status = exec_tree(root, env_list, 0, false);
 	if (status == -1)
 		exit(-1);
