@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:46:09 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 23:47:37 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/07 14:54:08 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,17 @@ static void	change_quotes(char *str)
 	}
 }
 
+static void	init_new_node(t_wc_node *node, char *new_data)
+{
+	node->data = new_data;
+	node->private = 0;
+	if (new_data[0] == '.')
+		node->private = 1;
+	node->match = 0;
+	node->next = NULL;
+	node->prev = NULL;
+}
+
 int	append_wc_node(t_wc_node **list, char *data, int flag)
 {
 	t_wc_node	*node;
@@ -38,8 +49,7 @@ int	append_wc_node(t_wc_node **list, char *data, int flag)
 	node = malloc(sizeof(t_wc_node));
 	if (!node)
 		return (perror("error: "), free(new_data), R_FAIL);
-	node->data = new_data;
-	1 && (node->match = 0, node->next = NULL, node->prev = NULL);
+	init_new_node(node, new_data);
 	if (!*list)
 		*list = node;
 	else

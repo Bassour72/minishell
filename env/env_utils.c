@@ -1,6 +1,18 @@
-#include "../include/parsing.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/07 18:32:55 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/07 18:35:32 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-char *env_get_value(t_env *list, char *key)
+#include "../include/env.h"
+
+char	*env_get_value(t_env *list, char *key)
 {
 	if (!key || !list)
 		return (NULL);
@@ -17,9 +29,9 @@ char *env_get_value(t_env *list, char *key)
 	return (NULL);
 }
 
-void free_env_list(t_env *list)
+void	free_env_list(t_env *list)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	while (list)
 	{

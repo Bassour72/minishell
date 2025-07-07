@@ -1,72 +1,112 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredocs_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:21:07 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 23:27:35 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/execution.h"
 
-void close_heredoc_fds(t_tree *root, t_red *redir)
+void	close_heredoc_fds(t_tree *root, t_red *redir)
 {
+	t_red	*r;
 
-    t_red *r = redir;
-    if (root == NULL)
-        return;
-    while (r)
-    {
-        if (r->type == HER_DOC && r->out_fd >= 0)
-        {
-            close(r->out_fd);
-            r->out_fd = -1;
-        }
-        r = r->next;
-    }
-    close_heredoc_fds(root->left, redir);
-    close_heredoc_fds(root->right, redir);
-
+	r = redir;
+	if (root == NULL)
+		return ;
+	while (r)
+	{
+		if (r->type == HER_DOC && r->out_fd >= 0)
+		{
+			close(r->out_fd);
+			r->out_fd = -1;
+		}
+		r = r->next;
+	}
+	close_heredoc_fds(root->left, redir);
+	close_heredoc_fds(root->right, redir);
 }
 
-void propagate_fork_flag(t_tree *root, int is_forked)
+void	propagate_fork_flag(t_tree *root, int is_forked)
 {
-    if (!root)
-        return;
-    root->is_forked = is_forked;
-    if (root->type == PIPE)
-    {
-        propagate_fork_flag(root->left, 1);
-        propagate_fork_flag(root->right, 1);
-    }
-    else
-    {
-        propagate_fork_flag(root->left, is_forked);
-        propagate_fork_flag(root->right, is_forked);
-    }
+	if (!root)
+		return ;
+	root->is_forked = is_forked;
+	if (root->type == PIPE)
+	{
+		propagate_fork_flag(root->left, 1);
+		propagate_fork_flag(root->right, 1);
+	}
+	else
+	{
+		propagate_fork_flag(root->left, is_forked);
+		propagate_fork_flag(root->right, is_forked);
+	}
 }
 
-int count_heredocs(t_tree *node)
+int	count_heredocs(t_tree *node)
 {
-    int total = 0;
-    t_red *r;
+	int		total;
+	t_red	*r;
 
-    if (!node)
-        return 0;
-    r = node->redirections;
-    while (r)
-    {
-        if (r->type == HER_DOC)
-            total++;
-        r = r->next;
-    }
-    total += count_heredocs(node->left);
-    total += count_heredocs(node->right);
-    return total;
+	total = 0;
+	if (!node)
+		return (0);
+	r = node->redirections;
+	while (r)
+	{
+		if (r->type == HER_DOC)
+			total++;
+		r = r->next;
+	}
+	total += count_heredocs(node->left);
+	total += count_heredocs(node->right);
+	return (total);
 }
 
-
-void enforce_heredoc_limit(t_tree *root, t_env **env_list)
+void	enforce_heredoc_limit(t_tree *root, t_env **env_list)
 {
-    int heredocs = count_heredocs(root);
+	int	heredocs;
 
-    if (heredocs > MAX_HEREDOC)
-    {
-        write(STDERR_FILENO, "bash: maximum here-document count exceeded\n",44);
-        free_env_list(*env_list);
-        free_tree(root);
-        exit(2);
-    }
+	heredocs = count_heredocs(root);
+	if (heredocs > MAX_HEREDOC)
+	{
+		write(STDERR_FILENO, \
+		"bash: maximum here-document count exceeded\n", 44);
+		free_env_list(*env_list);
+		free_tree(root);
+		exit(2);
+	}
+}
+
+int	prepare_heredocs(t_tree *root, t_env **env_list)
+{
+	int		return_exit;
+	t_red	*redir;
+
+	if (!root)
+		return (0);
+	redir = root->redirections;
+	if (expand_herdoc_delimiter(redir, *env_list) == R_FAIL)
+		return (1);
+	while (redir)
+	{
+		if (redir->type == HER_DOC)
+		{
+			return_exit = create_heredoc(redir, env_list);
+			if (return_exit != 0)
+				return (return_exit);
+		}
+		redir = redir->next;
+	}
+	if (prepare_heredocs(root->left, env_list) == 1)
+		return (1);
+	if (prepare_heredocs(root->right, env_list) == 1)
+		return (1);
+	return (0);
 }

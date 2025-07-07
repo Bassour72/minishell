@@ -1,38 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update_last_executed_command.c                     :+:      :+:    :+:   */
+/*   update_exit_status.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/06 22:38:44 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 22:41:10 by massrayb         ###   ########.fr       */
+/*   Created: 2025/07/07 17:32:36 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/07 18:33:31 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include "../include/env.h"
 
-int	update_last_executed_command(t_env **env_list, char *key, \
-char *last_command)
+int	update_env_exit_status(t_env **env_list, int status)
 {
+	char	*exit_str;
 	t_env	*env_tmp;
-	char	*tmp_last_command;
 
+	exit_str = ft_itoa(status);
+	if (!exit_str)
+		return (perror("error: "), R_FAIL);
 	env_tmp = *env_list;
-	if (!last_command)
-		return (1);
-	while (env_tmp != NULL)
+	while (env_tmp)
 	{
-		if (ft_strcmp(env_tmp->key, key) == 0)
+		if (ft_strcmp(env_tmp->key, EXIT_STATUS_KEY) == 0)
 		{
 			free(env_tmp->value);
-			tmp_last_command = ft_strdup(last_command);
-			env_tmp->value = tmp_last_command;
-			free (last_command);
-			return (0);
+			env_tmp->value = exit_str;
 		}
 		env_tmp = env_tmp->next;
 	}
-	free (last_command);
-	return (1);
+	return (R_SUCCESS);
 }

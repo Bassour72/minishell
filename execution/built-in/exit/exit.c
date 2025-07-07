@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 22:27:38 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/07 11:31:45 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/execution.h"
 
 static int	is_numeric(const char *str)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if (str[i] == '+' || str[i] == '-')
 		i++;
 	if (!str[i])
@@ -19,9 +32,11 @@ static int	is_numeric(const char *str)
 
 static long	ft_atol(const char *str)
 {
-	int		sign = 1;
-	long	result = 0;
+	int		sign;
+	long	result;
 
+	sign = 1;
+	result = 0;
 	while (*str == ' ' || (*str >= 9 && *str <= 13))
 		str++;
 	if (*str == '+' || *str == '-')
@@ -39,30 +54,20 @@ int	exit_exe(t_tree *root, t_env **env_list)
 {
 	long	code;
 
-	
 	if (!root || !root->data)
-        exit(0);
-    if (!root->is_forked)
-	    write(1, "exit\n", 5);
-    if (root->data[1] == NULL)
+		exit(0);
+	if (!root->is_forked)
+		write(1, "exit\n", 5);
+	if (root->data[1] == NULL)
 	{
-		code =ft_atoi( get_env_value("exit_status@gmail.com", *env_list));
-		// free_env_list(*env_list);
-		// free_tree(root);
-		// close(1);
-		// close(0);
-		check_non_interactive_exit(root, env_list, code);
-        exit(code);
+		code = ft_atoi(get_env_value("exit_status@gmail.com", *env_list));
+		check_non_interactive_exit(root, env_list, code, true);
+		exit(code);
 	}
-	if (!is_numeric(root->data[1]))
+	if (root->data[2] == NULL && !is_numeric(root->data[1]))
 	{
 		write(2, "minishell: exit: numeric argument required\n", 43);
-		// free_env_list(*env_list);
-		// free_tree(root);
-		// // 		close(1);
-		// // close(0);
-		// exit(255);
-		check_non_interactive_exit(root, env_list, 255);
+		check_non_interactive_exit(root, env_list, 255, true);
 	}
 	if (root->data[2])
 	{
@@ -70,11 +75,6 @@ int	exit_exe(t_tree *root, t_env **env_list)
 		return (1);
 	}
 	code = ft_atol(root->data[1]);
-	// free_env_list(*env_list);
-	// free_tree(root);
-	// 	// 	close(1);
-	// 	// close(0);
-	// exit((unsigned char)code);
-	check_non_interactive_exit(root, env_list, (unsigned char)code);
-	return (0);
+	check_non_interactive_exit(root, env_list, (unsigned char)code, true);
+	return (1);
 }

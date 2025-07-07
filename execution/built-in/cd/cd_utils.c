@@ -1,13 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd_utils.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 22:00:01 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/07 11:36:15 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/execution.h"
-
-
-/**************************************************************************************************** */
 
 static int	count_double_dots(const char *path)
 {
-	int i = 0;
-	int count = 0;
+	int	i;
+	int	count;
 
+	i = 0;
+	count = 0;
 	while (path[i])
 	{
 		if (path[i] == '.' && path[i + 1] == '.')
@@ -17,15 +28,15 @@ static int	count_double_dots(const char *path)
 	return (count);
 }
 
-static char	*build_logical_path(char *base, char *suffix)
+char	*build_logical_path(char *base, char *suffix)
 {
-   perror("cd: error retrieving current directory: getcwd: cannot access parent directories:\n");
+	perror(ERR_GETCWD_FAIL);
 	if (ft_strlen(suffix) > 2)
 		return (ft_strjoin(base, suffix));
 	return (ft_strjoin(base, "/.."));
 }
 
-static int	free_all(char *a, char *b, char *c)
+int	free_all(char *a, char *b, char *c)
 {
 	if (a)
 		free(a);
@@ -57,7 +68,7 @@ char	*get_env_path_parent(const char *path)
 	return (parent);
 }
 
-static int	handle_cd_failure(t_env **env, char *arg, char *logical_pwd)
+int	handle_cd_failure(t_env **env, char *arg, char *logical_pwd)
 {
 	char	*fallback;
 	char	*next;
@@ -85,30 +96,3 @@ static int	handle_cd_failure(t_env **env, char *arg, char *logical_pwd)
 	}
 	return (free(fallback), 1);
 }
-
-int	apply_cd_with_double_dots(t_tree *root, t_env **env, char *arg)
-{
-	char	*logical_pwd;
-	char	*old_pwd;
-	char	*cwd;
-
-	(void)root;
-	old_pwd = NULL;
-	logical_pwd = get_env_value("physical_PWD", *env);
-    old_pwd =  ft_strdup(logical_pwd);
-	if (chdir(arg) == 0)
-	{
-		cwd = getcwd(NULL, 0);
-		if (!cwd)
-			cwd = build_logical_path(old_pwd, arg);
-		set_env_var("OLDPWD", old_pwd, env);
-		set_env_var("PWD", cwd, env);
-		return (free_all(arg, old_pwd, cwd));
-	}
-	if (handle_cd_failure(env, arg, old_pwd) == 0)
-		return (free_all(arg, old_pwd, NULL));
-	perror("cd: Permission denied");
-	return (free_all(arg, old_pwd, NULL));
-}
-
-

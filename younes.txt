@@ -48,3 +48,34 @@ git rebase origin/main
 git checkout main
 git merge execution
 git push origin main
+
+/////////////////////////////////
+minishell$ ..
+execve: Permission denied
+minishell(96272,0x10adb3dc0) malloc: *** error for object 0x7ff39ec05890: pointer being freed was not allocated
+minishell(96272,0x10adb3dc0) malloc: *** set a breakpoint in malloc_error_break to debug
+minishell$ 
+
+minishell: minishell: command not found
+minishell$ export PATH+=:.
+zsh: segmentation fault  ./minishell
+ybassour@e3r10p1 minishell % 
+int	wait_child_status( pid_t pid, t_env **env_list)
+{
+	int status;
+	int sig;
+
+	if (pid > 0)
+		waitpid(pid, &status, 0);
+	if (WIFEXITED(status)) //true if child exited normally.
+	{
+		sig = WEXITSTATUS(status); // — gives the exit code. // Gets exit code (if WIFEXITED is true)
+		return (sig);
+	}
+	if (WIFSIGNALED(status)) // true if child was terminated by a signal.
+	{
+		 sig = WTERMSIG(status); // Which signal caused termination
+		return (sig + 128);
+	}
+	return (1);
+}

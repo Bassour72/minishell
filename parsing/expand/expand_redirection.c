@@ -6,10 +6,9 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:21:42 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 21:37:56 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/07 14:58:28 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../include/parsing.h"
 
@@ -46,7 +45,7 @@ static int	tokenize_then_split(t_red *reds, t_env *env, t_node **splited_line)
 {
 	t_expand_token	*tokens;
 	char			*new_line;
-	
+
 	tokens = NULL;
 	if (tokenize(reds->data, &tokens, env) == R_FAIL)
 		return (R_FAIL);
@@ -73,9 +72,9 @@ int	expand_redir(t_red *reds, t_env *env)
 				return (R_FAIL);
 			if (expand_list_to_array(&new_arr, splited_line) == R_FAIL)
 				return (R_FAIL);
-			if(wildcard(&new_arr) == R_FAIL)
+			if (wildcard(&new_arr) == R_FAIL)
 				return (R_FAIL);
-			if(remove_non_printable_characters(&new_arr) == R_FAIL)
+			if (remove_non_printable_characters(&new_arr) == R_FAIL)
 				return (R_FAIL);
 			recover_quotes(new_arr);
 			if (set_new_data_or_ambiguous(reds, new_arr) == R_FAIL)

@@ -30,106 +30,106 @@ void f()
 	//system("valgrind --leak-check=full --show-leak-kinds=all ./minishell");
 }
 
-
-void update_env_exit_status(t_env **env_list, int status)
-{
-	char *exit_str;
-
-	exit_str = ft_itoa(status);
-	update_last_executed_command(env_list, "exit_status@gmail.com", exit_str);
-}
-
-
-
 //todo for debug
 void handle_sigint_prompt(int sig)
 {
     (void)sig;
-   rl_replace_line("", 0);
+	if (waitpid(-1, NULL, WNOHANG) == 0)
+			return ;
     write(STDOUT_FILENO, "\n", 1);
+   rl_replace_line("", 0);
     rl_on_new_line();
    rl_redisplay();
     g_exit_status = 130;
 }
-
-
-int main(int ac, char **av, char **env)
+void enable_echoctl(void)
 {
-	//atexit(f);
-	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
-		return (1);
-	t_tree	*tree = NULL;
-	t_env *env_list = NULL;	
-	char	*input;
-	input = NULL;
+    struct termios term;
+
+    if (tcgetattr(STDIN_FILENO, &term) == -1)
+        return;
+    term.c_lflag |= ECHOCTL;
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+
+void disable_echoctl(void)
+{
+    struct termios term;
+
+    if (tcgetattr(STDIN_FILENO, &term) == -1)
+        return;
+    term.c_lflag &= ~ECHOCTL;
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+
+static void	is_input_null(char *input, t_env *env_list)
+{
 	int status;
+
+	if (input == NULL)
+	{
+		write(1, "exit\n", 5);
+		close(2);
+		close(0);
+		status = ft_atoi(get_env_value("exit_status@gmail.com", env_list));
+		free_env_list(env_list);
+		//free_tree(tree);
+		exit(status);
+	}
+}
+
+static void	protect_is_a_tty()
+{
+	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
+		exit (1);
+}
+
+static void	first_initialization(char **input, t_env **env_list, char **env, char *app_name)
+{
+	*input = NULL;
 	signal(SIGINT, handle_sigint_prompt);
 	signal(SIGQUIT, SIG_IGN);
+	if (env_generate(env_list, env) == R_FAIL)
+		exit(1);
+	handle_shlvl(app_name,env_list);
+}
+int main(int ac, char **av, char **env)
+{
+	protect_is_a_tty();
+	t_tree	*tree = NULL;
+	t_env	*env_list = NULL;	
+	char	*input;
+	int		status;
 
-	env_generate(&env_list, env); // check  if any  error
-	handle_shlvl(av[0],&env_list); // check if valid for update shlvl
+	first_initialization(&input, &env_list, env, av[0]);
 	while (1)
 	{
 		signal(SIGINT, handle_sigint_prompt);
+		disable_echoctl();
 		input = readline("minishell$ ");
+		enable_echoctl();
 		if (g_exit_status == 130)
 		{
 			update_env_exit_status(&env_list, 130);
 			g_exit_status = 0;
 		}
-		if (input == NULL)
-		{
-			write(1, "exit\n", 5);
-			close(2);
-			close(0);
-			status =ft_atoi(get_env_value("exit_status@gmail.com", env_list));
-			free_env_list(env_list);
-			//free_tree(tree);
-			exit(status);
-		}
-
+		is_input_null(input, env_list);
 		add_history(input);
-
 		if (empty(input))
 		{
 			free(input);
 			continue ;
 		}
-	
-		
-
 		if (parser(&tree, input, &env_list) == R_FAIL)
 			return (1);
 		if (!tree)
 			continue;
-
-		// print_tree(tree, 0);
-	
 		status = execution(tree,&env_list);
-		g_exit_status = status;
+		printf("\n\n\n\n [%d] \n\n\n", status);
 		update_env_exit_status(&env_list, status);
 		free_tree(tree);
+		g_exit_status = 0;
 	}
 	free_env_list(env_list);
-
 	return (0);
 }
-
-/*
-int main(int argc, char **argv, char **envp)
-{
-    t_env *env_list;
-
-    // Step 1: Convert envp[] to linked list
-    env_list = convert_envp_to_list(envp);
-
-    // ✅ Step 2: Handle SHLVL before doing anything else
-    handle_shlvl(argv[0], &env_list);
-
-    // Step 3: Continue with initializing readline, signals, etc.
-    shell_loop(&env_list);
-
-    return (0);
-}
-
-*/
