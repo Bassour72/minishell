@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 18:58:41 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 21:47:07 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:18:44 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,7 @@ char	*get_env_key(const char *identifier);
 char	*get_env_value1(const char *identifier);
 void	swap_node(t_env *a, t_env *b);
 int		is_valid_shlvl_string(char *str);
-int		env_add_back(t_env **env_list, const char *key, const char *value);
-long	parse_shlvl(char *str);
+///
 void	close_heredoc_fds(t_tree *root, t_red *redir);
 void	propagate_fork_flag(t_tree *root, int is_forked);
 int		count_heredocs(t_tree *node);

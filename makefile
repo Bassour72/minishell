@@ -1,4 +1,4 @@
-CFLAGS =# -fsanitize=address -g3 #-Wall -Wextra -Werror
+CFLAGS = #-fsanitize=address -g3 #-Wall -Wextra -Werror
 
 NAME = minishell
 
@@ -53,20 +53,22 @@ SRC =	minishell.c\
 		parsing/validate_syntax/validate_syntax.c\
 		parsing/validate_syntax/validate_quotes.c\
 		parsing/validate_syntax/validate_syntax_utils.c\
-		wildcard/expand_wildcard.c\
-		wildcard/wildcard_utils.c\
+		wildcard/init_filename_matches.c\
+		wildcard/sort_filenames_list.c\
 		wildcard/init_file_names.c\
+		wildcard/expand_wildcard.c\
+		wildcard/expand_wildcard_utils.c\
 		wildcard/wildcard.c\
+		wildcard/wildcard_utils.c\
 		env/env.c\
 		env/env_utils.c\
 		env/init_env.c \
 		env/create_env_node.c\
 		env/set_pwd_and_oldpwd_if_not_found.c\
-		env/update_last_executed_command.c\
+		env/update_exit_status.c\
 		execution/execution.c \
 		execution/built-in/unset/unset.c \
 		execution/shell_levl/shlvl.c \
-		execution/shell_levl/shlvl_utils.c \
 		execution/built-in/execute_builtin.c \
 		execution/exec/exec_cmd.c \
 		execution/env_array/env_array.c \

@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:11:46 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 16:45:25 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:29:35 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	parser(t_tree **tree, char *input, t_env **env)
 	t_token		*tokenized_input;
 	t_flat_tree	*flat_tree;
 
+	*tree = NULL;
 	tokenized_input = NULL;
 	if (!validate_quotes(input))
 		return (free(input), *tree = NULL, R_SUCCESS);
@@ -38,7 +39,8 @@ int	parser(t_tree **tree, char *input, t_env **env)
 		return (free_tokens_list(tokenized_input), R_FAIL);
 	if (validate_sytax(tokenized_input) == R_FAIL)
 	{
-		update_env_exit_status(env, 258);
+		if (update_env_exit_status(env, 258) == R_FAIL)
+			return (free_tokens_list(tokenized_input), R_FAIL);
 		return (*tree = NULL, free_tokens_list(tokenized_input), R_SUCCESS);
 	}
 	flat_tree = create_flat_tree(tokenized_input);

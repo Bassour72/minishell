@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:22:03 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 22:14:42 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/07 14:57:12 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	normal_variable_expander(char *str, int *i, t_expand_token **tokens, \
 		return ((*i) += 2, R_CONTINUE);
 	if (extract_var_value(str + *i, i, &data, env) == R_FAIL)
 		return (R_FAIL);
-	
 	if (is_export(str) && is_befor_var_valid(*tokens))
 	{
 		len = ft_strlen(data) + 3;

@@ -15,35 +15,25 @@
 # include <termios.h>
 
 
-//-------------------------------------------------------------------
-
-#include <assert.h> //just for debugging
-
-//node types --------------------------------------------------------
 
 typedef enum e_type
 {
-	T_FILE_NAME,			//file.txt
-	WORD,				// cat, ls,...
-	PIPE, //				// |
-	RED_INPUT,  	// <
-	RED_APPEND, // >>
-	RED_TRUNK,	// >
-	HER_DOC,  			// <<
-	BLOCK,//
-	OP_AND,//
-	OP_OR,//
+	T_FILE_NAME,
+	WORD,
+	PIPE,
+	RED_INPUT,
+	RED_APPEND,
+	RED_TRUNK,
+	HER_DOC,
+	BLOCK,
+	OP_AND,
+	OP_OR,
 	PAREN_OPEN,
 	PAREN_CLOSE,
 	WILD_CARD,
 	QUOTE_SINGLE,
 	QUOTE_DOUBLE,
 }			t_type;
-
-//-------------------------------------------------------------------
-
-extern const char *typetostring[];
-
 
 typedef struct s_red
 {
@@ -55,7 +45,7 @@ typedef struct s_red
 	int				in_fd;
 	int				out_fd;
 	int				pipe[2];
-	char			*data; //note file name or herdoc 
+	char			*data;
 	int				is_ambiguous;
 	struct s_red	*next;
 }	t_red;
@@ -73,7 +63,7 @@ typedef struct s_tree
 	char 			**data;
 	t_type			type;
 	t_red			*redirections;
-	int pipe_out; //for execution 
+	int pipe_out;
 	int out_fd;
 	int is_forked;
 	struct s_tree	*left;
@@ -89,22 +79,7 @@ typedef struct s_flat_tree
 }				t_flat_tree;
 
 
-int	init_env(t_env **env_list); //  for minishell !!
-// typedef enum e_node_type
-// {
-// 	GROUP, CMD, PIPE, OPERATOR
-// } 	t_node_type;
 
-
-// typedef struct	s_node
-// {
-// 	t_node_type		type;
-// 	t_red			*red;
-// 	char			**cmd;
-// 	struct s_node	*left;
-// 	struct s_node	*right;
-
-// }	t_node;
 
 //split.c
 int			split(t_node **list, char *str);
@@ -183,7 +158,7 @@ char		**append_command(char **old_list, char *new_cmd);
 void		append_redirection(t_red *redirections_list, char *data, t_type type);
 
 
-int			update_last_executed_command(t_env **env_list,char *key, char *last_command);//idea this for the execution 
+void		update_last_executed_command(t_env **env_list,char *key, char *last_command);//idea this for the execution 
 // idea If you remove this idea, I will cancel the team. Give me the money.
 
 //lable expend
@@ -214,9 +189,8 @@ int			generate_new_data_str(char **dst, char *str);
 int			expand_herdoc_delimiter(t_red *reds, t_env *env);
 int			finish_and_append_double_quote_expand(char *str, int _i, \
 			char *data, t_expand_token **tokens);
-void		print(char *s);//delete this
 void		recover_quotes(char **new_args);
 
 
-void update_env_exit_status(t_env **env_list, int status);
+int			update_env_exit_status(t_env **env_list, int status);
 #endif

@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:21:43 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 21:07:07 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/07 14:55:54 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,10 @@ void	put_redirections_syntax_error_msg(t_type type)
 		printf("syntax error near unexpected token `<\'\n");
 }
 
-static int check_after_parenths(t_token *tokens, int i)
+static int	check_after_parenths(t_token *tokens, int i)
 {
 	t_type	type;
+
 	while (tokens[++i].data)
 	{
 		type = tokens[i].type;
@@ -50,7 +51,7 @@ static int check_after_parenths(t_token *tokens, int i)
 			tokens[i].data), 0);
 		else if (type != HER_DOC && type != RED_APPEND && type != RED_INPUT && \
 		type != RED_TRUNK && type != T_FILE_NAME)
-			break;
+			break ;
 	}
 	return (R_SUCCESS);
 }

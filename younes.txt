@@ -79,3 +79,5 @@ int	wait_child_status( pid_t pid, t_env **env_list)
 	}
 	return (1);
 }
+
+

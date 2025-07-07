@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:09:14 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/07 21:27:32 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:17:58 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	recover_quotes(char **new_args)
 	}
 }
 
-static int	generate_tokens(char ***new_args, t_expand_token **tokens, t_env *env)
+static int	generate_tokens(char ***new_args, \
+t_expand_token **tokens, t_env *env)
 {
 	char	*line;
 
@@ -91,11 +92,10 @@ int	expand(char ***new_args, t_env *env)
 	free(new_line);
 	if (expand_list_to_array(new_args, splited_line) == R_FAIL)
 		return (R_FAIL);
-	if(wildcard(new_args) == R_FAIL)
+	if (wildcard(new_args) == R_FAIL)
 		return (R_FAIL);
-	if(remove_non_printable_characters(new_args) == R_FAIL)
+	if (remove_non_printable_characters(new_args) == R_FAIL)
 		return (R_FAIL);
 	recover_quotes(*new_args);
 	return (R_SUCCESS);
 }
-

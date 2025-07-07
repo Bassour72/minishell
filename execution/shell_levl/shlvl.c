@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   shlvl.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:38:57 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 23:41:58 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:45:11 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
 
-long	compute_next_shlvl(long current)
+static long	compute_next_shlvl(long current)
 {
 	if (current < 0)
 		return (0);
@@ -26,7 +26,7 @@ long	compute_next_shlvl(long current)
 	return (current + 1);
 }
 
-int	update_env_shlvl(t_env **env_list, long value)
+static int	update_env_shlvl(t_env **env_list, long value)
 {
 	char	*new_value;
 	t_env	*tmp;
@@ -35,7 +35,7 @@ int	update_env_shlvl(t_env **env_list, long value)
 		return (1);
 	new_value = ft_itoa(value);
 	if (!new_value)
-		return (1);
+		return (R_FAIL);
 	tmp = *env_list;
 	while (tmp)
 	{
@@ -43,22 +43,41 @@ int	update_env_shlvl(t_env **env_list, long value)
 		{
 			free(tmp->value);
 			tmp->value = new_value;
-			return (0);
+			return (R_SUCCESS);
 		}
 		tmp = tmp->next;
 	}
-	return (0);
+	free(new_value);
+	return (R_SUCCESS);
 }
 
 int	should_increment_shlvl(char *program_path)
 {
-	if (ft_strcmp(program_path, "./minishell") == 0 || \
-	ft_strcmp(program_path, "minishell") == 0)
+	if (ft_strcmp(program_path, "./minishell") == 0 || ft_strcmp(program_path, "minishell") == 0)
 	{
 		return (0);
 	}
 	else
 		return (1);
+}
+
+static long	parse_shlvl(char *str)
+{
+	int		i;
+	long	current;
+
+	if (!str || !*str)
+		return (1);
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (1);
+		i++;
+	}
+	current = ft_atoi(str);
+	return (current);
 }
 
 int	handle_shlvl(char *argv0, t_env **env_list)
@@ -68,11 +87,16 @@ int	handle_shlvl(char *argv0, t_env **env_list)
 	long	next;
 
 	if (should_increment_shlvl(argv0))
-		return (0);
+		return (R_SUCCESS);
 	if (!env_list || !*env_list)
-		return (1);
+		return (R_FAIL);
 	shlvl_str = env_get_value(*env_list, "SHLVL");
 	current = parse_shlvl(shlvl_str);
 	next = compute_next_shlvl(current);
-	return (update_env_shlvl(env_list, next));
+	if (update_env_shlvl(env_list, next) == R_FAIL)
+	{
+		free_env_list(*env_list);
+		return (R_FAIL);
+	}
+	return (R_SUCCESS);
 }

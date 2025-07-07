@@ -1,7 +1,19 @@
-#include "../include/parsing.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_env.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/07 18:32:34 by massrayb          #+#    #+#             */
+/*   Updated: 2025/07/07 18:35:04 by massrayb         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../include/env.h"
 
-static t_env	*_create_env_node(char *key, char *value, int exported, int is_remove)
+static t_env	*_create_env_node(char *key, char *value, int exported, \
+int is_remove)
 {
 	t_env	*node;
 
@@ -11,7 +23,7 @@ static t_env	*_create_env_node(char *key, char *value, int exported, int is_remo
 	node->key = ft_strdup(key);
 	if (node->key == NULL)
 		return (free(node), NULL);
-	if (value != NULL)
+	if (value)
 	{
 		node->value = ft_strdup(value);
 		if (node->value == NULL)
@@ -24,7 +36,6 @@ static t_env	*_create_env_node(char *key, char *value, int exported, int is_remo
 	node->next = NULL;
 	return (node);
 }
-
 
 static void	free_env_node(t_env *node)
 {
@@ -42,7 +53,7 @@ static int	env_list_cleanup(t_env *a, t_env *b, t_env *c, t_env *d)
 	free_env_node(c);
 	free_env_node(b);
 	free_env_node(a);
-	return (1);
+	return (R_FAIL);
 }
 
 int	init_env(t_env **env_list)
@@ -56,8 +67,8 @@ int	init_env(t_env **env_list)
 	oldpwd = _create_env_node("OLDPWD", NULL, 1, 1);
 	pwd = _create_env_node("PWD", "/home/ybassour/Desktop/minishell", 1, 1);
 	shlvl = _create_env_node("SHLVL", "0", 1, 1);
-	path_node = _create_env_node("PATH", "/usr/local/bin:/usr/local/sbin:"
-						"/usr/bin:/usr/sbin:/bin:/sbin:.", 0, 1);
+	path_node = _create_env_node("PATH", "/usr/local/bin:/usr/local/sbin:" \
+	"/usr/bin:/usr/sbin:/bin:/sbin:.", 0, 1);
 	exit_status = _create_env_node("exit_status@gmail.com", "0", 0, 1);
 	if (!oldpwd || !pwd || !shlvl || !path_node || !exit_status)
 		return (env_list_cleanup(oldpwd, pwd, shlvl, path_node));
@@ -66,5 +77,5 @@ int	init_env(t_env **env_list)
 	shlvl->next = path_node;
 	path_node->next = exit_status;
 	*env_list = oldpwd;
-	return (0);
+	return (R_SUCCESS);
 }
