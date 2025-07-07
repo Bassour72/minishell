@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:21:56 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 22:27:16 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:32:22 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	print_environment(t_env *env_list)
 		{
 			if (strcmp(tmp_env->key, "exit_status@gmail.com") != 0)
 			{
-				if (tmp_env->exported == 1)
+				if (ft_strcmp("physical_PWD", tmp_env->key) != 0)
 					printf("%s=%s\n", tmp_env->key, tmp_env->value);
 			}
 		}

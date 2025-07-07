@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:21:07 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 14:47:17 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:02:30 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,31 @@ void	enforce_heredoc_limit(t_tree *root, t_env **env_list)
 	}
 }
 
+int	prepare_heredocs(t_tree *root, t_env **env_list)
+{
+	t_red	*redir;
 
+	if (!root)
+		return (0);
+	redir = root->redirections;
+	if (expand_herdoc_delimiter(redir, *env_list) == R_FAIL)
+		return (1);
+	while (redir)
+	{
+		if (redir->type == HER_DOC)
+		{
+			if (create_heredoc(redir, env_list))
+				return (1);
+			if (g_exit_status == 1)
+				return (1);
+		}
+		if (g_exit_status == 1)
+			return (1);
+		redir = redir->next;
+	}
+	if (prepare_heredocs(root->left, env_list))
+		return (1);
+	if (prepare_heredocs(root->right, env_list))
+		return (1);
+	return (0);
+}
