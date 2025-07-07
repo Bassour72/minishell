@@ -175,3 +175,4 @@ debug_mode_all: fclean all
 #while true; do lsof -c minishell; sleep 1; clear; done
 #while true; do leaks -q minishell; sleep 1; clear; done
 #ps aux | grep Z
+# (echo shshs) > ls ls

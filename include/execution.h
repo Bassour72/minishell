@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 18:58:41 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 19:09:42 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/07 14:21:51 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,4 +137,7 @@ int		wait_child_status(pid_t pid, t_env **env_list);
 int		exec_subshell(t_tree *root, t_env **env_list);
 int		exec_builtin_command(t_tree *root, t_env **env_list);
 int		exec_external_command(t_tree *root, t_env **env_list);
+int		handle_cd_failure(t_env **env, char *arg, char *logical_pwd);
+int		free_all(char *a, char *b, char *c);
+char	*build_logical_path(char *base, char *suffix);
 #endif

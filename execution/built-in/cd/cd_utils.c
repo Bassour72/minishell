@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:00:01 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 22:03:48 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/07 14:21:29 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	count_double_dots(const char *path)
 	return (count);
 }
 
-static char	*build_logical_path(char *base, char *suffix)
+char	*build_logical_path(char *base, char *suffix)
 {
 	perror(ERR_GETCWD_FAIL);
 	if (ft_strlen(suffix) > 2)
@@ -36,7 +36,7 @@ static char	*build_logical_path(char *base, char *suffix)
 	return (ft_strjoin(base, "/.."));
 }
 
-static int	free_all(char *a, char *b, char *c)
+int	free_all(char *a, char *b, char *c)
 {
 	if (a)
 		free(a);
@@ -68,7 +68,7 @@ char	*get_env_path_parent(const char *path)
 	return (parent);
 }
 
-static int	handle_cd_failure(t_env **env, char *arg, char *logical_pwd)
+int	handle_cd_failure(t_env **env, char *arg, char *logical_pwd)
 {
 	char	*fallback;
 	char	*next;

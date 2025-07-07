@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:33:14 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 23:36:25 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/07 19:04:56 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ static int	wait_for_children(pid_t pid_left, pid_t pid_right)
 
 	status = 0;
 	exit_code = 1;
-	if (pid_left > 0)
-	{
-		waitpid(pid_left, &status, 0);
-		if (WIFEXITED(status))
-			exit_code = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			exit_code = 128 + WTERMSIG(status);
-	}
+	// if (pid_left > 0)
+	// {
+	// 	// waitpid(pid_left, &status, 0);
+	// 	// if (WIFEXITED(status))
+	// 	// 	exit_code = WEXITSTATUS(status);
+	// 	// else if (WIFSIGNALED(status))
+	// 	// 	exit_code = 128 + WTERMSIG(status);
+	// }
 	if (pid_right > 0)
 	{
 		waitpid(pid_right, &status, 0);
@@ -35,6 +35,7 @@ static int	wait_for_children(pid_t pid_left, pid_t pid_right)
 		else if (WIFSIGNALED(status))
 			exit_code = 128 + WTERMSIG(status);
 	}
+	while(wait(NULL) != -1) ;
 	return (exit_code);
 }
 

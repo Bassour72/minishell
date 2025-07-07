@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:54:10 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 23:55:08 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/07 14:25:11 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,43 @@ static int	open_redir_fd(t_red *redir)
 	return (-1);
 }
 
-static int	dup_redir_fd(t_red *redir, int fd)
+static int expand_and_reopen_fd(int fd, t_env **env_list)
+{
+	int		fd_in;
+	int		fd_out;
+	char	*line;
+	char	tmp_path[64];
+
+	ft_strlcpy(tmp_path,  "/tmp/heredocXXXXXX_expand", sizeof(tmp_path));	
+	fd_in = open(tmp_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd_out = open(tmp_path, O_RDONLY, 0644);
+	unlink(tmp_path);
+	if (fd_in == -1 || fd_out == -1)
+		return (close(fd_out), close(fd_in), -1);
+	while ((line = get_next_line(fd)))
+	{
+		if (expand_herdoc(&line, *env_list) == R_FAIL)
+		{
+			free(line);
+			return (close(fd_out), close(fd_in), -1);
+		}
+		ft_putendl_fd(line, fd_in);
+		free(line);
+	}
+	close(fd); 
+	close(fd_in);
+	return (fd_out);
+}
+
+static int	dup_redir_fd(t_red *redir, int fd, t_env **env_list)
 {
 	int	target;
 
 	target = STDOUT_FILENO;
 	if (redir->type == RED_INPUT || redir->type == HER_DOC)
 		target = STDIN_FILENO;
+	if (redir->type == HER_DOC)
+		fd =  expand_and_reopen_fd( fd, env_list);
 	if (dup2(fd, target) == -1)
 	{
 		perror("minishell: dup2 failed");
@@ -42,17 +72,17 @@ static int	dup_redir_fd(t_red *redir, int fd)
 	return (0);
 }
 
-static int	apply_single_redirection(t_red *redir)
+static int	apply_single_redirection(t_red *redir, t_env **env_list)
 {
 	int	fd;
 
 	fd = open_redir_fd(redir);
 	if (fd == -1)
 	{
-		perror("minishell: redirection open failed");
+		perror("minishell:");
 		return (1);
 	}
-	return (dup_redir_fd(redir, fd));
+	return (dup_redir_fd(redir, fd, env_list));
 }
 
 int	apply_redirections(t_red *redir, t_env **env_list)
@@ -66,7 +96,7 @@ int	apply_redirections(t_red *redir, t_env **env_list)
 			ft_putendl_fd(": ambiguous redirect", STDERR_FILENO);
 			return (1);
 		}
-		if (apply_single_redirection(redir) == 1)
+		if (apply_single_redirection(redir, env_list) == 1)
 			return (1);
 		redir = redir->next;
 	}
