@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 17:11:34 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 21:52:08 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:26:09 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,31 @@
 # include <unistd.h>
 # include <limits.h>
 
-typedef struct s_list
-{
-	void			*content;
-	struct s_list	*next;
-}					t_list;
-
 typedef struct s_node
 {
 	char			*data;
 	struct s_node	*next;
 }				t_node;
+typedef struct s_list
+{
+	char			*str_buffer;
+	void			*content;
+	struct s_list	*next;
+}	t_list;
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42 
+# endif
+
+t_list	*ft_find_first_node(t_list *list);
+char	*get_next_line(int fd);
+char	*ft_read_line(t_list *list);
+size_t	ft_is_found_newline(t_list *list);
+size_t	ft_length_to_newline(t_list *list);
+int		ft_listmap(t_list **list);
+int		ft_create_list(t_list **list, int fd);
+void	ft_strcpy_fromlist(t_list *list, char *str);
+int		ft_listclear(t_list **list, t_list *new_node, char *buffer);
+void	ft_listadd_back(t_list **list, char *buf);
 char	*ft_strcat(char *dest, const char *src);
 char	*ft_strcpy(char *dest, const char *src);
 void	ft_bzero(void *s, size_t n);
@@ -63,15 +77,6 @@ long	ft_atoi(const char *str);
 char	*ft_itoa(int n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
-t_list	*ft_lstnew(void *content);
-void	ft_lstadd_front(t_list **lst, t_list *new);
-t_list	*ft_lstlast(t_list *lst);
-int		ft_lstsize(t_list *lst);
-void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_lstdelone(t_list *lst, void (*del)(void *));
-void	ft_lstclear(t_list **lst, void (*del)(void *));
-void	ft_lstiter(t_list *lst, void (*f)(void *));
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 void	free_failed_list(char **list, int len);
 int		ft_strcmp(const char *s1, const char *s2);
 void	free_2d_arr(char **arr);

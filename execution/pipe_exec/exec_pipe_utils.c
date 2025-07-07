@@ -1,9 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_pipe_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:32:12 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 23:33:01 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/execution.h"
-
-#include <sys/ioctl.h>
-#include <errno.h>
-#include <unistd.h>
 
 void	close_pipe_fds(int pipefd[2])
 {
@@ -13,31 +20,7 @@ void	close_pipe_fds(int pipefd[2])
 		close(pipefd[1]);
 }
 
-
-int is_fd_open(int fd)
-{
-    struct winsize ws;
-    if (ioctl(fd, TIOCGWINSZ, &ws) == -1)
-    {
-        if (errno == EBADF)
-            return 0; // FD is not open
-    }
-    return 1; // FD is open (or at least valid for ioctl)
-}
-
- void	close_all_fds_(void)
-{
-	int fd;
-
-	fd = 0;
-	while (fd <= 40)
-    {
-		close(fd);
-		 ++fd;
-	}
-}
-
- int	create_pipe(int pipefd[2])
+int	create_pipe(int pipefd[2])
 {
 	if (pipe(pipefd) == -1)
 	{

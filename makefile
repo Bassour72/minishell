@@ -99,18 +99,21 @@ SRC =	minishell.c\
 
 OBJ = $(SRC:.c=.o)
 
+READLINE_COMPILE = -I$(shell brew --prefix readline)/include
+READLINE_LINK = -lreadline -L$(shell brew --prefix readline)/lib
+
 _libft = _libft/libft.a
 
 all: libft $(NAME)
 
 $(NAME): $(OBJ) 
-	cc $(CFLAGS) $(OBJ) $(_libft)  -lreadline -o $@
+	cc $(CFLAGS) $(READLINE_COMPILE) $(OBJ) $(_libft) -o $@ $(READLINE_LINK)
 
 libft:
 	make -C ./_libft
 
 %.o: %.c minishell.c include/*.h
-	cc $(CFLAGS) -c $< -o $@
+	cc $(CFLAGS) $(READLINE_COMPILE) -c $< -o $@ 
 
 clean:   
 	make clean -C ./_libft
@@ -177,3 +180,7 @@ debug_mode_all: fclean all
 #ls && <  out.out_out.txt 
 #ls && > out
 #  << 1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 << 19 
+#while true; do lsof -c minishell; sleep 1; clear; done
+#while true; do leaks -q minishell; sleep 1; clear; done
+#ps aux | grep Z
+# (echo shshs) > ls ls

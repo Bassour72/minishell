@@ -1,72 +1,87 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredocs_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:21:07 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/07 14:47:17 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/execution.h"
 
-void close_heredoc_fds(t_tree *root, t_red *redir)
+void	close_heredoc_fds(t_tree *root, t_red *redir)
 {
+	t_red	*r;
 
-    t_red *r = redir;
-    if (root == NULL)
-        return;
-    while (r)
-    {
-        if (r->type == HER_DOC && r->out_fd >= 0)
-        {
-            close(r->out_fd);
-            r->out_fd = -1;
-        }
-        r = r->next;
-    }
-    close_heredoc_fds(root->left, redir);
-    close_heredoc_fds(root->right, redir);
-
+	r = redir;
+	if (root == NULL)
+		return ;
+	while (r)
+	{
+		if (r->type == HER_DOC && r->out_fd >= 0)
+		{
+			close(r->out_fd);
+			r->out_fd = -1;
+		}
+		r = r->next;
+	}
+	close_heredoc_fds(root->left, redir);
+	close_heredoc_fds(root->right, redir);
 }
 
-void propagate_fork_flag(t_tree *root, int is_forked)
+void	propagate_fork_flag(t_tree *root, int is_forked)
 {
-    if (!root)
-        return;
-    root->is_forked = is_forked;
-    if (root->type == PIPE)
-    {
-        propagate_fork_flag(root->left, 1);
-        propagate_fork_flag(root->right, 1);
-    }
-    else
-    {
-        propagate_fork_flag(root->left, is_forked);
-        propagate_fork_flag(root->right, is_forked);
-    }
+	if (!root)
+		return ;
+	root->is_forked = is_forked;
+	if (root->type == PIPE)
+	{
+		propagate_fork_flag(root->left, 1);
+		propagate_fork_flag(root->right, 1);
+	}
+	else
+	{
+		propagate_fork_flag(root->left, is_forked);
+		propagate_fork_flag(root->right, is_forked);
+	}
 }
 
-int count_heredocs(t_tree *node)
+int	count_heredocs(t_tree *node)
 {
-    int total = 0;
-    t_red *r;
+	int		total;
+	t_red	*r;
 
-    if (!node)
-        return 0;
-    r = node->redirections;
-    while (r)
-    {
-        if (r->type == HER_DOC)
-            total++;
-        r = r->next;
-    }
-    total += count_heredocs(node->left);
-    total += count_heredocs(node->right);
-    return total;
+	total = 0;
+	if (!node)
+		return (0);
+	r = node->redirections;
+	while (r)
+	{
+		if (r->type == HER_DOC)
+			total++;
+		r = r->next;
+	}
+	total += count_heredocs(node->left);
+	total += count_heredocs(node->right);
+	return (total);
+}
+
+void	enforce_heredoc_limit(t_tree *root, t_env **env_list)
+{
+	int	heredocs;
+
+	heredocs = count_heredocs(root);
+	if (heredocs > MAX_HEREDOC)
+	{
+		write(STDERR_FILENO, \
+		"bash: maximum here-document count exceeded\n", 44);
+		free_env_list(*env_list);
+		free_tree(root);
+		exit(2);
+	}
 }
 
 
-void enforce_heredoc_limit(t_tree *root, t_env **env_list)
-{
-    int heredocs = count_heredocs(root);
-
-    if (heredocs > MAX_HEREDOC)
-    {
-        write(STDERR_FILENO, "bash: maximum here-document count exceeded\n",44);
-        free_env_list(*env_list);
-        free_tree(root);
-        exit(2);
-    }
-}

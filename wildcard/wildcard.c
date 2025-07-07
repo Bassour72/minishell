@@ -6,14 +6,11 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:55:55 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 23:55:56 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:30:00 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../include/wildcard.h"
-
-
 
 static int init_args_list(t_wc_node **list, char **args)
 {
@@ -36,13 +33,13 @@ t_wc_node **args_list)
 	if (!args)
 		return (R_SUCCESS);
 	1 && (file_names = NULL, args_list = NULL);
-	state = init_file_names(&file_names);
+	state = init_file_names(file_names);
 	if (state == R_CONTINUE)
 		return (R_CONTINUE);
 	else if (state == R_FAIL)
 		return (R_FAIL);
-	if (init_args_list(&args_list, *args) == R_FAIL)
-		return (free_2d_arr(*args), free_wc_node_list(file_names), R_FAIL);
+	if (init_args_list(args_list, *args) == R_FAIL)
+		return (free_2d_arr(*args), free_wc_node_list(*file_names), R_FAIL);
 	free_2d_arr(*args);
 	return (R_SUCCESS);
 }

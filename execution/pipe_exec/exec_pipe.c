@@ -1,55 +1,56 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_pipe.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 23:33:14 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/07 19:04:56 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/execution.h"
 
-#include <sys/ioctl.h>
-#include <errno.h>
-#include <unistd.h>
-/*
-
-for (int fd = 3; fd < 1024; fd++)
-	if (is_fd_open(fd))
-		dprintf(2, "FD %d is still open\n", fd);
-
-
-*/
-static int wait_for_children(pid_t pid_left, pid_t pid_right)
+static int	wait_for_children(pid_t pid_left, pid_t pid_right)
 {
-    int status = 0;
-    int exit_code = 1;
+	int	status;
+	int	exit_code;
 
-    if (pid_left > 0)
-    {
-        waitpid(pid_left, &status, 0);
-        if (WIFEXITED(status))
-            exit_code = WEXITSTATUS(status);
-        else if (WIFSIGNALED(status))
-            exit_code = 128 + WTERMSIG(status);
-    }
-
-    if (pid_right > 0)
-    {
-        waitpid(pid_right, &status, 0);
-        if (WIFEXITED(status))
-            exit_code = WEXITSTATUS(status);
-        else if (WIFSIGNALED(status))
-            exit_code = 128 + WTERMSIG(status);
-    }
-
-    return (exit_code);
+	status = 0;
+	exit_code = 1;
+	// if (pid_left > 0)
+	// {
+	// 	// waitpid(pid_left, &status, 0);
+	// 	// if (WIFEXITED(status))
+	// 	// 	exit_code = WEXITSTATUS(status);
+	// 	// else if (WIFSIGNALED(status))
+	// 	// 	exit_code = 128 + WTERMSIG(status);
+	// }
+	if (pid_right > 0)
+	{
+		waitpid(pid_right, &status, 0);
+		if (WIFEXITED(status))
+			exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			exit_code = 128 + WTERMSIG(status);
+	}
+	while(wait(NULL) != -1) ;
+	return (exit_code);
 }
 
-
-static pid_t	fork_left_process(t_tree *root, t_env **env_list, int pipe[2], bool is_child)
+static pid_t	fork_left_process(t_tree *root, t_env **env_list, \
+int pipe[2], bool is_child)
 {
 	pid_t	pid;
-	int status;
+	int		status;
+
 	pid = fork();
 	if (pid < 0)
 	{
 		printf("fork left\n");
 		if (is_child)
-		{
-			check_non_interactive_exit(root, env_list, -1);
-		}
+			check_non_interactive_exit(root, env_list, -1, true);
 		perror("fork right");
 		return (-1);
 	}
@@ -58,24 +59,24 @@ static pid_t	fork_left_process(t_tree *root, t_env **env_list, int pipe[2], bool
 		close(pipe[0]);
 		dup2(pipe[1], STDOUT_FILENO);
 		close(pipe[1]);
-		status =  exec_tree(root->left, env_list, 1, true);
-		check_non_interactive_exit(root, env_list, status);
+		status = exec_tree(root->left, env_list, 1, true);
+		check_non_interactive_exit(root, env_list, status, true);
 	}
 	return (pid);
 }
 
-static pid_t	fork_right_process(t_tree *root, t_env **env_list, int pipe[2],  bool is_child)
+static pid_t	fork_right_process(t_tree *root, t_env **env_list, \
+int pipe[2], bool is_child)
 {
 	pid_t	pid;
-	int status;
+	int		status;
+
 	pid = fork();
 	if (pid < 0)
 	{
 		if (is_child)
-		{
-			check_non_interactive_exit(root, env_list, -1);
-		}
-		perror("fork"); // exit if in child
+			check_non_interactive_exit(root, env_list, -1, true);
+		perror("fork");
 		return (-1);
 	}
 	if (pid == 0)
@@ -84,18 +85,18 @@ static pid_t	fork_right_process(t_tree *root, t_env **env_list, int pipe[2],  bo
 		dup2(pipe[0], STDIN_FILENO);
 		close(pipe[0]);
 		status = exec_tree(root->right, env_list, 1, true);
-		check_non_interactive_exit(root, env_list, status);
+		check_non_interactive_exit(root, env_list, status, true);
 	}
 	return (pid);
 }
 
-static void	close_parent_fds(int pipefd[2])
+static	void	close_parent_fds(int pipefd[2])
 {
 	close(pipefd[0]);
 	close(pipefd[1]);
 }
 
-int	exec_pipe(t_tree *root, t_env **env_list,  bool is_child)
+int	exec_pipe(t_tree *root, t_env **env_list, bool is_child)
 {
 	int		pipefd[2];
 	pid_t	pid_left;
@@ -105,11 +106,9 @@ int	exec_pipe(t_tree *root, t_env **env_list,  bool is_child)
 		return (1);
 	if (create_pipe(pipefd) == -1)
 		return (perror("pipe"), -1);
-
 	pid_left = fork_left_process(root, env_list, pipefd, is_child);
 	if (pid_left < 0)
 		return (close_pipe_fds(pipefd), 1);
-
 	pid_right = fork_right_process(root, env_list, pipefd, is_child);
 	if (pid_right < 0)
 	{

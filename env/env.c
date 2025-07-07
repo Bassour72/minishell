@@ -29,7 +29,6 @@ static int env_extract_value(char *env, char **value)
 	return (1);
 }
 
-
 int	env_generate(t_env **env_list, char **env)
 {
 	char	*key;

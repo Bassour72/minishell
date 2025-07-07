@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:47:49 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 23:50:05 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:30:15 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,63 +62,3 @@ void	free_wc_node_list(t_wc_node *list)
 		free(tmp);
 	}
 }
-
-// int is_file_name_match(char *file_name, char *str)
-// {
-//     int wc_pos = -1;
-//     int i = 0;
-//     int j = 0;
-//     int file_name_len = ft_strlen(file_name);
-//     int str_len = ft_strlen(str);
-//     int is_literal_string = -1;
-//     while (1)
-//     {
-//         if (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE)
-//             (i++, is_literal_string *= -1);
-//         else if (str[i] == '*' && is_literal_string == -1)
-//         {
-//             wc_pos = ++i;
-//             while (str[wc_pos] == DOUBLE_QUOTE || str[wc_pos] == SINGLE_QUOTE)
-//                 wc_pos++;  // Skip quotes after *
-//             int suffix_len = str_len - wc_pos;
-//             // Make sure suffix exists
-//             if (suffix_len == 0)
-//                 return (1); // pattern was just "*", so all filenames match
-//             // Try to find the suffix at the right position
-//             while (file_name[j])
-//             {
-//                 if (ft_strncmp(file_name + j, str + wc_pos, suffix_len) == 0)
-//                 {
-//                     // Special case for "*.*"
-//                     if (ft_strcmp(str, "*.*") == 0)
-//                     {
-//                         if (j == 0 || j + suffix_len == file_name_len)
-//                             return (0); // dot is at start or end
-//                     }
-//                     return (1);
-//                 }
-//                 j++;
-//             }
-//             return (0);
-//         }
-//         else if (str[i] != file_name[j])
-//         {
-//             if (wc_pos != i)
-//                 i = wc_pos;
-//             else
-//                 j++;
-//             if ((j == file_name_len && wc_pos == i && i != str_len) || wc_pos == -1)
-//                 return (0);
-//             else if (j == file_name_len && i == str_len)
-//                 return (1);
-//         }
-//         else
-//         {
-//             if (i == str_len && j == file_name_len)
-//                 return (1);
-//             (i++, j++);
-//         }
-//         if (j == file_name_len && i == str_len)
-//             return (1);
-//     }
-// }

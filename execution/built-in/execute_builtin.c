@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_builtin.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 21:55:34 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 21:56:12 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/execution.h"
 
-int is_builtin(char *command) 
+int	is_builtin(char	*command)
 {
 	if (strcmp(command, "echo") == 0)
 		return (0);
@@ -19,8 +31,7 @@ int is_builtin(char *command)
 	return (1);
 }
 
-
-int execute_builtin(t_tree *root,  t_env **env_list)
+int	execute_builtin(t_tree *root, t_env **env_list)
 {
 	if (strcmp(root->data[0], "echo") == 0)
 		return (builtin_echo(root));
@@ -31,10 +42,7 @@ int execute_builtin(t_tree *root,  t_env **env_list)
 	if (strcmp(root->data[0], "env") == 0)
 		return (env_environment(root, *env_list));
 	if (strcmp(root->data[0], "exit") == 0)
-	{
-		exit_exe(root, env_list);
-		return (0);
-	}
+		return (exit_exe(root, env_list));
 	if (strcmp(root->data[0], "export") == 0)
 		return (export_command_builtin(root, env_list));
 	if (strcmp(root->data[0], "unset") == 0)

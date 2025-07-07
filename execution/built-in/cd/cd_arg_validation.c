@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd_arg_validation.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/06 21:57:55 by ybassour          #+#    #+#             */
+/*   Updated: 2025/07/06 21:59:41 by ybassour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/execution.h"
 
 static int	has_three_consecutive_dots(const char *arg)
@@ -14,7 +26,7 @@ static int	has_three_consecutive_dots(const char *arg)
 			dot_count++;
 			if (dot_count == 3)
 			{
-				fprintf(stderr, "cd: %s: invalid argument (three consecutive dots)\n", arg);
+				display_error(ERR_DOT_DOT_DOT, arg);
 				return (1);
 			}
 		}
@@ -39,7 +51,7 @@ static int	has_three_consecutive_hyphens(const char *arg)
 			hyphen_count++;
 			if (hyphen_count == 3)
 			{
-				fprintf(stderr, "cd: %s: invalid argument (three consecutive hyphens)\n", arg);
+				display_error(ERR_HYPHEN_HYPHEN_HYPHEN, arg);
 				return (1);
 			}
 		}
@@ -59,15 +71,15 @@ static int	has_invalid_char_combination(const char *arg)
 	{
 		if (arg[i] == '.' && arg[i + 1] == '-')
 		{
-			fprintf(stderr, "cd: %s: invalid argument (\".-\" not allowed)\n", arg);
+			display_error(ERR_DOT_HYPHEN, arg);
 			return (1);
 		}
 		if (arg[i] == '-' && (arg[i + 1] == '.' || arg[i + 1] == '/'))
 		{
 			if (arg[i + 1] == '.')
-				fprintf(stderr, "cd: %s: invalid argument (\"-.\" not allowed)\n", arg);
+				display_error(ERR_HYPHEN_DOT, arg);
 			else
-				fprintf(stderr, "cd: %s: invalid argument (\"-/\" not allowed)\n", arg);
+				display_error(ERR_HYPHEN_SLASH, arg);
 			return (1);
 		}
 		i++;
@@ -88,12 +100,12 @@ int	is_illegal_cd_arg(const char *arg)
 	return (0);
 }
 
-int check_argument(t_tree *root)
+int	check_argument(t_tree *root)
 {
-    if (root && root->data && root->data[0] && root->data[1] && root->data[2])
-    {
-        perror("cd: too many arguments\n");
-        return (1);
-    }
-    return (0);
+	if (root && root->data && root->data[0] && root->data[1] && root->data[2])
+	{
+		perror("cd: too many arguments\n");
+		return (1);
+	}
+	return (0);
 }
