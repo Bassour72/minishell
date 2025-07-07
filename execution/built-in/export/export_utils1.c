@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:44:42 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 22:46:31 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/07 21:26:27 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,12 @@ void	print_env_export_sort(t_env *env_list)
 	{
 		if (tmp->value)
 		{
-			if (tmp->exported)
+			if (ft_strcmp("physical_PWD", tmp->key) != 0 && tmp->exported)
 				printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
 		}
 		else
 		{
-			if (tmp->exported)
+			if (ft_strcmp("physical_PWD", tmp->key) != 0 && tmp->exported)
 				printf("declare -x %s\n", tmp->key);
 		}
 		tmp = tmp->next;
