@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:23:03 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 14:51:38 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:29:15 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static int	child_read_heredoc(int fd, const char *limiter)
 		write(fd, "\n", 1);
 		free(line);
 	}
-	exit(0);
+	close(fd);
+	exit(EXIT_SUCCESS);
 }
 
 int	write_heredoc(int fd, const char *limiter)
@@ -59,15 +60,15 @@ int	write_heredoc(int fd, const char *limiter)
 	{
 		perror("fork");
 		close(fd);
-		return (1);
+		return (STATUS_ERROR);
 	}
 	else if (pid == 0)
 		child_read_heredoc(fd, limiter);
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	if (WEXITSTATUS(status) == 1)
-		return (1);
-	return (0);
+		return (STATUS_ERROR);
+	return (STATUS_OK);
 }
 
 int	create_heredoc(t_red *redir)
@@ -93,8 +94,8 @@ int	create_heredoc(t_red *redir)
 		close(fd);
 		close(redir->out_fd);
 		redir->out_fd = -1;
-		return (1);
+		return (STATUS_ERROR);
 	}
 	close(fd);
-	return (0);
+	return (STATUS_OK);
 }

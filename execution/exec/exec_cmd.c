@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:09:42 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 21:20:35 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:49:39 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,15 @@ void	execute_external_command(t_tree *root, t_env **env_list)
 		check_non_interactive_exit(root, env_list, exit_status, true);
 	}
 	new_env = gen_new_env(*env_list);
+	if (!new_env)
+		check_non_interactive_exit(root, env_list, EXIT_FAILURE, true);
 	free_env_list(*env_list);
-	close_heredoc_fds(root, root->redirections);
+	close_heredoc_fds(root);
 	execve(binary_path, root->data, new_env);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	perror("execve");
-	check_non_interactive_exit(root, env_list, 1, false);
+	check_non_interactive_exit(root, env_list, EXIT_FAILURE, false);
 }
 
 void	run_command(t_tree *root, t_env **env_list)
@@ -84,7 +86,7 @@ void	check_non_interactive_exit(t_tree *root, t_env **env_list, \
 	{
 		close(STDOUT_FILENO);
 	}
-	close_heredoc_fds(root, root->redirections);
+	close_heredoc_fds(root);
 	if (should_free)
 		free_env_list(*env_list);
 	free_tree(root);
