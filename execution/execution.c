@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:52:05 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 18:20:46 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 21:07:55 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ int	execution(t_tree *root, t_env **env_list)
 	else
 		propagate_fork_flag(root, 0);
 	status = exec_tree(root, env_list, 0, false);
-	if (status == -1)
-		check_non_interactive_exit(root, env_list, -1, true);
 	close_heredoc_fds(root);
 	g_exit_status = 0;
 	return (status);

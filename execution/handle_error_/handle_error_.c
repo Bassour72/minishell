@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:15:08 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 18:43:41 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 20:52:24 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,9 @@ int	handle_error_no_slash(char *cmd, char *resolved_path, bool should_print)
 	if (access(cmd, X_OK) == -1)
 	{
 		if (should_print)
-			perror("minishell");
-		return (CMD_CANNOT_EXECUTE);
+			return (display_error(": No such file or directory\n", \
+						cmd, STATUS_NOT_FOUND));
+		return (STATUS_NOT_FOUND);
 	}
 	return (STATUS_OK);
 }

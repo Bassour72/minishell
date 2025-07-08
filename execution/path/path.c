@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:55:52 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 23:56:59 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 21:05:39 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,23 @@ static	char	*search_command_in_path(char *command, char **binaries_path)
 	return (NULL);
 }
 
+char * check_for_valid(char *cmd)
+{
+	if (!cmd)
+		return (NULL);
+	if (access(cmd, X_OK) == 0)
+			return (cmd);
+	return (NULL);
+}
+
+
 static char	*join_binary_path_with_command(char *command, char *binary_path)
 {
 	char	**binaries_path;
 
 	binaries_path = ft_split(binary_path, ':');
 	if (!binaries_path)
-		return (NULL);
+		return ( check_for_valid(command));
 	return (search_command_in_path(command, binaries_path));
 }
 
