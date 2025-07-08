@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_exec_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:48:56 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 18:04:19 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 20:25:15 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	exec_subshell(t_tree *root, t_env **env_list)
 
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork :"), -1);
+		return (perror("fork"), -1);
 	if (pid == 0)
 	{
 		if (expand_redir(root->redirections, *env_list) == R_FAIL)
@@ -88,7 +88,7 @@ int	exec_external_command(t_tree *root, t_env **env_list)
 
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork :"), -1);
+		return (perror("fork"), -1);
 	if (pid == 0)
 	{
 		if (expand_redir(root->redirections, *env_list) == R_FAIL)

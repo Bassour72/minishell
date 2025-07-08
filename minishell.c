@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 13:57:02 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 16:47:07 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 20:44:56 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ char **input, int *status)
 		enable_echoctl();
 		if (g_exit_status == 1)
 			(update_env_exit_status(env_list, 1), g_exit_status = 0);
-		(is_input_null(*input, *env_list), add_history(*input));
+		is_input_null(*input, *env_list);
 		if (empty(*input))
 			continue ;
+		add_history(*input);
 		if (parser(tree, *input, env_list) == R_FAIL)
 			return (1);
 		if (!*tree)
