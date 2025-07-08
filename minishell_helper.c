@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:36 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 16:33:56 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:52:15 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,14 @@ int	empty(char *str)
 	char	*tmp;
 
 	tmp = str;
-	if (!str[0])
-		return (1);
 	while (*str && ft_isspace(*str))
 		str++;
-	if (!*str)
+	if(!*str)
 	{
 		free(tmp);
 		return (1);
 	}
-	return (0);
+	return(0);
 }
 
 void	handle_heredoc_on_fail(t_env **env_list, t_tree *tree)
