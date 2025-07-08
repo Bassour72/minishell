@@ -80,4 +80,27 @@ int	wait_child_status( pid_t pid, t_env **env_list)
 	return (1);
 }
 
+minishell$ ''$$
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==23901==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x000109e61a00 bp 0x7ffee5e6d3a0 sp 0x7ffee5e6cb40 T0)
+==23901==The signal is caused by a READ memory access.
+==23901==Hint: address points to the zero page.
+    #0 0x109e61a00 in wrap_strcmp+0x50 (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x1aa00)
+    #1 0x109dba62b in is_builtin execute_builtin.c:17
+    #2 0x109dbbd3f in exec_block_command tree_exe_.c:24
+    #3 0x109dbba0b in exec_tree tree_exe_.c:60
+    #4 0x109db96d0 in execution execution.c:38
+    #5 0x109d95f1f in shell_loop minishell.c:38
+    #6 0x109d95b05 in main minishell.c:63
+    #7 0x7fff6dc34cc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
 
+==23901==Register values:
+rax = 0x000000010ab50a40  rbx = 0x0000000000000000  rcx = 0x0000602000003290  rdx = 0x00001c0400000652  
+rdi = 0x0000000000000000  rsi = 0x0000000109dcb180  rbp = 0x00007ffee5e6d3a0  rsp = 0x00007ffee5e6cb40  
+ r8 = 0x0000000000000008   r9 = 0x0000000000000000  r10 = 0x0000000116d65420  r11 = 0x0000000109e619b0  
+r12 = 0x0000000000000000  r13 = 0x0000000000000000  r14 = 0x0000000109dcb180  r15 = 0x0000000000000000  
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x1aa00) in wrap_strcmp+0x50
+==23901==ABORTING
+zsh: abort      ./minishell

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:48:33 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 13:25:39 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:44:44 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,6 @@ int	export_command_builtin(t_tree *root, t_env **env_list)
 		return (0);
 	}
 	else
-		print_env_export_sort(*env_list);
+		print_env_export_sort(*env_list, root);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:27:38 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 22:18:53 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:39:48 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static long	ft_atol(const char *str)
 	int		sign;
 	long	result;
 
+	if (!str)
+		return (1);
 	sign = 1;
 	result = 0;
 	while (*str == ' ' || (*str >= 9 && *str <= 13))
@@ -55,12 +57,12 @@ int	exit_exe(t_tree *root, t_env **env_list)
 	long	code;
 
 	if (!root || !root->data)
-		exit(0);
+		check_non_interactive_exit(root, env_list, EXIT_FAILURE, true);
 	if (!root->is_forked)
 		write(1, "exit\n", 5);
 	if (root->data[1] == NULL)
 	{
-		code = ft_atoi(get_env_value("exit_status@gmail.com", *env_list));
+		code = ft_atol(get_env_value("exit_status@gmail.com", *env_list));
 		check_non_interactive_exit(root, env_list, code, true);
 		exit(code);
 	}
@@ -72,9 +74,9 @@ int	exit_exe(t_tree *root, t_env **env_list)
 	if (root->data[2])
 	{
 		write(2, "minishell: exit: too many arguments\n", 36);
-		return (1);
+		return (STATUS_ERROR);
 	}
 	code = ft_atol(root->data[1]);
 	check_non_interactive_exit(root, env_list, (unsigned char)code, true);
-	return (1);
+	return (STATUS_ERROR);
 }

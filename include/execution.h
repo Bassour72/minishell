@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 18:58:41 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 13:27:30 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:06:38 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <signal.h>
 # include <fcntl.h>
 # include <signal.h>
 # include <sys/stat.h>
@@ -31,11 +30,11 @@
 # define ERR_HYPHEN_SLASH       ": invalid argument (\"-/\" not allowed)\n"
 # define ERR_GETCWD_FAIL        "cd: error retrieving current directory: getcwd: \
 cannot access parent directories"
-# define DIR_STATUS_NO_PER 11
-# define DIR_STATUS_NOT_EXI 12
+#define DOT_USAGE_ERROR ".: filename argument required.\n.: \
+usage: . filename [arguments]\n"
 # define MAX_HEREDOC 16
-# define CMD_ERR_NOT_FOUND 127
-# define CMD_ERR_NO_PERMISSION 126
+#define EXIT_MALLOC_FAIL -1
+//# define CMD_ERR_NO_PERMISSION 126
 # define STATUS_OK        0
 # define STATUS_ERROR     1
 # define STATUS_BUILTIN   2
@@ -97,13 +96,12 @@ int		diagnose_cd_error(const char *path, int print_error);
 int		exec_tree(t_tree *root, t_env **env_list, \
 		int in_subshell, bool is_child);
 int		should_display_error(char *cmd, t_env **env_list, bool should_print);
-void	display_error(char *sms_error, const char *target);
+int		display_error(char *sms_error, const char *target, int return_error);
 int		cd_dotdots_only(t_env **env, char *arg);
-void	close_heredoc_fds(t_tree *root, t_red *redir);
 void	close_pipe_fds(int pipefd[2]);
 int		is_fd_open(int fd);
 void	close_all_fds_(void);
-int		create_pipe(int pipefd[2]);
+int		create_pipe(int pipefd[2], t_tree *root, t_env **env_list, bool is_child);
 void	update_pwd(t_env **env);
 char	*get_env_value(char *key, t_env *env);
 void	update_existing_env(t_env *existing, char *new_value, int append_mode);
@@ -111,7 +109,7 @@ t_env	*is_exist_env(t_env *env_list, const char *new_key);
 void	list_env_add_back(t_env **env_list, t_env *new_node_env);
 t_env	*copy_env_list(t_env *env_list);
 t_env	*sort_env_list(t_env *env_list);
-void	print_env_export_sort(t_env *env_list);
+void	print_env_export_sort(t_env *env_list, t_tree *root);
 int		ft_strcmp_v2(const char *s1, const char *s2);
 int		is_valid_identifier(const char *identifier, int *is_append_mode);
 char	*get_env_key(const char *identifier);
@@ -119,7 +117,7 @@ char	*get_env_value1(const char *identifier);
 void	swap_node(t_env *a, t_env *b);
 int		is_valid_shlvl_string(char *str);
 ///
-void	close_heredoc_fds(t_tree *root, t_red *redir);
+void	close_heredoc_fds(t_tree *root);
 void	propagate_fork_flag(t_tree *root, int is_forked);
 int		count_heredocs(t_tree *node);
 void	enforce_heredoc_limit(t_tree *root, t_env **env_list);

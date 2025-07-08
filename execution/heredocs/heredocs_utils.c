@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:21:07 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 13:27:36 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:32:59 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
 
-void	close_heredoc_fds(t_tree *root, t_red *redir)
+void	close_heredoc_fds(t_tree *root)
 {
 	t_red	*r;
 
-	r = redir;
 	if (root == NULL)
 		return ;
+	r = root->redirections;
 	while (r)
 	{
 		if (r->type == HER_DOC && r->out_fd >= 0)
@@ -28,8 +28,8 @@ void	close_heredoc_fds(t_tree *root, t_red *redir)
 		}
 		r = r->next;
 	}
-	close_heredoc_fds(root->left, redir);
-	close_heredoc_fds(root->right, redir);
+	close_heredoc_fds(root->left);
+	close_heredoc_fds(root->right);
 }
 
 void	propagate_fork_flag(t_tree *root, int is_forked)

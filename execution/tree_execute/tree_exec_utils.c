@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_exec_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:48:56 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 13:24:35 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:04:19 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	exec_builtin_command(t_tree *root, t_env **env_list)
 		dup2(saved_stdout, STDOUT_FILENO);
 		close(saved_stdin);
 		close(saved_stdout);
-		return (1);
+		return (STATUS_ERROR);
 	}
 	status = execute_builtin(root, env_list);
 	dup2(saved_stdin, STDIN_FILENO);

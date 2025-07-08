@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:36 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 14:33:37 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:33:56 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	empty(char *str)
 void	handle_heredoc_on_fail(t_env **env_list, t_tree *tree)
 {
 	update_env_exit_status(env_list, 1);
-	close_heredoc_fds(tree, tree->redirections);
+	close_heredoc_fds(tree);
 	free_tree(tree);
 	g_exit_status = 0;
 }

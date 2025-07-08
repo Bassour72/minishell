@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:21:56 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 21:32:22 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:24:00 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	env_environment(t_tree *root, t_env *env_list)
 {
 	if (root->data[1])
 	{
-		display_error(" : No such file or directory\n", root->data[1]);
-		return (127);
+		return (display_error(" : No such file or directory\n", \
+			root->data[1], STATUS_NOT_FOUND));
 	}
 	return (print_environment(env_list));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:33:14 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 13:25:28 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:07:41 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	exec_pipe(t_tree *root, t_env **env_list, bool is_child)
 
 	if (!root || root->type != PIPE)
 		return (1);
-	if (create_pipe(pipefd) == -1)
+	if (create_pipe(pipefd, root, env_list, is_child) == -1)
 		return (perror("pipe"), -1);
 	pid_left = fork_left_process(root, env_list, pipefd, is_child);
 	if (pid_left < 0)

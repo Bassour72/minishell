@@ -6,13 +6,13 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:15:08 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 23:20:23 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:50:49 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
 
-void	display_error(char *sms_error, const char *target)
+int	display_error(char *sms_error, const char *target, int return_error)
 {
 	char	*temp_sms_error;
 	char	*temp_sms_error_;
@@ -21,13 +21,14 @@ void	display_error(char *sms_error, const char *target)
 	temp_sms_error_ = NULL;
 	temp_sms_error = ft_strjoin(target, sms_error);
 	if (!temp_sms_error)
-		return (perror("malloc:"));
+		return (perror("malloc:"), EXIT_MALLOC_FAIL);
 	temp_sms_error_ = ft_strjoin("minishell: ", temp_sms_error);
 	free(temp_sms_error);
 	if (!temp_sms_error_)
-		return (perror("malloc:"));
+		return (perror("malloc:"), EXIT_MALLOC_FAIL);
 	write(2, temp_sms_error_, ft_strlen(temp_sms_error_));
 	free(temp_sms_error_);
+	return (return_error);
 }
 
 int	handle_dot_commands(char *cmd, bool should_print, bool has_path)
@@ -35,8 +36,7 @@ int	handle_dot_commands(char *cmd, bool should_print, bool has_path)
 	if (cmd[0] == '.' && cmd[1] == '\0')
 	{
 		if (should_print)
-			display_error(".: filename argument required.: usage: . \
-						filename [arguments]\n", cmd);
+			return (display_error(DOT_USAGE_ERROR, cmd, EX_USAGE));
 		return (EX_USAGE);
 	}
 	if (cmd[0] == '.' && cmd[1] == '.' && cmd[2] == '\0')
@@ -44,17 +44,17 @@ int	handle_dot_commands(char *cmd, bool should_print, bool has_path)
 		if (has_path)
 		{
 			if (should_print)
-				display_error(": command not found\n", cmd);
-			return (STATUS_NOT_FOUND);
+				return (display_error(": command not found\n", cmd, CMD_NOT_FOUND));
+			return (CMD_NOT_FOUND);
 		}
 		else
 		{
 			if (should_print)
-				display_error("is a directory\n", cmd);
+				return (display_error("is a directory\n", cmd, STATUS_IS_DIR));
 			return (STATUS_IS_DIR);
 		}
 	}
-	return (EXIT_SUCCESS);
+	return (STATUS_OK);
 }
 
 int	handle_error_with_slash(char *cmd, bool should_print)
@@ -70,7 +70,7 @@ int	handle_error_with_slash(char *cmd, bool should_print)
 	if (S_ISDIR(st.st_mode))
 	{
 		if (should_print)
-			display_error(": Is a directory\n", cmd);
+			display_error(": Is a directory\n", cmd, STATUS_IS_DIR);
 		return (STATUS_IS_DIR);
 	}
 	if (access(cmd, X_OK) == -1)
@@ -79,7 +79,7 @@ int	handle_error_with_slash(char *cmd, bool should_print)
 			perror("minishell");
 		return (CMD_CANNOT_EXECUTE);
 	}
-	return (EXIT_SUCCESS);
+	return (STATUS_OK);
 }
 
 int	handle_error_no_slash(char *cmd, char *resolved_path, bool should_print)
@@ -87,7 +87,7 @@ int	handle_error_no_slash(char *cmd, char *resolved_path, bool should_print)
 	if (resolved_path != NULL)
 	{
 		if (should_print)
-			display_error(": command not found\n", cmd);
+			display_error(": command not found\n", cmd, STATUS_NOT_FOUND);
 		return (STATUS_NOT_FOUND);
 	}
 	if (access(cmd, X_OK) == -1)
@@ -96,7 +96,7 @@ int	handle_error_no_slash(char *cmd, char *resolved_path, bool should_print)
 			perror("minishell");
 		return (CMD_CANNOT_EXECUTE);
 	}
-	return (EXIT_SUCCESS);
+	return (STATUS_OK);
 }
 
 int	should_display_error(char *cmd, t_env **env_list, bool should_print)
