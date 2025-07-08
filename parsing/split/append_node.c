@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 09:52:09 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/02 10:14:00 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:16:55 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ static int	append_new_node_to_existen_list(t_node **list, char **data)
 
 int	append_node(t_node **list, char **data)
 {
-	t_node	*node;
-
 	if (!*list)
 		return (creat_the_list_from_zero(list, data));
 	else

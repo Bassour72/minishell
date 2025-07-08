@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 23:37:29 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/04 23:38:32 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:16:45 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static int	join_data_to_old_data(char *str, char **data, int *i)
 
 int	m_quotes(char *str, char **data, int *i)
 {
-	char	*_data;
 	char	qoute_type;
 	int		_i;
 	int		len;

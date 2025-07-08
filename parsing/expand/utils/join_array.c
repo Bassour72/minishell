@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_array.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:50:45 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/29 22:51:27 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:18:45 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static void	cpy_to_single_arr(char **double_arr, char **single_arr, int len)
 int	join_arr(char **arr, char **joined_arr)
 {
 	int	len;
-	int	i;
 
 	len = calculate_len(arr);
 	*joined_arr = malloc(len + 1);

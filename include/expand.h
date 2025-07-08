@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 15:02:16 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/07 15:04:15 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:21:47 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int		join_arr(char **arr, char **joined_arr);
 int		append_expand_token(t_expand_token **tokens, char *data, int join);
 void	free_expand_tokens_list(t_expand_token *tokens);
 void	print_expand_tokens(t_expand_token *tokens);
-int		build_args_list_from_nodes_by_joining(t_expand_node *list);
 int		expand_list_to_array(char ***new_args, t_node *splited_line);
 int		split_tokens_into_nodes(t_expand_node **expanded_list, \
 t_expand_token *tokens);

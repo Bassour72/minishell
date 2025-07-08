@@ -1,14 +1,15 @@
-CFLAGS = #-fsanitize=address -g3 #-Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 NAME = minishell
 
 SRC =	minishell.c\
+		minishell_helper.c\
+		echoctl.c\
 		parsing/commands.c\
 		parsing/tokenizer.c\
 		parsing/parser/parser.c\
 		parsing/parser/init_tree.c\
 		parsing/parser/clear_parsing.c\
-		parsing/parser/debug.c\
 		parsing/parser/redirections.c\
 		parsing/tree/append_flat_tree_node.c\
 		parsing/tree/flat_tree.c\
@@ -28,7 +29,6 @@ SRC =	minishell.c\
 		parsing/expand/expand.c \
 		parsing/expand/remove_non_printable_characters.c\
 		parsing/expand/expand_herdoc.c \
-		parsing/expand/utils/print.c\
 		parsing/expand/expand_tokens_to_line.c\
 		parsing/expand/tokenizer/variable_expander_utils.c\
 		parsing/expand/tokenizer/single_quote_expander.c\
@@ -46,7 +46,6 @@ SRC =	minishell.c\
 		parsing/expand/expand_redirection.c\
 		parsing/expand/delimiter_clear_dollar.c\
 		parsing/expand/expand_herdoc_delimiter.c\
-		parsing/expand/build_args_list.c\
 		parsing/expand/expand_list_to_array.c\
 		parsing/utils/get_list_size.c\
 		parsing/utils/tokenize_utils.c\

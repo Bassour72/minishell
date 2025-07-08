@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:44:31 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/07 22:19:23 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:23:47 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static int	env_extract_key(char *env, char **key)
 static int	env_extract_value(char *env, char **value)
 {
 	char	*start;
-	int		len;
 
 	start = ft_strchr(env, '=') + 1;
 	if (*start == '\0')

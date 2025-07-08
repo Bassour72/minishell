@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:54:10 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 22:07:53 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:51:57 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	expand_and_reopen_fd(int fd, t_env **env_list)
 			free(line);
 			return (close(fd_out), close(fd_in), -1);
 		}
-		ft_putendl_fd(line, fd_in);
+		ft_putstr_fd(line, fd_in);
 		free(line);
 	}
 	close(fd);

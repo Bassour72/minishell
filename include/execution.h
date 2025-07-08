@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 18:58:41 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 22:18:44 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:27:30 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void	execute_command(t_tree *root, t_env **env_list);
 int		exec_pipe(t_tree *root, t_env **env_list, bool is_child);
 int		execution(t_tree *root, t_env **env_list);
 int		setup_redirections(t_tree *root);
-int		write_heredoc(int fd, const char *limiter, t_env **env_list);
-int		create_heredoc(t_red *redir, t_env **env_list);
+int		write_heredoc(int fd, const char *limiter);
+int		create_heredoc(t_red *redir);
 int		prepare_heredocs(t_tree *root, t_env **env_list);
 int		apply_redirections(t_red *redir, t_env **env_list);
 int		handle_heredocs(t_tree *root);
@@ -125,7 +125,7 @@ int		count_heredocs(t_tree *node);
 void	enforce_heredoc_limit(t_tree *root, t_env **env_list);
 char	*extract_path_variable(t_env **env_list);
 char	*check_valid_command_path(char *command);
-int		wait_child_status(pid_t pid, t_env **env_list);
+int		wait_child_status(pid_t pid);
 int		exec_subshell(t_tree *root, t_env **env_list);
 int		exec_builtin_command(t_tree *root, t_env **env_list);
 int		exec_external_command(t_tree *root, t_env **env_list);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:21:07 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 22:02:30 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:27:36 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,13 @@ int	prepare_heredocs(t_tree *root, t_env **env_list)
 	if (!root)
 		return (0);
 	redir = root->redirections;
-	if (expand_herdoc_delimiter(redir, *env_list) == R_FAIL)
+	if (expand_herdoc_delimiter(redir) == R_FAIL)
 		return (1);
 	while (redir)
 	{
 		if (redir->type == HER_DOC)
 		{
-			if (create_heredoc(redir, env_list))
+			if (create_heredoc(redir))
 				return (1);
 			if (g_exit_status == 1)
 				return (1);

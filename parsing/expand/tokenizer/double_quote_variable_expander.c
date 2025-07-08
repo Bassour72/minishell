@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   double_quote_variable_expander.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:09:59 by massrayb          #+#    #+#             */
-/*   Updated: 2025/06/29 23:10:26 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:18:38 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int	double_quote_variable_expander(char *str, int *_i, char **data, t_env *env)
 {
-	int		join;
-	int		split;
 	char	*new_data;
 	char	*tmp;
 

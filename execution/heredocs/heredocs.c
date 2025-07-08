@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:23:03 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 22:01:44 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:51:38 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	child_heredoc_handler(int sig)
 	exit(1);
 }
 
-static int	child_read_heredoc(int fd, const char *limiter, t_env **env_list)
+static int	child_read_heredoc(int fd, const char *limiter)
 {
 	char	*line;
 
@@ -49,7 +49,7 @@ static int	child_read_heredoc(int fd, const char *limiter, t_env **env_list)
 	exit(0);
 }
 
-int	write_heredoc(int fd, const char *limiter, t_env **env_list)
+int	write_heredoc(int fd, const char *limiter)
 {
 	pid_t	pid;
 	int		status;
@@ -62,7 +62,7 @@ int	write_heredoc(int fd, const char *limiter, t_env **env_list)
 		return (1);
 	}
 	else if (pid == 0)
-		child_read_heredoc(fd, limiter, env_list);
+		child_read_heredoc(fd, limiter);
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	if (WEXITSTATUS(status) == 1)
@@ -70,7 +70,7 @@ int	write_heredoc(int fd, const char *limiter, t_env **env_list)
 	return (0);
 }
 
-int	create_heredoc(t_red *redir, t_env **env_list)
+int	create_heredoc(t_red *redir)
 {
 	int		fd;
 	char	*tmp_path;
@@ -88,7 +88,7 @@ int	create_heredoc(t_red *redir, t_env **env_list)
 		perror("heredoc open failed");
 		exit(EXIT_FAILURE);
 	}
-	if (write_heredoc(fd, redir->data, env_list))
+	if (write_heredoc(fd, redir->data))
 	{
 		close(fd);
 		close(redir->out_fd);

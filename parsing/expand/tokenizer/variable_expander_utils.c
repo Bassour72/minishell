@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:14:56 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 22:15:26 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:17:31 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,6 @@ int	extarct_var_key(char *str, char **key)
 	if (!*key)
 		return (perror("error: "), R_FAIL);
 	return (R_SUCCESS);
-}
-
-static void	check_and_replace(char *value)
-{
-	if (!value)
-		return ;
-	while (*value)
-	{
-		if (*value == 14)
-			*value = 13;
-		else if (*value == 15)
-			*value = 16;
-		value++;
-	}
 }
 
 static void	update_value(char *value)

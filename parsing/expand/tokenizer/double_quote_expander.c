@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:01:43 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 17:26:00 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:17:51 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,7 @@ int	double_quote_expander(char *str, int *i, t_expand_token **tokens, \
 	t_env *env)
 {
 	int		_i;
-	int		state;
 	char	*data;
-	int		join;
 
 	data = NULL;
 	_i = 0;

@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 09:54:04 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/01 14:12:07 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:15:00 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,9 @@ static int	join_data_to_old_data(char *str, char **data, int *i)
 
 int	m_normal(char *str, char **data, int *i)
 {
-	char	*_data;
-	int		_i;
-	int		len;
-	int		j;
+	int	_i;
+	int	len;
+	int	j;
 
 	j = 0;
 	len = 0;

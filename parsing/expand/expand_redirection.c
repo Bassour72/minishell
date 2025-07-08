@@ -6,27 +6,14 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:21:42 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/07 14:58:28 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:19:08 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-static int	is_empty(char *str)
-{
-	while (*str)
-	{
-		if (!ft_isspace(*str))
-			return (1);
-		str++;
-	}
-	return (0);
-}
-
 static int	set_new_data_or_ambiguous(t_red *red_node, char **new_arr)
 {
-	int	i;
-
 	if (new_arr && new_arr[0] && new_arr[1])
 	{
 		free_2d_arr(new_arr);

@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:15:06 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 18:51:54 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:19:30 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 static int	check_quote(int *quote, char c)
 {
-	int	state;
-
 	if (c == '\'' || c == '\"')
 	{
 		if (*quote == 0)
@@ -72,7 +70,7 @@ static int	remove_quotes_from_delimiter(char **dst, char *str)
 	return (R_SUCCESS);
 }
 
-int	expand_herdoc_delimiter(t_red *reds, t_env *env)
+int	expand_herdoc_delimiter(t_red *reds)
 {
 	char	*new_data;
 

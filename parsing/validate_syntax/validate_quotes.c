@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:13:05 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/04 22:29:58 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 15:01:11 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ int	validate_quotes(char *str)
 	if (quote_type != '\0')
 	{
 		if (quote_type == '\"')
-			return (printf("syntax error near unexpected token `\"\n"), 0);
+			return (ft_putendl_fd("syntax error near unexpected token `\"", 2), \
+			R_FAIL);
 		else if (quote_type == '\'')
-			return (printf("syntax error near unexpected token `\'\n"), 0);
+			return (ft_putendl_fd("syntax error near unexpected token `\'", 2), \
+			R_FAIL);
 	}
 	return (1);
 }

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:33:14 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 21:56:30 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:25:28 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/execution.h"
 
-static int	wait_for_children(pid_t pid_left, pid_t pid_right)
+static int	wait_for_children(pid_t pid_right)
 {
 	int	status;
 	int	exit_code;
@@ -82,12 +82,6 @@ int pipe[2], bool is_child)
 	return (pid);
 }
 
-static	void	close_parent_fds(int pipefd[2])
-{
-	close(pipefd[0]);
-	close(pipefd[1]);
-}
-
 int	exec_pipe(t_tree *root, t_env **env_list, bool is_child)
 {
 	int		pipefd[2];
@@ -110,5 +104,5 @@ int	exec_pipe(t_tree *root, t_env **env_list, bool is_child)
 		return (1);
 	}
 	close_pipe_fds(pipefd);
-	return (wait_for_children(pid_left, pid_right));
+	return (wait_for_children(pid_right));
 }

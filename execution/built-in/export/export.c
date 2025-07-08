@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:48:33 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 22:51:42 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:25:39 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	append_env_node(t_env **env_list, char *new_key, char	*new_value)
 
 static int	add_env(char *arg, t_env **env_list)
 {
-	t_env	*existing;
 	char	*new_key;
 	char	*new_value;
 	int		is_append_mode;

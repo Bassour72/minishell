@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:16:36 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 19:12:40 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:17:14 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int	expand_herdoc(char **herdoc_line, t_env *env)
 {
 	char	*line;
 	char	*result;
-	int		len;
 	int		i;
 
 	result = NULL;

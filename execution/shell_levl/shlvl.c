@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:38:57 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 22:45:11 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:48:53 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ static int	update_env_shlvl(t_env **env_list, long value)
 
 int	should_increment_shlvl(char *program_path)
 {
-	if (ft_strcmp(program_path, "./minishell") == 0 || ft_strcmp(program_path, "minishell") == 0)
+	if (ft_strcmp(program_path, "./minishell") == 0 || \
+	ft_strcmp(program_path, "minishell") == 0)
 	{
 		return (0);
 	}
@@ -66,6 +67,7 @@ static long	parse_shlvl(char *str)
 	int		i;
 	long	current;
 
+	i = 0;
 	if (!str || !*str)
 		return (1);
 	if (str[i] == '+' || str[i] == '-')

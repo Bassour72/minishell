@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:14:25 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 14:40:47 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:14:44 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static void	skip_what_inside_parenths(t_token *token, int *i)
 
 int	parenths_redirections(t_tree *tree_node, t_token *token)
 {
-	t_red	*tmp_red;
 	int		i;
 
 	i = 0;

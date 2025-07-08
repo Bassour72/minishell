@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:00:04 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 18:56:15 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:17:37 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	single_quote_expander(char *str, int *i, t_expand_token **tokens)
 {
 	char	*data;
 	int		len;
-	int		_i;
 	int		join;
 
 	len = calculate_data_len(str);

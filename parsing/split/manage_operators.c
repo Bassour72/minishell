@@ -6,13 +6,13 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 09:57:26 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/04 23:36:11 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:15:57 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-static int	_or(t_node **list, char *str, int *i)
+static int	_or(t_node **list, int *i)
 {
 	char	*data;
 	int		state;
@@ -28,7 +28,7 @@ static int	_or(t_node **list, char *str, int *i)
 	return (state);
 }
 
-static int	_pipe(t_node **list, char *str, int *i)
+static int	_pipe(t_node **list, int *i)
 {
 	char	*data;
 	int		state;
@@ -43,7 +43,7 @@ static int	_pipe(t_node **list, char *str, int *i)
 	return (state);
 }
 
-static int	_and(t_node **list, char *str, int *i)
+static int	_and(t_node **list, int *i)
 {
 	char	*data;
 	int		state;
@@ -67,10 +67,10 @@ int	m_operators(t_node **list, char *str, int *i)
 	state = 1;
 	data = NULL;
 	if (*(str + *i) == '|' && *(str + *i + 1) == '|')
-		state = _or(list, str, i);
+		state = _or(list, i);
 	else if (*(str + *i) == '|')
-		state = _pipe(list, str, i);
+		state = _pipe(list, i);
 	else if (*(str + *i) == '&')
-		state = _and(list, str, i);
+		state = _and(list, i);
 	return (state);
 }

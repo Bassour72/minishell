@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:04:38 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 22:15:45 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:42:10 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	diagnose_cd_error(const char *path, int print_error)
 	if (!S_ISDIR(st.st_mode))
 	{
 		if (print_error || print_error == -1)
-			perror("cd: Not a directory\n");
+			perror("cd: ");
 		return (2);
 	}
 	if (chdir(path) != 0)
