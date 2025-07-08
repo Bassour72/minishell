@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:36 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 16:33:56 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 21:23:24 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ int	empty(char *str)
 	char	*tmp;
 
 	tmp = str;
-	if (!str[0])
-		return (1);
 	while (*str && ft_isspace(*str))
 		str++;
 	if (!*str)
