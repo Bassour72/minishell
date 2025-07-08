@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:09:14 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/07 22:17:58 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:44:40 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,33 @@ int	check_empty(t_expand_token *tokens)
 	return (1);
 }
 
-void	recover_quotes(char **new_args)
+int	recover_quotes(char ***new_args)
 {
 	int	i;
 	int	j;
 
-	i = 0;
-	while (new_args[i])
+	i = -1;
+	while ((*new_args)[++i])
 	{
-		j = 0;
-		while (new_args[i][j])
+		j = -1;
+		while ((*new_args)[i][++j])
 		{
-			if (new_args[i][j] == DOUBLE_QUOTE)
-				new_args[i][j] = '\"';
-			else if (new_args[i][j] == SINGLE_QUOTE)
-				new_args[i][j] = '\'';
-			j++;
+			if ((*new_args)[i][j] == DOUBLE_QUOTE)
+				(*new_args)[i][j] = '\"';
+			else if ((*new_args)[i][j] == SINGLE_QUOTE)
+				(*new_args)[i][j] = '\'';
 		}
-		i++;
 	}
+	if (!(*new_args)[0])
+	{
+		1 && (free(*new_args), *new_args = ft_calloc(2, sizeof(char *)));
+		if (!*new_args)
+			return (R_FAIL);
+		(*new_args)[0] = ft_strdup("");
+		if (!(*new_args)[0])
+			return (perror("error: "), free(*new_args), R_FAIL);
+	}
+	return (R_SUCCESS);
 }
 
 static int	generate_tokens(char ***new_args, \
@@ -80,6 +88,8 @@ int	expand(char ***new_args, t_env *env)
 	char			*new_line;
 
 	splited_line = NULL;
+	if (!*new_args)
+		return (R_SUCCESS);
 	if (generate_tokens(new_args, &tokens, env) == R_FAIL)
 		return (R_FAIL);
 	if (check_empty(tokens))
@@ -96,6 +106,5 @@ int	expand(char ***new_args, t_env *env)
 		return (R_FAIL);
 	if (remove_non_printable_characters(new_args) == R_FAIL)
 		return (R_FAIL);
-	recover_quotes(*new_args);
-	return (R_SUCCESS);
+	return (recover_quotes(new_args));
 }

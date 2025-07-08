@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:21:42 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 13:19:08 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:59:26 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	set_new_data_or_ambiguous(t_red *red_node, char **new_arr)
 {
-	if (new_arr && new_arr[0] && new_arr[1])
+	if (new_arr && ((new_arr[0] && new_arr[1]) || !new_arr[0][0]))
 	{
 		free_2d_arr(new_arr);
 		red_node->is_ambiguous = 1;
@@ -63,7 +63,7 @@ int	expand_redir(t_red *reds, t_env *env)
 				return (R_FAIL);
 			if (remove_non_printable_characters(&new_arr) == R_FAIL)
 				return (R_FAIL);
-			recover_quotes(new_arr);
+			recover_quotes(&new_arr);
 			if (set_new_data_or_ambiguous(reds, new_arr) == R_FAIL)
 				return (R_FAIL);
 		}

@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:36 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 21:23:24 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 21:31:42 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ int	empty(char *str)
 	tmp = str;
 	while (*str && ft_isspace(*str))
 		str++;
-	if (!*str)
+	if(!*str)
 	{
 		free(tmp);
 		return (1);
 	}
-	return (0);
+	return(0);
 }
 
 void	handle_heredoc_on_fail(t_env **env_list, t_tree *tree)

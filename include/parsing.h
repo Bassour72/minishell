@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 13:52:19 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 14:33:00 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:54:42 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ int			generate_new_data_str(char **dst, char *str);
 int			expand_herdoc_delimiter(t_red *reds);
 int			finish_and_append_double_quote_expand(char *str, int _i, \
 			char *data, t_expand_token **tokens);
-void		recover_quotes(char **new_args);
+int			recover_quotes(char ***new_args);
 int			update_env_exit_status(t_env **env_list, int status);
 void		is_input_null(char *input, t_env *env_list);
 int			handle_heredoc(t_tree *root, t_env **env_list);

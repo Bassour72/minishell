@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:48:47 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/07 18:34:02 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:42:55 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	set_pwd_and_oldpwd_if_not_found(t_env **env_list, char *key)
 	pwd_value = getcwd(NULL, 0);
 	pwd_key = ft_strdup(key);
 	if (!pwd_key)
-		return (free_env_list(*env_list), R_FAIL);
+		return (perror("error: "), free_env_list(*env_list), R_FAIL);
 	if (create_env_node(env_list, pwd_key, pwd_value) == R_FAIL)
 		return (free_env_list(*env_list), R_FAIL);
 	return (R_SUCCESS);

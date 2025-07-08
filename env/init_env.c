@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:32:34 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/07 18:35:04 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:42:24 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,16 @@ int is_remove)
 
 	node = malloc(sizeof(t_env));
 	if (node == NULL)
-		return (NULL);
+		return (perror("error: "), NULL);
+	(void)key;
 	node->key = ft_strdup(key);
 	if (node->key == NULL)
-		return (free(node), NULL);
+		return (perror("error: "), free(node), NULL);
 	if (value)
 	{
 		node->value = ft_strdup(value);
 		if (node->value == NULL)
-			return (free(node->key), free(node), NULL);
+			return (perror("error: "), free(node->key), free(node), NULL);
 	}
 	else
 		node->value = NULL;
