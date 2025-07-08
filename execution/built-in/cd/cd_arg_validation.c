@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 21:57:55 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 17:22:05 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:41:53 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static int	has_three_consecutive_hyphens(const char *arg)
 			hyphen_count++;
 			if (hyphen_count == 3)
 			{
-				return (display_error(ERR_HYPHEN_HYPHEN_HYPHEN, arg, STATUS_ERROR));
+				return (display_error(ERR_HYPHEN_HYPHEN_HYPHEN, arg, \
+						STATUS_ERROR));
 			}
 		}
 		else
