@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:38:57 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 18:20:00 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:46:35 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	update_env_shlvl(t_env **env_list, long value)
 		return (1);
 	new_value = ft_itoa(value);
 	if (!new_value)
-		return (perror("malloc: "),R_FAIL);
+		return (perror("malloc: "), R_FAIL);
 	tmp = *env_list;
 	while (tmp)
 	{

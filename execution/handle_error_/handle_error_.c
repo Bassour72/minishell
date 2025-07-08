@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:15:08 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 17:50:49 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:43:41 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int	handle_dot_commands(char *cmd, bool should_print, bool has_path)
 		if (has_path)
 		{
 			if (should_print)
-				return (display_error(": command not found\n", cmd, CMD_NOT_FOUND));
+				return (display_error(": command not found\n", cmd, \
+							CMD_NOT_FOUND));
 			return (CMD_NOT_FOUND);
 		}
 		else

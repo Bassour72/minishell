@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 18:58:41 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 18:06:38 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:46:10 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,16 @@
 # define ERR_HYPHEN_SLASH       ": invalid argument (\"-/\" not allowed)\n"
 # define ERR_GETCWD_FAIL        "cd: error retrieving current directory: getcwd: \
 cannot access parent directories"
-#define DOT_USAGE_ERROR ".: filename argument required.\n.: \
+# define DOT_USAGE_ERROR ".: filename argument required.\n.: \
 usage: . filename [arguments]\n"
 # define MAX_HEREDOC 16
-#define EXIT_MALLOC_FAIL -1
-//# define CMD_ERR_NO_PERMISSION 126
-# define STATUS_OK        0
-# define STATUS_ERROR     1
-# define STATUS_BUILTIN   2
+# define EXIT_MALLOC_FAIL -1
+# define STATUS_OK 0
+# define STATUS_ERROR 1
 # define STATUS_NOT_FOUND 127
-# define STATUS_IS_DIR    126
-# define STATUS_SIG_BASE  128
-# define STATUS_SIGINT    130
-# define STATUS_SIGQUIT   131
-# define CMD_SUCCESS         0
-# define CMD_GENERAL_ERROR   1
+# define STATUS_IS_DIR 126
 # define CMD_CANNOT_EXECUTE  126
-# define CMD_NOT_FOUND       127
+# define CMD_NOT_FOUND 127
 # define EX_USAGE 2
 
 extern int	g_exit_status;
@@ -101,7 +94,8 @@ int		cd_dotdots_only(t_env **env, char *arg);
 void	close_pipe_fds(int pipefd[2]);
 int		is_fd_open(int fd);
 void	close_all_fds_(void);
-int		create_pipe(int pipefd[2], t_tree *root, t_env **env_list, bool is_child);
+int		create_pipe(int pipefd[2], t_tree *root, \
+		t_env **env_list, bool is_child);
 void	update_pwd(t_env **env);
 char	*get_env_value(char *key, t_env *env);
 void	update_existing_env(t_env *existing, char *new_value, int append_mode);

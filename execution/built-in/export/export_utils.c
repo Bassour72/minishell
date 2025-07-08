@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:38:59 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 17:42:47 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:42:46 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,3 @@ int	is_valid_identifier(const char *identifier, int *is_append_mode)
 		return (STATUS_ERROR);
 	return (STATUS_OK);
 }
-
