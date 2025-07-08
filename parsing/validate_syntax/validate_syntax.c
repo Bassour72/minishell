@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:10:43 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/04 23:15:47 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 15:23:01 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	validate_parenths(t_token *tokens)
 			return (R_FAIL);
 	}
 	if (p > 0)
-		return (printf("syntax error near unexpected token `(\'\n"), R_FAIL);
+		return (ft_putendl_fd("syntax error near unexpected token `(\'", 2), 0);
 	else if (p < 0)
-		return (printf("syntax error near unexpected token `)\'\n"), R_FAIL);
+		return (ft_putendl_fd("syntax error near unexpected token `)\'", 2), 0);
 	return (R_SUCCESS);
 }
 
@@ -48,6 +48,13 @@ static int	validate_opperator(t_token *token, int i)
 	!_is_red(token[i + 1].type) && token[i + 1].type != PAREN_OPEN))
 		return (put_operator_syntax_error_msg(token[i].type), 0);
 	return (R_SUCCESS);
+}
+
+static void	put_error(char *str)
+{
+	ft_putstr_fd("bash: syntax error near unexpected token ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putendl_fd("\'", 2);
 }
 
 int	validate_sytax(t_token *token)
@@ -65,8 +72,7 @@ int	validate_sytax(t_token *token)
 		else if (token[i].type == WORD)
 		{
 			if (i > 0 && (token[i - 1].type == PAREN_CLOSE))
-				return (printf("bash: syntax error near unexpected \
-				token `%s'\n", token[i].data), 0);
+				return (put_error(token[i].data), R_FAIL);
 		}
 		else if (is_opperator_syntax(token[i].type))
 		{

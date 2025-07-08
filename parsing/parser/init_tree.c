@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tree.c                                             :+:      :+:    :+:   */
+/*   init_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 10:07:32 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 16:09:16 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:14:55 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parsing.h"
 
-static void	edit_parenths_count(t_flat_tree *flat, int *p)
+static void	skip_parenths(t_flat_tree *flat, int *p)
 {
 	if (flat->tree_node->empty == -1)
 		(*p)++;
@@ -33,6 +33,7 @@ static t_tree	*collect_parenths(t_flat_tree *ft)
 			flat = flat->prev;
 		flat->next->prev = NULL;
 		left = flat->next;
+		flat->tree_node->right = NULL;
 		flat->tree_node->left = init_tree(left);
 		return (flat->tree_node);
 	}
@@ -50,7 +51,7 @@ static t_tree	*collect_pipe(t_flat_tree *ft)
 	flat = flat_tree_last(ft);
 	while (flat->prev)
 	{
-		edit_parenths_count(flat, &p);
+		skip_parenths(flat, &p);
 		if (p == 0 && flat->tree_node->type == PIPE)
 		{
 			right = flat->next;
@@ -79,7 +80,7 @@ static t_tree	*collect_operator(t_flat_tree *ft)
 	flat = flat_tree_last(ft);
 	while (flat->prev)
 	{
-		edit_parenths_count(flat, &p);
+		skip_parenths(flat, &p);
 		if (p == 0 && (flat->tree_node->type == OP_OR || \
 		flat->tree_node->type == OP_AND))
 		{

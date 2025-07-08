@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 13:57:02 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 14:37:13 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:47:07 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char **input, int *status)
 	{
 		(signal(SIGINT, handle_sigint_prompt), disable_echoctl());
 		if (dup2(2, 0) == -1)
-			return (R_FAIL);
+			return (perror("error: "), R_FAIL);
 		*input = readline("minishell$ ");
 		enable_echoctl();
 		if (g_exit_status == 1)
