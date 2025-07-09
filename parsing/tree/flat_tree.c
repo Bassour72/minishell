@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:33:46 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 16:10:52 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:05:19 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_tree	*new_tree_node(t_type type)
 
 	tree_node = malloc(sizeof(t_tree));
 	if (!tree_node)
-		return (perror("error: "), NULL);
+		return (perror("error"), NULL);
 	tree_node->data = NULL;
 	tree_node->redirections = NULL;
 	tree_node->type = type;
@@ -43,7 +43,7 @@ t_token *token, int *i)
 	if (skip_listed_tokens(token, i))
 		return (R_CONTINUE);
 	*tree_node = new_tree_node(BLOCK);
-	if (!tree_node)
+	if (!*tree_node)
 		return (free_flat_tree(flat_tree_list), R_FAIL);
 	if (!collect_reds_and_cmds(token, i, *tree_node, flat_tree_list))
 		return (R_FAIL);

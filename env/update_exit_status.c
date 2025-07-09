@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:32:36 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/07 23:21:19 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:39:05 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	update_env_exit_status(t_env **env_list, int status)
 
 	exit_str = ft_itoa(status);
 	if (!exit_str)
-		return (perror("error: "), R_FAIL);
+		return (perror("error"), R_FAIL);
 	env_tmp = *env_list;
 	while (env_tmp)
 	{

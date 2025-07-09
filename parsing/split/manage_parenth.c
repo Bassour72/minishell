@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 23:36:35 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 13:16:37 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:49:26 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	open_p(t_node **list, int *i)
 
 	data = malloc(2);
 	if (!data)
-		return (0);
+		return (perror("error"), 0);
 	data[0] = '(';
 	data[1] = '\0';
 	state = append_node(list, &data);
@@ -34,7 +34,7 @@ static int	close_p(t_node **list, int *i)
 
 	data = malloc(2);
 	if (!data)
-		return (0);
+		return (perror("error"), 0);
 	data[0] = ')';
 	data[1] = '\0';
 	state = append_node(list, &data);

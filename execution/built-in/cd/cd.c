@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:16:28 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 22:21:22 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:54:41 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	has_one_case_in_cd(t_env **env, char *old_pwd, char *candidate)
 
 	home = get_env_value("HOME", *env);
 	if (!home)
-		return (perror("cd: HOME not set\n"), free(old_pwd), 1);
+		return (perror("cd: HOME not set"), free(old_pwd), 1);
 	candidate = strdup(home);
 	if (!candidate)
 		return (free(old_pwd), 1);

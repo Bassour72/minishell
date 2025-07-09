@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 09:57:26 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 13:15:57 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:47:57 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	_or(t_node **list, int *i)
 
 	data = malloc(3);
 	if (!data)
-		return (0);
+		return (perror("error"), R_FAIL);
 	data[0] = '|';
 	data[1] = '|';
 	data[2] = '\0';
@@ -35,7 +35,7 @@ static int	_pipe(t_node **list, int *i)
 
 	data = malloc(2);
 	if (!data)
-		return (0);
+		return (perror("error"), 0);
 	data[0] = '|';
 	data[1] = '\0';
 	state = append_node(list, &data);
@@ -50,7 +50,7 @@ static int	_and(t_node **list, int *i)
 
 	data = malloc(3);
 	if (!data)
-		return (0);
+		return (perror("error"), 0);
 	data[0] = '&';
 	data[1] = '&';
 	data[2] = '\0';

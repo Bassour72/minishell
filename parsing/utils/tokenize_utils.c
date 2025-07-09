@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:30:33 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/04 22:30:59 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:17:08 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	create_token(t_token *token, char *data, int type)
 {
 	token->data = ft_strdup(data);
 	if (!token->data)
-		return (perror("error: "), R_FAIL);
+		return (perror("error"), R_FAIL);
 	token->type = type;
 	token->is_listed = 0;
 	return (R_SUCCESS);

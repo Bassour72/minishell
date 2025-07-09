@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:45:50 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 00:19:11 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 12:20:06 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	expand_list_to_array(char ***new_args, t_node *splited_line)
 
 	*new_args = malloc(sizeof(char *) * (get_list_size(splited_line) + 1));
 	if (!*new_args)
-		return (perror("error: "), free(splited_line), R_FAIL);
+		return (perror("error"), free_list(splited_line), R_FAIL);
 	tmp = splited_line;
 	i = 0;
 	while (tmp)

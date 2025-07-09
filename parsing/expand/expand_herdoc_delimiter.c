@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:15:06 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 13:19:30 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 12:04:16 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	remove_quotes_from_delimiter(char **dst, char *str)
 	size = calculate_eof_size(str);
 	*dst = malloc(size + 1);
 	if (!*dst)
-		return (perror("error: "), R_FAIL);
+		return (perror("error"), R_FAIL);
 	quote = 0;
 	i = 0;
 	while (*str)

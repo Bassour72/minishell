@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:23:03 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 17:29:15 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:33:32 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	setup_heredoc_handler(int sig)
 {
 	(void)sig;
-	g_exit_status = 1;
+	g_signal_status = 1;
 	write(STDOUT_FILENO, "\n", 1);
 }
 

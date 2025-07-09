@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:08:37 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 16:03:02 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:06:53 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,13 @@ int	tokenizer(t_token **tokenized_input, char *input)
 	(count_splitted_input_nodes(splitted_input) + 1));
 	if (!*tokenized_input)
 	{
-		perror("error: ");
+		perror("error");
 		free_splitted_input(splitted_input);
 		return (R_FAIL);
 	}
 	if (convert_inputs_to_tokens(*tokenized_input, splitted_input) == R_FAIL)
 	{
 		free_splitted_input(splitted_input);
-		free_tokens_list(*tokenized_input);
 		return (R_FAIL);
 	}
 	free_splitted_input(splitted_input);

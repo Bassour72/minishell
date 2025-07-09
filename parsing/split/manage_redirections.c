@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 23:38:52 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 00:00:07 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:59:41 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static int	append(t_node **list, int *i)
 	int		state;
 
 	data = malloc(3);
+	if (!data)
+		return (perror("error"), R_FAIL);
 	data[0] = '>';
 	data[1] = '>';
 	data[2] = '\0';
@@ -32,6 +34,8 @@ static int	trunk(t_node **list, int *i)
 	int		state;
 
 	data = malloc(2);
+	if (!data)
+		return (perror("error"), R_FAIL);
 	data[0] = '>';
 	data[1] = '\0';
 	state = append_node(list, &data);
@@ -45,6 +49,8 @@ static int	herdoc(t_node **list, int *i)
 	int		state;
 
 	data = malloc(3);
+	if (!data)
+		return (perror("error"), R_FAIL);
 	data[0] = '<';
 	data[1] = '<';
 	data[2] = '\0';
@@ -59,6 +65,8 @@ static int	input(t_node **list, int *i)
 	int		state;
 
 	data = malloc(2);
+	if (!data)
+		return (perror("error"), R_FAIL);
 	data[0] = '<';
 	data[1] = '\0';
 	state = append_node(list, &data);

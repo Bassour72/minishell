@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:14:56 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 13:17:31 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:54:42 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	extarct_var_key(char *str, char **key)
 	{
 		*key = ft_strdup("exit_status@gmail.com");
 		if (!*key)
-			return (perror("error: "), R_FAIL);
+			return (perror("error"), R_FAIL);
 		return (R_SUCCESS);
 	}
 	while (str[len] && is_valid_key_char(str[len], len))
@@ -49,7 +49,7 @@ int	extarct_var_key(char *str, char **key)
 		return (*key = NULL, R_SUCCESS);
 	*key = ft_substr(str, 0, len);
 	if (!*key)
-		return (perror("error: "), R_FAIL);
+		return (perror("error"), R_FAIL);
 	return (R_SUCCESS);
 }
 
@@ -86,7 +86,7 @@ int	extract_var_value(char *src, int *i, char **dst, t_env *env)
 	{
 		*dst = ft_strdup(value);
 		if (!*dst)
-			return (perror("error: "), R_FAIL);
+			return (perror("error"), R_FAIL);
 		update_value(*dst);
 	}
 	else

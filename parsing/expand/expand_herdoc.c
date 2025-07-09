@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:16:36 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 13:17:14 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:39:05 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	join_line(char **str1, char *str2)
 	free(*str1);
 	free(str2);
 	if (!new_str)
-		return (perror("error: "), R_FAIL);
+		return (perror("error"), R_FAIL);
 	*str1 = new_str;
 	return (R_SUCCESS);
 }
@@ -57,7 +57,7 @@ static int	save_normal(char *line, int *i, char **result)
 		len++;
 	value = ft_substr(line, *i, len - *i);
 	if (!value)
-		return (perror("error: "), free(*result), R_FAIL);
+		return (perror("error"), free(*result), R_FAIL);
 	if (join_line(result, value) == R_FAIL)
 		return (R_FAIL);
 	*i = len;

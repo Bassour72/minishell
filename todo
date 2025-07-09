@@ -1,7 +1,23 @@
-strcmp
+
+serach for (void)
+
+bash-3.2$ env -i ./minishell
+error: Undefined error: 0
+error: Undefined error: 0
+error: Undefined error: 0
+error: Undefined error: 0
+error: Undefined error: 0
 
 
+	parent = malloc(i + 1);
+	static void	create_env_var(char *key, char *value, t_env **env)
+	t_env	*copy_env_list(t_env *env_list)
 
+	when malloc fails
+	static int	remove_quotes_from_delimiter(char **dst, char *str)
+	it doesn't exit
+
+	when expand fails minishell doesn't exit
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

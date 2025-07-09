@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:13:33 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 18:52:00 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 12:03:10 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*delimiter_clear_dollar(char *str)
 	len = calculate_delimiter_len_and_replace_dolars(str);
 	new_str = malloc(len + 1);
 	if (!new_str)
-		return (perror("error: "), NULL);
+		return (perror("error"), NULL);
 	i = -1;
 	j = 0;
 	while (*(str + ++i))

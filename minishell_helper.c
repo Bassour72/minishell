@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:36 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 21:31:42 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:10:03 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	handle_sigint_prompt(int sig)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-	g_exit_status = 1;
+	g_signal_status = 1;
 }
 
 int	empty(char *str)
@@ -31,12 +31,12 @@ int	empty(char *str)
 	tmp = str;
 	while (*str && ft_isspace(*str))
 		str++;
-	if(!*str)
+	if (!*str)
 	{
 		free(tmp);
 		return (1);
 	}
-	return(0);
+	return (0);
 }
 
 void	handle_heredoc_on_fail(t_env **env_list, t_tree *tree)
@@ -44,7 +44,7 @@ void	handle_heredoc_on_fail(t_env **env_list, t_tree *tree)
 	update_env_exit_status(env_list, 1);
 	close_heredoc_fds(tree);
 	free_tree(tree);
-	g_exit_status = 0;
+	g_signal_status = 0;
 }
 
 int	handle_heredoc(t_tree *root, t_env **env_list)

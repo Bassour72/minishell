@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:59:08 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 17:16:29 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:39:05 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	normal_expander(char *str, int *i, t_expand_token **tokens)
 	len = calculate_data_len(str);
 	data = ft_substr(str, 0, len);
 	if (!data)
-		return (perror("error: "), R_FAIL);
+		return (perror("error"), R_FAIL);
 	join = 1;
 	if (ft_isspace(str[len]) || !str[len])
 		join = 0;

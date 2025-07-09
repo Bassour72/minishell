@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:42:40 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/07 18:37:16 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:41:44 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	create_env_node(t_env **list, char *key, char *value)
 
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
-		return ((perror("error: "), free(key), free(value)), R_FAIL);
+		return ((perror("error"), free(key), free(value)), R_FAIL);
 	new_node->key = key;
 	new_node->value = value;
 	new_node->exported = 1;

@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:00:04 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 13:17:37 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:39:05 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	single_quote_expander(char *str, int *i, t_expand_token **tokens)
 	len = calculate_data_len(str);
 	data = ft_substr(str, 0, len);
 	if (!data)
-		return (perror("error: "), free_expand_tokens_list(*tokens), R_FAIL);
+		return (perror("error"), free_expand_tokens_list(*tokens), R_FAIL);
 	convert_quotes(data);
 	join = 1;
 	if (!str[len] || ft_isspace(str[len]))

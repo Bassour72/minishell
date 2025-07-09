@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:09:14 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 18:44:40 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:51:10 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	recover_quotes(char ***new_args)
 			return (R_FAIL);
 		(*new_args)[0] = ft_strdup("");
 		if (!(*new_args)[0])
-			return (perror("error: "), free(*new_args), R_FAIL);
+			return (perror("error"), free(*new_args), *new_args = NULL, R_FAIL);
 	}
 	return (R_SUCCESS);
 }
@@ -76,7 +76,7 @@ t_expand_token **tokens, t_env *env)
 	free_2d_arr(*new_args);
 	*new_args = NULL;
 	if (tokenize(line, tokens, env) == R_FAIL)
-		return (free(line), R_FAIL);
+		return (free_expand_tokens_list(*tokens), free(line), R_FAIL);
 	free(line);
 	return (R_SUCCESS);
 }
@@ -93,7 +93,7 @@ int	expand(char ***new_args, t_env *env)
 	if (generate_tokens(new_args, &tokens, env) == R_FAIL)
 		return (R_FAIL);
 	if (check_empty(tokens))
-		return (R_CONTINUE);
+		return (free_expand_tokens_list(tokens), R_CONTINUE);
 	if (expand_tokens_to_line(&new_line, tokens) == R_FAIL)
 		return (free_expand_tokens_list(tokens), R_FAIL);
 	free_expand_tokens_list(tokens);

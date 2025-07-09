@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 23:37:29 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 13:16:45 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:55:41 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	create_new_data(char *str, char **data, int *i)
 	_i -= len - 1;
 	_data = malloc(len + 1);
 	if (!_data)
-		return (0);
+		return (perror("error"), 0);
 	ft_strlcpy(_data, str + _i, len + 1);
 	*data = _data;
 	(*i) = _i + len;
@@ -57,7 +57,7 @@ static int	join_data_to_old_data(char *str, char **data, int *i)
 	_i -= j - 1;
 	_data = malloc(len + j + 1);
 	if (!_data)
-		return (0);
+		return (perror("error"), 0);
 	ft_strlcpy(_data, *data, len + 1);
 	ft_strlcpy(_data + len, str + _i, j + 1);
 	free(*data);
@@ -79,11 +79,13 @@ int	m_quotes(char *str, char **data, int *i)
 	qoute_type = *(str + _i);
 	if (!*data)
 	{
-		create_new_data(str, data, i);
+		if (create_new_data(str, data, i) == R_FAIL)
+			return (R_FAIL);
 	}
 	else
 	{
-		join_data_to_old_data(str, data, i);
+		if (join_data_to_old_data(str, data, i) == R_FAIL)
+			return (R_FAIL);
 	}
 	return (1);
 }

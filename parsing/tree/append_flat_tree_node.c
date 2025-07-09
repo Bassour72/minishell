@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:31:33 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/04 22:33:24 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:01:04 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_tree *tree_node)
 	if (!*flat_tree_list)
 	{
 		free_tree_node(tree_node);
-		return (R_FAIL);
+		return (perror("error"), R_FAIL);
 	}
 	(*flat_tree_list)->tree_node = tree_node;
 	(*flat_tree_list)->next = NULL;
@@ -41,7 +41,7 @@ t_tree *tree_node)
 	{
 		free_tree_node(tree_node);
 		free_flat_tree_list(*flat_tree_list);
-		return (R_FAIL);
+		return (perror("error"), R_FAIL);
 	}
 	tmp->next->tree_node = tree_node;
 	tmp->next->next = NULL;

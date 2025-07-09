@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:55:55 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/07 22:17:44 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:04:22 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	wildcard(char ***args)
 	len = get_wc_list_len(args_list);
 	*args = malloc(sizeof(char *) * (len + 1));
 	if (!*args)
-		return (perror("error: "), free_wc_node_list(args_list), R_FAIL);
+		return (perror("error"), free_wc_node_list(args_list), R_FAIL);
 	assign_wc_node_data_to_args_array(args_list, args);
 	cleanup_wc_list_shels(args_list);
 	return (R_SUCCESS);

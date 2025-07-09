@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 18:58:41 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 18:46:10 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:31:47 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ usage: . filename [arguments]\n"
 # define CMD_NOT_FOUND 127
 # define EX_USAGE 2
 
-extern int	g_exit_status;
+extern int	g_signal_status;
 char	*get_env_path_parent(const char *path);
 int		check_argument(t_tree *root);
 int		recover_invalid_pwd(t_env **env, char *new_pwd);
@@ -110,7 +110,6 @@ char	*get_env_key(const char *identifier);
 char	*get_env_value1(const char *identifier);
 void	swap_node(t_env *a, t_env *b);
 int		is_valid_shlvl_string(char *str);
-///
 void	close_heredoc_fds(t_tree *root);
 void	propagate_fork_flag(t_tree *root, int is_forked);
 int		count_heredocs(t_tree *node);

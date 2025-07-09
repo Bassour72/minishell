@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:50:45 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 13:18:45 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:38:51 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	join_arr(char **arr, char **joined_arr)
 	len = calculate_len(arr);
 	*joined_arr = malloc(len + 1);
 	if (!*joined_arr)
-		return (perror("error: "), R_FAIL);
+		return (perror("error"), R_FAIL);
 	ft_bzero(*joined_arr, len + 1);
 	cpy_to_single_arr(arr, joined_arr, len + 1);
 	return (R_SUCCESS);

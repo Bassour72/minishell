@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:36:33 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 00:11:44 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 12:40:17 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static int	allocate_double_arr_size(char ***new_data, char **old_data)
 	while (*(old_data + ++size))
 		;
 	*new_data = malloc(sizeof(char *) * (size + 1));
-	if (!new_data)
-		return (perror("error: "), R_FAIL);
+	if (!*new_data)
+		return (perror("error"), R_FAIL);
 	while (size >= 0)
 		*(*new_data + size--) = NULL;
 	return (R_SUCCESS);
@@ -41,7 +41,7 @@ int	generate_new_data_str(char **dst, char *str)
 	}
 	*dst = malloc(size + 1);
 	if (!*dst)
-		return (perror("error: "), R_FAIL);
+		return (perror("error"), R_FAIL);
 	i = 0;
 	while (*str)
 	{
@@ -65,7 +65,7 @@ int	remove_non_printable_characters(char ***old_data)
 	{
 		if (generate_new_data_str(new_data + i, *(*old_data + i)) == R_FAIL)
 		{
-			(free_2d_arr(new_data), free_2d_arr(*old_data));
+			(free_2d_arr(new_data));
 			return (R_FAIL);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:20:27 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 16:55:33 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:51:05 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	expand_tokens_to_line(char **new_line, t_expand_token *tokens)
 	len = calculate_new_line_len(tokens) + 1;
 	*new_line = ft_calloc(len, 1);
 	if (!*new_line)
-		return (perror("error: "), R_FAIL);
+		return (perror("error"), R_FAIL);
 	while (tokens)
 	{
 		if (tokens->data && is_able_to_join(tokens))

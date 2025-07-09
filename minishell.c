@@ -6,13 +6,13 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 13:57:02 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 20:44:56 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:39:05 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/execution.h"
 
-int	g_exit_status = 0;
+int	g_signal_status = 0;
 
 static int	shell_loop(t_env **env_list, t_tree **tree, \
 char **input, int *status)
@@ -21,11 +21,11 @@ char **input, int *status)
 	{
 		(signal(SIGINT, handle_sigint_prompt), disable_echoctl());
 		if (dup2(2, 0) == -1)
-			return (perror("error: "), R_FAIL);
+			return (perror("error"), R_FAIL);
 		*input = readline("minishell$ ");
 		enable_echoctl();
-		if (g_exit_status == 1)
-			(update_env_exit_status(env_list, 1), g_exit_status = 0);
+		if (g_signal_status == 1)
+			(update_env_exit_status(env_list, 1), g_signal_status = 0);
 		is_input_null(*input, *env_list);
 		if (empty(*input))
 			continue ;
@@ -39,7 +39,7 @@ char **input, int *status)
 		*status = execution(*tree, env_list);
 		update_env_exit_status(env_list, *status);
 		free_tree(*tree);
-		g_exit_status = 0;
+		g_signal_status = 0;
 	}
 }
 

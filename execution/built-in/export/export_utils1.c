@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:44:42 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 18:43:18 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:58:21 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	print_env_export_sort(t_env *env_list, t_tree *root)
 	t_env	*tmp;
 
 	sorted_list = copy_env_list(env_list);
-	if (!sorted_list) //todo for check
+	if (!sorted_list)
 		check_non_interactive_exit(root, &env_list, 1, true);
 	sorted_list = sort_env_list(sorted_list);
 	tmp = sorted_list;

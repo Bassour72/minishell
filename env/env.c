@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:44:31 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 16:40:57 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:07:04 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static int	env_extract_key(char *env, char **key)
 	end = ft_strchr(env, '=');
 	len = end - env;
 	*key = malloc(len + 1);
-	if (!key)
-		return (perror("error: "), R_FAIL);
+	if (!*key)
+		return (perror("error"), R_FAIL);
 	ft_strlcpy(*key, env, len + 1);
 	return (R_SUCCESS);
 }
@@ -35,7 +35,7 @@ static int	env_extract_value(char *env, char **value)
 		return (*value = NULL, R_SUCCESS);
 	*value = ft_strdup(start);
 	if (!*value)
-		return (perror("error: "), R_FAIL);
+		return (perror("error"), R_FAIL);
 	return (R_SUCCESS);
 }
 
@@ -46,10 +46,10 @@ static int	add_exit_status(t_env **env_list)
 
 	key = ft_strdup(EXIT_STATUS_KEY);
 	if (!key)
-		return (perror("error: "), free_env_list(*env_list), R_FAIL);
+		return (perror("error"), free_env_list(*env_list), R_FAIL);
 	value = ft_strdup("0");
 	if (!value)
-		return (perror("error: "), free(key), free_env_list(*env_list), R_FAIL);
+		return (perror("error"), free(key), free_env_list(*env_list), R_FAIL);
 	if (create_env_node(env_list, key, value) == R_FAIL)
 		return (free_env_list(*env_list), R_FAIL);
 	return (R_SUCCESS);

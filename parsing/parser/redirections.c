@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:14:25 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 13:14:44 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:01:34 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	new_red(t_tree *tree_node, t_type type, char *data)
 
 	new_red = malloc(sizeof(t_red));
 	if (!new_red)
-		return (free_tree_node(tree_node), R_FAIL);
+		return (perror("error"), free_tree_node(tree_node), R_FAIL);
 	new_red->data = ft_strdup(data);
 	if (!new_red->data)
 	{
-		free(new_red);
+		(perror("error"), free(new_red));
 		free_tree_node(tree_node);
 		return (R_FAIL);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredocs_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
+/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:21:07 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 16:32:59 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 10:34:59 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,10 @@ int	prepare_heredocs(t_tree *root, t_env **env_list)
 		{
 			if (create_heredoc(redir))
 				return (1);
-			if (g_exit_status == 1)
+			if (g_signal_status == 1)
 				return (1);
 		}
-		if (g_exit_status == 1)
+		if (g_signal_status == 1)
 			return (1);
 		redir = redir->next;
 	}

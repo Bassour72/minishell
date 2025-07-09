@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:21:42 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 17:59:26 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:51:23 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	tokenize_then_split(t_red *reds, t_env *env, t_node **splited_line)
 
 	tokens = NULL;
 	if (tokenize(reds->data, &tokens, env) == R_FAIL)
-		return (R_FAIL);
+		return (free_expand_tokens_list(tokens), R_FAIL);
 	if (expand_tokens_to_line(&new_line, tokens) == R_FAIL)
 		return (free_expand_tokens_list(tokens), R_FAIL);
 	free_expand_tokens_list(tokens);
