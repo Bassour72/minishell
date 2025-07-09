@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expander_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 23:14:56 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/09 14:54:42 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:26:20 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	extract_var_value(char *src, int *i, char **dst, t_env *env)
 	}
 	else
 	{
-		*dst = calloc(1, 1);
+		*dst = ft_calloc(1, 1);
 	}
 	return (R_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_herdoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 00:16:36 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/09 11:39:05 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:25:54 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	finalize_herdoc_expander(char **herdoc_line, char *result)
 	*herdoc_line = result;
 	if (!*herdoc_line)
 	{
-		*herdoc_line = calloc(1, 1);
+		*herdoc_line = ft_calloc(1, 1);
 		if (!*herdoc_line)
 			return (R_FAIL);
 	}
