@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror
 
 NAME = minishell
 
@@ -97,8 +97,6 @@ SRC =	minishell.c\
 		execution/redirection_exec/redir_utils.c
 
 
-		# debug / memory_debugging.c 
-
 OBJ = $(SRC:.c=.o)
 
 READLINE_COMPILE = -I$(shell brew --prefix readline)/include
@@ -114,7 +112,7 @@ $(NAME): $(OBJ)
 libft:
 	make -C ./_libft
 
-%.o: %.c minishell.c include/*.h
+%.o: %.c include/*.h _libft/libft.h _libft
 	cc $(CFLAGS) $(READLINE_COMPILE) -c $< -o $@ 
 
 clean:   
@@ -125,63 +123,3 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
-
-
-
-debug: fclean all #todo 
-	valgrind --leak-check=full  --track-origins=yes --track-fds=yes ./minishell 
-
-debugg: fclean all #todo 
-	valgrind --leak-check=full --show-leak-kinds=all ./minishell 
-de: fclean all
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind.log ./minishell
-
-debug_mode_min:
-	valgrind --leak-check=full --show-leak-kinds=all ./minishell
-
-debug_mode_all: fclean all
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./minishell
-
-
-
-
-#ls | ls | l | l | l | l | l || l | l | ls -al && ls | cat
-#  lss || ls && s || ls -al && sls || ls -al | ls
-# s | l | lS | ls | ls | ls -al | l | l | l | l | ls | l | l || l || l || l | l | l 
-#s | l | l | l | l | l | l | l | l | l | l | l | l || l || l || l | l | l
-#  s | l | l | l | l | l | l | l | l | l | l | l | l || l || l || l | l | l > younes.txt
-#bash -x -c '(ls && ls) && lss || ls | cat && grep makefile'
-# (ls && ls ) && lss || ls | cat | grep makefile 
-# (ls && ls) && lss || ls | cat && grep makefile
-# (ls && ls) && lss || ls | cat  
-#minishell$ '' ' '''
-# export b="1 2 3" c="1 2 3"
-# export $cc=$cc
-#export x='h j k'
-# export $x=$x
-
-### bash-5.2$ ls || |
-### bash: syntax error near unexpected token `|'
-### bash-5.2$ echo $?
-### 2
-# cat >> $?vv
-# ls | ls | ls |cat | grep m | wc -w | cat | ls | ls | ls | ls | ls | ls | ls | ls | ls -la && lsss | cat | grep m
-#minishell$ ||
-#minishell$ ||
-#minishell$ ()
-#minishell$ ((
-#minishell$ export a="ls -la"
-#minishell$ $a
-#minishell: ls: Command not found: 
-#minishell$ $aasd
-# export )a
-#bash: syntax error near unexpected token `)'
-#leaks memory lunset 8x 
-#ls | ls |ll | ll | ll | ll | ll || ls && ll|| ss || zz || ooooo || ls && > out.out.txt
-# ls && > out.out.txt 
-#ls && <  out.out_out.txt 
-#ls && > out
-#  << 1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15 << 16 << 17 << 18 << 19 
-#while true; do lsof -c minishell; sleep 1; clear; done
-#while true; do leaks -q minishell; sleep 1; clear; done
-#ps aux | grep Z

@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:38:57 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 18:46:35 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:39:51 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static long	parse_shlvl(char *str)
 			return (1);
 		i++;
 	}
-	current = ft_atoi(str);
+	current = ft_atol(NULL);
 	return (current);
 }
 

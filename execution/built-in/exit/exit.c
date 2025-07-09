@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:27:38 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 17:39:48 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:39:58 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ static int	is_numeric(const char *str)
 	return (1);
 }
 
-static long	ft_atol(const char *str)
+long	ft_atol(const char *str)
 {
 	int		sign;
 	long	result;
 
 	if (!str)
-		return (1);
+		return (-1);
 	sign = 1;
 	result = 0;
 	while (*str == ' ' || (*str >= 9 && *str <= 13))

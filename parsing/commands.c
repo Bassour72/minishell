@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:09:14 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/09 15:17:05 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:08:21 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static char	**create_new_list(char *new_cmd)
 	new_list = malloc(sizeof(char *) * 2);
 	if (!new_list)
 		return (perror("error"), NULL);
-
 	new_list[0] = ft_strdup(new_cmd);
 	if (new_list[0] == NULL)
 		return (perror("error"), free(new_list), NULL);

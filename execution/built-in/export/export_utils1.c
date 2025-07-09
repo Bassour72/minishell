@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:44:42 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/09 11:58:21 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:06:11 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_env	*copy_env_list(t_env *env_list)
 	{
 		new_node = malloc(sizeof(t_env));
 		if (!new_node)
-			return (NULL);
+			return (perror("malloc: "), NULL);
 		new_node->key = NULL;
 		new_node->value = NULL;
 		if (env_list->key)

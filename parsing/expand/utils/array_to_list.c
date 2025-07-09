@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 22:49:22 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/09 15:11:03 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:08:57 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	append_new_list_node(t_node **list, char *str)
 	t_node	*new_node;
 	char	*data;
 
-	data = ft_strdup(str); //check
+	data = ft_strdup(str);
 	if (!data)
 		return (perror("error"), R_FAIL);
 	new_node = malloc(sizeof(t_node));

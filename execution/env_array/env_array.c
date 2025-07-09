@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:08:32 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 23:09:17 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:47:02 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static	char	*create_env_string(t_env *node)
 	total_len = key_len + value_len + 2;
 	env_string = malloc(total_len);
 	if (!env_string)
-		return (NULL);
+		return (perror("malloc: "), NULL);
 	if (node->key)
 		ft_strcpy(env_string, node->key);
 	else
@@ -73,7 +73,7 @@ char	**gen_new_env(t_env *env_list)
 	tmp = env_list;
 	new_env = malloc(sizeof(char *) * (len + 1));
 	if (!new_env)
-		return (NULL);
+		return (perror("malloc: "), NULL);
 	tmp = env_list;
 	i = 0;
 	while (tmp)

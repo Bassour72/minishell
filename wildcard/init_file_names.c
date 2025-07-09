@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:46:09 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/09 15:10:47 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:09:20 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	append_wc_node(t_wc_node **list, char *data, int flag)
 	t_wc_node	*node;
 	t_wc_node	*tmp;
 	char		*new_data;
-
 
 	new_data = ft_strdup(data);
 	if (!new_data)

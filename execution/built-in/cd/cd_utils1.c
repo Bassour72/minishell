@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:04:38 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/09 11:48:05 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:05:26 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,14 @@ int	diagnose_cd_error(const char *path, int print_error)
 
 char	*get_arg_cd(const char *arg)
 {
+	char	*dynamic_arg;
+
 	if (!arg)
 		return (NULL);
-	return (ft_strdup(arg));
+	dynamic_arg = ft_strdup(arg);
+	if (!dynamic_arg)
+		return (perror("malloc: "), NULL);
+	return (dynamic_arg);
 }
 
 static int	update_env_var(char *key, char *value, t_env *env)

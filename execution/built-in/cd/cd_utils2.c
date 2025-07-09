@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:03:00 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/09 14:30:01 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:05:34 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	cd_dotdots_only(t_env **env, char *arg)
 		return (free_all(arg, old_pwd, cwd));
 	}
 	if (handle_cd_failure(env, arg, old_pwd) == 0)
-		return (free_all(arg, old_pwd, NULL));
+		return (free_all(arg, old_pwd, NULL), 1);
 	perror("cd: Permission denied");
 	return (free_all(arg, old_pwd, NULL));
 }

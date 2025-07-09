@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 21:13:41 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/05 00:33:09 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:53:02 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	free_flat_tree(t_flat_tree *flat_tree)
 
 void	free_tree(t_tree *root)
 {
+	if (!root)
+		return ;
 	if (root->right)
 		free_tree(root->right);
 	if (root->left)
