@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:16:28 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 22:21:22 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:55:23 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*expand_home(char *arg, t_env *env)
 	needed = ft_strlen(home) + ft_strlen(arg);
 	res = malloc(needed + 1);
 	if (!res)
-		return (NULL);
+		return (perror("malloc: "), NULL);
 	ft_strcpy(res, home);
 	ft_strcat(res, arg + 1);
 	return (res);
@@ -57,9 +57,9 @@ int	has_one_case_in_cd(t_env **env, char *old_pwd, char *candidate)
 	home = get_env_value("HOME", *env);
 	if (!home)
 		return (perror("cd: HOME not set\n"), free(old_pwd), 1);
-	candidate = strdup(home);
+	candidate = ft_strdup(home);
 	if (!candidate)
-		return (free(old_pwd), 1);
+		return (perror("malloc: "), free(old_pwd), 1);
 	if (diagnose_cd_error(candidate, 1) != 0)
 		return (free(candidate), free(old_pwd), 1);
 	if (chdir(candidate) != 0)
@@ -114,7 +114,7 @@ int	cd_change_working_directory(t_tree *root, t_env **env)
 		return (1);
 	old_pwd = ft_strdup(get_env_value("physical_PWD", *env));
 	if (!old_pwd)
-		return (1);
+		return (perror("malloc: "), 1);
 	arg = get_arg_cd(root->data[1]);
 	if (!arg)
 		return (has_one_case_in_cd(env, old_pwd, NULL));

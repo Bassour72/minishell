@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 18:58:41 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 18:46:10 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:03:28 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,4 +125,5 @@ int		handle_cd_failure(t_env **env, char *arg, char *logical_pwd);
 int		free_all(char *a, char *b, char *c);
 char	*build_logical_path(char *base, char *suffix);
 int		apply_single_redirection(t_red *redir, t_env **env_list);
+long	ft_atol(const char *str);
 #endif

@@ -6,20 +6,20 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:48:33 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 17:44:44 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:45:32 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/execution.h"
 
-static void	add_new_env_node(t_env **env_list, char *new_key, char *new_value)
+static int	add_new_env_node(t_env **env_list, char *new_key, char *new_value)
 {
 	t_env	*new_node;
 	t_env	*ptr;
 
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
-		return ;
+		return (perror("malloc: "), STATUS_ERROR);
 	new_node->key = new_key;
 	new_node->value = new_value;
 	new_node->exported = true;
@@ -33,6 +33,7 @@ static void	add_new_env_node(t_env **env_list, char *new_key, char *new_value)
 			ptr = ptr->next;
 		ptr->next = new_node;
 	}
+	return (STATUS_OK);
 }
 
 int	add_env_without_appned(t_env **env_list, char *new_key, char *new_value)
@@ -46,8 +47,7 @@ int	add_env_without_appned(t_env **env_list, char *new_key, char *new_value)
 		free(new_key);
 		return (1);
 	}
-	add_new_env_node(env_list, new_key, new_value);
-	return (1);
+	return (add_new_env_node(env_list, new_key, new_value));
 }
 
 int	append_env_node(t_env **env_list, char *new_key, char	*new_value)
@@ -95,6 +95,7 @@ static int	add_env(char *arg, t_env **env_list)
 int	export_command_builtin(t_tree *root, t_env **env_list)
 {
 	int	i;
+	int	status;
 
 	if (env_list == NULL)
 		return (0);
@@ -103,8 +104,8 @@ int	export_command_builtin(t_tree *root, t_env **env_list)
 		i = 1;
 		while (root->data[i] != NULL)
 		{
-			add_env(root->data[i], env_list);
-			update_env_exit_status(env_list, 1);
+			status = add_env(root->data[i], env_list);
+			update_env_exit_status(env_list, status);
 			i++;
 		}
 		return (0);

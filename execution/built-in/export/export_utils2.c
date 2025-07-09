@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:47:00 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/06 22:58:07 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:47:36 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*get_env_key(const char *identifier)
 		len++;
 	new_key = malloc(len + 1);
 	if (!new_key)
-		return (NULL);
+		return (perror("malloc: "), NULL);
 	i = 0;
 	while (i < len)
 	{

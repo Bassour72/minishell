@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:09:14 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/04 22:10:03 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:28:45 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	**create_new_list(char *new_cmd)
 {
 	char	**new_list;
 
-	new_list = malloc(sizeof(char *) * 2);
+	new_list = malloc(sizeof(char *) * 2); 
 	if (!new_list)
 		return (perror("error: "), NULL);
 	new_list[0] = ft_strdup(new_cmd);

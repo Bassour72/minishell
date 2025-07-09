@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:36 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/08 21:31:42 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 14:51:07 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ int	empty(char *str)
 	tmp = str;
 	while (*str && ft_isspace(*str))
 		str++;
-	if(!*str)
+	if (!*str)
 	{
 		free(tmp);
 		return (1);
 	}
-	return(0);
+	return (0);
 }
 
 void	handle_heredoc_on_fail(t_env **env_list, t_tree *tree)
@@ -65,9 +65,10 @@ void	is_input_null(char *input, t_env *env_list)
 	if (input == NULL)
 	{
 		write(1, "exit\n", 5);
+		status = ft_atol(get_env_value(EXIT_STATUS_KEY, env_list));
+		check_non_interactive_exit(NULL, &env_list, status, true);
 		close(2);
 		close(0);
-		status = ft_atoi(get_env_value(EXIT_STATUS_KEY, env_list));
 		free_env_list(env_list);
 		exit(status);
 	}

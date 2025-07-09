@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:00:01 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/07 22:19:01 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:44:47 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*get_env_path_parent(const char *path)
 		return (ft_strdup("/"));
 	parent = malloc(i + 1);
 	if (!parent)
-		return (NULL);
+		return (perror("malloc: "), NULL);
 	ft_strlcpy(parent, path, i + 1);
 	return (parent);
 }
