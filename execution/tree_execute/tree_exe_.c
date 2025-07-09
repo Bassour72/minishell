@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:42:37 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/08 18:18:41 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:50:23 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 static int	exec_block_command(t_tree *root, t_env **env_list, int in_subshell)
 {
 	if (expand(&root->data, *env_list) == R_FAIL)
+	{
+		check_non_interactive_exit(root, env_list, -1, true);
 		return (-1);
+	}
 	if (in_subshell)
 	{
 		run_command(root, env_list);
@@ -24,7 +27,7 @@ static int	exec_block_command(t_tree *root, t_env **env_list, int in_subshell)
 	if (root->data && is_builtin(root->data[0]) == 0)
 	{
 		if (expand_redir(root->redirections, *env_list) == R_FAIL)
-			return (-1);
+			return (check_non_interactive_exit(root, env_list, -1, true), -1);
 		return (exec_builtin_command(root, env_list));
 	}
 	return (exec_external_command(root, env_list));
