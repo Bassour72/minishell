@@ -620,3 +620,81 @@ minishell$ ls$a-l$b-a
 >>>>>>> 6aa338f458354facf070f536b0a81ac1b3e9fb7b
 =======
 >>>>>>> parsing
+
+
+
+
+\\\\\\\\\\\\\\\\
+minishell$ $?
+minishell: 0: command not found
+minishell$ unset PATH
+minishell$ $?
+minishell: No such file or directory
+minishell$ echo $>
+syntax error near unexpected token `>'
+minishell$ echo $?
+258
+minishell$ ls
+minishell: No such file or directory
+minishell$ echo $>
+syntax error near unexpected token `>'
+minishell$ ls
+minishell: No such file or directory
+minishell$ echo $?
+126
+
+
+\\\\\\\\\\\\\\\\\
+
+
+
+minishell$ export 9=$a
+export: `9=q w e': not a valid identifier
+minishell$ 
+
+
+
+\\\\\\\\\\\\
+
+
+minishell$ cd /bin/
+minishell$ ls
+[               date            kill            mv              sleep           wait4path
+bash            dd              ksh             pax             stty            zsh
+cat             df              launchctl       ps              sync
+chmod           echo            link            pwd             syslog.py
+cp              ed              ln              rm              tcsh
+csh             expr            ls              rmdir           test
+dash            hostname        mkdir           sh              unlink
+minishell$ unset PATH
+minishell$ ls
+minishell$ ./ls
+[               date            kill            mv              sleep           wait4path
+bash            dd              ksh             pax             stty            zsh
+cat             df              launchctl       ps              sync
+chmod           echo            link            pwd             syslog.py
+cp              ed              ln              rm              tcsh
+csh             expr            ls              rmdir           test
+dash            hostname        mkdir           sh              unlink
+minishell$ 
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+minishell$ touch file
+minishell$ touch "*"
+minishell$ ls
+*                       include                 minishell.o
+README.md               j                       minishell_helper.c
+_libft                  l                       minishell_helper.o
+echoctl.c               m                       parsing
+echoctl.o               makefile                test_comd.txt
+env                     massraybayoubmassrayb   todo
+execution               minishell               wildcard
+file                    minishell.c             younes.txt
+minishell$ ls *file
+file            makefile
+minishell$ ls *"*"
+
+
+//////////////////////////////////

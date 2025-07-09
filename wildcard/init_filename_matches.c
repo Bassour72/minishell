@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:30:23 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/07 14:48:42 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 22:54:25 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	jump_the_quotes_after_star(t_is_match_args *args, char c)
 	args->i += 1;
 	args->wc_pos = args->i;
 	if (c == '\'' || c == '\"')
-		args->wc_pos = args->i + 1;
+		args->wc_pos = ++args->i + 1;
 }
 
 static int	reset_i_to_after_star_and_confirm_missmatch(t_is_match_args *args)
@@ -56,7 +56,7 @@ int	is_file_name_match(char *file_name, char *str)
 	while (1)
 	{
 		if (str[args.i] == '\"' || str[args.i] == '\'')
-			1 && (args.i++, args.is_literal_string = 1);
+			1 && (args.i++, args.wc_pos++, args.is_literal_string = 1);
 		else if (str[args.i] == '*' && args.is_literal_string == -1)
 			jump_the_quotes_after_star(&args, str[args.i]);
 		else if (str[args.i] != file_name[args.j])

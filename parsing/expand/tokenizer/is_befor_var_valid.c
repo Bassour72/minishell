@@ -6,7 +6,7 @@
 /*   By: massrayb <massrayb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 17:39:42 by massrayb          #+#    #+#             */
-/*   Updated: 2025/07/06 18:45:10 by massrayb         ###   ########.fr       */
+/*   Updated: 2025/07/08 21:59:21 by massrayb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ int	is_befor_var_valid(t_expand_token *tokens)
 		if (tokens->join == 0)
 			break ;
 		update_is_value(tokens, &is_value);
-		tokens = tokens->prev;
 		if (is_value)
 			break ;
+		tokens = tokens->prev;
 	}
 	if (is_value == 0)
 		return (0);
