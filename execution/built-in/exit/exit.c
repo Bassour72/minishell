@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:27:38 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/09 14:39:58 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:48:08 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,20 @@ long	ft_atol(const char *str)
 	return (result * sign);
 }
 
+static int  check_has_only(t_tree *root)
+{
+	int i;
+
+	i = 1;
+	while (root->data[i] != NULL)
+	{
+		if (!is_numeric(root->data[i]))
+			return (STATUS_OK);
+		i++;
+	}
+	return (STATUS_ERROR);
+}
+
 int	exit_exe(t_tree *root, t_env **env_list)
 {
 	long	code;
@@ -66,7 +80,7 @@ int	exit_exe(t_tree *root, t_env **env_list)
 		check_non_interactive_exit(root, env_list, code, true);
 		exit(code);
 	}
-	if (root->data[2] == NULL && !is_numeric(root->data[1]))
+	if (!is_numeric(root->data[1]) && root->data[2] != NULL && !check_has_only(root))
 	{
 		write(2, "minishell: exit: numeric argument required\n", 43);
 		check_non_interactive_exit(root, env_list, 255, true);

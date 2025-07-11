@@ -6,7 +6,7 @@
 /*   By: ybassour <ybassour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 23:38:57 by ybassour          #+#    #+#             */
-/*   Updated: 2025/07/09 14:39:51 by ybassour         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:56:34 by ybassour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static long	parse_shlvl(char *str)
 	long	current;
 
 	i = 0;
+	current = 0;
 	if (!str || !*str)
 		return (1);
 	if (str[i] == '+' || str[i] == '-')
@@ -78,7 +79,6 @@ static long	parse_shlvl(char *str)
 			return (1);
 		i++;
 	}
-	current = ft_atol(NULL);
 	return (current);
 }
 
